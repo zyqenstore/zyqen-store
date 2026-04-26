@@ -251,7 +251,6 @@ function mostrarComentariosProduto(produto) {
 
 // =========================
 // FORM
-// =========================
 function prepararFormularioComentario() {
   const form = document.getElementById("form-comentario");
 
@@ -263,40 +262,47 @@ function prepararFormularioComentario() {
     btn.textContent = "Enviando...";
 
     const formData = new FormData(form);
-    // 🔥 valida email real
+
     const email = formData.get("email");
-    
     const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-     
-     if (!emailValido.test(email)) {
-       alert("Digite um email válido.");
-     
-       const btn = form.querySelector("button");
-       btn.disabled = false;
-       btn.textContent = "Enviar comentário";
-       
-  return;
-}
-    // 🔥 adiciona nome do produto no email
+
+    if (!emailValido.test(email)) {
+      alert("Digite um email válido.");
+      btn.disabled = false;
+      btn.textContent = "Enviar comentário";
+      return;
+    }
+
     if (produtoAtualPopup) {
       formData.append("produto", produtoAtualPopup.nome);
     }
 
+    formData.append("_subject", "Novo comentário no site Zyqen Store");
+    formData.append("_captcha", "false");
+    formData.append("_template", "table");
+
     try {
       const res = await fetch("https://formsubmit.co/ajax/zyqenstore@gmail.com", {
         method: "POST",
+        headers: {
+          "Accept": "application/json"
+        },
         body: formData
       });
+
+      const data = await res.json();
 
       if (res.ok) {
         abrirPopupSucesso();
         form.reset();
       } else {
-        alert("Erro ao enviar comentário. Tente novamente.");
+        console.log(data);
+        alert("Erro ao enviar. Confirme seu email no FormSubmit e tente novamente.");
       }
 
     } catch (err) {
-      alert("Erro de conexão. Verifique sua internet.");
+      console.log(err);
+      alert("Erro ao conectar com o FormSubmit. Teste pelo site publicado e confirme seu email.");
     }
 
     btn.disabled = false;
