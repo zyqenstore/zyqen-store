@@ -282,23 +282,20 @@ function prepararFormularioComentario() {
     formData.append("_template", "table");
 
     try {
-      const res = await fetch("https://formsubmit.co/ajax/zyqenstore@gmail.com", {
-        method: "POST",
-        headers: {
-          "Accept": "application/json"
-        },
-        body: formData
-      });
+     const res = await fetch("https://api.web3forms.com/submit", {
+  method: "POST",
+  body: formData
+});
 
-      const data = await res.json();
+const data = await res.json();
 
-      if (res.ok) {
-        abrirPopupSucesso();
-        form.reset();
-      } else {
-        console.log(data);
-        alert("Erro ao enviar. Confirme seu email no FormSubmit e tente novamente.");
-      }
+if (data.success) {
+  abrirPopupSucesso();
+  form.reset();
+} else {
+  console.log(data);
+  alert("Erro ao enviar: " + data.message);
+}
 
     } catch (err) {
       console.log(err);

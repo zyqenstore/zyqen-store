@@ -157,16 +157,16 @@
           <div id="popup-lista-comentarios"></div>
 
           <form id="form-comentario">
+            
+             <input type="hidden" name="access_key" value="90254100-32d0-49e2-995e-879f9ed9ae33">
 
-             <input type="text" name="nome" placeholder="Seu nome" required>
+             <input type="text" name="name" placeholder="Seu nome" required>
 
              <input type="email" name="email" placeholder="Seu e-mail" required>
 
-             <textarea name="comentario" placeholder="Escreva seu comentário..." required></textarea>
+             <textarea name="message" placeholder="Escreva seu comentário..." required></textarea>
 
-            <!-- 🔥 CAMPOS OCULTOS (PROFISSIONAL) -->
-             <input type="hidden" name="_captcha" value="false">
-             <input type="hidden" name="_template" value="table">
+             <input type="hidden" name="_subject" value="Novo comentário no site Zyqen Store">
 
              <button type="submit">Enviar comentário</button>
 
