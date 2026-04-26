@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zyqen Store</title>
+
+  <link rel="icon" href="imagens/logo/favicon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="logo-area">
+    <img src="imagens/logo/logo.png" alt="Zyqen Store">
+  </div>
+
+  <p>Ofertas selecionadas todos os dias 🔥</p>
+</header>
+
+<section class="oferta-dia">
+  <div class="oferta-texto">
+    <span>🔥 Oferta do Dia</span>
+    <h2>Produtos em destaque para você aproveitar agora</h2>
+    <p>Selecionamos ofertas especiais com redirecionamento direto para a loja oficial.</p>
+  </div>
+
+  <div id="produto-destaque"></div>
+</section>
+
+<section class="confianca">
+  <div class="confianca-card">
+    <span>✅</span>
+    <h3>Loja oficial</h3>
+    <p>Você será redirecionado para a plataforma oficial do produto.</p>
+  </div>
+
+  <div class="confianca-card">
+    <span>🛡️</span>
+    <h3>Compra segura</h3>
+    <p>A compra é feita diretamente no Mercado Livre ou na Cakto.</p>
+  </div>
+
+  <div class="confianca-card">
+    <span>🔒</span>
+    <h3>Sem dados de pagamento</h3>
+    <p>Não coletamos cartão, senha ou dados bancários.</p>
+  </div>
+
+  <div class="confianca-card">
+    <span>⭐</span>
+    <h3>Ofertas selecionadas</h3>
+    <p>Produtos organizados para facilitar sua escolha.</p>
+  </div>
+</section>
+
+<section class="filtros">
+  <input 
+    type="text" 
+    id="pesquisa" 
+    placeholder="Pesquisar produto..."
+  >
+
+  <div class="botoes-filtro">
+    <button onclick="filtrarCategoria('Todos')">Todos</button>
+    <button onclick="filtrarCategoria('Mercado Livre')">Mercado Livre</button>
+    <button onclick="filtrarCategoria('Cakto')">Cakto</button>
+  </div>
+</section>
+
+<main>
+  <div id="produtos" class="grid"></div>
+</main>
+
+<footer class="footer-melhorado">
+  <div class="footer-box">
+    <p>🔗 Você será redirecionado para a loja oficial</p>
+    <p>💼 Este site atua como afiliado na divulgação de produtos</p>
+    <p>🔒 Compra realizada diretamente na plataforma oficial. Nenhum dado é armazenado aqui.</p>
+
+    <p>
+      <a href="sobre.html">Sobre</a> | 
+      <a href="politica.html">Política de Privacidade</a>
+    </p>
+  </div>
+</footer>
+
+<!-- POPUP PRODUTO -->
+<div id="popup-produto" class="popup">
+  <div class="popup-conteudo">
+    <button class="popup-fechar" onclick="fecharPopup()">×</button>
+
+    <div class="popup-imagem-area">
+      <button class="popup-btn-img popup-esquerda" onclick="popupImagemAnterior()">‹</button>
+
+      <img id="popup-imagem" src="" alt="" data-imagem-atual="0">
+
+      <button class="popup-btn-img popup-direita" onclick="popupProximaImagem()">›</button>
+    </div>
+
+    <div class="popup-info">
+      <span id="popup-categoria" class="popup-categoria"></span>
+      <h2 id="popup-nome"></h2>
+
+      <div id="popup-avaliacao" class="popup-avaliacao"></div>
+
+      <p id="popup-descricao"></p>
+
+      <span id="popup-preco-antigo" class="popup-preco-antigo"></span>
+      <strong id="popup-preco"></strong>
+
+      <a id="popup-comprar" href="#" target="_blank" class="popup-comprar">
+        Comprar agora
+      </a>
+
+      <!-- ⭐ AVALIAÇÕES MONSTRO -->
+      <div class="popup-comentarios">
+
+        <div class="resumo-avaliacao">
+          <h3 id="popup-nota-geral"></h3>
+
+          <div class="barra-avaliacoes">
+            <div><span>5⭐</span><div class="barra"><div id="bar-5"></div></div></div>
+            <div><span>4⭐</span><div class="barra"><div id="bar-4"></div></div></div>
+            <div><span>3⭐</span><div class="barra"><div id="bar-3"></div></div></div>
+            <div><span>2⭐</span><div class="barra"><div id="bar-2"></div></div></div>
+            <div><span>1⭐</span><div class="barra"><div id="bar-1"></div></div></div>
+          </div>
+        </div>
+
+        <button class="btn-ver-comentarios" onclick="toggleComentarios()">
+          💬 Ver comentários
+        </button>
+
+        <div id="area-comentarios" class="area-comentarios">
+
+          <div id="popup-lista-comentarios"></div>
+
+          <form id="form-comentario" class="form-comentario">
+            <input type="text" name="nome" placeholder="Seu nome" required>
+            <input type="email" name="email" placeholder="Seu e-mail" required>
+            <textarea name="comentario" placeholder="Escreva seu comentário..." required></textarea>
+
+            <button type="submit">Enviar comentário</button>
+          </form>
+
+        </div>
+      </div>
+
+      <!-- SUPORTE -->
+      <div class="popup-suporte">
+        <h3>Precisa de suporte?</h3>
+
+        <div class="popup-botoes-suporte">
+          <a href="https://wa.me/5575981768068" target="_blank">💬 WhatsApp</a>
+          <a href="https://www.instagram.com/zyqen_oficial/" target="_blank">📸 Instagram</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- POPUP SUCESSO -->
+<div id="popup-sucesso-comentario" class="popup-sucesso">
+  <div class="popup-sucesso-box">
+    <h2>✅ Comentário enviado!</h2>
+    <p>Obrigado pelo seu comentário. Recebemos sua mensagem com sucesso.</p>
+    <button onclick="fecharPopupSucesso()">Fechar</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

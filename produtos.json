@@ -1,0 +1,99 @@
+{
+  "produtos": [
+    {
+      "id": 1,
+      "nome": "Fone Bluetooth TWS Sem Fio",
+      "preco": "R$ 24,90",
+      "precoAntigo": "R$ 39,90",
+      "descricao": "Som de alta qualidade e bateria longa",
+      "imagens": [
+        "imagens/mercado/fone.jpg",
+        "imagens/mercado/fone2.jpg"
+      ],
+      "link": "https://meli.la/2u1reqK",
+      "categoria": "Mercado Livre",
+      "selo": "Oferta",
+      "avaliacao": 4.8,
+      "avaliacoes": 1247,
+      "vendidos": 532,
+      "urgencia": "🔥 Oferta por tempo limitado",
+      "botao": "Comprar com desconto agora",
+      "destaque": true,
+      "tipoDestaque": "Oferta do Dia",
+      "tipo": "produto",
+      "nivelPreco": "baixo",
+      "recomendado": true,
+      "comentarios": [{
+      "nome": "Fabio Silva",
+      "texto": "Produto muito bom, chegou certinho e valeu a pena.",
+      "nota": 5
+      },
+       {
+      "nome": "Marcely Santos",
+      "texto": "Gostei bastante, achei fácil de comprar.",
+      "nota": 5
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "nome": "Smartwatch S10 Série 10 Relógio Digital",
+      "preco": "R$ 99,83",
+      "precoAntigo": "R$ 149,90",
+      "descricao": "Controle de saúde e notificações",
+      "imagens": [
+        "imagens/mercado/Smartwatch1.jpg",
+        "imagens/mercado/Smartwatch2.jpg"
+      ],
+      "link": "https://meli.la/1KTY6sk",
+      "categoria": "Mercado Livre",
+      "selo": "Mais vendido",
+      "avaliacao": 4.7,
+      "avaliacoes": 983,
+      "vendidos": 421,
+      "urgencia": "⚡ Produto muito procurado",
+      "botao": "Ver oferta no Mercado Livre",
+      "destaque": false,
+      "tipoDestaque": "",
+      "tipo": "produto",
+      "nivelPreco": "baixo",
+      "recomendado": true,
+      "comentarios": [{
+      "nome": "Adriano Carvalho",
+      "texto": "Produto muito bom, chegou certinho e valeu a pena.",
+      "nota": 5
+      },
+       {
+      "nome": "Maria Lopes de Jesus",
+      "texto": "Gostei bastante, achei fácil de comprar.",
+      "nota": 5
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "nome": "Primeira Venda Online",
+      "preco": "Acesso imediato",
+      "precoAntigo": "",
+      "descricao": "Aprenda o passo a passo para começar do zero e fazer sua primeira venda online como afiliado.",
+      "imagens": [
+        "imagens/cakto/PrimeiraVenda2.jpg",
+        "imagens/cakto/PrimeiraVenda.jpg",
+        "imagens/cakto/PrimeiraVenda1.jpg"
+      ],
+      "link": "https://cakto.app/B4AYzc4/?affiliate=eoyZHizG",
+      "categoria": "Cakto",
+      "selo": "Produto digital",
+      "avaliacao": 4.9,
+      "avaliacoes": 2186,
+      "vendidos": 874,
+      "urgencia": "💰 Comece hoje no digital",
+      "botao": "Quero começar agora 💰",
+      "destaque": false,
+      "tipoDestaque": "",
+      "tipo": "cakto",
+      "nivelPreco": "baixo",
+      "recomendado": true
+    }
+  ]
+}
