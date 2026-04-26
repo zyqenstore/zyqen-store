@@ -898,186 +898,175 @@ header p {
   margin-top: 8px;
 }
 
-/* 📱 ORGANIZAÇÃO MOBILE ESTILO MARKETPLACE */
+/* 🛒 POPUP ESTILO SHOPEE / MARKETPLACE */
 
+.popup {
+  padding: 0;
+  background: #0f172a;
+}
+
+.popup-conteudo {
+  width: 100%;
+  max-width: 520px;
+  height: 100vh;
+  max-height: 100vh;
+  border-radius: 0;
+  padding: 0;
+  display: block;
+  overflow-y: auto;
+  background: #0f172a;
+  border: none;
+}
+
+.popup-topo {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  height: 52px;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  border-bottom: 1px solid #1e293b;
+}
+
+.popup-topo button,
+.acoes-topo button {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: #1e293b;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.popup-imagem-area {
+  width: 100%;
+  height: 360px;
+  border-radius: 0;
+  background: #020617;
+}
+
+.popup-imagem-area img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.popup-info {
+  padding: 16px;
+}
+
+.popup-info h2 {
+  font-size: 20px;
+  line-height: 1.3;
+  margin: 10px 0;
+}
+
+.popup-categoria {
+  margin-top: 4px;
+}
+
+.popup-avaliacao {
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+#popup-descricao {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 14px;
+  padding: 12px;
+  font-size: 14px;
+}
+
+.popup-detalhes,
+.popup-observacoes {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 14px;
+  padding: 12px;
+  margin-top: 12px;
+}
+
+.popup-detalhes p,
+.popup-observacoes p {
+  margin: 7px 0;
+  color: #cbd5e1;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+#popup-preco {
+  display: block;
+  font-size: 28px;
+  margin: 12px 0;
+}
+
+.popup-preco-antigo {
+  margin-top: 14px;
+}
+
+.btn-whatsapp {
+  width: 100%;
+  border: none;
+  background: #1e293b;
+  color: white;
+  padding: 13px;
+  border-radius: 12px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  cursor: pointer;
+  border: 1px solid #334155;
+}
+
+.btn-whatsapp:hover {
+  background: #334155;
+}
+
+.popup-comprar {
+  position: sticky;
+  bottom: 0;
+  z-index: 30;
+  display: block;
+  border-radius: 12px;
+  padding: 15px;
+  font-size: 15px;
+}
+
+.popup-comentarios {
+  margin-top: 16px;
+  margin-bottom: 20px;
+}
+
+.popup-fechar,
+.popup-btn-img {
+  display: none;
+}
+
+/* 📱 MOBILE */
 @media (max-width: 768px) {
-  body {
-    padding-bottom: 20px;
+  .popup-conteudo {
+    max-width: 100%;
   }
 
-  header {
-    padding: 14px 12px;
-    position: sticky;
-    top: 0;
-    z-index: 50;
+  .popup-imagem-area {
+    height: 340px;
   }
 
-  .logo-area img {
-    width: 120px;
-  }
-
-  header p {
-    font-size: 13px;
-    margin: 6px 0 0;
-  }
-
-  .oferta-dia {
-    margin: 12px;
+  .popup-info {
     padding: 14px;
-    grid-template-columns: 1fr;
-    gap: 14px;
   }
 
-  .oferta-texto h2 {
-    font-size: 20px;
-    line-height: 1.2;
+  .popup-info h2 {
+    font-size: 18px;
   }
 
-  .oferta-texto p {
-    font-size: 13px;
-  }
-
-  .confianca {
-    margin: 12px;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
-
-  .confianca-card {
-    padding: 12px 8px;
-    border-radius: 12px;
-  }
-
-  .confianca-card h3 {
-    font-size: 13px;
-  }
-
-  .confianca-card p {
-    font-size: 11px;
-  }
-
-  .filtros {
-    position: sticky;
-    top: 74px;
-    z-index: 40;
-    padding: 12px;
-    gap: 10px;
-    border-bottom: 1px solid #1e293b;
-  }
-
-  .filtros input {
-    max-width: none;
-    box-sizing: border-box;
-  }
-
-  .botoes-filtro {
-    justify-content: flex-start;
-    overflow-x: auto;
-    flex-wrap: nowrap;
-    padding-bottom: 4px;
-  }
-
-  .botoes-filtro button {
-    flex: 0 0 auto;
-    padding: 9px 13px;
-    font-size: 12px;
-  }
-
-  .grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-    padding: 10px;
-  }
-
-  .produto {
-    border-radius: 12px;
-    padding: 10px;
-  }
-
-  .topo-card {
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .selo,
-  .categoria {
-    font-size: 10px;
-    padding: 4px 7px;
-  }
-
-  .urgencia {
-    font-size: 11px;
-    padding: 7px;
-    margin-bottom: 8px;
-  }
-
-  .imagem-area {
-    height: 165px;
-    border-radius: 10px;
-  }
-
-  .btn-img {
-    width: 28px;
-    height: 28px;
-    font-size: 22px;
-  }
-
-  .produto h2 {
-    font-size: 14px;
-    line-height: 1.25;
-    margin: 9px 0 6px;
-
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .avaliacao {
-    font-size: 11px;
-    margin-bottom: 6px;
-  }
-
-  .avaliacao span {
-    display: block;
-    margin-left: 0;
-    margin-top: 2px;
-  }
-
-  .prova-social {
-    font-size: 11px;
-    padding: 7px;
-  }
-
-  .produto p {
-    font-size: 12px;
-    line-height: 1.3;
-
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .preco-antigo {
-    font-size: 12px;
-  }
-
-  .produto strong {
-    font-size: 16px;
-  }
-
-  .produto a {
-    padding: 10px;
-    font-size: 12px;
-    border-radius: 9px;
-  }
-
-  .footer-melhorado {
-    padding: 20px 10px;
-  }
-
-  .footer-box {
-    padding: 16px;
+  #popup-preco {
+    font-size: 25px;
   }
 }

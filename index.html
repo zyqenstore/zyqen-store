@@ -85,35 +85,46 @@
   </div>
 </footer>
 
-<!-- POPUP PRODUTO -->
+<!-- POPUP PRODUTO ESTILO SHOPEE -->
 <div id="popup-produto" class="popup">
   <div class="popup-conteudo">
-    <button class="popup-fechar" onclick="fecharPopup()">×</button>
+
+    <div class="popup-topo">
+      <button onclick="fecharPopup()">←</button>
+
+      <div class="acoes-topo">
+        <button onclick="compartilharProduto()">🔗</button>
+      </div>
+    </div>
 
     <div class="popup-imagem-area">
-      <button class="popup-btn-img popup-esquerda" onclick="popupImagemAnterior()">‹</button>
-
       <img id="popup-imagem" src="" alt="" data-imagem-atual="0">
-
-      <button class="popup-btn-img popup-direita" onclick="popupProximaImagem()">›</button>
     </div>
 
     <div class="popup-info">
       <span id="popup-categoria" class="popup-categoria"></span>
+
       <h2 id="popup-nome"></h2>
 
       <div id="popup-avaliacao" class="popup-avaliacao"></div>
 
       <p id="popup-descricao"></p>
 
+      <div id="popup-detalhes" class="popup-detalhes"></div>
+
+      <div id="popup-observacoes" class="popup-observacoes"></div>
+
       <span id="popup-preco-antigo" class="popup-preco-antigo"></span>
       <strong id="popup-preco"></strong>
+
+      <button id="popup-whatsapp" class="btn-whatsapp">
+        💬 Tirar dúvida sobre este produto
+      </button>
 
       <a id="popup-comprar" href="#" target="_blank" class="popup-comprar">
         Comprar agora
       </a>
 
-      <!-- ⭐ AVALIAÇÕES MONSTRO -->
       <div class="popup-comentarios">
 
         <div class="resumo-avaliacao">
@@ -133,7 +144,6 @@
         </button>
 
         <div id="area-comentarios" class="area-comentarios">
-
           <div id="popup-lista-comentarios"></div>
 
           <form id="form-comentario" class="form-comentario">
@@ -143,25 +153,13 @@
 
             <button type="submit">Enviar comentário</button>
           </form>
-
         </div>
+
       </div>
-
-      <!-- SUPORTE -->
-      <div class="popup-suporte">
-        <h3>Precisa de suporte?</h3>
-
-        <div class="popup-botoes-suporte">
-          <a href="https://wa.me/5575981768068" target="_blank">💬 WhatsApp</a>
-          <a href="https://www.instagram.com/zyqen_oficial/" target="_blank">📸 Instagram</a>
-        </div>
-      </div>
-
     </div>
   </div>
 </div>
 
-<!-- POPUP SUCESSO -->
 <div id="popup-sucesso-comentario" class="popup-sucesso">
   <div class="popup-sucesso-box">
     <h2>✅ Comentário enviado!</h2>
