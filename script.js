@@ -251,6 +251,7 @@ function mostrarComentariosProduto(produto) {
 
 // =========================
 // FORM
+// =========================
 function prepararFormularioComentario() {
   const form = document.getElementById("form-comentario");
 
@@ -277,29 +278,24 @@ function prepararFormularioComentario() {
       formData.append("produto", produtoAtualPopup.nome);
     }
 
-    formData.append("_subject", "Novo comentário no site Zyqen Store");
-    formData.append("_captcha", "false");
-    formData.append("_template", "table");
-
     try {
-     const res = await fetch("https://api.web3forms.com/submit", {
-  method: "POST",
-  body: formData
-});
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
 
-const data = await res.json();
+      const data = await res.json();
 
-if (data.success) {
-  abrirPopupSucesso();
-  form.reset();
-} else {
-  console.log(data);
-  alert("Erro ao enviar: " + data.message);
-}
+      if (data.success) {
+        alert("Comentário enviado com sucesso!");
+        form.reset();
+      } else {
+        alert("Erro ao enviar: " + data.message);
+      }
 
     } catch (err) {
       console.log(err);
-      alert("Erro ao conectar com o FormSubmit. Teste pelo site publicado e confirme seu email.");
+      alert("Erro ao enviar comentário. Tente novamente.");
     }
 
     btn.disabled = false;
