@@ -23,15 +23,27 @@
       "tipo": "produto",
       "nivelPreco": "baixo",
       "recomendado": true,
-      "comentarios": [{
-      "nome": "Fabio Silva",
-      "texto": "Produto muito bom, chegou certinho e valeu a pena.",
-      "nota": 5
-      },
-       {
-      "nome": "Marcely Santos",
-      "texto": "Gostei bastante, achei fácil de comprar.",
-      "nota": 5
+      "detalhes": [
+        "Conexão Bluetooth sem fio",
+        "Ideal para música, vídeos e chamadas",
+        "Modelo compacto para uso no dia a dia",
+        "Produto vendido pela loja oficial ao clicar em comprar"
+      ],
+      "observacoes": [
+        "Confira as informações completas na página oficial antes da compra",
+        "Preço e disponibilidade podem mudar na plataforma oficial"
+      ],
+      "mensagemWhatsapp": "Olá, quero saber mais sobre o Fone Bluetooth TWS Sem Fio.",
+      "comentarios": [
+        {
+          "nome": "Fabio Silva",
+          "texto": "Produto muito bom, chegou certinho e valeu a pena.",
+          "nota": 5
+        },
+        {
+          "nome": "Marcely Santos",
+          "texto": "Gostei bastante, achei fácil de comprar.",
+          "nota": 5
         }
       ]
     },
@@ -58,15 +70,27 @@
       "tipo": "produto",
       "nivelPreco": "baixo",
       "recomendado": true,
-      "comentarios": [{
-      "nome": "Adriano Carvalho",
-      "texto": "Produto muito bom, chegou certinho e valeu a pena.",
-      "nota": 5
-      },
-       {
-      "nome": "Maria Lopes de Jesus",
-      "texto": "Gostei bastante, achei fácil de comprar.",
-      "nota": 5
+      "detalhes": [
+        "Relógio digital com visual moderno",
+        "Recebe notificações do celular",
+        "Ideal para rotina, treino e uso diário",
+        "Produto redirecionado para compra na loja oficial"
+      ],
+      "observacoes": [
+        "Confira compatibilidade e detalhes na página oficial",
+        "Preço e estoque podem variar com o tempo"
+      ],
+      "mensagemWhatsapp": "Olá, quero saber mais sobre o Smartwatch S10 Série 10 Relógio Digital.",
+      "comentarios": [
+        {
+          "nome": "Adriano Carvalho",
+          "texto": "Produto muito bom, chegou certinho e valeu a pena.",
+          "nota": 5
+        },
+        {
+          "nome": "Maria Lopes de Jesus",
+          "texto": "Gostei bastante, achei fácil de comprar.",
+          "nota": 5
         }
       ]
     },
@@ -93,7 +117,30 @@
       "tipoDestaque": "",
       "tipo": "cakto",
       "nivelPreco": "baixo",
-      "recomendado": true
+      "recomendado": true,
+      "detalhes": [
+        "Conteúdo digital com acesso online",
+        "Passo a passo para iniciantes",
+        "Ideal para quem quer começar como afiliado",
+        "Pode ser acessado pelo celular"
+      ],
+      "observacoes": [
+        "O resultado depende da aplicação do conteúdo",
+        "A compra é feita diretamente pela plataforma Cakto"
+      ],
+      "mensagemWhatsapp": "Olá, quero saber mais sobre o produto Primeira Venda Online.",
+      "comentarios": [
+        {
+          "nome": "Rafael Almeida",
+          "texto": "Achei bem explicado e direto ao ponto.",
+          "nota": 5
+        },
+        {
+          "nome": "Camila Rocha",
+          "texto": "Gostei porque dá pra entender mesmo começando do zero.",
+          "nota": 5
+        }
+      ]
     }
   ]
 }
