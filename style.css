@@ -1610,3 +1610,27 @@ section,
     max-width: 100%;
   }
 }
+
+/* =========================
+   📱 AJUSTE BOTÕES TOPO DO POPUP
+========================= */
+
+@media (max-width: 768px) {
+  .popup-topo {
+    position: sticky;
+    top: 0;
+    height: 72px;
+    padding: 18px 14px 8px;
+    padding-top: calc(18px + env(safe-area-inset-top));
+    background: rgba(15, 23, 42, 0.92);
+  }
+
+  .popup-topo button,
+  .acoes-topo button {
+    width: 44px;
+    height: 44px;
+    font-size: 22px;
+    background: rgba(30, 41, 59, 0.88);
+    backdrop-filter: blur(8px);
+  }
+}
