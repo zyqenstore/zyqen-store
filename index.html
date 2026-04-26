@@ -85,7 +85,7 @@
   </div>
 </footer>
 
-<!-- POPUP PRODUTO ESTILO SHOPEE -->
+<!-- POPUP -->
 <div id="popup-produto" class="popup">
   <div class="popup-conteudo">
 
@@ -99,54 +99,59 @@
 
     <div class="popup-imagem-area">
       <img id="popup-imagem" src="" alt="" data-imagem-atual="0">
+
+      <span id="popup-contador-imagem" class="contador-imagem">
+        1/1
+      </span>
     </div>
 
-    <div class="popup-info">
-      <span id="popup-categoria" class="popup-categoria"></span>
+    <div id="popup-thumbs" class="miniaturas-imagens"></div>
 
+    <div class="popup-info">
+      <span id="popup-categoria"></span>
       <h2 id="popup-nome"></h2>
 
-      <div id="popup-avaliacao" class="popup-avaliacao"></div>
+      <div class="popup-avaliacao">
+        <span id="popup-avaliacao-media"></span>
+        <span id="popup-avaliacao-total"></span>
+        <div id="popup-estrelas"></div>
+      </div>
 
       <p id="popup-descricao"></p>
 
-      <div id="popup-detalhes" class="popup-detalhes"></div>
+      <div id="popup-detalhes"></div>
+      <div id="popup-observacoes"></div>
 
-      <div id="popup-observacoes" class="popup-observacoes"></div>
-
-      <span id="popup-preco-antigo" class="popup-preco-antigo"></span>
+      <span id="popup-preco-antigo"></span>
       <strong id="popup-preco"></strong>
 
-      <button id="popup-whatsapp" class="btn-whatsapp">
-        💬 Tirar dúvida sobre este produto
-      </button>
+      <button id="popup-whatsapp">💬 Chat</button>
 
-      <a id="popup-comprar" href="#" target="_blank" class="popup-comprar">
-        Comprar agora
-      </a>
+      <a id="popup-comprar" target="_blank">Comprar agora</a>
 
       <div class="popup-comentarios">
 
         <div class="resumo-avaliacao">
-          <h3 id="popup-nota-geral"></h3>
+          <h3>
+            <span id="popup-avaliacao-media"></span>
+            <span id="popup-avaliacao-total"></span>
+          </h3>
 
           <div class="barra-avaliacoes">
-            <div><span>5⭐</span><div class="barra"><div id="bar-5"></div></div></div>
-            <div><span>4⭐</span><div class="barra"><div id="bar-4"></div></div></div>
-            <div><span>3⭐</span><div class="barra"><div id="bar-3"></div></div></div>
-            <div><span>2⭐</span><div class="barra"><div id="bar-2"></div></div></div>
-            <div><span>1⭐</span><div class="barra"><div id="bar-1"></div></div></div>
+            <div><span>5⭐</span><div class="barra"><div id="barra-5"></div></div></div>
+            <div><span>4⭐</span><div class="barra"><div id="barra-4"></div></div></div>
+            <div><span>3⭐</span><div class="barra"><div id="barra-3"></div></div></div>
+            <div><span>2⭐</span><div class="barra"><div id="barra-2"></div></div></div>
+            <div><span>1⭐</span><div class="barra"><div id="barra-1"></div></div></div>
           </div>
         </div>
 
-        <button class="btn-ver-comentarios" onclick="toggleComentarios()">
-          💬 Ver comentários
-        </button>
+        <button onclick="toggleComentarios()">💬 Ver comentários</button>
 
-        <div id="area-comentarios" class="area-comentarios">
+        <div id="popup-comentarios-box" class="area-comentarios">
           <div id="popup-lista-comentarios"></div>
 
-          <form id="form-comentario" class="form-comentario">
+          <form id="form-comentario">
             <input type="text" name="nome" placeholder="Seu nome" required>
             <input type="email" name="email" placeholder="Seu e-mail" required>
             <textarea name="comentario" placeholder="Escreva seu comentário..." required></textarea>
@@ -160,14 +165,8 @@
   </div>
 </div>
 
-<div id="popup-sucesso-comentario" class="popup-sucesso">
-  <div class="popup-sucesso-box">
-    <h2>✅ Comentário enviado!</h2>
-    <p>Obrigado pelo seu comentário. Recebemos sua mensagem com sucesso.</p>
-    <button onclick="fecharPopupSucesso()">Fechar</button>
-  </div>
-</div>
-
+<!-- 🔥 ESSA LINHA ERA O BUG -->
 <script src="script.js"></script>
+
 </body>
 </html>

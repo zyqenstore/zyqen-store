@@ -98,7 +98,7 @@
       "id": 3,
       "nome": "Primeira Venda Online",
       "preco": "Acesso imediato",
-      "precoAntigo": "",
+      "precoAntigo": null,
       "descricao": "Aprenda o passo a passo para começar do zero e fazer sua primeira venda online como afiliado.",
       "imagens": [
         "imagens/cakto/PrimeiraVenda2.jpg",

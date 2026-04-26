@@ -1070,3 +1070,78 @@ header p {
     font-size: 25px;
   }
 }
+/* =========================
+   CORREÇÕES POPUP (IMPORTANTE)
+========================= */
+
+/* GARANTE QUE O POPUP ABRE */
+.popup {
+  display: none;
+}
+
+.popup.ativo {
+  display: flex !important;
+}
+
+/* =========================
+   CONTADOR DE IMAGEM
+========================= */
+.contador-imagem {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  font-size: 12px;
+  padding: 5px 8px;
+  border-radius: 999px;
+}
+
+/* =========================
+   MINIATURAS
+========================= */
+.miniaturas-imagens {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  overflow-x: auto;
+}
+
+.popup-thumb {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  opacity: 0.5;
+  border: 2px solid transparent;
+  transition: 0.2s;
+}
+
+.popup-thumb:hover {
+  opacity: 0.8;
+}
+
+.popup-thumb.ativa {
+  opacity: 1;
+  border-color: #22c55e;
+}
+
+/* =========================
+   COMENTÁRIOS (toggle)
+========================= */
+.area-comentarios {
+  display: none;
+}
+
+.area-comentarios.ativo {
+  display: block;
+}
+
+/* =========================
+   BARRAS AVALIAÇÃO
+========================= */
+.barra div {
+  width: 0%;
+  transition: width 0.4s ease;
+}

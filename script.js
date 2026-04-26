@@ -13,7 +13,7 @@ fetch("produtos.json")
     document.getElementById("pesquisa").addEventListener("input", aplicarFiltros);
 
     prepararFormularioComentario();
-    ativarSwipeImagem(); // 🔥 novo
+    ativarSwipeImagem();
   });
 
 // =========================
@@ -67,35 +67,43 @@ function abrirPopupProduto(id) {
     antigo.style.display = "none";
   }
 
-  // ⭐ DETALHES
   const detalhesDiv = document.getElementById("popup-detalhes");
   detalhesDiv.innerHTML = produto.detalhes
     ? produto.detalhes.map(d => `<p>✔ ${d}</p>`).join("")
     : "";
 
-  // ⚠️ OBSERVAÇÕES
   const obsDiv = document.getElementById("popup-observacoes");
   obsDiv.innerHTML = produto.observacoes
     ? produto.observacoes.map(o => `<p>⚠️ ${o}</p>`).join("")
     : "";
 
-  // 💬 WHATSAPP INTELIGENTE
   const btnZap = document.getElementById("popup-whatsapp");
   btnZap.onclick = () => {
     const msg = encodeURIComponent(produto.mensagemWhatsapp || `Olá, quero saber mais sobre ${produto.nome}`);
     window.open(`https://wa.me/5575981768068?text=${msg}`, "_blank");
   };
 
-  // 🔗 COMPARTILHAR
   window.linkAtualProduto = produto.link;
-
-  // COMPRAR
   document.getElementById("popup-comprar").href = produto.link;
 
   mostrarComentariosProduto(produto);
 
   document.getElementById("popup-produto").classList.add("ativo");
   document.body.style.overflow = "hidden";
+
+  // CONTADOR
+  const contador = document.getElementById("popup-contador-imagem");
+  if (contador) {
+    contador.textContent = `1/${produto.imagens.length}`;
+  }
+
+  // MINIATURAS
+  const thumbsContainer = document.getElementById("popup-thumbs");
+  if (thumbsContainer) {
+    thumbsContainer.innerHTML = produto.imagens.map((img, i) => `
+      <img src="${img}" class="popup-thumb ${i === 0 ? "ativa" : ""}" onclick="atualizarImagem(${i})">
+    `).join("");
+  }
 }
 
 // =========================
@@ -122,7 +130,7 @@ function compartilharProduto() {
 }
 
 // =========================
-// SWIPE IMAGEM (MOBILE)
+// SWIPE
 // =========================
 function ativarSwipeImagem() {
   const img = document.getElementById("popup-imagem");
@@ -166,6 +174,16 @@ function atualizarImagem(index) {
   const img = document.getElementById("popup-imagem");
   img.src = produtoAtualPopup.imagens[index];
   img.setAttribute("data-imagem-atual", index);
+
+  const contador = document.getElementById("popup-contador-imagem");
+  if (contador) {
+    contador.textContent = `${index + 1}/${produtoAtualPopup.imagens.length}`;
+  }
+
+  const thumbs = document.querySelectorAll(".popup-thumb");
+  thumbs.forEach((t, i) => {
+    t.classList.toggle("ativa", i === index);
+  });
 }
 
 // =========================
@@ -173,18 +191,47 @@ function atualizarImagem(index) {
 // =========================
 function mostrarComentariosProduto(produto) {
   const lista = document.getElementById("popup-lista-comentarios");
+  const comentarios = produto.comentarios || [];
 
-  lista.innerHTML = (produto.comentarios || []).map(c => `
+  lista.innerHTML = comentarios.map(c => `
     <div class="comentario-card">
       <strong>${c.nome}</strong>
-      <div>${"⭐".repeat(c.nota)}</div>
+      <div>${"⭐".repeat(c.nota)}${"☆".repeat(5 - c.nota)}</div>
       <p>${c.texto}</p>
     </div>
   `).join("");
+
+  let media = 0;
+  if (comentarios.length > 0) {
+    media = comentarios.reduce((s, c) => s + c.nota, 0) / comentarios.length;
+  }
+
+  document.getElementById("popup-avaliacao-media").textContent = media.toFixed(1);
+  document.getElementById("popup-avaliacao-total").textContent = `(${comentarios.length} avaliações)`;
+  document.getElementById("popup-estrelas").innerHTML = gerarEstrelas(media);
+
+  const contagem = [0, 0, 0, 0, 0];
+
+  comentarios.forEach(c => {
+    if (c.nota >= 1 && c.nota <= 5) {
+      contagem[c.nota - 1]++;
+    }
+  });
+
+  const total = contagem.reduce((s, n) => s + n, 0) || 1;
+
+  for (let i = 5; i >= 1; i--) {
+    const porcentagem = (contagem[i - 1] / total) * 100;
+
+    const barra = document.getElementById(`barra-${i}`);
+    if (barra) {
+      barra.style.width = porcentagem + "%";
+    }
+  }
 }
 
 // =========================
-// FORM COMENTÁRIO
+// FORM
 // =========================
 function prepararFormularioComentario() {
   const form = document.getElementById("form-comentario");
@@ -246,5 +293,18 @@ function mostrarProdutoDestaque() {
   const destaque = listaProdutos.find(p => p.destaque);
   if (destaque) {
     document.getElementById("produto-destaque").innerHTML = criarCardProduto(destaque);
+  }
+}
+
+// =========================
+// TOGGLE COMENTÁRIOS
+// =========================
+function toggleComentarios() {
+  const box = document.getElementById("popup-comentarios-box");
+
+  if (box.classList.contains("ativo")) {
+    box.classList.remove("ativo");
+  } else {
+    box.classList.add("ativo");
   }
 }
