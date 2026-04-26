@@ -980,16 +980,50 @@ header p {
   border-bottom: 1px solid #1e293b;
 }
 
+/* =========================
+   🔥 BOTÕES TOPO CORRIGIDOS
+========================= */
+
 .popup-topo button,
 .acoes-topo button {
-  width: 36px;
-  height: 36px;
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   border: none;
   border-radius: 50%;
-  background: #1e293b;
+
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(8px);
+
   color: white;
-  font-size: 20px;
+  font-size: 18px;
+
   cursor: pointer;
+  transition: 0.2s;
+
+  /* 🔥 POSIÇÃO MELHOR */
+  position: relative;
+  top: 4px;
+}
+
+/* HOVER */
+.popup-topo button:hover {
+  background: #22c55e;
+  transform: scale(1.05);
+}
+
+/* MOBILE AJUSTE FINO */
+@media (max-width: 768px) {
+  .popup-topo button {
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+    top: 6px; /* 🔥 desce um pouco mais no mobile */
+  }
 }
 
 .popup-imagem-area {
