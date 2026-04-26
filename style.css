@@ -1668,3 +1668,23 @@ section,
     backdrop-filter: blur(8px);
   }
 }
+
+/* FORÇAR AJUSTE DOS ÍCONES DO TOPO NO MOBILE */
+@media (max-width: 900px) {
+  .popup-topo {
+    height: 80px !important;
+    padding-top: calc(26px + env(safe-area-inset-top)) !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    align-items: flex-start !important;
+  }
+
+  .popup-topo button,
+  .acoes-topo button {
+    width: 46px !important;
+    height: 46px !important;
+    font-size: 22px !important;
+    margin-top: 8px !important;
+    background: rgba(30, 41, 59, 0.92) !important;
+  }
+}
