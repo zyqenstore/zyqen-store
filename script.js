@@ -263,7 +263,20 @@ function prepararFormularioComentario() {
     btn.textContent = "Enviando...";
 
     const formData = new FormData(form);
-
+    // 🔥 valida email real
+    const email = formData.get("email");
+    
+    const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+     
+     if (!emailValido.test(email)) {
+       alert("Digite um email válido.");
+     
+       const btn = form.querySelector("button");
+       btn.disabled = false;
+       btn.textContent = "Enviar comentário";
+       
+  return;
+}
     // 🔥 adiciona nome do produto no email
     if (produtoAtualPopup) {
       formData.append("produto", produtoAtualPopup.nome);
