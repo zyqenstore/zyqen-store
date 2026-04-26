@@ -88,6 +88,14 @@ function abrirPopupProduto(id) {
 
   mostrarComentariosProduto(produto);
 
+  const box = document.getElementById("popup-comentarios-box");
+  const btn = document.getElementById("btn-comentarios");
+
+  if (box && btn) {
+  box.classList.remove("ativo");
+  btn.innerHTML = "💬 Ver comentários";
+}
+
   document.getElementById("popup-produto").classList.add("ativo");
   document.body.style.overflow = "hidden";
 

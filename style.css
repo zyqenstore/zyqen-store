@@ -1409,3 +1409,106 @@ main, header, .oferta-dia, .confianca, .filtros {
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+/* =========================
+   📱 MOBILE FIRST (AJUSTES FINOS)
+========================= */
+@media (max-width: 768px) {
+
+  /* GRID */
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 12px;
+  }
+
+  /* CARD */
+  .produto {
+    padding: 10px;
+  }
+
+  .produto h2 {
+    font-size: 14px;
+  }
+
+  .produto strong {
+    font-size: 15px;
+  }
+
+  /* IMAGEM */
+  .imagem-area {
+    height: 150px;
+  }
+
+  /* POPUP */
+  .popup-imagem-area {
+    height: 320px;
+  }
+
+  #popup-preco {
+    font-size: 24px;
+  }
+
+  /* BOTÃO FIXO */
+  .barra-compra {
+    padding: 8px;
+  }
+
+}
+
+/* =========================
+   💻 PC (DESKTOP EXPERIENCE)
+========================= */
+@media (min-width: 769px) {
+
+  /* CENTRALIZA TUDO */
+  main,
+  header,
+  .oferta-dia,
+  .confianca,
+  .filtros {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* GRID MAIS ABERTO */
+  .grid {
+    gap: 20px;
+  }
+
+  /* CARD */
+  .produto {
+    padding: 15px;
+  }
+
+  .produto h2 {
+    font-size: 18px;
+  }
+
+  .produto strong {
+    font-size: 18px;
+  }
+
+  /* IMAGEM */
+  .imagem-area {
+    height: 220px;
+  }
+
+  /* POPUP ESTILO DESKTOP */
+  .popup-conteudo {
+    border-radius: 20px;
+    max-width: 850px;
+    height: auto;
+  }
+
+  .popup-imagem-area {
+    height: 380px;
+  }
+
+  /* BOTÃO COMPRA MAIS FORTE */
+  .btn-comprar {
+    font-size: 15px;
+    padding: 14px;
+  }
+
+}
