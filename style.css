@@ -1512,3 +1512,101 @@ main, header, .oferta-dia, .confianca, .filtros {
   }
 
 }
+
+/* =========================
+   🔒 TRAVA FINAL DE LAYOUT
+   Corrige página/popup puxando pro lado
+========================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden !important;
+  touch-action: pan-y;
+}
+
+img,
+video,
+iframe {
+  max-width: 100%;
+}
+
+/* impede qualquer área principal de estourar */
+header,
+main,
+footer,
+section,
+.oferta-dia,
+.confianca,
+.filtros,
+.grid,
+.footer-melhorado,
+.footer-box,
+.popup,
+.popup-conteudo,
+.popup-info,
+.popup-comentarios,
+.resumo-avaliacao,
+.area-comentarios,
+#form-comentario {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* corrige cards/caixas ficando maiores que a tela */
+.produto,
+.confianca-card,
+.footer-box,
+.popup-comentarios,
+.resumo-avaliacao,
+.comentario-card,
+#form-comentario {
+  width: 100%;
+}
+
+/* corrige formulário marcado em branco */
+#form-comentario input,
+#form-comentario textarea,
+#form-comentario button {
+  width: 100%;
+  max-width: 100%;
+  display: block;
+}
+
+/* popup não arrasta para o lado */
+.popup.ativo {
+  overflow-x: hidden !important;
+}
+
+.popup-conteudo {
+  overflow-x: hidden !important;
+}
+
+/* mobile: tudo respeita a tela */
+@media (max-width: 768px) {
+  body {
+    position: relative;
+  }
+
+  .popup-conteudo {
+    width: 100vw;
+    max-width: 100vw;
+  }
+
+  .popup-info {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .barra-compra {
+    width: 100%;
+    max-width: 100%;
+  }
+}
