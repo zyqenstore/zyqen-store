@@ -125,9 +125,12 @@
       <span id="popup-preco-antigo"></span>
       <strong id="popup-preco"></strong>
 
-      <button id="popup-whatsapp">💬 Chat</button>
+      <div class="barra-compra">
 
-      <a id="popup-comprar" target="_blank">Comprar agora</a>
+          <button id="popup-whatsapp" class="btn-chat">💬 Chat</button>
+
+          <a id="popup-comprar" target="_blank" class="btn-comprar">Comprar agora</a>
+    </div>
 
       <div class="popup-comentarios">
 
@@ -146,18 +149,28 @@
           </div>
         </div>
 
-        <button onclick="toggleComentarios()">💬 Ver comentários</button>
+        <button id="btn-comentarios" class="btn-ver-comentarios" onclick="toggleComentarios()">
+          💬 Ver comentários
+        </button>
 
         <div id="popup-comentarios-box" class="area-comentarios">
           <div id="popup-lista-comentarios"></div>
 
           <form id="form-comentario">
-            <input type="text" name="nome" placeholder="Seu nome" required>
-            <input type="email" name="email" placeholder="Seu e-mail" required>
-            <textarea name="comentario" placeholder="Escreva seu comentário..." required></textarea>
 
-            <button type="submit">Enviar comentário</button>
-          </form>
+             <input type="text" name="nome" placeholder="Seu nome" required>
+
+             <input type="email" name="email" placeholder="Seu e-mail" required>
+
+             <textarea name="comentario" placeholder="Escreva seu comentário..." required></textarea>
+
+            <!-- 🔥 CAMPOS OCULTOS (PROFISSIONAL) -->
+             <input type="hidden" name="_captcha" value="false">
+             <input type="hidden" name="_template" value="table">
+
+             <button type="submit">Enviar comentário</button>
+
+         </form>
         </div>
 
       </div>

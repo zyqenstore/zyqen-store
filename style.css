@@ -843,20 +843,68 @@ header p {
   transition: width 0.4s ease;
 }
 
+/* =========================
+   🔥 BOTÃO VER COMENTÁRIOS PRO
+========================= */
+
 .btn-ver-comentarios {
   width: 100%;
-  border: none;
-  background: #334155;
+  margin-top: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 12px 14px;
+
+  border-radius: 12px;
+  border: 1px solid #334155;
+
+  background: linear-gradient(135deg, #1e293b, #0f172a);
   color: white;
-  padding: 11px;
-  border-radius: 10px;
+
   font-weight: bold;
+  font-size: 14px;
+
   cursor: pointer;
-  transition: 0.2s;
+  transition: 0.25s;
+
+  position: relative;
+  overflow: hidden;
 }
 
+/* EFEITO BRILHO */
+.btn-ver-comentarios::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.08), transparent);
+  transform: translateX(-100%);
+  transition: 0.4s;
+}
+
+.btn-ver-comentarios:hover::after {
+  transform: translateX(100%);
+}
+
+/* HOVER */
 .btn-ver-comentarios:hover {
-  background: #22c55e;
+  border-color: #22c55e;
+  background: linear-gradient(135deg, #1e293b, #020617);
+  transform: translateY(-2px);
+}
+
+/* CLIQUE */
+.btn-ver-comentarios:active {
+  transform: scale(0.97);
+}
+
+/* ÍCONE SETA */
+.btn-ver-comentarios::before {
+  content: "▼";
+  font-size: 12px;
+  opacity: 0.7;
 }
 
 .area-comentarios {
@@ -1144,4 +1192,220 @@ header p {
 .barra div {
   width: 0%;
   transition: width 0.4s ease;
+}
+
+/* =========================
+   🔥 CORREÇÕES SEM QUEBRAR O DESIGN
+========================= */
+
+/* EVITA SITE PUXAR PRO LADO */
+body {
+  overflow-x: hidden;
+}
+
+/* LIMITA LARGURA DO SITE (CENTRALIZA BONITO) */
+main, header, .oferta-dia, .confianca, .filtros {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* =========================
+   GRID CORRIGIDO (MOBILE + PC)
+========================= */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 🔥 2 lado a lado no celular */
+  gap: 16px;
+}
+
+/* PC */
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* =========================
+   IMAGENS NÃO ESTOURAM
+========================= */
+.imagem-area {
+  height: 180px;
+}
+
+.imagem-area img {
+  max-width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* =========================
+   OFERTA DO DIA RESPONSIVO
+========================= */
+@media (max-width: 768px) {
+  .oferta-dia {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================
+   BOTÃO MAIS BONITO (SEM MUDAR ESTILO)
+========================= */
+.produto a,
+.popup-comprar {
+  transition: 0.2s;
+}
+
+.produto a:hover,
+.popup-comprar:hover {
+  transform: scale(1.03);
+}
+
+/* =========================
+   POPUP NÃO QUEBRA LAYOUT
+========================= */
+.popup-conteudo {
+  width: 100%;
+  max-width: 520px;
+}
+
+/* =========================
+   MINIATURAS AJUSTADAS
+========================= */
+.popup-thumb {
+  flex-shrink: 0;
+}
+
+/* =========================
+   🔥 BOTÃO FIXO ESTILO SHOPEE
+========================= */
+
+.barra-compra {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  background: #0f172a;
+  border-top: 1px solid #1e293b;
+
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+
+  z-index: 50;
+}
+
+/* BOTÃO CHAT */
+.btn-chat {
+  flex: 1;
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: white;
+
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* BOTÃO COMPRAR (PRINCIPAL) */
+.btn-comprar {
+  flex: 2;
+  text-align: center;
+
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  color: white;
+
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: bold;
+
+  text-decoration: none;
+
+  box-shadow: 0 6px 15px rgba(34, 197, 94, 0.25);
+}
+
+/* HOVER */
+.btn-comprar:hover {
+  background: linear-gradient(90deg, #16a34a, #15803d);
+}
+
+/* =========================
+   🔥 FORMULÁRIO PROFISSIONAL
+========================= */
+
+#form-comentario {
+  background: #020617;
+  border: 1px solid #334155;
+  border-radius: 14px;
+  padding: 12px;
+  margin-top: 12px;
+}
+
+/* INPUTS */
+#form-comentario input,
+#form-comentario textarea {
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px;
+
+  border-radius: 10px;
+  border: 1px solid #334155;
+
+  background: #0f172a;
+  color: white;
+
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+/* FOCO (efeito bonito) */
+#form-comentario input:focus,
+#form-comentario textarea:focus {
+  border-color: #22c55e;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+}
+
+/* TEXTAREA */
+#form-comentario textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+/* BOTÃO */
+#form-comentario button {
+  width: 100%;
+  margin-top: 10px;
+
+  padding: 13px;
+  border-radius: 10px;
+
+  border: none;
+
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  color: white;
+
+  font-weight: bold;
+  font-size: 14px;
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+/* HOVER */
+#form-comentario button:hover {
+  background: linear-gradient(90deg, #16a34a, #15803d);
+  transform: scale(1.02);
+}
+
+/* BOTÃO DESABILITADO */
+#form-comentario button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }

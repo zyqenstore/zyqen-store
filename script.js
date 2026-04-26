@@ -236,17 +236,39 @@ function mostrarComentariosProduto(produto) {
 function prepararFormularioComentario() {
   const form = document.getElementById("form-comentario");
 
-  form.addEventListener("submit", function(e) {
+  form.addEventListener("submit", async function(e) {
     e.preventDefault();
 
-    fetch("https://formsubmit.co/ajax/zyqenstore@gmail.com", {
-      method: "POST",
-      body: new FormData(form)
-    })
-    .then(() => {
-      abrirPopupSucesso();
-      form.reset();
-    });
+    const btn = form.querySelector("button");
+    btn.disabled = true;
+    btn.textContent = "Enviando...";
+
+    const formData = new FormData(form);
+
+    // 🔥 adiciona nome do produto no email
+    if (produtoAtualPopup) {
+      formData.append("produto", produtoAtualPopup.nome);
+    }
+
+    try {
+      const res = await fetch("https://formsubmit.co/ajax/zyqenstore@gmail.com", {
+        method: "POST",
+        body: formData
+      });
+
+      if (res.ok) {
+        abrirPopupSucesso();
+        form.reset();
+      } else {
+        alert("Erro ao enviar comentário. Tente novamente.");
+      }
+
+    } catch (err) {
+      alert("Erro de conexão. Verifique sua internet.");
+    }
+
+    btn.disabled = false;
+    btn.textContent = "Enviar comentário";
   });
 }
 
@@ -301,10 +323,15 @@ function mostrarProdutoDestaque() {
 // =========================
 function toggleComentarios() {
   const box = document.getElementById("popup-comentarios-box");
+  const btn = document.getElementById("btn-comentarios");
 
-  if (box.classList.contains("ativo")) {
+  const aberto = box.classList.contains("ativo");
+
+  if (aberto) {
     box.classList.remove("ativo");
+    btn.innerHTML = "💬 Ver comentários";
   } else {
     box.classList.add("ativo");
+    btn.innerHTML = "🔽 Ocultar comentários";
   }
 }
