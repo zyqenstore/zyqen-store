@@ -191,7 +191,7 @@
 </div>
 
 <script>
-  // 🔒 BLOQUEIA ZOOM POR GESTO (iPhone principalmente)
+  // 🔒 BLOQUEIA ZOOM POR GESTO
   document.addEventListener("gesturestart", function (e) {
     e.preventDefault();
   });
@@ -203,6 +203,19 @@
   document.addEventListener("gestureend", function (e) {
     e.preventDefault();
   });
+
+  // 🔒 BLOQUEIA ZOOM POR DUPLO TOQUE
+  let ultimoToque = 0;
+
+  document.addEventListener("touchend", function (e) {
+    const agora = Date.now();
+
+    if (agora - ultimoToque <= 300) {
+      e.preventDefault();
+    }
+
+    ultimoToque = agora;
+  }, { passive: false });
 </script>
 
 <!-- 🔥 ESSA LINHA ERA O BUG -->
