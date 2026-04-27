@@ -190,6 +190,21 @@
   </div>
 </div>
 
+<script>
+  // 🔒 BLOQUEIA ZOOM POR GESTO (iPhone principalmente)
+  document.addEventListener("gesturestart", function (e) {
+    e.preventDefault();
+  });
+
+  document.addEventListener("gesturechange", function (e) {
+    e.preventDefault();
+  });
+
+  document.addEventListener("gestureend", function (e) {
+    e.preventDefault();
+  });
+</script>
+
 <!-- 🔥 ESSA LINHA ERA O BUG -->
 <script src="script.js?v=2"></script>
 

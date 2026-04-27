@@ -1739,3 +1739,9 @@ main section:nth-child(2) h2::after {
 .botoes-filtro button.ativo:hover {
   background: linear-gradient(90deg, #16a34a, #15803d);
 }
+
+/* 🔒 BLOQUEIO DE ZOOM EXTRA */
+html,
+body {
+  touch-action: manipulation;
+}
