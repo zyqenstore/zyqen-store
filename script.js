@@ -8,7 +8,7 @@ fetch("produtos.json")
     listaProdutos = data.produtos;
 
     mostrarProdutoDestaque();
-    mostrarProdutos(listaProdutos);
+    mostrarProdutosPorCategoria(listaProdutos);
 
     document.getElementById("pesquisa").addEventListener("input", aplicarFiltros);
 
@@ -314,23 +314,48 @@ function fecharPopupSucesso() {
 // =========================
 // FILTROS
 // =========================
-function mostrarProdutos(produtos) {
-  const container = document.getElementById("produtos");
-  container.innerHTML = produtos.map(criarCardProduto).join("");
+function mostrarProdutosPorCategoria(produtos) {
+  const mercado = document.getElementById("produtos-mercado");
+  const cakto = document.getElementById("produtos-cakto");
+
+  const secaoMercado = mercado.closest("section");
+  const secaoCakto = cakto.closest("section");
+
+  const produtosMercado = produtos.filter(p => p.categoria === "Mercado Livre");
+  const produtosCakto = produtos.filter(p => p.categoria === "Cakto");
+
+  mercado.innerHTML = produtosMercado.map(criarCardProduto).join("");
+  cakto.innerHTML = produtosCakto.map(criarCardProduto).join("");
+
+  secaoMercado.style.display = produtosMercado.length > 0 ? "block" : "none";
+  secaoCakto.style.display = produtosCakto.length > 0 ? "block" : "none";
 }
 
 function aplicarFiltros() {
   const termo = document.getElementById("pesquisa").value.toLowerCase();
 
-  const filtrados = listaProdutos.filter(p =>
+  let filtrados = listaProdutos.filter(p =>
     p.nome.toLowerCase().includes(termo)
   );
 
-  mostrarProdutos(filtrados);
+  if (categoriaAtual !== "Todos") {
+    filtrados = filtrados.filter(p => p.categoria === categoriaAtual);
+  }
+
+  mostrarProdutosPorCategoria(filtrados);
 }
 
 function filtrarCategoria(cat) {
   categoriaAtual = cat;
+
+  document.querySelectorAll(".botoes-filtro button").forEach(btn => {
+    btn.classList.remove("ativo");
+
+    if (btn.textContent.trim() === cat) {
+      btn.classList.add("ativo");
+    }
+  });
+
   aplicarFiltros();
 }
 
