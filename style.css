@@ -2370,3 +2370,982 @@ main section h2::after,
     transition-duration: 0.01ms !important;
   }
 }
+
+/* AJUSTE DESKTOP FULL WIDTH - ZYQEN STORE */
+
+@media (min-width: 901px) {
+  :root {
+    --site-max: 100%;
+    --site-padding: 16px;
+  }
+
+  html,
+  body,
+  .site-wrapper-fixo {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  header {
+    width: 100% !important;
+    max-width: none !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    border-radius: 0 0 24px 24px;
+  }
+
+  .oferta-dia,
+  .confianca,
+  .filtros,
+  .busca-inteligente-painel,
+  #botoes-filtro.filtros-categoria-loja,
+  main,
+  .categorias-container {
+    width: calc(100% - 32px) !important;
+    max-width: none !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .busca-inteligente-painel {
+    padding: 20px !important;
+  }
+
+  #botoes-filtro.filtros-categoria-loja {
+    padding: 16px 18px !important;
+  }
+
+  .confianca {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 16px !important;
+  }
+
+  main {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  main section {
+    width: 100% !important;
+  }
+
+  .categoria-loja {
+    width: 100% !important;
+  }
+
+  .grid {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
+    gap: 22px !important;
+    align-items: stretch !important;
+  }
+
+  .produto {
+    width: 100% !important;
+    min-height: 345px;
+    padding: 15px;
+    border-radius: 18px;
+  }
+
+  .imagem-area {
+    height: clamp(150px, 12vw, 210px);
+  }
+
+  .produto h2 {
+    font-size: clamp(14px, 0.95vw, 17px);
+  }
+
+  .produto strong {
+    font-size: clamp(16px, 1vw, 19px);
+  }
+
+  .footer-melhorado {
+    width: 100% !important;
+    max-width: none !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .footer-box {
+    width: 100% !important;
+    max-width: none !important;
+  }
+}
+
+@media (min-width: 1400px) {
+  .oferta-dia,
+  .confianca,
+  .filtros,
+  .busca-inteligente-painel,
+  #botoes-filtro.filtros-categoria-loja,
+  main,
+  .categorias-container {
+    width: calc(100% - 40px) !important;
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(225px, 1fr)) !important;
+    gap: 24px !important;
+  }
+}
+
+@media (min-width: 1700px) {
+  .oferta-dia,
+  .confianca,
+  .filtros,
+  .busca-inteligente-painel,
+  #botoes-filtro.filtros-categoria-loja,
+  main,
+  .categorias-container {
+    width: calc(100% - 48px) !important;
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)) !important;
+    gap: 24px !important;
+  }
+}
+
+/* ============================================================
+   AJUSTE FINAL RESPONSIVO - ZYQEN STORE
+   Mobile + Tablet + Desktop
+   Cole este bloco no FINAL do style.css
+============================================================ */
+
+/* BASE PARA O CHECADOR DO SCRIPT.JS */
+body.modo-mobile,
+body.modo-tablet,
+body.modo-desktop {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden !important;
+}
+
+body.modo-mobile {
+  --tipo-dispositivo: "mobile";
+}
+
+body.modo-tablet {
+  --tipo-dispositivo: "tablet";
+}
+
+body.modo-desktop {
+  --tipo-dispositivo: "desktop";
+}
+
+/* ============================================================
+   ORGANIZAÇÃO GERAL DOS FILTROS E CATEGORIAS
+============================================================ */
+
+.busca-inteligente-painel,
+#botoes-filtro.filtros-categoria-loja {
+  box-sizing: border-box;
+}
+
+.filtros-rapidos-busca,
+.botoes-categoria-organizado {
+  max-width: 100%;
+}
+
+.filtros-rapidos-busca button,
+#botoes-filtro button {
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* ============================================================
+   MOBILE / TABLET - ATÉ 900PX
+============================================================ */
+
+@media (max-width: 900px) {
+  html,
+  body,
+  .site-wrapper-fixo {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  body {
+    min-width: 320px;
+  }
+
+  header {
+    width: calc(100% - 18px) !important;
+    max-width: calc(100% - 18px) !important;
+    padding: 20px 12px 15px !important;
+    border-radius: 0 0 18px 18px !important;
+  }
+
+  .logo-area img {
+    width: clamp(128px, 38vw, 155px) !important;
+    max-width: 82% !important;
+  }
+
+  .redes-topo {
+    gap: 8px !important;
+  }
+
+  .rede-link {
+    padding: 8px 10px !important;
+    font-size: 12px !important;
+  }
+
+  .rede-link img {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .oferta-dia,
+  .confianca,
+  .filtros,
+  main,
+  .categorias-container {
+    width: calc(100% - 18px) !important;
+    max-width: calc(100% - 18px) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .confianca {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    margin-top: 10px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .confianca-card {
+    min-height: auto !important;
+    padding: 14px 12px !important;
+    border-radius: 16px !important;
+  }
+
+  .confianca-card h3 {
+    font-size: 15px !important;
+  }
+
+  .confianca-card p {
+    font-size: 12.5px !important;
+  }
+
+  /* BUSCA MAIS COMPORTADA NO MOBILE */
+  .busca-inteligente-painel {
+    width: calc(100% - 18px) !important;
+    max-width: calc(100% - 18px) !important;
+    margin: 14px auto 18px !important;
+    padding: 14px !important;
+    border-radius: 18px !important;
+  }
+
+  .busca-inteligente-topo {
+    justify-content: center !important;
+    text-align: center !important;
+    margin-bottom: 12px !important;
+  }
+
+  .busca-inteligente-topo strong {
+    font-size: 15px !important;
+  }
+
+  .busca-inteligente-topo span {
+    font-size: 12.5px !important;
+    line-height: 1.35 !important;
+  }
+
+  .busca-linha-superior {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  #pesquisa.pesquisa-organizada-js,
+  .pesquisa-organizada-js {
+    min-height: 45px !important;
+    font-size: 15px !important;
+    border-radius: 14px !important;
+  }
+
+  #ordenarProdutos {
+    min-height: 45px !important;
+    font-size: 14px !important;
+    border-radius: 14px !important;
+  }
+
+  .grupo-filtros-rapidos {
+    margin-top: 12px !important;
+    padding-top: 12px !important;
+  }
+
+  .titulo-filtro-organizado,
+  .titulo-categorias-organizado {
+    font-size: 11px !important;
+    margin-bottom: 8px !important;
+    letter-spacing: 0.09em !important;
+  }
+
+  /* FILTROS RÁPIDOS ORGANIZADOS */
+  .filtros-rapidos-busca {
+    justify-content: flex-start !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    gap: 7px !important;
+    padding: 2px 2px 8px !important;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+
+  .filtros-rapidos-busca::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .filtros-rapidos-busca::-webkit-scrollbar-track {
+    background: rgba(15, 23, 42, 0.45);
+    border-radius: 999px;
+  }
+
+  .filtros-rapidos-busca::-webkit-scrollbar-thumb {
+    background: rgba(34, 211, 238, 0.38);
+    border-radius: 999px;
+  }
+
+  .filtros-rapidos-busca button {
+    flex: 0 0 auto !important;
+    scroll-snap-align: start;
+    min-height: 36px !important;
+    padding: 8px 11px !important;
+    font-size: 12px !important;
+    border-radius: 999px !important;
+  }
+
+  /* CATEGORIAS MAIS COMPORTADAS */
+  #botoes-filtro.filtros-categoria-loja {
+    width: calc(100% - 18px) !important;
+    max-width: calc(100% - 18px) !important;
+    margin: 8px auto 20px !important;
+    padding: 12px 10px 10px !important;
+    border-radius: 18px !important;
+    overflow: hidden !important;
+  }
+
+  .botoes-categoria-organizado {
+    justify-content: flex-start !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    gap: 7px !important;
+    padding: 2px 2px 8px !important;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+
+  .botoes-categoria-organizado::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .botoes-categoria-organizado::-webkit-scrollbar-track {
+    background: rgba(15, 23, 42, 0.45);
+    border-radius: 999px;
+  }
+
+  .botoes-categoria-organizado::-webkit-scrollbar-thumb {
+    background: rgba(34, 197, 94, 0.38);
+    border-radius: 999px;
+  }
+
+  .botoes-categoria-organizado button,
+  #botoes-filtro button {
+    flex: 0 0 auto !important;
+    scroll-snap-align: start;
+    min-height: 36px !important;
+    padding: 8px 11px !important;
+    font-size: 12px !important;
+    border-radius: 999px !important;
+  }
+
+  main section h2,
+  .titulo-categoria-dinamica,
+  .titulo-com-icone {
+    margin: 8px 0 12px !important;
+    font-size: 18px !important;
+    gap: 7px !important;
+  }
+
+  .titulo-categoria-dinamica img,
+  .titulo-com-icone img {
+    width: 23px !important;
+    height: 23px !important;
+  }
+
+  .categoria-loja {
+    margin-bottom: 24px !important;
+  }
+
+  /* GRID MOBILE */
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 11px !important;
+    width: 100% !important;
+  }
+
+  .produto {
+    min-height: 270px !important;
+    padding: 10px !important;
+    border-radius: 14px !important;
+  }
+
+  .imagem-area {
+    height: clamp(128px, 35vw, 155px) !important;
+    border-radius: 11px !important;
+  }
+
+  .imagem-area img {
+    padding: 7px !important;
+  }
+
+  .produto h2 {
+    font-size: 13px !important;
+    line-height: 1.25 !important;
+    margin: 10px 0 7px !important;
+  }
+
+  .avaliacao {
+    font-size: 12px !important;
+    gap: 4px !important;
+    margin-bottom: 7px !important;
+  }
+
+  .estrelas-icone img {
+    width: 13px !important;
+    height: 13px !important;
+  }
+
+  .produto strong {
+    font-size: 15px !important;
+  }
+
+  .urgencia {
+    font-size: 10.5px !important;
+    padding: 6px !important;
+    border-radius: 9px !important;
+    margin-bottom: 8px !important;
+  }
+
+  /* POPUP / PÁGINA DO PRODUTO NO MOBILE */
+  .popup {
+    align-items: stretch !important;
+    justify-content: center !important;
+    padding: 0 !important;
+  }
+
+  .popup-conteudo {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    border-radius: 0 !important;
+    border: none !important;
+  }
+
+  .popup-topo {
+    min-height: 82px !important;
+    padding: 16px !important;
+    padding-top: calc(24px + env(safe-area-inset-top)) !important;
+    gap: 12px !important;
+  }
+
+  /* AUMENTA VOLTAR E COMPARTILHAR */
+  .popup-topo button,
+  .acoes-topo button {
+    width: 52px !important;
+    height: 52px !important;
+    min-width: 52px !important;
+    min-height: 52px !important;
+    font-size: 23px !important;
+    border-radius: 50% !important;
+    background: rgba(30, 41, 59, 0.96) !important;
+    border: 1px solid rgba(148, 163, 184, 0.18) !important;
+  }
+
+  .popup-topo button img,
+  .acoes-topo button img {
+    width: 25px !important;
+    height: 25px !important;
+  }
+
+  .popup-imagem-area {
+    height: clamp(255px, 38dvh, 355px) !important;
+    min-height: 245px !important;
+  }
+
+  .miniaturas-imagens {
+    gap: 7px !important;
+    padding: 9px !important;
+  }
+
+  .popup-thumb {
+    width: 54px !important;
+    height: 54px !important;
+    border-radius: 8px !important;
+  }
+
+  .popup-info {
+    padding: 13px !important;
+  }
+
+  #popup-categoria,
+  .popup-categoria {
+    font-size: 11px !important;
+    padding: 6px 9px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .popup-info h2,
+  #popup-nome {
+    font-size: 18px !important;
+    line-height: 1.25 !important;
+    margin: 8px 0 !important;
+  }
+
+  #popup-descricao {
+    font-size: 13px !important;
+    padding: 11px !important;
+    border-radius: 12px !important;
+  }
+
+  .popup-detalhes p,
+  .popup-observacoes p,
+  #popup-detalhes p,
+  #popup-observacoes p {
+    font-size: 12.5px !important;
+    padding: 9px !important;
+    border-radius: 11px !important;
+  }
+
+  #popup-preco {
+    font-size: 23px !important;
+    margin: 10px 0 !important;
+  }
+
+  /* DIMINUI UM POUCO WHATSAPP E COMPRAR */
+  .barra-compra {
+    gap: 8px !important;
+    padding: 8px !important;
+    padding-bottom: calc(8px + env(safe-area-inset-bottom)) !important;
+  }
+
+  .btn-chat,
+  .btn-comprar,
+  .popup-comprar {
+    min-height: 42px !important;
+    padding: 9px 10px !important;
+    border-radius: 10px !important;
+    font-size: 13px !important;
+    line-height: 1.1 !important;
+  }
+
+  .btn-chat {
+    flex: 0.9 !important;
+    gap: 6px !important;
+  }
+
+  .btn-chat img {
+    width: 19px !important;
+    height: 19px !important;
+  }
+
+  .btn-comprar,
+  .popup-comprar {
+    flex: 1.45 !important;
+  }
+
+  .popup-comentarios {
+    padding: 12px !important;
+    border-radius: 14px !important;
+  }
+
+  .btn-ver-comentarios {
+    min-height: 42px !important;
+    padding: 10px 12px !important;
+    font-size: 13px !important;
+    border-radius: 11px !important;
+  }
+
+  /* FOOTER ORGANIZADO NO MOBILE */
+  .footer-melhorado {
+    padding: 22px 10px !important;
+  }
+
+  .footer-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 16px 13px !important;
+    border-radius: 16px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .footer-box p {
+    width: 100% !important;
+    margin: 4px 0 !important;
+    font-size: 12.5px !important;
+    line-height: 1.45 !important;
+    text-align: center !important;
+  }
+
+  .footer-linha {
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 7px !important;
+    flex-wrap: wrap !important;
+    text-align: center !important;
+  }
+
+  .footer-linha img {
+    width: 17px !important;
+    height: 17px !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+  }
+
+  .footer-redes {
+    width: 100% !important;
+    gap: 8px !important;
+    margin: 12px 0 8px !important;
+  }
+
+  .footer-redes a {
+    width: 100% !important;
+    min-height: 42px !important;
+    justify-content: center !important;
+    padding: 9px 12px !important;
+    font-size: 12.5px !important;
+    border-radius: 999px !important;
+  }
+
+  .footer-redes img {
+    width: 22px !important;
+    height: 22px !important;
+  }
+
+  .footer-box a {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    line-height: 1.3 !important;
+  }
+}
+
+/* ============================================================
+   CELULARES PEQUENOS
+============================================================ */
+
+@media (max-width: 480px) {
+  header {
+    width: calc(100% - 14px) !important;
+    max-width: calc(100% - 14px) !important;
+  }
+
+  .busca-inteligente-painel,
+  #botoes-filtro.filtros-categoria-loja,
+  .oferta-dia,
+  .confianca,
+  .filtros,
+  main,
+  .categorias-container {
+    width: calc(100% - 14px) !important;
+    max-width: calc(100% - 14px) !important;
+  }
+
+  .busca-inteligente-painel {
+    padding: 12px !important;
+  }
+
+  .filtros-rapidos-busca button,
+  .botoes-categoria-organizado button,
+  #botoes-filtro button {
+    min-height: 34px !important;
+    padding: 7px 10px !important;
+    font-size: 11.5px !important;
+  }
+
+  .grid {
+    gap: 9px !important;
+  }
+
+  .produto {
+    min-height: 258px !important;
+    padding: 8px !important;
+  }
+
+  .imagem-area {
+    height: clamp(120px, 34vw, 140px) !important;
+  }
+
+  .produto h2 {
+    font-size: 12.5px !important;
+  }
+
+  .produto strong {
+    font-size: 14.5px !important;
+  }
+
+  .popup-topo {
+    min-height: 78px !important;
+    padding-left: 13px !important;
+    padding-right: 13px !important;
+  }
+
+  .popup-topo button,
+  .acoes-topo button {
+    width: 50px !important;
+    height: 50px !important;
+    min-width: 50px !important;
+    min-height: 50px !important;
+  }
+
+  .popup-topo button img,
+  .acoes-topo button img {
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  .popup-imagem-area {
+    height: 275px !important;
+    min-height: 245px !important;
+  }
+
+  .btn-chat,
+  .btn-comprar,
+  .popup-comprar {
+    min-height: 40px !important;
+    padding: 8px 9px !important;
+    font-size: 12.5px !important;
+  }
+
+  .btn-chat img {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  .footer-box {
+    padding: 15px 12px !important;
+  }
+}
+
+/* ============================================================
+   CELULARES MUITO PEQUENOS
+============================================================ */
+
+@media (max-width: 360px) {
+  .grid {
+    gap: 8px !important;
+  }
+
+  .produto {
+    min-height: 245px !important;
+    padding: 7px !important;
+  }
+
+  .imagem-area {
+    height: 112px !important;
+  }
+
+  .produto h2 {
+    font-size: 12px !important;
+  }
+
+  .produto strong {
+    font-size: 14px !important;
+  }
+
+  .urgencia {
+    font-size: 9.5px !important;
+    padding: 5px !important;
+  }
+
+  .filtros-rapidos-busca button,
+  .botoes-categoria-organizado button,
+  #botoes-filtro button {
+    font-size: 11px !important;
+    padding: 7px 9px !important;
+  }
+
+  .popup-topo button,
+  .acoes-topo button {
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    min-height: 48px !important;
+  }
+
+  .btn-chat,
+  .btn-comprar,
+  .popup-comprar {
+    font-size: 12px !important;
+  }
+}
+
+/* ============================================================
+   TABLET / TELAS MÉDIAS
+============================================================ */
+
+@media (min-width: 769px) and (max-width: 1180px) {
+  .confianca {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .busca-inteligente-painel,
+  #botoes-filtro.filtros-categoria-loja {
+    width: calc(100% - 28px) !important;
+    max-width: calc(100% - 28px) !important;
+  }
+
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 16px !important;
+  }
+
+  .produto {
+    min-height: 310px !important;
+  }
+}
+
+/* ============================================================
+   DESKTOP MAIS LIMPO E COM LARGURA CHEIA
+============================================================ */
+
+@media (min-width: 901px) {
+  body.modo-desktop header,
+  header {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  body.modo-desktop .oferta-dia,
+  body.modo-desktop .confianca,
+  body.modo-desktop .filtros,
+  body.modo-desktop .busca-inteligente-painel,
+  body.modo-desktop #botoes-filtro.filtros-categoria-loja,
+  body.modo-desktop main,
+  body.modo-desktop .categorias-container,
+  .oferta-dia,
+  .confianca,
+  .filtros,
+  .busca-inteligente-painel,
+  #botoes-filtro.filtros-categoria-loja,
+  main,
+  .categorias-container {
+    width: calc(100% - 32px) !important;
+    max-width: none !important;
+  }
+
+  .filtros-rapidos-busca,
+  .botoes-categoria-organizado {
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    overflow: visible !important;
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
+    gap: 22px !important;
+  }
+
+  .popup-topo button,
+  .acoes-topo button {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .popup-topo button img,
+  .acoes-topo button img {
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  .btn-chat,
+  .btn-comprar,
+  .popup-comprar {
+    min-height: 44px !important;
+  }
+
+  .footer-box {
+    max-width: 900px !important;
+  }
+
+  .footer-linha {
+    align-items: center !important;
+  }
+
+  .footer-linha img {
+    margin: 0 !important;
+  }
+}
+
+@media (min-width: 1400px) {
+  .oferta-dia,
+  .confianca,
+  .filtros,
+  .busca-inteligente-painel,
+  #botoes-filtro.filtros-categoria-loja,
+  main,
+  .categorias-container {
+    width: calc(100% - 40px) !important;
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(225px, 1fr)) !important;
+    gap: 24px !important;
+  }
+}
+
+@media (min-width: 1700px) {
+  .oferta-dia,
+  .confianca,
+  .filtros,
+  .busca-inteligente-painel,
+  #botoes-filtro.filtros-categoria-loja,
+  main,
+  .categorias-container {
+    width: calc(100% - 48px) !important;
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)) !important;
+    gap: 24px !important;
+  }
+}
+
+/* ============================================================
+   AJUSTE POR TOQUE REAL
+   Isso ajuda celulares/tablets mesmo quando a largura engana
+============================================================ */
+
+@media (hover: none) and (pointer: coarse) {
+  .produto:hover {
+    transform: none !important;
+  }
+
+  .produto:hover::after {
+    transform: translateX(-100%) !important;
+  }
+
+  .rede-link:hover,
+  .footer-redes a:hover,
+  .btn-comprar:hover,
+  .popup-comprar:hover,
+  .btn-chat:hover,
+  .popup-topo button:hover,
+  .acoes-topo button:hover {
+    transform: none !important;
+  }
+}
