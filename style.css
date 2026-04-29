@@ -3349,3 +3349,107 @@ body.modo-desktop {
     transform: none !important;
   }
 }
+
+/* ============================================================
+   BOTÕES VOLTAR E COMPARTILHAR - POPUP PRODUTO
+   Cole no FINAL do style.css
+============================================================ */
+
+/* Organiza o topo do popup */
+.popup-topo {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 14px !important;
+}
+
+/* Garante que a área do compartilhar fique alinhada */
+.acoes-topo {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 10px !important;
+}
+
+/* Botões voltar e compartilhar maiores */
+.popup-topo button,
+.acoes-topo button {
+  width: 52px !important;
+  height: 52px !important;
+  min-width: 52px !important;
+  min-height: 52px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  background: rgba(30, 41, 59, 0.96) !important;
+  border: 1px solid rgba(148, 163, 184, 0.24) !important;
+  color: #ffffff !important;
+
+  font-size: 25px !important;
+  line-height: 1 !important;
+
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.28) !important;
+  cursor: pointer !important;
+  transition: 0.2s ease !important;
+}
+
+/* Ícones dentro dos botões */
+.popup-topo button img,
+.acoes-topo button img {
+  width: 25px !important;
+  height: 25px !important;
+  object-fit: contain !important;
+  margin: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Efeito no PC */
+@media (hover: hover) and (pointer: fine) {
+  .popup-topo button:hover,
+  .acoes-topo button:hover {
+    background: linear-gradient(135deg, var(--green), var(--cyan)) !important;
+    color: #04111f !important;
+    transform: translateY(-2px) scale(1.04) !important;
+    box-shadow: 0 14px 34px rgba(34, 211, 238, 0.22) !important;
+  }
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+  .popup-topo {
+    min-height: 82px !important;
+    padding: 16px !important;
+    padding-top: calc(24px + env(safe-area-inset-top)) !important;
+  }
+
+  .popup-topo button,
+  .acoes-topo button {
+    width: 54px !important;
+    height: 54px !important;
+    min-width: 54px !important;
+    min-height: 54px !important;
+    font-size: 26px !important;
+  }
+}
+
+/* Celular pequeno */
+@media (max-width: 480px) {
+  .popup-topo {
+    min-height: 78px !important;
+    padding-left: 13px !important;
+    padding-right: 13px !important;
+  }
+
+  .popup-topo button,
+  .acoes-topo button {
+    width: 50px !important;
+    height: 50px !important;
+    min-width: 50px !important;
+    min-height: 50px !important;
+    font-size: 24px !important;
+  }
+}
