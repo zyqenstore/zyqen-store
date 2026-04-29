@@ -2,27 +2,667 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <meta 
+    name="viewport" 
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover"
+  >
+
+  <meta name="HandheldFriendly" content="true">
+  <meta name="MobileOptimized" content="width">
+  <meta name="format-detection" content="telephone=no">
+
   <title>Zyqen Store</title>
 
   <link rel="icon" href="imagens/logo/favicon.png">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=28">
+
+  <style>
+    html,
+    body {
+      width: 100%;
+      min-width: 320px;
+      max-width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden !important;
+      overscroll-behavior-x: none;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      touch-action: manipulation;
+    }
+
+    body {
+      min-height: 100dvh;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    img,
+    video,
+    iframe,
+    canvas,
+    svg {
+      max-width: 100%;
+    }
+
+    input,
+    textarea,
+    select,
+    button {
+      font-size: 16px;
+    }
+
+    input,
+    textarea,
+    select {
+      touch-action: manipulation;
+    }
+
+    button,
+    a {
+      touch-action: manipulation;
+    }
+
+    .site-wrapper-fixo {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    .icone-lucide {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      flex-shrink: 0;
+    }
+
+    .icone-lucide.pequeno {
+      width: 16px;
+      height: 16px;
+    }
+
+    .icone-lucide.medio {
+      width: 24px;
+      height: 24px;
+    }
+
+    .icone-lucide.grande {
+      width: 34px;
+      height: 34px;
+    }
+
+    .icone-circulo {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: rgba(34, 211, 238, 0.12);
+      border: 1px solid rgba(34, 211, 238, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+
+    .texto-com-icone {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .titulo-com-icone {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 0 20px;
+    }
+
+    .titulo-com-icone img {
+      width: 24px;
+      height: 24px;
+      filter: brightness(0) invert(1);
+    }
+
+    .botao-icone {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .popup-topo button img,
+    .acoes-topo button img {
+      width: 22px;
+      height: 22px;
+      filter: brightness(0) invert(1);
+      pointer-events: none;
+    }
+
+    .redes-topo {
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .rede-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(30, 41, 59, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: bold;
+      transition: 0.25s;
+    }
+
+    .rede-link:hover {
+      transform: translateY(-2px);
+      border-color: #22c55e;
+      box-shadow: 0 8px 22px rgba(34, 197, 94, 0.18);
+    }
+
+    .rede-link img {
+      width: 22px;
+      height: 22px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .oferta-dia {
+      display: none !important;
+      margin: -6px auto 12px;
+      padding: 18px;
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at top left, rgba(34, 211, 238, 0.20), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(34, 197, 94, 0.22), transparent 38%),
+        linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(6, 78, 59, 0.78));
+      border: 1px solid rgba(34, 211, 238, 0.20);
+      box-shadow: 0 22px 70px rgba(0, 0, 0, 0.32);
+      position: relative;
+      overflow: hidden;
+      min-height: 210px;
+      width: min(1200px, calc(100% - 28px));
+    }
+
+    .oferta-dia.tem-destaque {
+      display: grid !important;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 360px);
+      gap: 18px;
+      align-items: center;
+    }
+
+    .oferta-dia[hidden] {
+      display: none !important;
+    }
+
+    .oferta-dia::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(34, 211, 238, 0.10), transparent 40%),
+        linear-gradient(270deg, rgba(255, 47, 179, 0.10), transparent 45%);
+      pointer-events: none;
+    }
+
+    .oferta-dia::after {
+      content: "";
+      position: absolute;
+      right: -90px;
+      top: -90px;
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      background: rgba(34, 211, 238, 0.10);
+      border: 1px solid rgba(34, 211, 238, 0.16);
+      pointer-events: none;
+    }
+
+    .oferta-texto {
+      position: relative;
+      z-index: 1;
+      padding: 4px 0;
+    }
+
+    .oferta-texto > span {
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(250, 204, 21, 0.12);
+      border: 1px solid rgba(250, 204, 21, 0.28);
+      color: #facc15;
+      font-weight: 800;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    .oferta-texto h2 {
+      margin: 12px 0 9px;
+      font-size: clamp(24px, 4vw, 34px);
+      line-height: 1.12;
+      color: #ffffff;
+      text-shadow: 0 8px 26px rgba(0, 0, 0, 0.30);
+    }
+
+    .oferta-texto p {
+      margin: 0;
+      color: #dbeafe;
+      max-width: 680px;
+      font-size: 15px;
+    }
+
+    #produto-destaque {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+    }
+
+    #produto-destaque .produto {
+      margin: 0;
+      width: 100%;
+      min-height: 100%;
+      border-color: rgba(34, 211, 238, 0.28);
+      background:
+        radial-gradient(circle at top, rgba(34, 211, 238, 0.12), transparent 35%),
+        rgba(15, 23, 42, 0.88);
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+    }
+
+    #produto-destaque .produto:hover {
+      transform: translateY(-3px);
+      border-color: rgba(34, 211, 238, 0.50);
+    }
+
+    .confianca {
+      width: min(1200px, calc(100% - 28px));
+      margin: 10px auto 18px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .confianca-card {
+      min-height: 138px;
+      padding: 18px 15px;
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at top, rgba(34, 211, 238, 0.10), transparent 36%),
+        rgba(15, 23, 42, 0.86);
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+      text-align: center;
+      transition: 0.25s;
+    }
+
+    .confianca-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(34, 211, 238, 0.35);
+      box-shadow: 0 20px 52px rgba(34, 211, 238, 0.10);
+    }
+
+    .confianca-card h3 {
+      margin: 4px 0 7px;
+      font-size: 16px;
+    }
+
+    .confianca-card p {
+      margin: 0;
+      color: #cbd5e1;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .pesquisa-wrap {
+      position: relative;
+      width: 100%;
+    }
+
+    .pesquisa-wrap img {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 19px;
+      height: 19px;
+      filter: brightness(0) invert(1);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .pesquisa-wrap input {
+      padding-left: 44px;
+    }
+
+    .footer-redes {
+      margin: 16px 0 12px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .footer-redes a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      color: white;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: bold;
+      transition: 0.25s;
+    }
+
+    .footer-redes a:hover {
+      background: #1e293b;
+      border-color: #22c55e;
+      transform: translateY(-2px);
+    }
+
+    .footer-redes img {
+      width: 24px;
+      height: 24px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .footer-linha {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: inherit;
+    }
+
+    .footer-linha img {
+      width: 18px;
+      height: 18px;
+      filter: brightness(0) invert(1);
+      opacity: 0.9;
+    }
+
+    .btn-chat {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+    }
+
+    .btn-chat img {
+      width: 22px;
+      height: 22px;
+      object-fit: cover;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .campo-nota-comentario {
+      margin-top: 8px;
+    }
+
+    .campo-nota-comentario select {
+      width: 100%;
+      margin-top: 8px;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: white;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .barra-avaliacoes span {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      min-width: 36px;
+    }
+
+    .barra-avaliacoes span img {
+      width: 14px;
+      height: 14px;
+      filter: brightness(0) invert(1);
+    }
+
+    .btn-ver-comentarios img {
+      width: 18px;
+      height: 18px;
+      filter: brightness(0) invert(1);
+    }
+
+    .categorias-container {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    .categoria-loading {
+      margin: 20px;
+      padding: 18px;
+      border-radius: 16px;
+      background: rgba(15, 23, 42, 0.72);
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      color: #94a3b8;
+      text-align: center;
+    }
+
+    .popup-sucesso-comentario {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.86);
+      backdrop-filter: blur(8px);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+
+    .popup-sucesso-comentario.ativo {
+      display: flex;
+    }
+
+    .popup-sucesso-card {
+      width: 100%;
+      max-width: 360px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 20px;
+      padding: 24px 18px;
+      text-align: center;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.55);
+      animation: popupSucessoAnim 0.25s ease;
+    }
+
+    .popup-sucesso-card .icone-sucesso {
+      width: 58px;
+      height: 58px;
+      margin: 0 auto 12px;
+      border-radius: 50%;
+      background: rgba(34, 197, 94, 0.14);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .popup-sucesso-card .icone-sucesso img {
+      width: 32px;
+      height: 32px;
+      filter: brightness(0) invert(1);
+    }
+
+    .popup-sucesso-card h3 {
+      margin: 0 0 8px;
+      color: #22c55e;
+      font-size: 20px;
+    }
+
+    .popup-sucesso-card p {
+      margin: 0;
+      color: #cbd5e1;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .popup-sucesso-card button {
+      width: 100%;
+      margin-top: 18px;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(90deg, #22c55e, #16a34a);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    @keyframes popupSucessoAnim {
+      from {
+        opacity: 0;
+        transform: scale(0.88);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @media (min-width: 1400px) {
+      header,
+      main,
+      .confianca,
+      .oferta-dia,
+      .footer-box {
+        max-width: 1240px;
+      }
+    }
+
+    @media (max-width: 1100px) {
+      .confianca {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 900px) {
+      .oferta-dia.tem-destaque {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      html,
+      body {
+        min-width: 320px;
+        overflow-x: hidden !important;
+      }
+
+      .rede-link {
+        font-size: 12px;
+        padding: 8px 10px;
+      }
+
+      .footer-redes a {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .btn-chat {
+        font-size: 13px;
+      }
+
+      .btn-chat img {
+        width: 20px;
+        height: 20px;
+      }
+
+      .titulo-com-icone {
+        padding: 0 14px;
+      }
+
+      .oferta-dia {
+        width: calc(100% - 20px);
+        margin-top: -4px;
+        padding: 15px;
+        border-radius: 20px;
+      }
+
+      .oferta-texto h2 {
+        font-size: 24px;
+      }
+
+      .oferta-texto p {
+        font-size: 14px;
+      }
+
+      .confianca {
+        width: calc(100% - 20px);
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .confianca-card {
+        min-height: auto;
+      }
+    }
+  </style>
 </head>
+
 <body>
+
+<div class="site-wrapper-fixo">
 
 <header>
   <div class="logo-area">
     <img src="imagens/logo/logo.png" alt="Zyqen Store">
   </div>
 
-  <p>Ofertas selecionadas todos os dias 🔥</p>
+  <p class="texto-com-icone">
+    <img src="imagens/icones/flame.svg" alt="Ofertas" class="icone-lucide pequeno">
+    Ofertas selecionadas todos os dias
+  </p>
+
+  <div class="redes-topo">
+    <a 
+      href="https://www.instagram.com/zyqen_oficial/" 
+      target="_blank" 
+      class="rede-link"
+      rel="noopener"
+    >
+      <img src="imagens/redes/instagram.jpg" alt="Instagram Zyqen Store">
+      Siga no Instagram
+    </a>
+  </div>
 </header>
 
-<section class="oferta-dia">
+<section id="area-oferta-dia" class="oferta-dia" hidden>
   <div class="oferta-texto">
-    <span>🔥 Oferta do Dia</span>
+    <span class="texto-com-icone">
+      <img src="imagens/icones/badge-percent.svg" alt="Oferta do Dia" class="icone-lucide pequeno">
+      Oferta do Dia
+    </span>
+
     <h2>Produtos em destaque para você aproveitar agora</h2>
-    <p>Selecionamos ofertas especiais com redirecionamento direto para a loja oficial.</p>
+    <p>Selecionamos uma oferta especial com redirecionamento direto para a loja oficial.</p>
   </div>
 
   <div id="produto-destaque"></div>
@@ -30,65 +670,106 @@
 
 <section class="confianca">
   <div class="confianca-card">
-    <span>✅</span>
+    <div class="icone-circulo">
+      <img src="imagens/icones/badge-check.svg" alt="Loja oficial" class="icone-lucide medio">
+    </div>
+
     <h3>Loja oficial</h3>
     <p>Você será redirecionado para a plataforma oficial do produto.</p>
   </div>
 
   <div class="confianca-card">
-    <span>🛡️</span>
+    <div class="icone-circulo">
+      <img src="imagens/icones/shield-check.svg" alt="Compra segura" class="icone-lucide medio">
+    </div>
+
     <h3>Compra segura</h3>
-    <p>A compra é feita diretamente no Mercado Livre ou na Cakto.</p>
+    <p>A compra é feita diretamente na plataforma oficial do produto.</p>
   </div>
 
   <div class="confianca-card">
-    <span>🔒</span>
+    <div class="icone-circulo">
+      <img src="imagens/icones/lock-keyhole.svg" alt="Sem dados de pagamento" class="icone-lucide medio">
+    </div>
+
     <h3>Sem dados de pagamento</h3>
     <p>Não coletamos cartão, senha ou dados bancários.</p>
   </div>
 
   <div class="confianca-card">
-    <span>⭐</span>
+    <div class="icone-circulo">
+      <img src="imagens/icones/star.svg" alt="Ofertas selecionadas" class="icone-lucide medio">
+    </div>
+
     <h3>Ofertas selecionadas</h3>
     <p>Produtos organizados para facilitar sua escolha.</p>
   </div>
 </section>
 
 <section class="filtros">
-  <input 
-    type="text" 
-    id="pesquisa" 
-    placeholder="Pesquisar produto..."
-  >
+  <div class="pesquisa-wrap">
+    <img src="imagens/icones/search.svg" alt="Pesquisar">
 
-  <div class="botoes-filtro">
-    <button onclick="filtrarCategoria('Todos')">Todos</button>
-    <button onclick="filtrarCategoria('Mercado Livre')">Mercado Livre</button>
-    <button onclick="filtrarCategoria('Cakto')">Cakto</button>
+    <input 
+      type="text" 
+      id="pesquisa" 
+      placeholder="Pesquisar produto..."
+      autocomplete="off"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck="false"
+    >
+  </div>
+
+  <div id="botoes-filtro" class="botoes-filtro">
+    <button onclick="filtrarCategoria('Todos')" class="ativo">Todos</button>
   </div>
 </section>
 
 <main>
-
-  <!-- 🛒 MERCADO LIVRE -->
-  <section id="secao-mercado">
-     <h2 style="padding: 0 20px;">🛒 Mercado Livre</h2>
-     <div id="produtos-mercado" class="grid"></div>
-  </section>
-
-  <!-- 💰 CAKTO -->
-  <section id="secao-cakto">
-     <h2 style="padding: 0 20px;">💰 Produtos Digitais</h2>
-    <div id="produtos-cakto" class="grid"></div>
-  </section>
-
+  <div id="categorias-container" class="categorias-container">
+    <div class="categoria-loading">
+      Carregando categorias e produtos...
+    </div>
+  </div>
 </main>
 
 <footer class="footer-melhorado">
   <div class="footer-box">
-    <p>🔗 Você será redirecionado para a loja oficial</p>
-    <p>💼 Este site atua como afiliado na divulgação de produtos</p>
-    <p>🔒 Compra realizada diretamente na plataforma oficial. Nenhum dado é armazenado aqui.</p>
+    <p class="footer-linha">
+      <img src="imagens/icones/external-link.svg" alt="Redirecionamento">
+      Você será redirecionado para a loja oficial
+    </p>
+
+    <p class="footer-linha">
+      <img src="imagens/icones/briefcase-business.svg" alt="Afiliado">
+      Este site atua como afiliado na divulgação de produtos
+    </p>
+
+    <p class="footer-linha">
+      <img src="imagens/icones/lock.svg" alt="Compra segura">
+      Compra realizada diretamente na plataforma oficial. Nenhum dado é armazenado aqui.
+    </p>
+
+    <div class="footer-redes">
+      <a 
+        href="https://wa.me/5575981768068?text=Olá,%20vim%20pelo%20site%20Zyqen%20Store." 
+        target="_blank"
+        rel="noopener"
+      >
+        <img src="imagens/redes/whatsapp.jpg" alt="WhatsApp Zyqen Store">
+        WhatsApp
+      </a>
+
+      <a 
+        href="https://www.instagram.com/zyqen_oficial/" 
+        target="_blank"
+        rel="noopener"
+      >
+        <img src="imagens/redes/instagram.jpg" alt="Instagram Zyqen Store">
+        Instagram
+      </a>
+    </div>
 
     <p>
       <a href="sobre.html">Sobre</a> | 
@@ -97,15 +778,18 @@
   </div>
 </footer>
 
-<!-- POPUP -->
 <div id="popup-produto" class="popup">
   <div class="popup-conteudo">
 
     <div class="popup-topo">
-      <button onclick="fecharPopup()">←</button>
+      <button onclick="fecharPopup()" aria-label="Voltar">
+        <img src="imagens/icones/arrow-left.svg" alt="Voltar">
+      </button>
 
       <div class="acoes-topo">
-        <button onclick="compartilharProduto()">🔗</button>
+        <button onclick="compartilharProduto()" aria-label="Compartilhar">
+          <img src="imagens/icones/share-2.svg" alt="Compartilhar">
+        </button>
       </div>
     </div>
 
@@ -139,10 +823,13 @@
 
       <div class="barra-compra">
 
-          <button id="popup-whatsapp" class="btn-chat">💬 Chat</button>
+        <button id="popup-whatsapp" class="btn-chat">
+          <img src="imagens/redes/whatsapp.jpg" alt="WhatsApp">
+          Chat
+        </button>
 
-          <a id="popup-comprar" target="_blank" class="btn-comprar">Comprar agora</a>
-    </div>
+        <a id="popup-comprar" target="_blank" class="btn-comprar" rel="noopener">Comprar agora</a>
+      </div>
 
       <div class="popup-comentarios">
 
@@ -153,16 +840,36 @@
           </h3>
 
           <div class="barra-avaliacoes">
-            <div><span>5⭐</span><div class="barra"><div id="barra-5"></div></div></div>
-            <div><span>4⭐</span><div class="barra"><div id="barra-4"></div></div></div>
-            <div><span>3⭐</span><div class="barra"><div id="barra-3"></div></div></div>
-            <div><span>2⭐</span><div class="barra"><div id="barra-2"></div></div></div>
-            <div><span>1⭐</span><div class="barra"><div id="barra-1"></div></div></div>
+            <div>
+              <span>5 <img src="imagens/icones/star.svg" alt="5 estrelas"></span>
+              <div class="barra"><div id="barra-5"></div></div>
+            </div>
+
+            <div>
+              <span>4 <img src="imagens/icones/star.svg" alt="4 estrelas"></span>
+              <div class="barra"><div id="barra-4"></div></div>
+            </div>
+
+            <div>
+              <span>3 <img src="imagens/icones/star.svg" alt="3 estrelas"></span>
+              <div class="barra"><div id="barra-3"></div></div>
+            </div>
+
+            <div>
+              <span>2 <img src="imagens/icones/star.svg" alt="2 estrelas"></span>
+              <div class="barra"><div id="barra-2"></div></div>
+            </div>
+
+            <div>
+              <span>1 <img src="imagens/icones/star.svg" alt="1 estrela"></span>
+              <div class="barra"><div id="barra-1"></div></div>
+            </div>
           </div>
         </div>
 
-        <button id="btn-comentarios" class="btn-ver-comentarios" onclick="toggleComentarios()">
-          💬 Ver comentários
+        <button id="btn-comentarios" class="btn-ver-comentarios botao-icone" onclick="toggleComentarios()">
+          <img src="imagens/icones/message-square.svg" alt="Comentários">
+          Ver comentários
         </button>
 
         <div id="popup-comentarios-box" class="area-comentarios">
@@ -170,19 +877,48 @@
 
           <form id="form-comentario">
             
-             <input type="hidden" name="access_key" value="90254100-32d0-49e2-995e-879f9ed9ae33">
+            <input type="hidden" name="access_key" value="90254100-32d0-49e2-995e-879f9ed9ae33">
 
-             <input type="text" name="name" placeholder="Seu nome" required>
+            <input 
+              type="text" 
+              name="name" 
+              placeholder="Seu nome" 
+              required
+              autocomplete="name"
+              autocorrect="off"
+              autocapitalize="words"
+              spellcheck="false"
+            >
 
-             <input type="email" name="email" placeholder="Seu e-mail" required>
+            <input type="hidden" name="email" value="zyqenstore@gmail.com">
 
-             <textarea name="message" placeholder="Escreva seu comentário..." required></textarea>
+            <div class="campo-nota-comentario">
+              <select name="nota" required>
+                <option value="5">5 estrelas</option>
+                <option value="4">4 estrelas</option>
+                <option value="3">3 estrelas</option>
+                <option value="2">2 estrelas</option>
+                <option value="1">1 estrela</option>
+              </select>
+            </div>
 
-             <input type="hidden" name="subject" value="Novo comentário no site Zyqen Store">
+            <textarea 
+              name="message" 
+              placeholder="Escreva seu comentário..." 
+              required
+              autocorrect="off"
+              autocapitalize="sentences"
+              spellcheck="false"
+            ></textarea>
 
-             <button type="submit">Enviar comentário</button>
+            <input type="hidden" name="subject" value="Novo comentário no site Zyqen Store">
 
-         </form>
+            <button type="submit" class="botao-icone">
+              <img src="imagens/icones/send.svg" alt="Enviar" class="icone-lucide pequeno">
+              Enviar comentário
+            </button>
+
+          </form>
         </div>
 
       </div>
@@ -190,36 +926,137 @@
   </div>
 </div>
 
+<div id="popup-sucesso-comentario" class="popup-sucesso-comentario">
+  <div class="popup-sucesso-card">
+    <div class="icone-sucesso">
+      <img src="imagens/icones/circle-check.svg" alt="Sucesso">
+    </div>
+
+    <h3>Comentário enviado!</h3>
+
+    <p>
+      Obrigado pela sua avaliação. Seu comentário já foi registrado e ajuda outras pessoas a conhecerem melhor o produto.
+    </p>
+
+    <button onclick="fecharPopupSucessoComentario()">OK</button>
+  </div>
+</div>
+
+</div>
+
 <script>
-  // 🔒 BLOQUEIA ZOOM POR GESTO
-  document.addEventListener("gesturestart", function (e) {
-    e.preventDefault();
-  });
+  (function bloquearZoomSite() {
+    document.documentElement.style.touchAction = "manipulation";
+    document.body.style.touchAction = "manipulation";
 
-  document.addEventListener("gesturechange", function (e) {
-    e.preventDefault();
-  });
-
-  document.addEventListener("gestureend", function (e) {
-    e.preventDefault();
-  });
-
-  // 🔒 BLOQUEIA ZOOM POR DUPLO TOQUE
-  let ultimoToque = 0;
-
-  document.addEventListener("touchend", function (e) {
-    const agora = Date.now();
-
-    if (agora - ultimoToque <= 300) {
+    document.addEventListener("gesturestart", function (e) {
       e.preventDefault();
-    }
+    }, { passive: false });
 
-    ultimoToque = agora;
-  }, { passive: false });
+    document.addEventListener("gesturechange", function (e) {
+      e.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener("gestureend", function (e) {
+      e.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener("touchmove", function (e) {
+      if (e.touches && e.touches.length > 1) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    let ultimoToque = 0;
+
+    document.addEventListener("touchend", function (e) {
+      const agora = Date.now();
+
+      if (agora - ultimoToque <= 320) {
+        e.preventDefault();
+      }
+
+      ultimoToque = agora;
+    }, { passive: false });
+
+    document.addEventListener("wheel", function (e) {
+      if (e.ctrlKey || e.metaKey) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    document.addEventListener("keydown", function (e) {
+      const tecla = String(e.key || "").toLowerCase();
+
+      if (
+        (e.ctrlKey || e.metaKey) &&
+        (
+          tecla === "+" ||
+          tecla === "-" ||
+          tecla === "=" ||
+          tecla === "0" ||
+          tecla === "_" ||
+          tecla === "add" ||
+          tecla === "subtract"
+        )
+      ) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    window.addEventListener("resize", function () {
+      document.documentElement.style.width = "100%";
+      document.body.style.width = "100%";
+      document.body.style.maxWidth = "100%";
+      document.body.style.overflowX = "hidden";
+    });
+  })();
+
+  function fecharPopupSucessoComentario() {
+    const popup = document.getElementById("popup-sucesso-comentario");
+
+    if (popup) {
+      popup.classList.remove("ativo");
+    }
+  }
+
+  function atualizarAreaDestaque() {
+    const area = document.getElementById("area-oferta-dia");
+    const produtoDestaque = document.getElementById("produto-destaque");
+
+    if (!area || !produtoDestaque) return;
+
+    const temProduto = Boolean(produtoDestaque.querySelector(".produto"));
+
+    if (temProduto) {
+      area.hidden = false;
+      area.classList.add("tem-destaque");
+    } else {
+      area.classList.remove("tem-destaque");
+      area.hidden = true;
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    atualizarAreaDestaque();
+
+    const produtoDestaque = document.getElementById("produto-destaque");
+
+    if (produtoDestaque) {
+      const observadorDestaque = new MutationObserver(function () {
+        atualizarAreaDestaque();
+      });
+
+      observadorDestaque.observe(produtoDestaque, {
+        childList: true,
+        subtree: true,
+        characterData: true
+      });
+    }
+  });
 </script>
 
-<!-- 🔥 ESSA LINHA ERA O BUG -->
-<script src="script.js?v=2"></script>
+<script type="module" src="script.js?v=27"></script>
 
 </body>
 </html>

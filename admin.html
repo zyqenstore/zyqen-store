@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Admin - Zyqen Store</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:radial-gradient(circle at top left,rgba(34,211,238,.18),transparent 35%),radial-gradient(circle at top right,rgba(255,47,179,.16),transparent 35%),#020617;color:#f8fafc;padding:18px}.container{max-width:1250px;margin:auto}h1{margin:0;background:linear-gradient(90deg,#22d3ee,#ff2fb3,#8b5cf6);-webkit-background-clip:text;color:transparent;font-size:clamp(24px,4vw,38px)}h3{margin-top:0}p{line-height:1.5}button{width:100%;margin-top:12px;padding:13px 14px;border:0;border-radius:14px;background:linear-gradient(90deg,#22d3ee,#8b5cf6,#ff2fb3);color:#fff;cursor:pointer;font-weight:800;font-size:14px;transition:.2s}button:hover{transform:translateY(-1px)}button:disabled{opacity:.55;cursor:not-allowed;transform:none}input,textarea,select{width:100%;padding:12px;margin-top:8px;border-radius:13px;border:1px solid #334155;background:#020617cc;color:#fff;outline:none}input:focus,textarea:focus,select:focus{border-color:#22d3ee;box-shadow:0 0 0 2px rgba(34,211,238,.17)}textarea{min-height:105px;resize:vertical}label{display:block;margin-top:12px;color:#cbd5e1;font-size:14px}.top{background:linear-gradient(135deg,rgba(15,23,42,.84),rgba(2,6,23,.68));border:1px solid rgba(148,163,184,.22);border-radius:24px;padding:22px;box-shadow:0 25px 70px rgba(0,0,0,.28);backdrop-filter:blur(12px);margin-bottom:15px}.topbar{display:grid;grid-template-columns:1fr 160px;gap:12px;align-items:center;margin-bottom:16px}.user{margin:8px 0 0;color:#94a3b8;font-size:13px}.menu{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.menu button{min-height:105px;text-align:left;border:1px solid rgba(148,163,184,.22);background:rgba(15,23,42,.72);box-shadow:0 18px 40px rgba(0,0,0,.22)}.menu button.ativo{border-color:rgba(34,211,238,.65);background:linear-gradient(135deg,rgba(34,211,238,.16),rgba(139,92,246,.18),rgba(255,47,179,.13))}.menu strong{display:block;font-size:16px;margin-bottom:7px}.menu span{display:block;color:#cbd5e1;font-size:12px;line-height:1.35;font-weight:500}.area{display:none}.area.ativa{display:block}.box{background:rgba(15,23,42,.68);border:1px solid rgba(148,163,184,.22);padding:20px;margin-bottom:15px;border-radius:20px;box-shadow:0 20px 55px rgba(0,0,0,.24)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.toolbar{display:grid;grid-template-columns:1fr 190px 190px;gap:10px;margin-bottom:15px}.lista{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:15px}.card{background:rgba(2,6,23,.72);border:1px solid #334155;border-radius:18px;padding:14px;overflow:hidden}.card img.preview{width:100%;height:160px;object-fit:contain;background:#020617;border-radius:13px;border:1px solid #1e293b}.card h4{margin:11px 0 7px;font-size:16px;line-height:1.3}.card p{margin:5px 0;color:#cbd5e1;font-size:13px}.acoes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.badge{display:inline-block;padding:4px 9px;border-radius:999px;font-size:12px;margin:3px 4px 3px 0;background:rgba(34,211,238,.12);border:1px solid rgba(34,211,238,.25);color:#67e8f9}.yellow{background:rgba(250,204,21,.12);border-color:rgba(250,204,21,.35);color:#fde68a}.redbadge{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.35);color:#fca5a5}.greenbadge{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:#86efac}.acoes3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px}.contador,.help{color:#94a3b8;font-size:13px;line-height:1.5}.aviso{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);color:#86efac;padding:12px;border-radius:14px;margin-bottom:15px;font-size:14px}.erro{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.35);color:#fca5a5}.check{display:flex;align-items:center;gap:10px;margin-top:12px;background:rgba(2,6,23,.45);border:1px solid #334155;border-radius:13px;padding:12px}.check input{width:auto;margin:0}.btn-red,.sair,.del{background:linear-gradient(90deg,#ef4444,#b91c1c)}.btn-green,.edit{background:linear-gradient(90deg,#22c55e,#16a34a)}.btn-gray{background:linear-gradient(90deg,#64748b,#334155)}.btn-yellow{background:linear-gradient(90deg,#facc15,#f97316)}.btn-blue{background:linear-gradient(90deg,#0ea5e9,#2563eb)}.login{position:fixed;inset:0;background:rgba(2,6,23,.96);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}.login.oculto{display:none}.loginbox{width:100%;max-width:430px;background:rgba(15,23,42,.96);border:1px solid #334155;border-radius:22px;padding:24px;box-shadow:0 30px 90px rgba(0,0,0,.65)}.loginbox h2{text-align:center;margin-top:0}.modal{position:fixed;inset:0;background:rgba(2,6,23,.86);backdrop-filter:blur(8px);z-index:99999;display:none;align-items:center;justify-content:center;padding:18px}.modal.ativo{display:flex}.modal-card{width:100%;max-width:480px;background:#0f172a;border:1px solid #334155;border-radius:22px;padding:22px;box-shadow:0 30px 90px rgba(0,0,0,.65)}.comentario{background:rgba(15,23,42,.9);border:1px solid #1e293b;border-radius:13px;padding:11px;margin:10px 0;color:#e2e8f0;font-size:13px}.grupo{background:rgba(2,6,23,.65);border:1px solid #334155;border-radius:18px;margin-bottom:12px;overflow:hidden}.grupo-head{padding:14px;cursor:pointer;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}.grupo-cont{display:none;padding:0 14px 14px}.grupo-cont.ativo{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}.seta{width:36px;height:36px;border-radius:12px;background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.3);display:flex;align-items:center;justify-content:center;transition:.25s}.seta.ativo{transform:rotate(90deg)}.previewbox{margin-top:8px;padding:10px;border-radius:12px;background:rgba(2,6,23,.55);border:1px dashed rgba(148,163,184,.28);color:#93c5fd;font-size:12px;word-break:break-all}.resultado{display:none;margin-top:12px;padding:12px;border-radius:14px;border:1px solid rgba(148,163,184,.22);background:rgba(2,6,23,.55);color:#cbd5e1;font-size:13px}.resultado.ativo{display:block}.resultado ul{margin:8px 0 0;padding-left:18px}
+.metricas{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:12px}.metrica{background:rgba(2,6,23,.62);border:1px solid rgba(148,163,184,.22);border-radius:16px;padding:14px}.metrica strong{display:block;font-size:24px;color:#fff}.metrica span{display:block;color:#94a3b8;font-size:12px;margin-top:4px}.clique-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0}.clique-item{background:rgba(15,23,42,.8);border:1px solid rgba(148,163,184,.18);border-radius:12px;padding:8px;color:#cbd5e1;font-size:12px}.clique-item strong{display:block;color:#fff;font-size:16px;margin-top:3px}.ranking{display:grid;gap:10px;margin-top:12px}.ranking-item{display:grid;grid-template-columns:42px 1fr auto;gap:10px;align-items:center;background:rgba(2,6,23,.55);border:1px solid rgba(148,163,184,.18);border-radius:14px;padding:10px}.ranking-pos{width:34px;height:34px;border-radius:12px;background:linear-gradient(135deg,#22d3ee,#8b5cf6);display:flex;align-items:center;justify-content:center;font-weight:900}.ranking-item p{margin:3px 0 0;color:#94a3b8;font-size:12px}.ranking-total{font-weight:900;color:#86efac} .ranking-vazio{color:#94a3b8;font-size:13px;margin:0}
+.historico-lista{display:grid;gap:10px;max-height:65vh;overflow:auto;padding-right:4px}.historico-item{background:rgba(2,6,23,.62);border:1px solid rgba(148,163,184,.22);border-radius:16px;padding:13px}.historico-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.historico-top strong{color:#fff}.historico-data{color:#94a3b8;font-size:12px;white-space:nowrap}.historico-detalhes{margin-top:8px;color:#cbd5e1;font-size:12px;line-height:1.55}.historico-produtos{margin-top:8px;padding:8px;border-radius:12px;background:rgba(15,23,42,.75);border:1px solid rgba(148,163,184,.16);color:#cbd5e1;font-size:12px}.btn-mini{padding:9px 10px;margin-top:8px;border-radius:11px;font-size:12px}
+@media(max-width:1000px){.metricas{grid-template-columns:repeat(2,1fr)}.menu{grid-template-columns:repeat(2,1fr)}.grid4{grid-template-columns:1fr 1fr}}@media(max-width:700px){body{padding:12px}.topbar,.grid,.grid3,.grid4,.toolbar,.acoes3,.metricas{grid-template-columns:1fr}.menu{grid-template-columns:1fr}.menu button{min-height:auto}}
+</style>
+</head>
+
+<body>
+
+<div id="login" class="login">
+  <div class="loginbox">
+    <h2>🔐 Painel Admin</h2>
+    <p class="help">Entre com o e-mail autorizado do Firebase.<br>Apenas <strong>zyqenstore@gmail.com</strong> pode administrar.</p>
+    <label>E-mail</label><input id="emailAdmin" type="email" value="zyqenstore@gmail.com">
+    <label>Senha</label><input id="senhaAdmin" type="password" placeholder="Sua senha">
+    <button id="btnEntrar">Entrar no painel</button>
+  </div>
+</div>
+
+<div id="modalConfirmacao" class="modal">
+  <div class="modal-card">
+    <h3>Confirmar ação</h3>
+    <p id="textoConfirmacao">Tem certeza?</p>
+    <div class="grid">
+      <button id="btnCancelarConfirmacao" class="btn-gray">Cancelar</button>
+      <button id="btnConfirmar" class="btn-red">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<div id="modalEditarComentario" class="modal">
+  <div class="modal-card">
+    <h3>Editar comentário</h3>
+    <label>Nome</label><input id="editComentNome">
+    <label>Texto</label><textarea id="editComentTexto"></textarea>
+    <label>Nota</label>
+    <select id="editComentNota">
+      <option value="5">5 estrelas</option><option value="4">4 estrelas</option><option value="3">3 estrelas</option><option value="2">2 estrelas</option><option value="1">1 estrela</option>
+    </select>
+    <div class="grid">
+      <button id="btnCancelarEditComentario" class="btn-gray">Cancelar</button>
+      <button id="btnSalvarEditComentario" class="btn-green">Salvar</button>
+    </div>
+  </div>
+</div>
+
+
+<div id="modalHistoricoCliques" class="modal">
+  <div class="modal-card" style="max-width:760px;">
+    <h3>📜 Histórico de zeragens de cliques</h3>
+    <p class="help">Toda vez que você zera cliques, fica salvo aqui quanto tinha antes.</p>
+    <div id="listaHistoricoCliques" class="historico-lista"></div>
+    <button id="btnFecharHistoricoCliques" class="btn-gray">Fechar histórico</button>
+  </div>
+</div>
+
+<div class="container">
+  <div class="top">
+    <div class="topbar">
+      <div>
+        <h1>🛒 Painel Admin - Zyqen Store</h1>
+        <p id="usuarioLogado" class="user"></p>
+      </div>
+      <button id="btnSair" class="sair">Sair</button>
+    </div>
+
+    <div class="menu">
+      <button class="menu-btn ativo" data-area="produtos"><strong>📦 Produtos cadastrados</strong><span>Ver, buscar, editar e deletar produtos.</span></button>
+      <button class="menu-btn" data-area="categorias"><strong>📂 Categorias e caminhos</strong><span>Caminhos de imagem, vídeo e ícones.</span></button>
+      <button class="menu-btn" data-area="formProduto"><strong>📌 Adicionar produto</strong><span>Produto completo com mídia automática.</span></button>
+      <button class="menu-btn" data-area="fakes"><strong>🧩 Comentários fake</strong><span>Gerar, editar e excluir comentários.</span></button>
+      <button class="menu-btn" data-area="reais"><strong>💬 Comentários reais</strong><span>Ver e excluir comentários recebidos.</span></button>
+    </div>
+  </div>
+
+  <div id="status"></div>
+  <div id="infoEdicao" class="aviso" style="display:none">✏️ Você está editando um produto. A área de formulário foi aberta automaticamente.</div>
+
+  <section id="produtos" class="area ativa">
+    <div class="box">
+      <h3>📊 Contador de cliques</h3>
+      <p class="help">Aqui você acompanha os cliques do site: Comprar agora, WhatsApp, Compartilhar e Instagram.</p>
+      <div id="resumoCliques" class="metricas"></div>
+      <div class="grid">
+        <button id="btnZerarTodosCliques" class="btn-red">🧹 Zerar todos os cliques</button>
+        <button id="btnAbrirHistoricoCliques" class="btn-blue">📜 Ver histórico de zeragens</button>
+      </div>
+      <div id="rankingCliques" class="ranking"></div>
+    </div>
+
+    <div class="box">
+      <h3>📦 Produtos cadastrados</h3>
+      <div class="toolbar">
+        <input id="buscaAdmin" placeholder="Buscar produto...">
+        <select id="filtroCategoriaAdmin"><option value="Todos">Todos</option><option value="Destaques">Somente destaques</option></select><select id="filtroStatusAdmin"><option value="Todos">Todos os status</option><option value="Ativos">Ativos</option><option value="Inativos">Inativos</option></select>
+      </div>
+      <p id="contadorProdutos" class="contador">Carregando produtos...</p>
+      <div id="listaProdutos" class="lista"></div>
+    </div>
+
+    <div class="box">
+      <h3>📥 Importar JSON antigo</h3>
+      <p class="help">Cole seu JSON antigo no formato <strong>{ "produtos": [ ... ] }</strong>.</p>
+      <textarea id="jsonImportar" placeholder='{"produtos":[...]}'></textarea>
+      <button id="btnImportarJson" class="btn-green">Importar JSON para Firebase</button>
+    </div>
+  </section>
+
+  <section id="categorias" class="area">
+    <div class="box">
+      <h3>🗂️ Caminhos salvos</h3>
+      <p class="help">Crie caminhos reutilizáveis. Exemplo: <strong>imagens/mercado/</strong> com extensão <strong>.jpg</strong>. Depois você só digita <strong>fone1</strong>.</p>
+
+      <div class="grid4">
+        <div><label>Nome</label><input id="camNome" placeholder="Ex: Mercado imagens"></div>
+        <div><label>Tipo</label><select id="camTipo"><option value="imagem">Imagem</option><option value="video">Vídeo</option><option value="icone">Ícone</option></select></div>
+        <div><label>Extensão padrão</label><select id="camExt"><option value=".jpg">.jpg</option><option value=".png">.png</option><option value=".webp">.webp</option><option value=".jpeg">.jpeg</option><option value=".mp4">.mp4</option><option value=".webm">.webm</option><option value=".svg">.svg</option></select></div>
+        <div><label>Ordem</label><input id="camOrdem" type="number" placeholder="Ex: 1"></div>
+      </div>
+
+      <label>Caminho / pasta</label><input id="camCaminho" placeholder="Ex: imagens/mercado/">
+      <div class="check"><input type="checkbox" id="camAtivo" checked><label for="camAtivo" style="margin:0">Caminho ativo</label></div>
+      <div class="grid"><button id="btnSalvarCaminho" class="btn-green">Salvar caminho</button><button id="btnCancelarCaminho" class="btn-gray" style="display:none">Cancelar edição</button></div>
+      <button id="btnCriarCaminhosPadrao" class="btn-yellow">Criar caminhos padrão</button>
+      <p id="contadorCaminhos" class="contador">Carregando caminhos...</p>
+      <div id="listaCaminhos" class="lista"></div>
+    </div>
+
+    <div class="box">
+      <h3>📂 Gerenciar categorias</h3>
+      <p class="help">A categoria define o caminho padrão das imagens e vídeos dos produtos.</p>
+
+      <div class="grid">
+        <div><label>Nome da categoria</label><input id="catNome" placeholder="Ex: Shopee"></div>
+        <div><label>Slug / caminho curto</label><input id="catSlug" placeholder="Ex: shopee"></div>
+      </div>
+
+      <div class="grid">
+        <div><label>Tipo conectado</label><select id="catTipo"><option value="produto">produto</option><option value="cakto">cakto</option><option value="digital">digital</option><option value="afiliado">afiliado</option></select></div>
+        <div><label>Ordem</label><input id="catOrdem" type="number" placeholder="Ex: 3"></div>
+      </div>
+
+      <div class="grid">
+        <div><label>Caminho das imagens</label><select id="catImgSelect"></select><input id="catImgPath" placeholder="Ex: imagens/shopee/"></div>
+        <div><label>Extensão das imagens</label><select id="catImgExt"><option value=".jpg">.jpg</option><option value=".png">.png</option><option value=".webp">.webp</option><option value=".jpeg">.jpeg</option></select></div>
+      </div>
+
+      <div class="grid">
+        <div><label>Caminho dos vídeos</label><select id="catVidSelect"></select><input id="catVidPath" placeholder="Ex: videos/shopee/"></div>
+        <div><label>Extensão dos vídeos</label><select id="catVidExt"><option value=".mp4">.mp4</option><option value=".webm">.webm</option></select></div>
+      </div>
+
+      <div class="grid">
+        <div><label>Caminho dos ícones</label><select id="catIconPathSelect"></select><input id="catIconPath" placeholder="Ex: imagens/icones/"></div>
+        <div><label>Extensão do ícone</label><select id="catIconExt"><option value=".svg">.svg</option><option value=".png">.png</option><option value=".webp">.webp</option><option value=".jpg">.jpg</option></select></div>
+      </div>
+
+      <label>Ícone da categoria</label><input id="catIcon" placeholder="Ex: package ou shopping-cart">
+      <div id="previewIcone" class="previewbox">Ícone final: imagens/icones/package.svg</div>
+
+      <div class="check"><input type="checkbox" id="catAtiva" checked><label for="catAtiva" style="margin:0">Categoria ativa na loja</label></div>
+      <div class="grid"><button id="btnSalvarCategoria" class="btn-green">Salvar categoria</button><button id="btnCancelarCategoria" class="btn-gray" style="display:none">Cancelar edição</button></div>
+      <button id="btnCriarCategoriasPadrao" class="btn-yellow">Criar categorias padrão Mercado Livre e Cakto</button>
+    </div>
+
+    <div class="box">
+      <h3>📁 Categorias criadas</h3>
+      <p id="contadorCategorias" class="contador">Carregando categorias...</p>
+      <div id="listaCategorias" class="lista"></div>
+    </div>
+  </section>
+
+  <section id="formProduto" class="area">
+    <div class="box">
+      <h3>📌 Adicionar / editar produto</h3>
+      <label>Nome</label><input id="nome" placeholder="Ex: Fone Bluetooth TWS">
+      <label>Descrição</label><textarea id="descricao" placeholder="Descrição do produto"></textarea>
+      <div class="grid"><div><label>Preço</label><input id="preco" placeholder="Ex: 29,90 ou R$ 29,90"></div><div><label>Preço antigo</label><input id="precoAntigo" placeholder="Ex: 59,90"></div></div>
+      <label>Categoria</label><select id="categoria"></select>
+      <label>Link de compra</label><input id="link" placeholder="https://...">
+    </div>
+
+    <div class="box">
+      <h3>🔥 Controle de venda</h3>
+      <div class="check"><input type="checkbox" id="destaque"><label for="destaque" style="margin:0">Produto destaque / oferta do dia</label></div>
+      <label>Tipo de destaque</label><select id="tipoDestaqueSelect"><option value="">Escolher...</option><option>Oferta do Dia</option><option>Produto em destaque</option><option>Mais vendido da semana</option><option>Escolha da Zyqen</option><option>Promoção especial</option><option>Lançamento</option><option>Imperdível</option></select><input id="tipoDestaque" placeholder="Ou escreva manualmente">
+      <label>Selo</label><select id="seloSelect"><option value="">Escolher...</option><option>Oferta</option><option>Mais vendido</option><option>Produto digital</option><option>Frete rápido</option><option>Promoção</option><option>Top avaliação</option><option>Recomendado</option><option>Novidade</option><option>Preço baixo</option></select><input id="selo" placeholder="Ou escreva manualmente">
+      <label>Texto de urgência</label><select id="urgenciaSelect"><option value="">Escolher...</option><option>🔥 Oferta por tempo limitado</option><option>⚡ Produto muito procurado</option><option>⭐ Produto bem avaliado</option><option>💰 Comece hoje no digital</option><option>🚀 Promoção ativa agora</option><option>🛒 Últimas unidades em oferta</option><option>🎯 Oferta selecionada</option><option>✅ Boa opção para comprar hoje</option></select><input id="urgencia" placeholder="Ou escreva manualmente">
+      <label>Texto do botão</label><select id="botaoSelect"><option value="">Escolher...</option><option>Comprar agora</option><option>Ver oferta no Mercado Livre</option><option>Comprar com desconto agora</option><option>Quero acessar agora</option><option>Quero começar agora 💰</option><option>Ver produto oficial</option><option>Aproveitar oferta</option></select><input id="botao" placeholder="Ou escreva manualmente">
+      <div class="grid"><div><label>Tipo</label><select id="tipo"><option value="produto">produto</option><option value="cakto">cakto</option><option value="digital">digital</option><option value="afiliado">afiliado</option></select></div><div><label>Nível de preço</label><div class="check"><input type="checkbox" id="nivelPrecoAuto" checked><label for="nivelPrecoAuto" style="margin:0">Detectar automaticamente</label></div><select id="nivelPreco"><option value="baixo">baixo</option><option value="medio">medio</option><option value="alto">alto</option></select></div></div>
+      <div class="check"><input type="checkbox" id="recomendado" checked><label for="recomendado" style="margin:0">Produto recomendado</label></div>
+      <div class="check"><input type="checkbox" id="ativoProduto" checked><label for="ativoProduto" style="margin:0">Produto ativo no site</label></div>
+    </div>
+
+    <div class="box">
+      <h3>🖼️ Imagens</h3>
+      <p class="help">Uma imagem por linha. Digite só o nome: <strong>fone1</strong>. O painel completa caminho e extensão.</p>
+      <div class="grid"><div><label>Caminho das imagens</label><select id="prodImgPath"></select></div><div><label>Extensão</label><select id="prodImgExt"><option value="__categoria__">Usar extensão da categoria</option><option value=".jpg">.jpg</option><option value=".png">.png</option><option value=".webp">.webp</option><option value=".jpeg">.jpeg</option></select></div></div>
+      <textarea id="imagens" placeholder="fone1&#10;fone2"></textarea>
+      <div id="previewImagens" class="previewbox">Prévia das imagens finais aparecerá aqui.</div>
+      <button id="btnTestarImagens" type="button" class="btn-blue">Testar imagens</button>
+    </div>
+
+    <div class="box">
+      <h3>🎥 Vídeos</h3>
+      <p class="help">Um vídeo por linha. Digite só o nome: <strong>video1</strong>. O painel completa caminho e extensão.</p>
+      <div class="grid"><div><label>Caminho dos vídeos</label><select id="prodVidPath"></select></div><div><label>Extensão</label><select id="prodVidExt"><option value="__categoria__">Usar extensão da categoria</option><option value=".mp4">.mp4</option><option value=".webm">.webm</option></select></div></div>
+      <textarea id="videos" placeholder="video1&#10;video2"></textarea>
+      <div id="previewVideos" class="previewbox">Prévia dos vídeos finais aparecerá aqui.</div>
+      <button id="btnTestarVideos" type="button" class="btn-blue">Testar vídeos</button>
+    </div>
+
+    <div id="resultadoTeste" class="resultado"></div>
+
+    <div class="box"><h3>📋 Detalhes</h3><textarea id="detalhes" placeholder="Conexão Bluetooth&#10;Alta qualidade"></textarea></div>
+
+    <div class="box">
+      <h3>⚠️ Observações</h3>
+      <label>Escolher observação pronta</label>
+      <select id="observacaoSelect"><option value="">Escolher...</option><option>Confira as informações completas na página oficial antes da compra</option><option>Preço e disponibilidade podem mudar na plataforma oficial</option><option>A compra é feita diretamente pela plataforma oficial</option><option>O resultado depende da aplicação do conteúdo</option><option>Verifique compatibilidade, medidas e detalhes antes da compra</option><option>Este site atua apenas como afiliado e redireciona para a loja oficial</option><option>Não coletamos dados de pagamento</option><option>Produto sujeito a alteração de estoque</option></select>
+      <button id="btnAddObservacao" type="button">Adicionar observação</button>
+      <textarea id="observacoes" placeholder="Preço pode mudar"></textarea>
+    </div>
+
+    <div class="box">
+      <h3>⭐ Avaliações</h3>
+      <div class="grid3"><div><label>Avaliação</label><input id="avaliacao" placeholder="4.8"></div><div><label>Número de avaliações</label><input id="avaliacoes" placeholder="1200"></div><div><label>Vendidos</label><input id="vendidos" placeholder="500"></div></div>
+    </div>
+
+    <div class="box">
+      <h3>💬 Comentários automáticos/manuais</h3>
+      <label>Quantidade automática</label><input id="qtdComentarios" placeholder="Ex: 5">
+      <label>Ou manual</label><textarea id="comentariosManuais" placeholder="João | Muito bom | 5&#10;Maria | Gostei bastante | 4"></textarea>
+    </div>
+
+    <div class="box"><button id="btnSalvarProduto">🔥 Salvar no Firebase</button><button id="btnCancelarProduto" class="btn-gray" style="display:none">Cancelar edição</button></div>
+  </section>
+
+  <section id="fakes" class="area">
+    <div class="box">
+      <h3>🤖 Gerar comentários fake</h3>
+      <label>Produto</label><select id="produtoFakeSelect"><option value="">Carregando...</option></select>
+      <div class="grid3"><div><label>Quantidade</label><input id="qtdFake" type="number" min="1" value="3"></div><div><label>Nota mínima</label><select id="notaMinFake"><option value="5">5</option><option value="4" selected>4</option><option value="3">3</option></select></div><div><label>Nota máxima</label><select id="notaMaxFake"><option value="5" selected>5</option><option value="4">4</option><option value="3">3</option></select></div></div>
+      <div class="check"><input type="checkbox" id="fakeComErros"><label for="fakeComErros" style="margin:0">Gerar alguns comentários com erros de digitação</label></div>
+      <div class="grid"><button id="btnGerarFake" class="btn-green">Gerar prévia</button><button id="btnSalvarFake" class="btn-green">Salvar comentários gerados</button></div>
+      <div id="previewFakes" class="lista"></div>
+    </div>
+
+    <div class="box">
+      <h3>🧩 Editar/excluir comentários fake</h3>
+      <div class="toolbar"><input id="buscaFakes" placeholder="Buscar comentário fake..."><select id="filtroFakes"><option value="Todos">Todos</option><option value="5">5 estrelas</option><option value="4">4 estrelas</option><option value="3">3 estrelas</option><option value="2">2 estrelas</option><option value="1">1 estrela</option></select></div>
+      <p id="contadorFakes" class="contador">Carregando comentários fake...</p>
+      <div id="listaFakes"></div>
+    </div>
+  </section>
+
+  <section id="reais" class="area">
+    <div class="box">
+      <h3>💬 Comentários reais recebidos</h3>
+      <div class="toolbar"><input id="buscaReais" placeholder="Buscar comentário real..."><select id="filtroReais"><option value="Todos">Todos</option><option value="5">5 estrelas</option><option value="4">4 estrelas</option><option value="3">3 estrelas</option><option value="2">2 estrelas</option><option value="1">1 estrela</option></select></div>
+      <p id="contadorReais" class="contador">Carregando comentários...</p>
+      <div id="listaReais"></div>
+    </div>
+  </section>
+</div>
+
+<script type="module">
+import { db, auth } from "./firebase.js";
+import { collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+import { signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
+
+const $ = id => document.getElementById(id);
+const EMAIL_ADMIN = "zyqenstore@gmail.com";
+
+let produtos = [];
+let categorias = [];
+let caminhos = [];
+let editProdutoId = null;
+let editProdutoOriginal = null;
+let editCategoriaId = null;
+let editCaminhoId = null;
+let acaoConfirmada = null;
+let fakesTemp = [];
+let editComentario = null;
+let fakeAberto = null;
+let realAberto = null;
+let unsubProdutos = null;
+let unsubCategorias = null;
+let unsubCaminhos = null;
+let unsubHistoricoCliques = null;
+let historicoCliques = [];
+
+const CAMINHOS_PADRAO = [
+  {nome:"Mercado imagens",tipo:"imagem",caminho:"imagens/mercado/",extensao:".jpg",ordem:1,ativo:true},
+  {nome:"Cakto imagens",tipo:"imagem",caminho:"imagens/cakto/",extensao:".jpg",ordem:2,ativo:true},
+  {nome:"Mercado vídeos",tipo:"video",caminho:"videos/mercado/",extensao:".mp4",ordem:3,ativo:true},
+  {nome:"Cakto vídeos",tipo:"video",caminho:"videos/cakto/",extensao:".mp4",ordem:4,ativo:true},
+  {nome:"Ícones Lucide",tipo:"icone",caminho:"imagens/icones/",extensao:".svg",ordem:5,ativo:true}
+];
+
+const CATEGORIAS_PADRAO = [
+  {nome:"Mercado Livre",slug:"mercado-livre",tipo:"produto",caminhoImagens:"imagens/mercado/",caminhoVideos:"videos/mercado/",caminhoIcones:"imagens/icones/",extImagem:".jpg",extVideo:".mp4",extIcone:".svg",icone:"imagens/icones/shopping-cart.svg",ordem:1,ativa:true},
+  {nome:"Cakto",slug:"cakto",tipo:"cakto",caminhoImagens:"imagens/cakto/",caminhoVideos:"videos/cakto/",caminhoIcones:"imagens/icones/",extImagem:".jpg",extVideo:".mp4",extIcone:".svg",icone:"imagens/icones/package.svg",ordem:2,ativa:true}
+];
+
+function abrirArea(id){
+  document.querySelectorAll(".area").forEach(a=>a.classList.remove("ativa"));
+  document.querySelectorAll(".menu-btn").forEach(b=>b.classList.toggle("ativo",b.dataset.area===id));
+  $(id)?.classList.add("ativa");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+document.querySelectorAll(".menu-btn").forEach(btn=>btn.addEventListener("click",()=>abrirArea(btn.dataset.area)));
+
+function mostrarStatus(msg,tipo="ok"){
+  $("status").innerHTML = `<div class="aviso ${tipo==="erro"?"erro":""}">${msg}</div>`;
+  setTimeout(()=>$("status").innerHTML="",6000);
+}
+
+function proteger(){
+  if(!auth.currentUser || auth.currentUser.email!==EMAIL_ADMIN){
+    mostrarStatus("Você precisa estar logado com o e-mail admin.","erro");
+    return false;
+  }
+  return true;
+}
+
+async function entrar(){
+  const email=$("emailAdmin").value.trim();
+  const senha=$("senhaAdmin").value;
+  if(!email || !senha){alert("Digite o e-mail e a senha.");return;}
+  $("btnEntrar").disabled=true;$("btnEntrar").textContent="Entrando...";
+  try{
+    const c=await signInWithEmailAndPassword(auth,email,senha);
+    if(c.user.email!==EMAIL_ADMIN){await signOut(auth);alert("Este e-mail não tem permissão.");}
+  }catch(e){console.error(e);alert("Erro ao entrar. Confira e-mail e senha.");}
+  $("btnEntrar").disabled=false;$("btnEntrar").textContent="Entrar no painel";
+}
+
+async function sair(){await signOut(auth);}
+
+onAuthStateChanged(auth,user=>{
+  if(user && user.email===EMAIL_ADMIN){
+    $("login").classList.add("oculto");
+    $("usuarioLogado").textContent=`Logado como: ${user.email}`;
+    if(!unsubCaminhos) listarCaminhos();
+    if(!unsubCategorias) listarCategorias();
+    if(!unsubProdutos) listarProdutos();
+    if(!unsubHistoricoCliques) listarHistoricoCliques();
+    abrirArea("produtos");
+  }else{
+    $("login").classList.remove("oculto");
+    $("usuarioLogado").textContent="";
+    produtos=[];categorias=[];caminhos=[];historicoCliques=[];
+    renderTudo();
+    if(unsubProdutos){unsubProdutos();unsubProdutos=null;}
+    if(unsubCategorias){unsubCategorias();unsubCategorias=null;}
+    if(unsubCaminhos){unsubCaminhos();unsubCaminhos=null;}
+    if(unsubHistoricoCliques){unsubHistoricoCliques();unsubHistoricoCliques=null;}
+  }
+});
+
+function esc(t){return String(t||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");}
+function linhas(t){return String(t||"").split("\n").map(l=>l.trim()).filter(Boolean);}
+function idNovo(){return Date.now()+Math.floor(Math.random()*999);}
+function slugify(t){return String(t||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");}
+function barra(c){c=String(c||"").trim();return !c?"":c.endsWith("/")?c:c+"/";}
+function ext(e){e=String(e||"").trim().toLowerCase();return !e?"":e.startsWith(".")?e:"."+e;}
+function temExt(c){return /\.[a-z0-9]{2,5}(\?.*)?$/i.test(String(c||""));}
+function url(c){return /^https?:\/\//i.test(String(c||""));}
+function completar(nome,base,ex){
+  let n=String(nome||"").trim();base=barra(base);ex=ext(ex);
+  if(!n)return "";
+  if(url(n))return n;
+  if(n.includes("/")||n.includes("\\"))return temExt(n)?n:n+ex;
+  return base+n+(temExt(n)?"":ex);
+}
+function limparPrefixo(caminho,base,ex){
+  let v=String(caminho||"");base=barra(base||"");ex=ext(ex||"");
+  if(base && v.startsWith(base))v=v.replace(base,"");
+  if(ex && v.toLowerCase().endsWith(ex.toLowerCase()))v=v.slice(0,-ex.length);
+  return v;
+}
+
+function normCaminho(c){return {docId:c.docId||"",nome:c.nome||"Caminho",tipo:c.tipo||"imagem",caminho:barra(c.caminho||""),extensao:ext(c.extensao||".jpg"),ordem:Number(c.ordem)||999,ativo:c.ativo!==false};}
+function normCategoria(c){
+  const nome=c.nome||"Categoria", slug=c.slug||slugify(nome);
+  return {docId:c.docId||"",nome,slug,tipo:c.tipo||"produto",caminhoImagens:barra(c.caminhoImagens||`imagens/${slug}/`),caminhoVideos:barra(c.caminhoVideos||`videos/${slug}/`),caminhoIcones:barra(c.caminhoIcones||"imagens/icones/"),extImagem:ext(c.extImagem||".jpg"),extVideo:ext(c.extVideo||".mp4"),extIcone:ext(c.extIcone||".svg"),icone:c.icone||"imagens/icones/package.svg",ordem:Number(c.ordem)||999,ativa:c.ativa!==false};
+}
+
+function caminhosUso(tipo){return (caminhos.length?caminhos:CAMINHOS_PADRAO).filter(c=>c.tipo===tipo&&c.ativo!==false).sort((a,b)=>(Number(a.ordem)||999)-(Number(b.ordem)||999));}
+function categoriasUso(){return (categorias.length?categorias:CATEGORIAS_PADRAO).filter(c=>c.ativa!==false).sort((a,b)=>(Number(a.ordem)||999)-(Number(b.ordem)||999));}
+function catAtual(){return categoriasUso().find(c=>c.slug===$("categoria").value)||categoriasUso()[0]||CATEGORIAS_PADRAO[0];}
+
+function listarCaminhos(){
+  unsubCaminhos=onSnapshot(collection(db,"caminhos"),snap=>{
+    caminhos=snap.docs.map(d=>normCaminho({docId:d.id,...d.data()}));
+    renderCaminhos();atualizarSelectsCaminhos();previewMidia();previewIcone();
+  },e=>{console.error(e);mostrarStatus("Erro ao carregar caminhos.","erro");});
+}
+
+function listarCategorias(){
+  unsubCategorias=onSnapshot(collection(db,"categorias"),snap=>{
+    categorias=snap.docs.map(d=>normCategoria({docId:d.id,...d.data()}));
+    renderCategorias();atualizarSelectsCategorias();atualizarSelectsCaminhos();renderProdutos();
+  },e=>{console.error(e);mostrarStatus("Erro ao carregar categorias.","erro");});
+}
+
+function listarProdutos(){
+  unsubProdutos=onSnapshot(collection(db,"produtos"),snap=>{
+    produtos=snap.docs.map(d=>({docId:d.id,...d.data()}));
+    renderProdutos();renderResumoCliques();renderComentarios();renderFakes();selectProdutoFake();
+  },e=>{console.error(e);mostrarStatus("Erro ao carregar produtos.","erro");});
+}
+
+function listarHistoricoCliques(){
+  unsubHistoricoCliques=onSnapshot(collection(db,"historicoCliques"),snap=>{
+    historicoCliques=snap.docs.map(d=>({docId:d.id,...d.data()}));
+    renderHistoricoCliques();
+  },e=>{
+    console.error(e);
+    mostrarStatus("Erro ao carregar histórico de cliques.","erro");
+  });
+}
+
+function dataHistorico(item){
+  const d=item.zeradoEm;
+  if(d && typeof d.toDate==="function")return d.toDate();
+  if(d && d.seconds)return new Date(d.seconds*1000);
+  if(item.criadoEm && typeof item.criadoEm==="string")return new Date(item.criadoEm);
+  return new Date(0);
+}
+
+function formatarDataHistorico(item){
+  const d=dataHistorico(item);
+  if(!d || isNaN(d.getTime()) || d.getTime()===0)return "Agora / aguardando servidor";
+  return d.toLocaleString("pt-BR");
+}
+
+function abrirHistoricoCliques(){
+  renderHistoricoCliques();
+  $("modalHistoricoCliques").classList.add("ativo");
+}
+
+function fecharHistoricoCliques(){
+  $("modalHistoricoCliques").classList.remove("ativo");
+}
+
+function renderHistoricoCliques(){
+  const lista=$("listaHistoricoCliques");
+  if(!lista)return;
+
+  const itens=historicoCliques
+    .slice()
+    .sort((a,b)=>dataHistorico(b)-dataHistorico(a))
+    .slice(0,80);
+
+  lista.innerHTML=itens.length?itens.map(h=>{
+    const tipo=h.tipo==="todos"?"Todos os produtos":"Produto";
+    const total=nClique(h.cliquesTotal);
+    let produtosHtml="";
+
+    if(Array.isArray(h.produtosZerados) && h.produtosZerados.length){
+      produtosHtml=`
+        <div class="historico-produtos">
+          <strong>Produtos zerados:</strong><br>
+          ${h.produtosZerados.slice(0,20).map(p=>`${esc(p.nome||"Produto")} — ${nClique(p.total)} clique(s)`).join("<br>")}
+          ${h.produtosZerados.length>20?`<br>+ ${h.produtosZerados.length-20} produto(s)`:""}
+        </div>
+      `;
+    }
+
+    return `
+      <div class="historico-item">
+        <div class="historico-top">
+          <div>
+            <strong>${tipo}</strong>
+            <div class="historico-detalhes">
+              ${h.produtoNome?`Produto: ${esc(h.produtoNome)}<br>`:""}
+              Zerado por: ${esc(h.zeradoPor||"admin")}<br>
+              Total antes de zerar: <strong>${total}</strong>
+            </div>
+          </div>
+          <div class="historico-data">${formatarDataHistorico(h)}</div>
+        </div>
+
+        <div class="historico-detalhes">
+          Comprar: ${nClique(h.cliquesComprar)} • WhatsApp: ${nClique(h.cliquesWhatsapp)} • Compartilhar: ${nClique(h.cliquesCompartilhar)} • Instagram: ${nClique(h.cliquesInstagram)}
+        </div>
+
+        ${produtosHtml}
+      </div>
+    `;
+  }).join(""):`<p class="help">Ainda não existe histórico de zeragem.</p>`;
+}
+
+function renderTudo(){renderCaminhos();renderCategorias();atualizarSelectsCategorias();atualizarSelectsCaminhos();renderProdutos();renderResumoCliques();renderComentarios();renderFakes();selectProdutoFake();}
+
+function preencherSelectCaminho(selectId,tipo,valor){
+  const s=$(selectId); if(!s)return;
+  const atual=valor||s.value;
+  s.innerHTML=`<option value="">Escolher caminho salvo...</option>`+caminhosUso(tipo).map(c=>`<option value="${esc(c.caminho)}" data-ext="${esc(c.extensao)}">${esc(c.nome)} — ${esc(c.caminho)} ${esc(c.extensao)}</option>`).join("");
+  if([...s.options].some(o=>o.value===atual))s.value=atual;
+}
+
+function preencherSelectProduto(selectId,tipo){
+  const s=$(selectId); if(!s)return;
+  const atual=s.value;
+  s.innerHTML=`<option value="__categoria__">Usar caminho da categoria</option>`+caminhosUso(tipo).map(c=>`<option value="${esc(c.caminho)}" data-ext="${esc(c.extensao)}">${esc(c.nome)} — ${esc(c.caminho)} ${esc(c.extensao)}</option>`).join("");
+  if([...s.options].some(o=>o.value===atual))s.value=atual;
+}
+
+function atualizarSelectsCaminhos(){
+  preencherSelectCaminho("catImgSelect","imagem",$("catImgPath").value);
+  preencherSelectCaminho("catVidSelect","video",$("catVidPath").value);
+  preencherSelectCaminho("catIconPathSelect","icone",$("catIconPath").value);
+  preencherSelectProduto("prodImgPath","imagem");
+  preencherSelectProduto("prodVidPath","video");
+}
+
+function atualizarSelectsCategorias(){
+  const cats=categoriasUso();
+  const vc=$("categoria").value, vf=$("filtroCategoriaAdmin").value;
+  $("categoria").innerHTML=cats.map(c=>`<option value="${c.slug}">${esc(c.nome)}</option>`).join("");
+  if(cats.some(c=>c.slug===vc))$("categoria").value=vc;
+  $("filtroCategoriaAdmin").innerHTML=`<option value="Todos">Todos</option>${cats.map(c=>`<option value="${c.slug}">${esc(c.nome)}</option>`).join("")}<option value="Destaques">Somente destaques</option>`;
+  if(vf==="Todos"||vf==="Destaques"||cats.some(c=>c.slug===vf))$("filtroCategoriaAdmin").value=vf;
+  padroesCategoria();
+}
+
+function aplicarPath(selectId,inputId,extId){
+  const s=$(selectId), inp=$(inputId), ex=$(extId);
+  if(s.value)inp.value=s.value;
+  const op=s.options[s.selectedIndex];
+  if(op?.dataset.ext && ex)ex.value=op.dataset.ext;
+  previewIcone();
+}
+
+function montarCaminho(){
+  return {nome:$("camNome").value.trim(),tipo:$("camTipo").value,caminho:barra($("camCaminho").value.trim()),extensao:ext($("camExt").value),ordem:Number($("camOrdem").value)||999,ativo:$("camAtivo").checked,atualizadoEm:serverTimestamp()};
+}
+
+async function salvarCaminho(){
+  if(!proteger())return;
+  const c=montarCaminho();
+  if(!c.nome||!c.caminho){mostrarStatus("Preencha nome e caminho.","erro");return;}
+  $("btnSalvarCaminho").disabled=true;
+  try{
+    if(editCaminhoId)await updateDoc(doc(db,"caminhos",editCaminhoId),c);
+    else{c.criadoEm=serverTimestamp();await addDoc(collection(db,"caminhos"),c);}
+    limparCaminho();mostrarStatus("✅ Caminho salvo!");
+  }catch(e){console.error(e);mostrarStatus("Erro ao salvar caminho.","erro");}
+  $("btnSalvarCaminho").disabled=false;
+}
+
+function limparCaminho(){
+  ["camNome","camCaminho","camOrdem"].forEach(id=>$(id).value="");
+  $("camTipo").value="imagem";$("camExt").value=".jpg";$("camAtivo").checked=true;
+  editCaminhoId=null;$("btnSalvarCaminho").textContent="Salvar caminho";$("btnCancelarCaminho").style.display="none";
+}
+
+function editarCaminho(id){
+  const c=caminhos.find(x=>x.docId===id); if(!c)return;
+  editCaminhoId=id;$("camNome").value=c.nome;$("camTipo").value=c.tipo;$("camExt").value=c.extensao;$("camCaminho").value=c.caminho;$("camOrdem").value=c.ordem||"";$("camAtivo").checked=c.ativo!==false;
+  $("btnSalvarCaminho").textContent="Atualizar caminho";$("btnCancelarCaminho").style.display="block";abrirArea("categorias");
+}
+
+function deletarCaminho(id){
+  const c=caminhos.find(x=>x.docId===id);
+  confirmar(`Excluir o caminho "${c?.nome||""}"?`,async()=>{await deleteDoc(doc(db,"caminhos",id));mostrarStatus("🗑️ Caminho deletado.");});
+}
+
+async function criarCaminhosPadrao(){
+  if(!proteger())return;
+  confirmar("Criar caminhos padrão?",async()=>{
+    for(const c of CAMINHOS_PADRAO){
+      if(!caminhos.some(x=>x.tipo===c.tipo&&x.caminho===c.caminho)){
+        await addDoc(collection(db,"caminhos"),{...c,criadoEm:serverTimestamp(),atualizadoEm:serverTimestamp()});
+      }
+    }
+    mostrarStatus("✅ Caminhos padrão criados/verificados.");
+  });
+}
+
+function renderCaminhos(){
+  $("contadorCaminhos").textContent=`${caminhos.length} caminho(s) cadastrado(s).`;
+  $("listaCaminhos").innerHTML=caminhos.length?caminhos.slice().sort((a,b)=>(a.ordem||999)-(b.ordem||999)).map(c=>`
+    <div class="card">
+      <h4>${esc(c.nome)}</h4>
+      <span class="badge">${esc(c.tipo)}</span><span class="badge">${esc(c.extensao)}</span>${c.ativo?`<span class="badge">Ativo</span>`:`<span class="badge redbadge">Inativo</span>`}
+      <p><strong>Caminho:</strong> ${esc(c.caminho)}</p>
+      <div class="acoes"><button class="edit" onclick="editarCaminho('${c.docId}')">Editar</button><button class="del" onclick="deletarCaminho('${c.docId}')">Deletar</button></div>
+    </div>`).join(""):`<p class="help">Nenhum caminho salvo. Clique em criar caminhos padrão.</p>`;
+}
+
+function montarCategoria(){
+  const nome=$("catNome").value.trim();
+  const slug=slugify($("catSlug").value.trim()||nome);
+  const caminhoIcones=barra($("catIconPath").value.trim()||"imagens/icones/");
+  const extIcone=ext($("catIconExt").value||".svg");
+  const icone=completar($("catIcon").value.trim()||"package",caminhoIcones,extIcone);
+  return {nome,slug,tipo:$("catTipo").value,caminhoImagens:barra($("catImgPath").value.trim()||`imagens/${slug}/`),caminhoVideos:barra($("catVidPath").value.trim()||`videos/${slug}/`),caminhoIcones,extImagem:ext($("catImgExt").value||".jpg"),extVideo:ext($("catVidExt").value||".mp4"),extIcone,icone,ordem:Number($("catOrdem").value)||999,ativa:$("catAtiva").checked,atualizadoEm:serverTimestamp()};
+}
+
+async function salvarCategoria(){
+  if(!proteger())return;
+  const c=montarCategoria();
+  if(!c.nome){mostrarStatus("Digite o nome da categoria.","erro");return;}
+  if(categorias.some(x=>x.slug===c.slug&&x.docId!==editCategoriaId)){mostrarStatus("Já existe categoria com esse slug.","erro");return;}
+  if(!(await testarArquivo(c.icone,"icone"))){mostrarStatus(`Ícone não encontrado: ${c.icone}`,"erro");return;}
+  $("btnSalvarCategoria").disabled=true;
+  try{
+    if(editCategoriaId)await updateDoc(doc(db,"categorias",editCategoriaId),c);
+    else{c.criadoEm=serverTimestamp();await addDoc(collection(db,"categorias"),c);}
+    limparCategoria();mostrarStatus("✅ Categoria salva!");
+  }catch(e){console.error(e);mostrarStatus("Erro ao salvar categoria.","erro");}
+  $("btnSalvarCategoria").disabled=false;
+}
+
+function limparCategoria(){
+  ["catNome","catSlug","catImgPath","catVidPath","catIconPath","catIcon","catOrdem"].forEach(id=>$(id).value="");
+  $("catTipo").value="produto";$("catImgExt").value=".jpg";$("catVidExt").value=".mp4";$("catIconExt").value=".svg";$("catAtiva").checked=true;
+  editCategoriaId=null;$("btnSalvarCategoria").textContent="Salvar categoria";$("btnCancelarCategoria").style.display="none";atualizarSelectsCaminhos();previewIcone();
+}
+
+function editarCategoria(id){
+  const c=categorias.find(x=>x.docId===id); if(!c)return;
+  editCategoriaId=id;$("catNome").value=c.nome;$("catSlug").value=c.slug;$("catTipo").value=c.tipo;$("catImgPath").value=c.caminhoImagens;$("catVidPath").value=c.caminhoVideos;$("catIconPath").value=c.caminhoIcones;$("catImgExt").value=c.extImagem;$("catVidExt").value=c.extVideo;$("catIconExt").value=c.extIcone;$("catIcon").value=limparPrefixo(c.icone,c.caminhoIcones,c.extIcone);$("catOrdem").value=c.ordem||"";$("catAtiva").checked=c.ativa!==false;
+  $("btnSalvarCategoria").textContent="Atualizar categoria";$("btnCancelarCategoria").style.display="block";previewIcone();abrirArea("categorias");
+}
+
+function deletarCategoria(id){
+  const c=categorias.find(x=>x.docId===id);
+  confirmar(`Excluir a categoria "${c?.nome||""}"?`,async()=>{await deleteDoc(doc(db,"categorias",id));mostrarStatus("🗑️ Categoria deletada.");});
+}
+
+async function criarCategoriasPadrao(){
+  if(!proteger())return;
+  confirmar("Criar categorias padrão Mercado Livre e Cakto?",async()=>{
+    for(const c of CATEGORIAS_PADRAO){
+      if(!categorias.some(x=>x.slug===c.slug)){
+        await addDoc(collection(db,"categorias"),{...c,criadoEm:serverTimestamp(),atualizadoEm:serverTimestamp()});
+      }
+    }
+    mostrarStatus("✅ Categorias padrão criadas/verificadas.");
+  });
+}
+
+function renderCategorias(){
+  $("contadorCategorias").textContent=`${categorias.length} categoria(s) cadastrada(s).`;
+  $("listaCategorias").innerHTML=categorias.length?categorias.slice().sort((a,b)=>(a.ordem||999)-(b.ordem||999)).map(c=>`
+    <div class="card">
+      <h4>${esc(c.nome)}</h4>
+      <span class="badge">${esc(c.slug)}</span><span class="badge">${esc(c.tipo)}</span>${c.ativa?`<span class="badge">Ativa</span>`:`<span class="badge redbadge">Inativa</span>`}
+      <p><strong>Imagens:</strong> ${esc(c.caminhoImagens)} ${esc(c.extImagem)}</p>
+      <p><strong>Vídeos:</strong> ${esc(c.caminhoVideos)} ${esc(c.extVideo)}</p>
+      <p><strong>Ícone:</strong> ${esc(c.icone)}</p>
+      <div class="acoes"><button class="edit" onclick="editarCategoria('${c.docId}')">Editar</button><button class="del" onclick="deletarCategoria('${c.docId}')">Deletar</button></div>
+    </div>`).join(""):`<p class="help">Nenhuma categoria criada ainda.</p>`;
+}
+
+function baseImg(){const c=catAtual(),v=$("prodImgPath").value;return v&&v!=="__categoria__"?barra(v):barra(c.caminhoImagens);}
+function baseVid(){const c=catAtual(),v=$("prodVidPath").value;return v&&v!=="__categoria__"?barra(v):barra(c.caminhoVideos);}
+function extImg(){const c=catAtual(),v=$("prodImgExt").value;return v==="__categoria__"?c.extImagem:v;}
+function extVid(){const c=catAtual(),v=$("prodVidExt").value;return v==="__categoria__"?c.extVideo:v;}
+function imagensCampo(){return linhas($("imagens").value).map(x=>completar(x,baseImg(),extImg())).filter(Boolean);}
+function videosCampo(){return linhas($("videos").value).map(x=>completar(x,baseVid(),extVid())).filter(Boolean);}
+function previewMidia(){
+  const imgs=imagensCampo(), vids=videosCampo();
+  $("previewImagens").textContent=imgs.length?"Prévia: "+imgs.join(" | "):"Prévia das imagens finais aparecerá aqui.";
+  $("previewVideos").textContent=vids.length?"Prévia: "+vids.join(" | "):"Prévia dos vídeos finais aparecerá aqui.";
+}
+function previewIcone(){
+  const final=completar($("catIcon").value.trim()||"package",$("catIconPath").value.trim()||"imagens/icones/",$("catIconExt").value||".svg");
+  $("previewIcone").textContent="Ícone final: "+final;
+}
+
+function testarImagem(u){return new Promise(r=>{const i=new Image();i.onload=()=>r(true);i.onerror=()=>r(false);i.src=u+(u.includes("?")?"&":"?")+"v="+Date.now();});}
+async function testarArquivo(u,tipo){
+  if(!u)return false;
+  if(tipo==="imagem"||tipo==="icone")return await testarImagem(u);
+  try{const h=await fetch(u,{method:"HEAD",cache:"no-store"});if(h.ok)return true;}catch(e){}
+  try{const g=await fetch(u,{cache:"no-store"});return g.ok;}catch(e){return false;}
+}
+async function testarLista(lista,tipo){const erros=[];for(const u of lista){if(!(await testarArquivo(u,tipo)))erros.push(u);}return erros;}
+function resultadoTeste(titulo,erros){
+  const b=$("resultadoTeste");b.classList.add("ativo");
+  if(!erros.length){b.classList.remove("erro");b.innerHTML=`<strong>✅ ${titulo}</strong><br>Todos os arquivos foram encontrados.`;return;}
+  b.classList.add("erro");b.innerHTML=`<strong>❌ ${titulo}</strong><br>Não encontrei estes arquivos:<ul>${erros.map(e=>`<li>${esc(e)}</li>`).join("")}</ul>`;
+}
+async function testarImagens(){const imgs=imagensCampo();if(!imgs.length){mostrarStatus("Digite pelo menos uma imagem.","erro");return [];}const erros=await testarLista(imgs,"imagem");resultadoTeste("Teste de imagens",erros);return erros;}
+async function testarVideos(){const vids=videosCampo();if(!vids.length){mostrarStatus("Nenhum vídeo para testar. Isso não impede salvar.","ok");return [];}const erros=await testarLista(vids,"video");resultadoTeste("Teste de vídeos",erros);return erros;}
+async function validarMidias(){const imgs=imagensCampo(), vids=videosCampo();if(!imgs.length){mostrarStatus("Adicione pelo menos uma imagem.","erro");return false;}const erros=[...(await testarLista(imgs,"imagem")),...(await testarLista(vids,"video"))];if(erros.length){resultadoTeste("Arquivos não encontrados",erros);mostrarStatus("Corrija os arquivos não encontrados antes de salvar.","erro");return false;}return true;}
+
+function preco(v){v=String(v||"").trim();if(!v)return "";if(v.toLowerCase().includes("acesso"))return v;if(v.startsWith("R$"))return v;return "R$ "+v;}
+function numPreco(v){return Number(String(v||"").replace("R$","").replace(/\./g,"").replace(",",".").replace(/[^\d.]/g,""))||0;}
+function nivelAuto(){const p=numPreco($("preco").value);if(!p)return $("nivelPreco").value||"baixo";if(p<=80)return"baixo";if(p<=250)return"medio";return"alto";}
+function atualizaNivel(){if($("nivelPrecoAuto").checked){$("nivelPreco").value=nivelAuto();$("nivelPreco").disabled=true}else $("nivelPreco").disabled=false;}
+function padroesCategoria(){const c=catAtual(),t=c.tipo||"produto";if(!$("selo").value.trim())$("selo").value=(t==="cakto"||t==="digital")?"Produto digital":"Oferta";if(!$("urgencia").value.trim())$("urgencia").value=(t==="cakto"||t==="digital")?"💰 Produto digital":"🔥 Oferta por tempo limitado";if(!$("botao").value.trim())$("botao").value=(t==="cakto"||t==="digital")?"Quero acessar agora":"Comprar agora";$("tipo").value=t;}
+
+const nomes=["Lucas Carvalho","João Pedro","Maria Lopes","Ana Clara","Carlos Eduardo","Bruna Santos","Rafael Almeida","Camila Rocha","Juliana Lima","Felipe Martins","Leticia Martins","Bruno Gomes","Gabriel Martins","Marcely Santos","Fabio Silva","Rafaela Souza","Paulo Henrique","Aline Costa","Marcos Vinicius","Larissa Mendes"];
+const frases=["Muito bom, recomendo!","Chegou certinho e gostei bastante.","Valeu muito a pena.","Qualidade top pelo preço.","Gostei bastante, compraria novamente.","Produto muito bom e fácil de comprar.","Atendeu minhas expectativas.","Achei bem melhor do que esperava.","Funciona direitinho, gostei.","Bem explicado e direto ao ponto.","Chegou conforme anunciado.","Gostei do custo-benefício.","Comprei meio desconfiado, mas gostei.","Achei simples e bom pelo valor.","Pra mim serviu muito bem.","Gostei, chegou tudo ok.","Produto bom, nada a reclamar.","Foi fácil comprar pelo link.","Gostei da indicação.","Achei bem útil no dia a dia."];
+function erroDig(t){return t.replace("Muito","Mto").replace("Chegou","Xegou").replace("certinho","certim").replace("Gostei","Gotei").replace("produto","produtto").replace(".","");}
+function fake(opts={}){const min=Math.min(Number(opts.min)||4,Number(opts.max)||5),max=Math.max(Number(opts.min)||4,Number(opts.max)||5);let texto=frases[Math.floor(Math.random()*frases.length)];if(opts.erros&&Math.random()>.35)texto=erroDig(texto);return{id:idNovo(),nome:nomes[Math.floor(Math.random()*nomes.length)],texto,nota:Math.floor(Math.random()*(max-min+1))+min,origem:"fake",criadoEm:new Date().toISOString()};}
+function comentariosForm(){const qtd=Number($("qtdComentarios").value);if(qtd){return Array.from({length:qtd},()=>fake());}const m=$("comentariosManuais").value.trim();if(!m)return[];return m.split("\n").map(l=>{const p=l.split("|");return{id:idNovo(),nome:p[0]?.trim()||"Cliente",texto:p[1]?.trim()||"",nota:Number(p[2])||5,origem:"manual",criadoEm:new Date().toISOString()}}).filter(c=>c.texto);}
+function origemComentario(c={}){return String(c.origem || c.tipo || c.status || "").trim().toLowerCase();}
+function comentarioEhReal(c={}){
+  const origem = origemComentario(c);
+  return origem === "site" || origem === "real" || origem === "cliente" || origem === "publicado";
+}
+function comentarioEhFake(c={}){
+  return !comentarioEhReal(c);
+}
+function comentarioIdAdmin(c={}, index=0, produtoDocId=""){
+  return String(c.id || c.comentarioId || c.codigo || `semid_${produtoDocId}_${index}`);
+}
+function normalizarComentarioAdmin(c={}, index=0, produtoDocId=""){
+  const origem = origemComentario(c) || "manual";
+  return {
+    ...c,
+    _comentarioIndex:index,
+    _comentarioKey:comentarioIdAdmin(c,index,produtoDocId),
+    id:c.id || c.comentarioId || c.codigo || comentarioIdAdmin(c,index,produtoDocId),
+    nome:c.nome || c.name || "Cliente",
+    texto:c.texto || c.message || c.comentario || c.descricao || "",
+    nota:Number(c.nota || c.avaliacao || c.rating) || 5,
+    origem
+  };
+}
+function comentariosTexto(coms=[]){return (Array.isArray(coms)?coms:[]).filter(c=>comentarioEhFake(c)).map(c=>`${c.nome||c.name||"Cliente"} | ${c.texto||c.message||c.comentario||""} | ${c.nota||c.avaliacao||5}`).join("\n");}
+
+function limparProduto(){
+  ["nome","descricao","preco","precoAntigo","link","selo","urgencia","botao","tipoDestaque","imagens","videos","detalhes","observacoes","avaliacao","avaliacoes","vendidos","qtdComentarios","comentariosManuais"].forEach(id=>$(id).value="");
+  const c=categoriasUso()[0]||CATEGORIAS_PADRAO[0];$("categoria").value=c.slug;$("tipo").value=c.tipo||"produto";$("nivelPreco").value="baixo";$("nivelPrecoAuto").checked=true;$("destaque").checked=false;$("recomendado").checked=true;$("ativoProduto").checked=true;$("prodImgPath").value="__categoria__";$("prodVidPath").value="__categoria__";$("prodImgExt").value="__categoria__";$("prodVidExt").value="__categoria__";
+  editProdutoId=null;editProdutoOriginal=null;$("btnSalvarProduto").textContent="🔥 Salvar no Firebase";$("btnCancelarProduto").style.display="none";$("infoEdicao").style.display="none";$("resultadoTeste").classList.remove("ativo","erro");$("resultadoTeste").innerHTML="";padroesCategoria();atualizaNivel();previewMidia();
+}
+
+function montarProduto(){
+  const nome=$("nome").value.trim(), c=catAtual();
+  const comentariosExistentes=Array.isArray(editProdutoOriginal?.comentarios)?editProdutoOriginal.comentarios:[];
+  const reais=comentariosExistentes.filter(comentarioEhReal);
+  const fakesExistentes=comentariosExistentes.filter(comentarioEhFake);
+  const novosFakes=comentariosForm();
+  const comentariosFinais=novosFakes.length?[...novosFakes,...reais]:[...fakesExistentes,...reais];
+  return{id:editProdutoOriginal?.id||idNovo(),nome,descricao:$("descricao").value.trim(),preco:preco($("preco").value),precoAntigo:$("precoAntigo").value.trim()?preco($("precoAntigo").value):null,imagens:imagensCampo(),videos:videosCampo(),link:$("link").value.trim(),categoria:c.nome,categoriaSlug:c.slug,selo:$("selo").value.trim()||((c.tipo==="cakto"||c.tipo==="digital")?"Produto digital":"Oferta"),avaliacao:Number($("avaliacao").value)||5,avaliacoes:Number($("avaliacoes").value)||0,vendidos:Number($("vendidos").value)||0,urgencia:$("urgencia").value.trim()||((c.tipo==="cakto"||c.tipo==="digital")?"💰 Produto digital":"🔥 Oferta por tempo limitado"),botao:$("botao").value.trim()||((c.tipo==="cakto"||c.tipo==="digital")?"Quero acessar agora":"Comprar agora"),destaque:$("destaque").checked,tipoDestaque:$("tipoDestaque").value.trim(),tipo:$("tipo").value,nivelPreco:$("nivelPrecoAuto").checked?nivelAuto():$("nivelPreco").value,nivelPrecoAuto:$("nivelPrecoAuto").checked,recomendado:$("recomendado").checked,ativo:$("ativoProduto").checked,cliquesComprar:nClique(editProdutoOriginal?.cliquesComprar),cliquesWhatsapp:nClique(editProdutoOriginal?.cliquesWhatsapp),cliquesCompartilhar:nClique(editProdutoOriginal?.cliquesCompartilhar),cliquesInstagram:nClique(editProdutoOriginal?.cliquesInstagram),cliquesTotal:nClique(editProdutoOriginal?.cliquesTotal),detalhes:linhas($("detalhes").value),observacoes:linhas($("observacoes").value),mensagemWhatsapp:`Olá, quero saber mais sobre ${nome}.`,comentarios:comentariosFinais,atualizadoEm:serverTimestamp()};
+}
+
+async function salvarProduto(){
+  if(!proteger())return;
+  if(!$("nome").value.trim()){mostrarStatus("Digite o nome do produto.","erro");return;}
+  if(!$("link").value.trim()){mostrarStatus("Digite o link de compra.","erro");return;}
+  if(!(await validarMidias()))return;
+  $("btnSalvarProduto").disabled=true;$("btnSalvarProduto").textContent=editProdutoId?"Atualizando...":"Salvando...";
+  try{const p=montarProduto();if(editProdutoId)await updateDoc(doc(db,"produtos",editProdutoId),p);else{p.criadoEm=serverTimestamp();await addDoc(collection(db,"produtos"),p);}mostrarStatus("✅ Produto salvo!");limparProduto();abrirArea("produtos");}catch(e){console.error(e);mostrarStatus("Erro ao salvar produto.","erro");}
+  $("btnSalvarProduto").disabled=false;$("btnSalvarProduto").textContent=editProdutoId?"✅ Atualizar produto":"🔥 Salvar no Firebase";
+}
+
+function produtoFiltrados(){const busca=$("buscaAdmin").value.toLowerCase(),f=$("filtroCategoriaAdmin").value,status=$("filtroStatusAdmin").value;return produtos.filter(p=>{const nome=(p.nome||"").toLowerCase().includes(busca);let cat=true;if(f==="Destaques")cat=p.destaque===true;else if(f!=="Todos")cat=(p.categoriaSlug||slugify(p.categoria||""))===f;let st=true;if(status==="Ativos")st=p.ativo!==false;if(status==="Inativos")st=p.ativo===false;return nome&&cat&&st;});}
+function nClique(v){return Number(v)||0;}
+function totalCliquesProduto(p){return nClique(p.cliquesTotal)||nClique(p.cliquesComprar)+nClique(p.cliquesWhatsapp)+nClique(p.cliquesCompartilhar)+nClique(p.cliquesInstagram);}
+function renderResumoCliques(){
+  const resumo=$("resumoCliques"), ranking=$("rankingCliques");
+  if(!resumo||!ranking)return;
+  const totalComprar=produtos.reduce((s,p)=>s+nClique(p.cliquesComprar),0);
+  const totalWhatsapp=produtos.reduce((s,p)=>s+nClique(p.cliquesWhatsapp),0);
+  const totalCompartilhar=produtos.reduce((s,p)=>s+nClique(p.cliquesCompartilhar),0);
+  const totalInstagram=produtos.reduce((s,p)=>s+nClique(p.cliquesInstagram),0);
+  const totalGeral=produtos.reduce((s,p)=>s+totalCliquesProduto(p),0);
+  resumo.innerHTML=`
+    <div class="metrica"><strong>${totalGeral}</strong><span>Cliques totais</span></div>
+    <div class="metrica"><strong>${totalComprar}</strong><span>Comprar agora</span></div>
+    <div class="metrica"><strong>${totalWhatsapp}</strong><span>WhatsApp</span></div>
+    <div class="metrica"><strong>${totalCompartilhar}</strong><span>Compartilhar</span></div>
+    <div class="metrica"><strong>${totalInstagram}</strong><span>Instagram</span></div>
+  `;
+  const top=produtos.slice().sort((a,b)=>totalCliquesProduto(b)-totalCliquesProduto(a)).filter(p=>totalCliquesProduto(p)>0).slice(0,5);
+  ranking.innerHTML=top.length?top.map((p,i)=>`
+    <div class="ranking-item">
+      <div class="ranking-pos">${i+1}</div>
+      <div>
+        <strong>${esc(p.nome||"Produto")}</strong>
+        <p>${esc(p.categoria||"-")} • Comprar: ${nClique(p.cliquesComprar)} • WhatsApp: ${nClique(p.cliquesWhatsapp)} • Compartilhar: ${nClique(p.cliquesCompartilhar)} • Instagram: ${nClique(p.cliquesInstagram)}</p>
+      </div>
+      <div class="ranking-total">${totalCliquesProduto(p)}</div>
+    </div>
+  `).join(""):`<p class="ranking-vazio">Ainda não tem cliques registrados.</p>`;
+}
+function renderProdutos(){
+  renderResumoCliques();
+  const fs=produtoFiltrados();$("contadorProdutos").textContent=`${fs.length} produto(s) exibido(s) de ${produtos.length} cadastrado(s).`;
+  $("listaProdutos").innerHTML=fs.length?fs.map(p=>`
+    <div class="card">
+      <img class="preview" src="${p.imagens?.[0]||""}" alt="${esc(p.nome||"Produto")}">
+      <h4>${esc(p.nome||"Sem nome")}</h4>
+      ${p.ativo!==false?`<span class="badge greenbadge">Ativo</span>`:`<span class="badge redbadge">Inativo</span>`}${p.destaque?`<span class="badge yellow">Destaque</span>`:""}${p.selo?`<span class="badge">${esc(p.selo)}</span>`:""}${p.videos?.length?`<span class="badge">${p.videos.length} vídeo(s)</span>`:""}
+      <p><strong>Preço:</strong> ${esc(p.preco||"-")}</p>
+      <p><strong>Categoria:</strong> ${esc(p.categoria||"-")}</p>
+      <p><strong>Slug:</strong> ${esc(p.categoriaSlug||slugify(p.categoria||""))}</p>
+      <p><strong>Avaliação:</strong> ${p.avaliacao||0} ⭐</p>
+      <div class="clique-grid">
+        <div class="clique-item">🧮 Total<strong>${totalCliquesProduto(p)}</strong></div>
+        <div class="clique-item">🛒 Comprar<strong>${nClique(p.cliquesComprar)}</strong></div>
+        <div class="clique-item">💬 WhatsApp<strong>${nClique(p.cliquesWhatsapp)}</strong></div>
+        <div class="clique-item">🔗 Compartilhar<strong>${nClique(p.cliquesCompartilhar)}</strong></div>
+        <div class="clique-item">📸 Instagram<strong>${nClique(p.cliquesInstagram)}</strong></div>
+      </div>
+      <button class="btn-yellow btn-mini" onclick="zerarCliquesProduto('${p.docId}')">🧹 Zerar cliques deste produto</button>
+      <div class="acoes3"><button class="edit" onclick="editarProduto('${p.docId}')">Editar</button><button class="btn-blue" onclick="duplicarProduto('${p.docId}')">Duplicar</button><button class="${p.ativo!==false?"btn-gray":"btn-green"}" onclick="toggleAtivoProduto('${p.docId}')">${p.ativo!==false?"Desativar":"Ativar"}</button></div>
+      <div class="acoes"><button class="del" onclick="deletarProduto('${p.docId}')">Deletar</button><button class="btn-gray" onclick="editarProduto('${p.docId}')">Editar completo</button></div>
+    </div>`).join(""):`<p class="help">Nenhum produto encontrado.</p>`;
+}
+
+function selectProdutoFake(){const s=$("produtoFakeSelect"),v=s.value;s.innerHTML=produtos.length?`<option value="">Escolha um produto...</option>`+produtos.map(p=>`<option value="${p.docId}">${esc(p.nome||"Produto")}</option>`).join(""):`<option value="">Nenhum produto cadastrado</option>`;if(v&&produtos.some(p=>p.docId===v))s.value=v;}
+function editarProduto(id){
+  const p=produtos.find(x=>x.docId===id);if(!p)return;editProdutoId=id;editProdutoOriginal=p;
+  $("nome").value=p.nome||"";$("descricao").value=p.descricao||"";$("preco").value=p.preco||"";$("precoAntigo").value=p.precoAntigo||"";$("categoria").value=p.categoriaSlug||slugify(p.categoria||"");$("link").value=p.link||"";
+  $("selo").value=p.selo||"";$("urgencia").value=p.urgencia||"";$("botao").value=p.botao||"";$("destaque").checked=!!p.destaque;$("tipoDestaque").value=p.tipoDestaque||"";$("tipo").value=p.tipo||catAtual().tipo||"produto";$("nivelPreco").value=p.nivelPreco||"baixo";$("nivelPrecoAuto").checked=p.nivelPrecoAuto??false;$("recomendado").checked=p.recomendado??true;$("ativoProduto").checked=p.ativo!==false;
+  $("imagens").value=(p.imagens||[]).map(x=>limparPrefixo(x,catAtual().caminhoImagens,catAtual().extImagem)).join("\n");$("videos").value=(p.videos||[]).map(x=>limparPrefixo(x,catAtual().caminhoVideos,catAtual().extVideo)).join("\n");
+  $("detalhes").value=(p.detalhes||[]).join("\n");$("observacoes").value=(p.observacoes||[]).join("\n");$("avaliacao").value=p.avaliacao||"";$("avaliacoes").value=p.avaliacoes||"";$("vendidos").value=p.vendidos||"";$("qtdComentarios").value="";$("comentariosManuais").value=comentariosTexto(p.comentarios||[]);
+  $("prodImgPath").value="__categoria__";$("prodVidPath").value="__categoria__";$("prodImgExt").value="__categoria__";$("prodVidExt").value="__categoria__";$("btnSalvarProduto").textContent="✅ Atualizar produto";$("btnCancelarProduto").style.display="block";$("infoEdicao").style.display="block";atualizaNivel();previewMidia();abrirArea("formProduto");
+}
+function deletarProduto(id){const p=produtos.find(x=>x.docId===id);confirmar(`Deletar "${p?.nome||""}"?`,async()=>{await deleteDoc(doc(db,"produtos",id));mostrarStatus("🗑️ Produto deletado.");if(editProdutoId===id)limparProduto();});}
+function dadosCliquesProduto(p){
+  return {
+    cliquesComprar:nClique(p?.cliquesComprar),
+    cliquesWhatsapp:nClique(p?.cliquesWhatsapp),
+    cliquesCompartilhar:nClique(p?.cliquesCompartilhar),
+    cliquesInstagram:nClique(p?.cliquesInstagram),
+    cliquesTotal:totalCliquesProduto(p||{})
+  };
+}
+
+function zerarCliquesObj(){
+  return {
+    cliquesComprar:0,
+    cliquesWhatsapp:0,
+    cliquesCompartilhar:0,
+    cliquesInstagram:0,
+    cliquesTotal:0,
+    atualizadoEm:serverTimestamp()
+  };
+}
+
+async function salvarHistoricoZeragem(dados){
+  await addDoc(collection(db,"historicoCliques"),{
+    ...dados,
+    zeradoPor:auth.currentUser?.email || EMAIL_ADMIN,
+    zeradoEm:serverTimestamp(),
+    criadoEm:new Date().toISOString()
+  });
+}
+
+function zerarCliquesProduto(id){
+  if(!proteger())return;
+  const p=produtos.find(x=>x.docId===id);
+  if(!p)return;
+
+  const total=totalCliquesProduto(p);
+  if(total<=0){
+    mostrarStatus("Esse produto já está com os cliques zerados.");
+    return;
+  }
+
+  confirmar(`Zerar os ${total} clique(s) do produto "${p.nome||""}"?`,async()=>{
+    const dados=dadosCliquesProduto(p);
+
+    await salvarHistoricoZeragem({
+      tipo:"produto",
+      produtoDocId:p.docId,
+      produtoId:p.id||null,
+      produtoNome:p.nome||"Produto",
+      categoria:p.categoria||"",
+      ...dados
+    });
+
+    await updateDoc(doc(db,"produtos",p.docId),zerarCliquesObj());
+    mostrarStatus("✅ Cliques do produto zerados e histórico salvo.");
+  });
+}
+
+function zerarTodosCliques(){
+  if(!proteger())return;
+
+  const comCliques=produtos.filter(p=>totalCliquesProduto(p)>0);
+  const total=comCliques.reduce((s,p)=>s+totalCliquesProduto(p),0);
+
+  if(!comCliques.length){
+    mostrarStatus("Nenhum produto tem cliques para zerar.");
+    return;
+  }
+
+  confirmar(`Zerar ${total} clique(s) de ${comCliques.length} produto(s)?`,async()=>{
+    const resumo={
+      cliquesComprar:comCliques.reduce((s,p)=>s+nClique(p.cliquesComprar),0),
+      cliquesWhatsapp:comCliques.reduce((s,p)=>s+nClique(p.cliquesWhatsapp),0),
+      cliquesCompartilhar:comCliques.reduce((s,p)=>s+nClique(p.cliquesCompartilhar),0),
+      cliquesInstagram:comCliques.reduce((s,p)=>s+nClique(p.cliquesInstagram),0),
+      cliquesTotal:total
+    };
+
+    await salvarHistoricoZeragem({
+      tipo:"todos",
+      produtosQuantidade:comCliques.length,
+      produtosZerados:comCliques.map(p=>({
+        docId:p.docId,
+        id:p.id||null,
+        nome:p.nome||"Produto",
+        categoria:p.categoria||"",
+        comprar:nClique(p.cliquesComprar),
+        whatsapp:nClique(p.cliquesWhatsapp),
+        compartilhar:nClique(p.cliquesCompartilhar),
+        instagram:nClique(p.cliquesInstagram),
+        total:totalCliquesProduto(p)
+      })),
+      ...resumo
+    });
+
+    for(const p of comCliques){
+      await updateDoc(doc(db,"produtos",p.docId),zerarCliquesObj());
+    }
+
+    mostrarStatus("✅ Todos os cliques foram zerados e o histórico foi salvo.");
+  });
+}
+
+function duplicarProduto(id){
+  if(!proteger())return;
+  const p=produtos.find(x=>x.docId===id);if(!p)return;
+  confirmar(`Duplicar o produto "${p.nome||""}"?`,async()=>{
+    const copia={...p};
+    delete copia.docId;
+    copia.id=idNovo();
+    copia.nome=`${p.nome||"Produto"} (cópia)`;
+    copia.destaque=false;
+    copia.ativo=true;
+    copia.cliquesComprar=0;
+    copia.cliquesWhatsapp=0;
+    copia.cliquesCompartilhar=0;
+    copia.cliquesInstagram=0;
+    copia.cliquesTotal=0;
+    copia.criadoEm=serverTimestamp();
+    copia.atualizadoEm=serverTimestamp();
+    await addDoc(collection(db,"produtos"),copia);
+    mostrarStatus("✅ Produto duplicado com sucesso!");
+  });
+}
+
+async function toggleAtivoProduto(id){
+  if(!proteger())return;
+  const p=produtos.find(x=>x.docId===id);if(!p)return;
+  const novoStatus=!(p.ativo!==false);
+  await updateDoc(doc(db,"produtos",id),{ativo:novoStatus,atualizadoEm:serverTimestamp()});
+  mostrarStatus(novoStatus?"✅ Produto ativado!":"🚫 Produto desativado!");
+}
+
+function gerarFakePreview(){if(!$("produtoFakeSelect").value){mostrarStatus("Escolha um produto.","erro");return;}const qtd=Math.max(1,Number($("qtdFake").value)||1),min=Number($("notaMinFake").value)||4,max=Number($("notaMaxFake").value)||5,erros=$("fakeComErros").checked;fakesTemp=Array.from({length:qtd},()=>fake({min,max,erros}));$("previewFakes").innerHTML=fakesTemp.map(c=>`<div class="card"><h4>${esc(c.nome)} — ${"⭐".repeat(c.nota)}</h4><p>${esc(c.texto)}</p></div>`).join("");}
+async function salvarFakes(){const id=$("produtoFakeSelect").value;if(!id||!fakesTemp.length){mostrarStatus("Escolha um produto e gere uma prévia.","erro");return;}const p=produtos.find(x=>x.docId===id);await updateDoc(doc(db,"produtos",id),{comentarios:[...(p.comentarios||[]),...fakesTemp],atualizadoEm:serverTimestamp()});fakesTemp=[];$("previewFakes").innerHTML="";mostrarStatus("✅ Comentários salvos.");}
+function pegarComentarios(real){
+  const arr=[];
+  produtos.forEach(p=>{
+    const lista=Array.isArray(p.comentarios)?p.comentarios:[];
+    lista.forEach((comentario,index)=>{
+      const c=normalizarComentarioAdmin(comentario,index,p.docId);
+      const r=comentarioEhReal(c);
+      if(real===r && String(c.texto||"").trim()){
+        arr.push({produtoDocId:p.docId,produtoNome:p.nome||"Produto",...c});
+      }
+    });
+  });
+  return arr.sort((a,b)=>new Date(b.criadoEm||0)-new Date(a.criadoEm||0));
+}
+function filtrarCom(real){const busca=$(real?"buscaReais":"buscaFakes").value.toLowerCase(),f=$(real?"filtroReais":"filtroFakes").value;return pegarComentarios(real).filter(c=>`${c.nome||""} ${c.email||""} ${c.texto||""} ${c.produtoNome||""}`.toLowerCase().includes(busca)&&(f==="Todos"||Number(c.nota)===Number(f)));}
+function agrupar(cs){const g={};cs.forEach(c=>{if(!g[c.produtoDocId])g[c.produtoDocId]={produtoDocId:c.produtoDocId,produtoNome:c.produtoNome,comentarios:[]};g[c.produtoDocId].comentarios.push(c);});return Object.values(g).sort((a,b)=>a.produtoNome.localeCompare(b.produtoNome));}
+function renderComentarios(){renderListaComentarios(true)}
+function renderFakes(){renderListaComentarios(false)}
+function renderListaComentarios(real){const cs=filtrarCom(real),gr=agrupar(cs),lista=$(real?"listaReais":"listaFakes"),cont=$(real?"contadorReais":"contadorFakes"),aberto=real?realAberto:fakeAberto;cont.textContent=`${cs.length} comentário(s) em ${gr.length} produto(s).`;lista.innerHTML=cs.length?gr.map(g=>{const a=aberto===g.produtoDocId;return`<div class="grupo"><div class="grupo-head" onclick="${real?"toggleReal":"toggleFake"}('${g.produtoDocId}')"><div><strong>${esc(g.produtoNome)}</strong><p>${g.comentarios.length} comentário(s)</p></div><div class="seta ${a?"ativo":""}">›</div></div><div class="grupo-cont ${a?"ativo":""}">${g.comentarios.map(c=>`<div class="card"><h4>${"⭐".repeat(Number(c.nota)||5)}${"☆".repeat(5-(Number(c.nota)||5))}</h4><p><strong>Nome:</strong> ${esc(c.nome||"Cliente")}</p>${real?`<p><strong>E-mail:</strong> ${esc(c.email||"Sem e-mail")}</p>`:`<span class="badge">${esc(c.origem||"manual")}</span>`}<div class="comentario">${esc(c.texto||"")}</div>${!real?`<div class="acoes"><button class="edit" onclick="abrirEditarComentario('${c.produtoDocId}','${c._comentarioKey}');event.stopPropagation()">Editar</button><button class="del" onclick="pedirExcluirComentario('${c.produtoDocId}','${c._comentarioKey}');event.stopPropagation()">Excluir</button></div>`:`<button class="del" onclick="pedirExcluirComentario('${c.produtoDocId}','${c._comentarioKey}');event.stopPropagation()">Excluir</button>`}</div>`).join("")}</div></div>`}).join(""):`<p class="help">Nenhum comentário encontrado.</p>`;}
+function toggleReal(id){realAberto=realAberto===id?null:id;renderComentarios()}
+function toggleFake(id){fakeAberto=fakeAberto===id?null:id;renderFakes()}
+function abrirEditarComentario(produtoDocId,comentarioId){
+  const p=produtos.find(x=>x.docId===produtoDocId);
+  const lista=Array.isArray(p?.comentarios)?p.comentarios:[];
+  const index=lista.findIndex((x,i)=>String(comentarioIdAdmin(x,i,produtoDocId))===String(comentarioId));
+  if(index<0)return;
+  const c=normalizarComentarioAdmin(lista[index],index,produtoDocId);
+  editComentario={produtoDocId,comentarioId};
+  $("editComentNome").value=c.nome||"";
+  $("editComentTexto").value=c.texto||"";
+  $("editComentNota").value=String(c.nota||5);
+  $("modalEditarComentario").classList.add("ativo");
+}
+function fecharEditComentario(){$("modalEditarComentario").classList.remove("ativo");editComentario=null;}
+async function salvarEditComentario(){
+  if(!editComentario)return;
+  const p=produtos.find(x=>x.docId===editComentario.produtoDocId);
+  const lista=Array.isArray(p?.comentarios)?p.comentarios:[];
+  const novos=lista.map((c,i)=>String(comentarioIdAdmin(c,i,editComentario.produtoDocId))===String(editComentario.comentarioId)?{...c,id:c.id||idNovo(),nome:$("editComentNome").value.trim(),texto:$("editComentTexto").value.trim(),nota:Number($("editComentNota").value)||5,origem:comentarioEhReal(c)?(c.origem||"site"):(c.origem||"manual"),atualizadoEm:new Date().toISOString()}:c);
+  await updateDoc(doc(db,"produtos",editComentario.produtoDocId),{comentarios:novos,atualizadoEm:serverTimestamp()});
+  fecharEditComentario();
+  mostrarStatus("✅ Comentário atualizado.");
+}
+function pedirExcluirComentario(produtoDocId,comentarioId){
+  confirmar("Excluir esse comentário?",async()=>{
+    const p=produtos.find(x=>x.docId===produtoDocId);
+    const lista=Array.isArray(p?.comentarios)?p.comentarios:[];
+    const novos=lista.filter((c,i)=>String(comentarioIdAdmin(c,i,produtoDocId))!==String(comentarioId));
+    await updateDoc(doc(db,"produtos",produtoDocId),{comentarios:novos,atualizadoEm:serverTimestamp()});
+    mostrarStatus("🗑️ Comentário excluído.");
+  });
+}
+function confirmar(txt,cb){$("textoConfirmacao").textContent=txt;acaoConfirmada=cb;$("modalConfirmacao").classList.add("ativo");}
+function fecharConfirmacao(){$("modalConfirmacao").classList.remove("ativo");acaoConfirmada=null;}
+async function confirmarAcao(){if(typeof acaoConfirmada==="function")await acaoConfirmada();fecharConfirmacao();}
+function normalizarImportado(p){const nomeCat=p.categoria||"Mercado Livre",slug=p.categoriaSlug||slugify(nomeCat),c=categoriasUso().find(x=>x.slug===slug)||normCategoria({nome:nomeCat,slug});return{id:p.id||idNovo(),nome:p.nome||"",descricao:p.descricao||"",preco:p.preco||"",precoAntigo:p.precoAntigo||null,imagens:p.imagens||[],videos:p.videos||[],link:p.link||"",categoria:c.nome,categoriaSlug:c.slug,selo:p.selo||"Oferta",avaliacao:Number(p.avaliacao)||5,avaliacoes:Number(p.avaliacoes)||0,vendidos:Number(p.vendidos)||0,urgencia:p.urgencia||"🔥 Oferta por tempo limitado",botao:p.botao||"Comprar agora",destaque:!!p.destaque,tipoDestaque:p.tipoDestaque||"",tipo:p.tipo||c.tipo||"produto",nivelPreco:p.nivelPreco||"baixo",nivelPrecoAuto:p.nivelPrecoAuto??false,recomendado:p.recomendado??true,ativo:p.ativo!==false,cliquesComprar:Number(p.cliquesComprar)||0,cliquesWhatsapp:Number(p.cliquesWhatsapp)||0,cliquesCompartilhar:Number(p.cliquesCompartilhar)||0,cliquesInstagram:Number(p.cliquesInstagram)||0,cliquesTotal:Number(p.cliquesTotal)||0,detalhes:p.detalhes||[],observacoes:p.observacoes||[],mensagemWhatsapp:p.mensagemWhatsapp||`Olá, quero saber mais sobre ${p.nome||"este produto"}.`,comentarios:p.comentarios||[],criadoEm:serverTimestamp(),atualizadoEm:serverTimestamp()}}
+function importarJson(){const t=$("jsonImportar").value.trim();if(!t){mostrarStatus("Cole o JSON antigo antes.","erro");return;}let d;try{d=JSON.parse(t)}catch{mostrarStatus("JSON inválido.","erro");return;}const arr=Array.isArray(d)?d:d.produtos;if(!Array.isArray(arr)||!arr.length){mostrarStatus("Nenhum produto encontrado.","erro");return;}confirmar(`Importar ${arr.length} produto(s)?`,async()=>{for(const p of arr)await addDoc(collection(db,"produtos"),normalizarImportado(p));$("jsonImportar").value="";mostrarStatus(`✅ ${arr.length} produto(s) importado(s).`);});}
+
+function aplicarSelect(selectId,inputId){const v=$(selectId).value;if(v)$(inputId).value=v;}
+
+$("btnEntrar").addEventListener("click",entrar);
+$("senhaAdmin").addEventListener("keydown",e=>{if(e.key==="Enter")entrar()});
+$("emailAdmin").addEventListener("keydown",e=>{if(e.key==="Enter")entrar()});
+$("btnSair").addEventListener("click",sair);
+
+$("btnSalvarCaminho").addEventListener("click",salvarCaminho);
+$("btnCancelarCaminho").addEventListener("click",limparCaminho);
+$("btnCriarCaminhosPadrao").addEventListener("click",criarCaminhosPadrao);
+
+$("btnSalvarCategoria").addEventListener("click",salvarCategoria);
+$("btnCancelarCategoria").addEventListener("click",limparCategoria);
+$("btnCriarCategoriasPadrao").addEventListener("click",criarCategoriasPadrao);
+$("catNome").addEventListener("input",()=>{if(!$("catSlug").value.trim()){const s=slugify($("catNome").value);$("catSlug").value=s;$("catImgPath").value=s?`imagens/${s}/`:"";$("catVidPath").value=s?`videos/${s}/`:"";}previewIcone()});
+$("catSlug").addEventListener("input",()=>{const s=slugify($("catSlug").value);$("catSlug").value=s;if(!$("catImgPath").value.trim())$("catImgPath").value=s?`imagens/${s}/`:"";if(!$("catVidPath").value.trim())$("catVidPath").value=s?`videos/${s}/`:"";previewIcone()});
+$("catImgSelect").addEventListener("change",()=>aplicarPath("catImgSelect","catImgPath","catImgExt"));
+$("catVidSelect").addEventListener("change",()=>aplicarPath("catVidSelect","catVidPath","catVidExt"));
+$("catIconPathSelect").addEventListener("change",()=>aplicarPath("catIconPathSelect","catIconPath","catIconExt"));
+["catIconPath","catIconExt","catIcon"].forEach(id=>{$(id).addEventListener("input",previewIcone);$(id).addEventListener("change",previewIcone);});
+
+$("btnSalvarProduto").addEventListener("click",salvarProduto);
+$("btnCancelarProduto").addEventListener("click",limparProduto);
+$("btnImportarJson").addEventListener("click",importarJson);
+$("categoria").addEventListener("change",()=>{$("selo").value="";$("urgencia").value="";$("botao").value="";padroesCategoria();previewMidia()});
+["prodImgPath","prodVidPath","prodImgExt","prodVidExt","imagens","videos"].forEach(id=>{$(id).addEventListener("input",previewMidia);$(id).addEventListener("change",previewMidia);});
+$("btnTestarImagens").addEventListener("click",testarImagens);
+$("btnTestarVideos").addEventListener("click",testarVideos);
+
+$("tipoDestaqueSelect").addEventListener("change",()=>aplicarSelect("tipoDestaqueSelect","tipoDestaque"));
+$("seloSelect").addEventListener("change",()=>aplicarSelect("seloSelect","selo"));
+$("urgenciaSelect").addEventListener("change",()=>aplicarSelect("urgenciaSelect","urgencia"));
+$("botaoSelect").addEventListener("change",()=>aplicarSelect("botaoSelect","botao"));
+$("btnAddObservacao").addEventListener("click",()=>{const v=$("observacaoSelect").value;if(!v)return;const a=$("observacoes").value.trim();$("observacoes").value=a?a+"\n"+v:v});
+$("nivelPrecoAuto").addEventListener("change",atualizaNivel);
+$("preco").addEventListener("input",atualizaNivel);
+
+$("buscaAdmin").addEventListener("input",renderProdutos);
+$("filtroCategoriaAdmin").addEventListener("change",renderProdutos);
+$("filtroStatusAdmin").addEventListener("change",renderProdutos);
+
+$("btnGerarFake").addEventListener("click",gerarFakePreview);
+$("btnSalvarFake").addEventListener("click",salvarFakes);
+$("buscaFakes").addEventListener("input",renderFakes);
+$("filtroFakes").addEventListener("change",renderFakes);
+$("buscaReais").addEventListener("input",renderComentarios);
+$("filtroReais").addEventListener("change",renderComentarios);
+
+$("btnCancelarConfirmacao").addEventListener("click",fecharConfirmacao);
+$("btnConfirmar").addEventListener("click",confirmarAcao);
+$("btnCancelarEditComentario").addEventListener("click",fecharEditComentario);
+$("btnSalvarEditComentario").addEventListener("click",salvarEditComentario);
+$("btnZerarTodosCliques").addEventListener("click",zerarTodosCliques);
+$("btnAbrirHistoricoCliques").addEventListener("click",abrirHistoricoCliques);
+$("btnFecharHistoricoCliques").addEventListener("click",fecharHistoricoCliques);
+
+window.editarCaminho=editarCaminho;
+window.deletarCaminho=deletarCaminho;
+window.editarCategoria=editarCategoria;
+window.deletarCategoria=deletarCategoria;
+window.editarProduto=editarProduto;
+window.deletarProduto=deletarProduto;
+window.duplicarProduto=duplicarProduto;
+window.toggleAtivoProduto=toggleAtivoProduto;
+window.zerarCliquesProduto=zerarCliquesProduto;
+window.toggleReal=toggleReal;
+window.toggleFake=toggleFake;
+window.abrirEditarComentario=abrirEditarComentario;
+window.pedirExcluirComentario=pedirExcluirComentario;
+
+atualizarSelectsCategorias();
+atualizarSelectsCaminhos();
+padroesCategoria();
+atualizaNivel();
+previewMidia();
+previewIcone();
+</script>
+</body>
+</html>
