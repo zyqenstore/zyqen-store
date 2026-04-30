@@ -3,7 +3,7 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/12.12.1/firebas
 import { getAuth } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBgIB_UesxOrYdyQ-EZvUXJbpN1tLY64Dw",
+  apiKey: "AIzaSyCsOW-47cAkeDJtOpgkyO9d0LyfyWBoF_s",
   authDomain: "zyqenstore-075.firebaseapp.com",
   projectId: "zyqenstore-075",
   storageBucket: "zyqenstore-075.firebasestorage.app",

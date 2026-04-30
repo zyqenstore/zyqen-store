@@ -244,7 +244,13 @@ header p {
   margin: 0 auto 10px;
 }
 
-.texto-com-icone,
+.texto-com-icone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
 .botao-icone {
   display: inline-flex;
   align-items: center;
@@ -2288,6 +2294,14 @@ body.modo-desktop {
     margin-right: auto !important;
   }
 
+  main {
+    margin-top: 0 !important;
+  }
+
+  main section {
+    margin-top: 0 !important;
+  }
+
   .confianca {
     margin: 6px auto 10px !important;
     padding: 2px 0 !important;
@@ -2369,7 +2383,7 @@ body.modo-desktop {
   .busca-inteligente-painel {
     width: calc(100% - 14px) !important;
     max-width: calc(100% - 14px) !important;
-    margin: 8px auto 4px !important;
+    margin: 8px auto 5px !important;
     padding: 10px !important;
     border-radius: 16px !important;
   }
@@ -2476,8 +2490,8 @@ body.modo-desktop {
   #botoes-filtro.filtros-categoria-loja {
     width: calc(100% - 14px) !important;
     max-width: calc(100% - 14px) !important;
-    margin: 0 auto 6px !important;
-    padding: 8px 8px 6px !important;
+    margin: 2px auto 6px !important;
+    padding: 9px 8px 7px !important;
     border-radius: 15px !important;
     overflow: hidden !important;
   }
@@ -2504,20 +2518,10 @@ body.modo-desktop {
     border-radius: 999px !important;
   }
 
-  main {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-  }
-
-  main section {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-  }
-
   main section h2,
   .titulo-categoria-dinamica,
   .titulo-com-icone {
-    margin: 2px 0 7px !important;
+    margin: 2px 0 5px !important;
     font-size: 17px !important;
     gap: 7px !important;
   }
@@ -2529,8 +2533,6 @@ body.modo-desktop {
   }
 
   .categoria-loja {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
     margin-bottom: 18px !important;
   }
 
@@ -2855,8 +2857,8 @@ body.modo-desktop {
 
   .busca-inteligente-painel {
     padding: 9px !important;
-    margin-top: 7px !important;
-    margin-bottom: 3px !important;
+    margin-top: 6px !important;
+    margin-bottom: 4px !important;
   }
 
   .busca-inteligente-topo strong {
@@ -2875,30 +2877,12 @@ body.modo-desktop {
     font-size: 13.5px !important;
   }
 
-  #botoes-filtro.filtros-categoria-loja {
-    margin-top: 0 !important;
-    margin-bottom: 5px !important;
-    padding-top: 7px !important;
-    padding-bottom: 5px !important;
-  }
-
   .filtros-rapidos-busca button,
   .botoes-categoria-organizado button,
   #botoes-filtro button {
     min-height: 31px !important;
     padding: 6px 9px !important;
     font-size: 11px !important;
-  }
-
-  main section h2,
-  .titulo-categoria-dinamica,
-  .titulo-com-icone {
-    margin-top: 1px !important;
-    margin-bottom: 6px !important;
-  }
-
-  .categoria-loja {
-    margin-bottom: 16px !important;
   }
 
   .grid {
