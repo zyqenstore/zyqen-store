@@ -63,6 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
   detectarDispositivo();
   bloquearZoomSite();
   ajustarSiteFixo();
+  prepararConfiancaMobile();
 
   injetarEstiloBuscaInteligente();
   injetarEstiloPaginacao();
@@ -263,6 +264,117 @@ function ajustarSiteFixo() {
 
   aplicar();
   window.addEventListener("resize", aplicar);
+}
+
+/* MODAL DE CONFIANÇA NO MOBILE */
+
+function prepararConfiancaMobile() {
+  const cards = Array.from(document.querySelectorAll(".confianca-card"));
+
+  if (!cards.length) return;
+
+  let modal = document.getElementById("modal-confianca");
+
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.id = "modal-confianca";
+    modal.className = "modal-confianca";
+
+    modal.innerHTML = `
+      <div class="modal-confianca-card">
+        <button type="button" class="modal-confianca-fechar" aria-label="Fechar">×</button>
+
+        <div class="modal-confianca-icone"></div>
+
+        <h3 class="modal-confianca-titulo"></h3>
+        <p class="modal-confianca-texto"></p>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+  }
+
+  const fechar = () => {
+    modal.classList.remove("ativo");
+  };
+
+  const botaoFechar = modal.querySelector(".modal-confianca-fechar");
+
+  if (botaoFechar && botaoFechar.dataset.listenerAtivo !== "sim") {
+    botaoFechar.dataset.listenerAtivo = "sim";
+    botaoFechar.addEventListener("click", fechar);
+  }
+
+  if (modal.dataset.listenerAtivo !== "sim") {
+    modal.dataset.listenerAtivo = "sim";
+
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) {
+        fechar();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        fechar();
+      }
+    });
+  }
+
+  cards.forEach((card) => {
+    if (card.dataset.confiancaMobileAtivo === "sim") return;
+
+    card.dataset.confiancaMobileAtivo = "sim";
+    card.setAttribute("role", "button");
+    card.setAttribute("tabindex", "0");
+
+    const abrir = () => {
+      const ehMobile = window.matchMedia("(max-width: 900px)").matches;
+
+      if (!ehMobile) return;
+
+      const titulo = card.querySelector("h3")?.textContent?.trim() || "";
+      const texto = card.querySelector("p")?.textContent?.trim() || "";
+      const iconeOriginal =
+        card.querySelector(".icone-circulo img") ||
+        card.querySelector(".icone-circulo svg") ||
+        card.querySelector("img") ||
+        card.querySelector("svg");
+
+      const modalIcone = modal.querySelector(".modal-confianca-icone");
+      const modalTitulo = modal.querySelector(".modal-confianca-titulo");
+      const modalTexto = modal.querySelector(".modal-confianca-texto");
+
+      if (modalTitulo) {
+        modalTitulo.textContent = titulo;
+      }
+
+      if (modalTexto) {
+        modalTexto.textContent = texto;
+      }
+
+      if (modalIcone) {
+        modalIcone.innerHTML = "";
+
+        if (iconeOriginal) {
+          const clone = iconeOriginal.cloneNode(true);
+          clone.removeAttribute("id");
+          modalIcone.appendChild(clone);
+        }
+      }
+
+      modal.classList.add("ativo");
+    };
+
+    card.addEventListener("click", abrir);
+
+    card.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        abrir();
+      }
+    });
+  });
 }
 
 /* FIREBASE */
@@ -2378,47 +2490,31 @@ function precoProduto(produto) {
 function dataProduto(produto) {
   const campos = [
     produto.criadoEm,
+    produto.createdAt,
+    produto.dataCriacao,
     produto.atualizadoEm,
-    produto.data,
-    produto.dataCriacao
+    produto.updatedAt
   ];
 
   for (const campo of campos) {
     if (!campo) continue;
 
-    if (typeof campo.toDate === "function") {
-      return campo.toDate().getTime();
+    if (typeof campo?.toDate === "function") {
+      const tempo = campo.toDate().getTime();
+      if (!Number.isNaN(tempo)) return tempo;
     }
 
-    if (campo.seconds) {
-      return campo.seconds * 1000;
-    }
+    const tempo = new Date(campo).getTime();
 
-    const convertido = new Date(campo).getTime();
-
-    if (!Number.isNaN(convertido)) {
-      return convertido;
-    }
-  }
-
-  const idNum = Number(produto.id);
-
-  if (idNum && String(idNum).length >= 10) {
-    return idNum;
+    if (!Number.isNaN(tempo)) return tempo;
   }
 
   return 0;
 }
 
 function textoBuscaProduto(produto) {
-  const detalhes = Array.isArray(produto.detalhes)
-    ? produto.detalhes.join(" ")
-    : "";
-
-  const observacoes = Array.isArray(produto.observacoes)
-    ? produto.observacoes.join(" ")
-    : "";
-
+  const detalhes = Array.isArray(produto.detalhes) ? produto.detalhes.join(" ") : "";
+  const observacoes = Array.isArray(produto.observacoes) ? produto.observacoes.join(" ") : "";
   const comentarios = Array.isArray(produto.comentarios)
     ? produto.comentarios.map(c => `${c.nome || ""} ${c.texto || ""}`).join(" ")
     : "";
@@ -2485,3 +2581,4 @@ window.abrirPopupSucessoComentario = abrirPopupSucessoComentario;
 window.fecharPopupSucessoComentario = fecharPopupSucessoComentario;
 window.bloquearZoomSite = bloquearZoomSite;
 window.atualizarAreaDestaque = atualizarAreaDestaque;
+window.prepararConfiancaMobile = prepararConfiancaMobile;

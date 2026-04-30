@@ -3453,3 +3453,249 @@ body.modo-desktop {
     font-size: 24px !important;
   }
 }
+
+/* ============================================================
+   MOBILE - CONFIANÇA COMPACTA EM ÍCONES REDONDOS
+   PC continua igual. No celular remove os quadrados grandes.
+============================================================ */
+
+@media (max-width: 900px) {
+  .confianca {
+    width: calc(100% - 18px) !important;
+    max-width: calc(100% - 18px) !important;
+    margin: 8px auto 12px !important;
+    padding: 6px 2px 4px !important;
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+
+  .confianca-card {
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 5px !important;
+    text-align: center !important;
+    cursor: pointer !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+  .confianca-card:hover {
+    transform: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .confianca-card .icone-circulo {
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    min-height: 48px !important;
+    margin: 0 auto !important;
+    border-radius: 50% !important;
+    background:
+      radial-gradient(circle at top, rgba(34, 211, 238, 0.20), transparent 58%),
+      rgba(15, 23, 42, 0.92) !important;
+    border: 1px solid rgba(34, 211, 238, 0.34) !important;
+    box-shadow:
+      0 8px 22px rgba(0, 0, 0, 0.28),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.04) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .confianca-card .icone-circulo img,
+  .confianca-card img,
+  .confianca-card svg {
+    width: 23px !important;
+    height: 23px !important;
+    object-fit: contain !important;
+  }
+
+  .confianca-card h3 {
+    margin: 2px 0 0 !important;
+    max-width: 82px !important;
+    color: #f8fafc !important;
+    font-size: 10.8px !important;
+    font-weight: 900 !important;
+    line-height: 1.12 !important;
+    letter-spacing: -0.02em !important;
+    text-align: center !important;
+  }
+
+  .confianca-card p {
+    display: none !important;
+  }
+
+  .confianca-card:active .icone-circulo {
+    transform: scale(0.94) !important;
+    border-color: rgba(34, 197, 94, 0.52) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .confianca {
+    width: calc(100% - 14px) !important;
+    max-width: calc(100% - 14px) !important;
+    gap: 5px !important;
+    margin-top: 6px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .confianca-card .icone-circulo {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+
+  .confianca-card .icone-circulo img,
+  .confianca-card img,
+  .confianca-card svg {
+    width: 21px !important;
+    height: 21px !important;
+  }
+
+  .confianca-card h3 {
+    max-width: 76px !important;
+    font-size: 10px !important;
+    line-height: 1.1 !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .confianca {
+    gap: 4px !important;
+  }
+
+  .confianca-card .icone-circulo {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+  }
+
+  .confianca-card .icone-circulo img,
+  .confianca-card img,
+  .confianca-card svg {
+    width: 19px !important;
+    height: 19px !important;
+  }
+
+  .confianca-card h3 {
+    font-size: 9px !important;
+  }
+}
+
+/* ============================================================
+   TELINHA DE TEXTO DA CONFIANÇA - ESTILO
+   A abertura/fechamento funciona com o script.js abaixo.
+============================================================ */
+
+.modal-confianca {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: rgba(2, 6, 23, 0.74);
+  backdrop-filter: blur(7px);
+}
+
+.modal-confianca.ativo {
+  display: flex !important;
+}
+
+.modal-confianca-card {
+  width: min(360px, calc(100vw - 34px));
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at top, rgba(34, 211, 238, 0.14), transparent 42%),
+    rgba(15, 23, 42, 0.98);
+  border: 1px solid rgba(148, 163, 184, 0.26);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.58);
+  padding: 18px;
+  position: relative;
+  text-align: center;
+  animation: modalConfiancaEntrar 0.18s ease;
+}
+
+.modal-confianca-fechar {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 50%;
+  background: rgba(30, 41, 59, 0.96);
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.modal-confianca-icone {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  margin: 4px auto 12px;
+  background: rgba(34, 211, 238, 0.14);
+  border: 1px solid rgba(34, 211, 238, 0.34);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-confianca-icone img,
+.modal-confianca-icone svg {
+  width: 31px;
+  height: 31px;
+  object-fit: contain;
+}
+
+.modal-confianca-titulo {
+  margin: 0 34px 8px;
+  color: #f8fafc;
+  font-size: 19px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.modal-confianca-texto {
+  margin: 0;
+  color: #cbd5e1;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+@keyframes modalConfiancaEntrar {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
