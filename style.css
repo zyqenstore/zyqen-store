@@ -244,13 +244,7 @@ header p {
   margin: 0 auto 10px;
 }
 
-.texto-com-icone {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
+.texto-com-icone,
 .botao-icone {
   display: inline-flex;
   align-items: center;
@@ -2375,7 +2369,7 @@ body.modo-desktop {
   .busca-inteligente-painel {
     width: calc(100% - 14px) !important;
     max-width: calc(100% - 14px) !important;
-    margin: 8px auto 12px !important;
+    margin: 8px auto 4px !important;
     padding: 10px !important;
     border-radius: 16px !important;
   }
@@ -2482,8 +2476,8 @@ body.modo-desktop {
   #botoes-filtro.filtros-categoria-loja {
     width: calc(100% - 14px) !important;
     max-width: calc(100% - 14px) !important;
-    margin: 6px auto 12px !important;
-    padding: 9px 8px 7px !important;
+    margin: 0 auto 6px !important;
+    padding: 8px 8px 6px !important;
     border-radius: 15px !important;
     overflow: hidden !important;
   }
@@ -2510,10 +2504,20 @@ body.modo-desktop {
     border-radius: 999px !important;
   }
 
+  main {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  main section {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
   main section h2,
   .titulo-categoria-dinamica,
   .titulo-com-icone {
-    margin: 6px 0 10px !important;
+    margin: 2px 0 7px !important;
     font-size: 17px !important;
     gap: 7px !important;
   }
@@ -2525,13 +2529,16 @@ body.modo-desktop {
   }
 
   .categoria-loja {
-    margin-bottom: 22px !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    margin-bottom: 18px !important;
   }
 
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 10px !important;
     width: 100% !important;
+    margin-top: 0 !important;
   }
 
   .produto {
@@ -2849,7 +2856,7 @@ body.modo-desktop {
   .busca-inteligente-painel {
     padding: 9px !important;
     margin-top: 7px !important;
-    margin-bottom: 10px !important;
+    margin-bottom: 3px !important;
   }
 
   .busca-inteligente-topo strong {
@@ -2868,12 +2875,30 @@ body.modo-desktop {
     font-size: 13.5px !important;
   }
 
+  #botoes-filtro.filtros-categoria-loja {
+    margin-top: 0 !important;
+    margin-bottom: 5px !important;
+    padding-top: 7px !important;
+    padding-bottom: 5px !important;
+  }
+
   .filtros-rapidos-busca button,
   .botoes-categoria-organizado button,
   #botoes-filtro button {
     min-height: 31px !important;
     padding: 6px 9px !important;
     font-size: 11px !important;
+  }
+
+  main section h2,
+  .titulo-categoria-dinamica,
+  .titulo-com-icone {
+    margin-top: 1px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .categoria-loja {
+    margin-bottom: 16px !important;
   }
 
   .grid {
