@@ -29,7 +29,7 @@
   --radius-card: 18px;
 }
 
-/* TRAVA GERAL / RESPONSIVO BASE */
+/* BASE */
 
 html {
   width: 100%;
@@ -55,12 +55,12 @@ body {
   overscroll-behavior-x: none;
   touch-action: manipulation;
   font-family: Arial, sans-serif;
+  color: var(--text);
   background:
     radial-gradient(circle at top left, rgba(34, 211, 238, 0.12), transparent 34%),
     radial-gradient(circle at top right, rgba(255, 47, 179, 0.10), transparent 32%),
     radial-gradient(circle at bottom, rgba(139, 92, 246, 0.10), transparent 34%),
     var(--bg);
-  color: var(--text);
   position: relative;
 }
 
@@ -148,7 +148,9 @@ header h1 {
 }
 
 header p {
+  margin: 10px 0 0;
   color: var(--muted);
+  line-height: 1.45;
 }
 
 .logo-area {
@@ -256,7 +258,7 @@ header p {
   gap: 8px;
 }
 
-/* OFERTA DO DIA / DESTAQUE */
+/* OFERTA DO DIA */
 
 .oferta-dia {
   display: none !important;
@@ -417,7 +419,7 @@ header p {
   line-height: 1.45;
 }
 
-/* FILTROS ANTIGOS */
+/* FILTROS */
 
 .filtros {
   width: min(var(--site-max), calc(100% - 28px));
@@ -502,11 +504,7 @@ header p {
   transform: scale(1.05);
 }
 
-.botoes-filtro button.ativo:hover {
-  background: linear-gradient(90deg, var(--green2), #15803d);
-}
-
-/* BUSCA INTELIGENTE ORGANIZADA */
+/* BUSCA INTELIGENTE */
 
 .busca-inteligente-painel {
   width: min(94%, 1120px);
@@ -695,7 +693,7 @@ header p {
   display: none !important;
 }
 
-/* MAIN / CATEGORIAS */
+/* MAIN */
 
 main {
   width: min(var(--site-max), calc(100% - 28px));
@@ -1186,42 +1184,58 @@ main section h2::after,
   padding-top: calc(14px + env(safe-area-inset-top));
   background: rgba(15, 23, 42, 0.95);
   backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 14px !important;
   border-bottom: 1px solid #1e293b;
+}
+
+.acoes-topo {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 10px !important;
 }
 
 .popup-topo button,
 .acoes-topo button {
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  border-radius: 50%;
-  background: rgba(30, 41, 59, 0.88);
-  backdrop-filter: blur(8px);
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
-  transition: 0.2s;
+  width: 52px !important;
+  height: 52px !important;
+  min-width: 52px !important;
+  min-height: 52px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: rgba(30, 41, 59, 0.96) !important;
+  border: 1px solid rgba(148, 163, 184, 0.24) !important;
+  color: #ffffff !important;
+  font-size: 25px !important;
+  line-height: 1 !important;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.28) !important;
+  cursor: pointer !important;
+  transition: 0.2s ease !important;
   touch-action: manipulation;
 }
 
 .popup-topo button:hover,
 .acoes-topo button:hover {
-  background: var(--green);
-  transform: scale(1.05);
+  background: linear-gradient(135deg, var(--green), var(--cyan)) !important;
+  color: #04111f !important;
+  transform: translateY(-2px) scale(1.04) !important;
+  box-shadow: 0 14px 34px rgba(34, 211, 238, 0.22) !important;
 }
 
 .popup-topo button img,
 .acoes-topo button img {
-  width: 22px;
-  height: 22px;
+  width: 25px !important;
+  height: 25px !important;
+  object-fit: contain !important;
+  margin: 0 !important;
   filter: brightness(0) invert(1);
-  pointer-events: none;
+  pointer-events: none !important;
 }
 
 .popup-fechar,
@@ -1452,7 +1466,7 @@ main section h2::after,
   margin: 12px 0;
 }
 
-/* BOTÃO COMPRA */
+/* BARRA COMPRA */
 
 .barra-compra {
   position: sticky;
@@ -1815,7 +1829,7 @@ main section h2::after,
   margin-top: 0;
 }
 
-/* POPUP SUCESSO COMENTÁRIO */
+/* POPUP SUCESSO */
 
 .popup-sucesso-comentario,
 .popup-sucesso {
@@ -2028,350 +2042,7 @@ main section h2::after,
   line-height: 1.6;
 }
 
-/* AJUSTES PARA TELAS MUITO GRANDES */
-
-@media (min-width: 1500px) {
-  :root {
-    --site-max: 1440px;
-  }
-
-  .busca-inteligente-painel,
-  #botoes-filtro.filtros-categoria-loja {
-    max-width: 1180px;
-  }
-
-  .produto {
-    min-height: 350px;
-  }
-}
-
-/* RESPONSIVO */
-
-@media (max-width: 1180px) {
-  .confianca {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .oferta-dia.tem-destaque {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 900px) {
-  .popup {
-    padding: 0;
-    align-items: stretch;
-    justify-content: center;
-  }
-
-  .popup-conteudo {
-    width: 100vw;
-    max-width: 100vw;
-    height: 100dvh;
-    max-height: 100dvh;
-    border-radius: 0;
-    border: none;
-  }
-
-  .popup-topo {
-    min-height: 78px !important;
-    padding-top: calc(24px + env(safe-area-inset-top)) !important;
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-    align-items: center !important;
-  }
-
-  .popup-topo button,
-  .acoes-topo button {
-    width: 46px !important;
-    height: 46px !important;
-    font-size: 22px !important;
-    background: rgba(30, 41, 59, 0.92) !important;
-  }
-
-  .popup-imagem-area {
-    height: clamp(280px, 38dvh, 360px);
-  }
-}
-
-@media (max-width: 768px) {
-  :root {
-    --site-padding: 10px;
-  }
-
-  header {
-    width: calc(100% - 20px);
-    padding: 22px 12px 16px;
-    border-radius: 0 0 18px 18px;
-  }
-
-  .logo-area img {
-    width: 150px;
-  }
-
-  .redes-topo {
-    flex-wrap: wrap;
-  }
-
-  .rede-link {
-    font-size: 12px;
-    padding: 8px 10px;
-  }
-
-  .oferta-dia {
-    width: calc(100% - 20px);
-    margin-top: -4px;
-    padding: 15px;
-    border-radius: 20px;
-  }
-
-  .oferta-texto h2 {
-    font-size: 24px;
-  }
-
-  .oferta-texto p {
-    font-size: 14px;
-  }
-
-  .confianca {
-    width: calc(100% - 20px);
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .confianca-card {
-    min-height: auto;
-  }
-
-  .filtros,
-  main {
-    width: calc(100% - 20px);
-  }
-
-  .pesquisa-wrap {
-    width: 100%;
-  }
-
-  .filtros input,
-  #pesquisa {
-    max-width: 100%;
-  }
-
-  .botoes-filtro {
-    justify-content: flex-start;
-    overflow-x: auto;
-    overflow-y: hidden;
-    flex-wrap: nowrap;
-    padding-bottom: 4px;
-    overscroll-behavior-x: contain;
-  }
-
-  .botoes-filtro button {
-    flex-shrink: 0;
-  }
-
-  .busca-inteligente-painel {
-    width: calc(100% - 20px);
-    margin-top: 14px;
-    padding: 14px;
-    border-radius: 20px;
-  }
-
-  .busca-linha-superior {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .busca-inteligente-topo {
-    justify-content: center;
-  }
-
-  .busca-inteligente-topo strong,
-  .busca-inteligente-topo span {
-    text-align: center;
-  }
-
-  .filtros-rapidos-busca,
-  .botoes-categoria-organizado {
-    justify-content: center;
-    gap: 6px;
-  }
-
-  .filtros-rapidos-busca button,
-  #botoes-filtro button {
-    font-size: 12px !important;
-    padding: 9px 11px !important;
-    flex-shrink: 0;
-  }
-
-  #botoes-filtro.filtros-categoria-loja {
-    width: calc(100% - 20px);
-    margin-bottom: 22px !important;
-  }
-
-  .grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-    padding: 0;
-  }
-
-  .produto {
-    padding: 10px;
-    min-height: 280px;
-  }
-
-  .produto h2 {
-    font-size: 14px;
-  }
-
-  .produto strong {
-    font-size: 15px;
-  }
-
-  .imagem-area {
-    height: 150px;
-  }
-
-  .urgencia {
-    font-size: 11px;
-    padding: 7px;
-  }
-
-  .popup-info {
-    width: 100%;
-    max-width: 100%;
-    padding: 14px;
-  }
-
-  .popup-info h2,
-  #popup-nome {
-    font-size: 18px;
-  }
-
-  #popup-preco {
-    font-size: 24px;
-  }
-
-  .barra-compra {
-    width: 100%;
-    max-width: 100%;
-    padding: 8px;
-    padding-bottom: calc(8px + env(safe-area-inset-bottom));
-  }
-
-  .btn-chat {
-    font-size: 13px;
-  }
-
-  .btn-chat img {
-    width: 20px;
-    height: 20px;
-  }
-
-  .footer-redes a {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .footer-linha {
-    align-items: flex-start;
-  }
-
-  .paginacao-loja {
-    gap: 6px;
-    padding-bottom: 22px;
-  }
-
-  .paginacao-loja button {
-    min-width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    font-size: 13px;
-  }
-}
-
-@media (max-width: 480px) {
-  .grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .imagem-area {
-    height: 138px;
-  }
-
-  .produto {
-    min-height: 270px;
-    border-radius: 14px;
-  }
-
-  .produto h2 {
-    font-size: 13px;
-  }
-
-  .produto strong {
-    font-size: 16px;
-  }
-
-  .popup-imagem-area {
-    height: 280px;
-    min-height: 260px;
-  }
-
-  .popup-thumb {
-    width: 54px;
-    height: 54px;
-  }
-
-  #popup-preco {
-    font-size: 25px;
-  }
-
-  .footer-box {
-    padding: 16px;
-  }
-}
-
-@media (max-width: 360px) {
-  .grid {
-    gap: 9px;
-  }
-
-  .produto {
-    padding: 8px;
-    min-height: 258px;
-  }
-
-  .imagem-area {
-    height: 124px;
-  }
-
-  .produto h2 {
-    font-size: 12px;
-  }
-
-  .urgencia {
-    font-size: 10px;
-  }
-
-  .produto strong {
-    font-size: 14px;
-  }
-}
-
-/* REDUZ ANIMAÇÕES EM DISPOSITIVOS QUE PEDEM MENOS MOVIMENTO */
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* AJUSTE DESKTOP FULL WIDTH - ZYQEN STORE */
+/* DESKTOP FULL WIDTH */
 
 @media (min-width: 901px) {
   :root {
@@ -2508,13 +2179,8 @@ main section h2::after,
   }
 }
 
-/* ============================================================
-   AJUSTE FINAL RESPONSIVO - ZYQEN STORE
-   Mobile + Tablet + Desktop
-   Cole este bloco no FINAL do style.css
-============================================================ */
+/* CHECADOR DO SCRIPT */
 
-/* BASE PARA O CHECADOR DO SCRIPT.JS */
 body.modo-mobile,
 body.modo-tablet,
 body.modo-desktop {
@@ -2535,9 +2201,7 @@ body.modo-desktop {
   --tipo-dispositivo: "desktop";
 }
 
-/* ============================================================
-   ORGANIZAÇÃO GERAL DOS FILTROS E CATEGORIAS
-============================================================ */
+/* ORGANIZAÇÃO GERAL DOS FILTROS E CATEGORIAS */
 
 .busca-inteligente-painel,
 #botoes-filtro.filtros-categoria-loja {
@@ -2555,9 +2219,7 @@ body.modo-desktop {
   user-select: none;
 }
 
-/* ============================================================
-   MOBILE / TABLET - ATÉ 900PX
-============================================================ */
+/* MOBILE / TABLET */
 
 @media (max-width: 900px) {
   html,
@@ -2573,29 +2235,52 @@ body.modo-desktop {
   }
 
   header {
-    width: calc(100% - 18px) !important;
-    max-width: calc(100% - 18px) !important;
-    padding: 20px 12px 15px !important;
-    border-radius: 0 0 18px 18px !important;
+    width: calc(100% - 14px) !important;
+    max-width: calc(100% - 14px) !important;
+    padding: 12px 10px 11px !important;
+    border-radius: 0 0 16px 16px !important;
+    margin-bottom: 6px !important;
   }
 
   .logo-area img {
-    width: clamp(128px, 38vw, 155px) !important;
-    max-width: 82% !important;
+    width: clamp(96px, 27vw, 124px) !important;
+    max-width: 72% !important;
+  }
+
+  header p {
+    margin: 6px auto 0 !important;
+    font-size: 13px !important;
+    line-height: 1.25 !important;
+    max-width: 92% !important;
+  }
+
+  header .texto-com-icone,
+  header p.texto-com-icone {
+    gap: 6px !important;
+  }
+
+  header .texto-com-icone img,
+  header p img,
+  header .icone-lucide {
+    width: 15px !important;
+    height: 15px !important;
   }
 
   .redes-topo {
-    gap: 8px !important;
+    margin-top: 8px !important;
+    gap: 7px !important;
   }
 
   .rede-link {
-    padding: 8px 10px !important;
+    min-height: 34px !important;
+    padding: 6px 10px !important;
     font-size: 12px !important;
+    border-radius: 999px !important;
   }
 
   .rede-link img {
-    width: 20px !important;
-    height: 20px !important;
+    width: 18px !important;
+    height: 18px !important;
   }
 
   .oferta-dia,
@@ -2603,105 +2288,174 @@ body.modo-desktop {
   .filtros,
   main,
   .categorias-container {
-    width: calc(100% - 18px) !important;
-    max-width: calc(100% - 18px) !important;
+    width: calc(100% - 14px) !important;
+    max-width: calc(100% - 14px) !important;
     margin-left: auto !important;
     margin-right: auto !important;
   }
 
   .confianca {
-    grid-template-columns: 1fr !important;
-    gap: 10px !important;
-    margin-top: 10px !important;
-    margin-bottom: 14px !important;
+    margin: 6px auto 10px !important;
+    padding: 2px 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 5px !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    overflow: visible !important;
   }
 
   .confianca-card {
-    min-height: auto !important;
-    padding: 14px 12px !important;
-    border-radius: 16px !important;
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 4px !important;
+    text-align: center !important;
+    cursor: pointer !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+  .confianca-card:hover {
+    transform: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .confianca-card .icone-circulo {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    margin: 0 auto !important;
+    border-radius: 50% !important;
+    background:
+      radial-gradient(circle at top, rgba(34, 211, 238, 0.20), transparent 58%),
+      rgba(15, 23, 42, 0.92) !important;
+    border: 1px solid rgba(34, 211, 238, 0.34) !important;
+    box-shadow:
+      0 8px 22px rgba(0, 0, 0, 0.28),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.04) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .confianca-card .icone-circulo img,
+  .confianca-card img,
+  .confianca-card svg {
+    width: 21px !important;
+    height: 21px !important;
+    object-fit: contain !important;
   }
 
   .confianca-card h3 {
-    font-size: 15px !important;
+    margin: 2px 0 0 !important;
+    max-width: 78px !important;
+    color: #f8fafc !important;
+    font-size: 10px !important;
+    font-weight: 900 !important;
+    line-height: 1.08 !important;
+    letter-spacing: -0.02em !important;
+    text-align: center !important;
   }
 
   .confianca-card p {
-    font-size: 12.5px !important;
+    display: none !important;
   }
 
-  /* BUSCA MAIS COMPORTADA NO MOBILE */
   .busca-inteligente-painel {
-    width: calc(100% - 18px) !important;
-    max-width: calc(100% - 18px) !important;
-    margin: 14px auto 18px !important;
-    padding: 14px !important;
-    border-radius: 18px !important;
+    width: calc(100% - 14px) !important;
+    max-width: calc(100% - 14px) !important;
+    margin: 8px auto 12px !important;
+    padding: 10px !important;
+    border-radius: 16px !important;
   }
 
   .busca-inteligente-topo {
     justify-content: center !important;
     text-align: center !important;
-    margin-bottom: 12px !important;
+    margin-bottom: 8px !important;
   }
 
   .busca-inteligente-topo strong {
-    font-size: 15px !important;
+    font-size: 17px !important;
+    line-height: 1.15 !important;
   }
 
   .busca-inteligente-topo span {
+    margin-top: 4px !important;
     font-size: 12.5px !important;
-    line-height: 1.35 !important;
+    line-height: 1.25 !important;
   }
 
   .busca-linha-superior {
     grid-template-columns: 1fr !important;
-    gap: 10px !important;
+    gap: 8px !important;
+  }
+
+  .campo-pesquisa-organizado img {
+    left: 13px !important;
+    width: 17px !important;
+    height: 17px !important;
   }
 
   #pesquisa.pesquisa-organizada-js,
   .pesquisa-organizada-js {
-    min-height: 45px !important;
-    font-size: 15px !important;
-    border-radius: 14px !important;
+    min-height: 40px !important;
+    height: 40px !important;
+    padding-left: 40px !important;
+    font-size: 14px !important;
+    border-radius: 13px !important;
   }
 
   #ordenarProdutos {
-    min-height: 45px !important;
+    min-height: 40px !important;
+    height: 40px !important;
     font-size: 14px !important;
-    border-radius: 14px !important;
+    border-radius: 13px !important;
+    padding: 0 12px !important;
   }
 
   .grupo-filtros-rapidos {
-    margin-top: 12px !important;
-    padding-top: 12px !important;
+    margin-top: 8px !important;
+    padding-top: 8px !important;
   }
 
   .titulo-filtro-organizado,
   .titulo-categorias-organizado {
-    font-size: 11px !important;
-    margin-bottom: 8px !important;
-    letter-spacing: 0.09em !important;
+    font-size: 10px !important;
+    margin-bottom: 6px !important;
+    letter-spacing: 0.08em !important;
   }
 
-  /* FILTROS RÁPIDOS ORGANIZADOS */
   .filtros-rapidos-busca {
     justify-content: flex-start !important;
     flex-wrap: nowrap !important;
     overflow-x: auto !important;
     overflow-y: hidden !important;
-    gap: 7px !important;
-    padding: 2px 2px 8px !important;
+    gap: 6px !important;
+    padding: 1px 2px 6px !important;
     scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-x: contain;
   }
 
-  .filtros-rapidos-busca::-webkit-scrollbar {
-    height: 4px;
+  .filtros-rapidos-busca::-webkit-scrollbar,
+  .botoes-categoria-organizado::-webkit-scrollbar {
+    height: 3px;
   }
 
-  .filtros-rapidos-busca::-webkit-scrollbar-track {
+  .filtros-rapidos-busca::-webkit-scrollbar-track,
+  .botoes-categoria-organizado::-webkit-scrollbar-track {
     background: rgba(15, 23, 42, 0.45);
     border-radius: 999px;
   }
@@ -2711,22 +2465,26 @@ body.modo-desktop {
     border-radius: 999px;
   }
 
+  .botoes-categoria-organizado::-webkit-scrollbar-thumb {
+    background: rgba(34, 197, 94, 0.38);
+    border-radius: 999px;
+  }
+
   .filtros-rapidos-busca button {
     flex: 0 0 auto !important;
     scroll-snap-align: start;
-    min-height: 36px !important;
-    padding: 8px 11px !important;
-    font-size: 12px !important;
+    min-height: 32px !important;
+    padding: 7px 10px !important;
+    font-size: 11.5px !important;
     border-radius: 999px !important;
   }
 
-  /* CATEGORIAS MAIS COMPORTADAS */
   #botoes-filtro.filtros-categoria-loja {
-    width: calc(100% - 18px) !important;
-    max-width: calc(100% - 18px) !important;
-    margin: 8px auto 20px !important;
-    padding: 12px 10px 10px !important;
-    border-radius: 18px !important;
+    width: calc(100% - 14px) !important;
+    max-width: calc(100% - 14px) !important;
+    margin: 6px auto 12px !important;
+    padding: 9px 8px 7px !important;
+    border-radius: 15px !important;
     overflow: hidden !important;
   }
 
@@ -2735,70 +2493,55 @@ body.modo-desktop {
     flex-wrap: nowrap !important;
     overflow-x: auto !important;
     overflow-y: hidden !important;
-    gap: 7px !important;
-    padding: 2px 2px 8px !important;
+    gap: 6px !important;
+    padding: 1px 2px 6px !important;
     scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-x: contain;
-  }
-
-  .botoes-categoria-organizado::-webkit-scrollbar {
-    height: 4px;
-  }
-
-  .botoes-categoria-organizado::-webkit-scrollbar-track {
-    background: rgba(15, 23, 42, 0.45);
-    border-radius: 999px;
-  }
-
-  .botoes-categoria-organizado::-webkit-scrollbar-thumb {
-    background: rgba(34, 197, 94, 0.38);
-    border-radius: 999px;
   }
 
   .botoes-categoria-organizado button,
   #botoes-filtro button {
     flex: 0 0 auto !important;
     scroll-snap-align: start;
-    min-height: 36px !important;
-    padding: 8px 11px !important;
-    font-size: 12px !important;
+    min-height: 32px !important;
+    padding: 7px 10px !important;
+    font-size: 11.5px !important;
     border-radius: 999px !important;
   }
 
   main section h2,
   .titulo-categoria-dinamica,
   .titulo-com-icone {
-    margin: 8px 0 12px !important;
-    font-size: 18px !important;
+    margin: 6px 0 10px !important;
+    font-size: 17px !important;
     gap: 7px !important;
   }
 
   .titulo-categoria-dinamica img,
   .titulo-com-icone img {
-    width: 23px !important;
-    height: 23px !important;
+    width: 22px !important;
+    height: 22px !important;
   }
 
   .categoria-loja {
-    margin-bottom: 24px !important;
+    margin-bottom: 22px !important;
   }
 
-  /* GRID MOBILE */
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 11px !important;
+    gap: 10px !important;
     width: 100% !important;
   }
 
   .produto {
-    min-height: 270px !important;
-    padding: 10px !important;
+    min-height: 260px !important;
+    padding: 9px !important;
     border-radius: 14px !important;
   }
 
   .imagem-area {
-    height: clamp(128px, 35vw, 155px) !important;
+    height: clamp(120px, 34vw, 148px) !important;
     border-radius: 11px !important;
   }
 
@@ -2807,15 +2550,15 @@ body.modo-desktop {
   }
 
   .produto h2 {
-    font-size: 13px !important;
-    line-height: 1.25 !important;
-    margin: 10px 0 7px !important;
+    font-size: 12.5px !important;
+    line-height: 1.22 !important;
+    margin: 9px 0 6px !important;
   }
 
   .avaliacao {
     font-size: 12px !important;
     gap: 4px !important;
-    margin-bottom: 7px !important;
+    margin-bottom: 6px !important;
   }
 
   .estrelas-icone img {
@@ -2828,13 +2571,12 @@ body.modo-desktop {
   }
 
   .urgencia {
-    font-size: 10.5px !important;
+    font-size: 10px !important;
     padding: 6px !important;
     border-radius: 9px !important;
-    margin-bottom: 8px !important;
+    margin-bottom: 7px !important;
   }
 
-  /* POPUP / PÁGINA DO PRODUTO NO MOBILE */
   .popup {
     align-items: stretch !important;
     justify-content: center !important;
@@ -2851,34 +2593,30 @@ body.modo-desktop {
   }
 
   .popup-topo {
-    min-height: 82px !important;
-    padding: 16px !important;
-    padding-top: calc(24px + env(safe-area-inset-top)) !important;
-    gap: 12px !important;
+    min-height: 76px !important;
+    padding: 13px !important;
+    padding-top: calc(22px + env(safe-area-inset-top)) !important;
+    gap: 10px !important;
   }
 
-  /* AUMENTA VOLTAR E COMPARTILHAR */
   .popup-topo button,
   .acoes-topo button {
-    width: 52px !important;
-    height: 52px !important;
-    min-width: 52px !important;
-    min-height: 52px !important;
-    font-size: 23px !important;
-    border-radius: 50% !important;
-    background: rgba(30, 41, 59, 0.96) !important;
-    border: 1px solid rgba(148, 163, 184, 0.18) !important;
+    width: 50px !important;
+    height: 50px !important;
+    min-width: 50px !important;
+    min-height: 50px !important;
+    font-size: 24px !important;
   }
 
   .popup-topo button img,
   .acoes-topo button img {
-    width: 25px !important;
-    height: 25px !important;
+    width: 24px !important;
+    height: 24px !important;
   }
 
   .popup-imagem-area {
-    height: clamp(255px, 38dvh, 355px) !important;
-    min-height: 245px !important;
+    height: clamp(250px, 36dvh, 345px) !important;
+    min-height: 240px !important;
   }
 
   .miniaturas-imagens {
@@ -2930,7 +2668,6 @@ body.modo-desktop {
     margin: 10px 0 !important;
   }
 
-  /* DIMINUI UM POUCO WHATSAPP E COMPRAR */
   .barra-compra {
     gap: 8px !important;
     padding: 8px !important;
@@ -2974,7 +2711,6 @@ body.modo-desktop {
     border-radius: 11px !important;
   }
 
-  /* FOOTER ORGANIZADO NO MOBILE */
   .footer-melhorado {
     padding: 22px 10px !important;
   }
@@ -3044,14 +2780,33 @@ body.modo-desktop {
   }
 }
 
-/* ============================================================
-   CELULARES PEQUENOS
-============================================================ */
+/* CELULAR PEQUENO */
 
 @media (max-width: 480px) {
   header {
-    width: calc(100% - 14px) !important;
-    max-width: calc(100% - 14px) !important;
+    width: calc(100% - 12px) !important;
+    max-width: calc(100% - 12px) !important;
+    padding: 10px 9px 10px !important;
+  }
+
+  .logo-area img {
+    width: clamp(88px, 28vw, 116px) !important;
+  }
+
+  header p {
+    font-size: 12.2px !important;
+    margin-top: 5px !important;
+  }
+
+  .rede-link {
+    min-height: 32px !important;
+    padding: 6px 9px !important;
+    font-size: 11.5px !important;
+  }
+
+  .rede-link img {
+    width: 17px !important;
+    height: 17px !important;
   }
 
   .busca-inteligente-painel,
@@ -3061,20 +2816,64 @@ body.modo-desktop {
   .filtros,
   main,
   .categorias-container {
-    width: calc(100% - 14px) !important;
-    max-width: calc(100% - 14px) !important;
+    width: calc(100% - 12px) !important;
+    max-width: calc(100% - 12px) !important;
+  }
+
+  .confianca {
+    gap: 4px !important;
+    margin-top: 5px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .confianca-card .icone-circulo {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+  }
+
+  .confianca-card .icone-circulo img,
+  .confianca-card img,
+  .confianca-card svg {
+    width: 19px !important;
+    height: 19px !important;
+  }
+
+  .confianca-card h3 {
+    max-width: 74px !important;
+    font-size: 9.3px !important;
+    line-height: 1.07 !important;
   }
 
   .busca-inteligente-painel {
-    padding: 12px !important;
+    padding: 9px !important;
+    margin-top: 7px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .busca-inteligente-topo strong {
+    font-size: 16px !important;
+  }
+
+  .busca-inteligente-topo span {
+    font-size: 12px !important;
+  }
+
+  #pesquisa.pesquisa-organizada-js,
+  .pesquisa-organizada-js,
+  #ordenarProdutos {
+    min-height: 38px !important;
+    height: 38px !important;
+    font-size: 13.5px !important;
   }
 
   .filtros-rapidos-busca button,
   .botoes-categoria-organizado button,
   #botoes-filtro button {
-    min-height: 34px !important;
-    padding: 7px 10px !important;
-    font-size: 11.5px !important;
+    min-height: 31px !important;
+    padding: 6px 9px !important;
+    font-size: 11px !important;
   }
 
   .grid {
@@ -3082,16 +2881,16 @@ body.modo-desktop {
   }
 
   .produto {
-    min-height: 258px !important;
+    min-height: 248px !important;
     padding: 8px !important;
   }
 
   .imagem-area {
-    height: clamp(120px, 34vw, 140px) !important;
+    height: clamp(114px, 33vw, 136px) !important;
   }
 
   .produto h2 {
-    font-size: 12.5px !important;
+    font-size: 12px !important;
   }
 
   .produto strong {
@@ -3099,28 +2898,28 @@ body.modo-desktop {
   }
 
   .popup-topo {
-    min-height: 78px !important;
-    padding-left: 13px !important;
-    padding-right: 13px !important;
+    min-height: 72px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
   }
 
   .popup-topo button,
   .acoes-topo button {
-    width: 50px !important;
-    height: 50px !important;
-    min-width: 50px !important;
-    min-height: 50px !important;
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    min-height: 48px !important;
   }
 
   .popup-topo button img,
   .acoes-topo button img {
-    width: 24px !important;
-    height: 24px !important;
+    width: 23px !important;
+    height: 23px !important;
   }
 
   .popup-imagem-area {
-    height: 275px !important;
-    min-height: 245px !important;
+    height: 270px !important;
+    min-height: 240px !important;
   }
 
   .btn-chat,
@@ -3141,9 +2940,7 @@ body.modo-desktop {
   }
 }
 
-/* ============================================================
-   CELULARES MUITO PEQUENOS
-============================================================ */
+/* CELULAR MUITO PEQUENO */
 
 @media (max-width: 360px) {
   .grid {
@@ -3151,20 +2948,20 @@ body.modo-desktop {
   }
 
   .produto {
-    min-height: 245px !important;
+    min-height: 238px !important;
     padding: 7px !important;
   }
 
   .imagem-area {
-    height: 112px !important;
+    height: 108px !important;
   }
 
   .produto h2 {
-    font-size: 12px !important;
+    font-size: 11.5px !important;
   }
 
   .produto strong {
-    font-size: 14px !important;
+    font-size: 13.5px !important;
   }
 
   .urgencia {
@@ -3172,19 +2969,30 @@ body.modo-desktop {
     padding: 5px !important;
   }
 
+  .confianca-card .icone-circulo {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+  }
+
+  .confianca-card h3 {
+    font-size: 8.7px !important;
+  }
+
   .filtros-rapidos-busca button,
   .botoes-categoria-organizado button,
   #botoes-filtro button {
-    font-size: 11px !important;
-    padding: 7px 9px !important;
+    font-size: 10.5px !important;
+    padding: 6px 8px !important;
   }
 
   .popup-topo button,
   .acoes-topo button {
-    width: 48px !important;
-    height: 48px !important;
-    min-width: 48px !important;
-    min-height: 48px !important;
+    width: 46px !important;
+    height: 46px !important;
+    min-width: 46px !important;
+    min-height: 46px !important;
   }
 
   .btn-chat,
@@ -3194,9 +3002,7 @@ body.modo-desktop {
   }
 }
 
-/* ============================================================
-   TABLET / TELAS MÉDIAS
-============================================================ */
+/* TABLET */
 
 @media (min-width: 769px) and (max-width: 1180px) {
   .confianca {
@@ -3219,391 +3025,7 @@ body.modo-desktop {
   }
 }
 
-/* ============================================================
-   DESKTOP MAIS LIMPO E COM LARGURA CHEIA
-============================================================ */
-
-@media (min-width: 901px) {
-  body.modo-desktop header,
-  header {
-    width: 100% !important;
-    max-width: none !important;
-  }
-
-  body.modo-desktop .oferta-dia,
-  body.modo-desktop .confianca,
-  body.modo-desktop .filtros,
-  body.modo-desktop .busca-inteligente-painel,
-  body.modo-desktop #botoes-filtro.filtros-categoria-loja,
-  body.modo-desktop main,
-  body.modo-desktop .categorias-container,
-  .oferta-dia,
-  .confianca,
-  .filtros,
-  .busca-inteligente-painel,
-  #botoes-filtro.filtros-categoria-loja,
-  main,
-  .categorias-container {
-    width: calc(100% - 32px) !important;
-    max-width: none !important;
-  }
-
-  .filtros-rapidos-busca,
-  .botoes-categoria-organizado {
-    justify-content: center !important;
-    flex-wrap: wrap !important;
-    overflow: visible !important;
-  }
-
-  .grid {
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
-    gap: 22px !important;
-  }
-
-  .popup-topo button,
-  .acoes-topo button {
-    width: 48px !important;
-    height: 48px !important;
-  }
-
-  .popup-topo button img,
-  .acoes-topo button img {
-    width: 24px !important;
-    height: 24px !important;
-  }
-
-  .btn-chat,
-  .btn-comprar,
-  .popup-comprar {
-    min-height: 44px !important;
-  }
-
-  .footer-box {
-    max-width: 900px !important;
-  }
-
-  .footer-linha {
-    align-items: center !important;
-  }
-
-  .footer-linha img {
-    margin: 0 !important;
-  }
-}
-
-@media (min-width: 1400px) {
-  .oferta-dia,
-  .confianca,
-  .filtros,
-  .busca-inteligente-painel,
-  #botoes-filtro.filtros-categoria-loja,
-  main,
-  .categorias-container {
-    width: calc(100% - 40px) !important;
-  }
-
-  .grid {
-    grid-template-columns: repeat(auto-fill, minmax(225px, 1fr)) !important;
-    gap: 24px !important;
-  }
-}
-
-@media (min-width: 1700px) {
-  .oferta-dia,
-  .confianca,
-  .filtros,
-  .busca-inteligente-painel,
-  #botoes-filtro.filtros-categoria-loja,
-  main,
-  .categorias-container {
-    width: calc(100% - 48px) !important;
-  }
-
-  .grid {
-    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)) !important;
-    gap: 24px !important;
-  }
-}
-
-/* ============================================================
-   AJUSTE POR TOQUE REAL
-   Isso ajuda celulares/tablets mesmo quando a largura engana
-============================================================ */
-
-@media (hover: none) and (pointer: coarse) {
-  .produto:hover {
-    transform: none !important;
-  }
-
-  .produto:hover::after {
-    transform: translateX(-100%) !important;
-  }
-
-  .rede-link:hover,
-  .footer-redes a:hover,
-  .btn-comprar:hover,
-  .popup-comprar:hover,
-  .btn-chat:hover,
-  .popup-topo button:hover,
-  .acoes-topo button:hover {
-    transform: none !important;
-  }
-}
-
-/* ============================================================
-   BOTÕES VOLTAR E COMPARTILHAR - POPUP PRODUTO
-   Cole no FINAL do style.css
-============================================================ */
-
-/* Organiza o topo do popup */
-.popup-topo {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  gap: 14px !important;
-}
-
-/* Garante que a área do compartilhar fique alinhada */
-.acoes-topo {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-end !important;
-  gap: 10px !important;
-}
-
-/* Botões voltar e compartilhar maiores */
-.popup-topo button,
-.acoes-topo button {
-  width: 52px !important;
-  height: 52px !important;
-  min-width: 52px !important;
-  min-height: 52px !important;
-  padding: 0 !important;
-  border-radius: 50% !important;
-
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-
-  background: rgba(30, 41, 59, 0.96) !important;
-  border: 1px solid rgba(148, 163, 184, 0.24) !important;
-  color: #ffffff !important;
-
-  font-size: 25px !important;
-  line-height: 1 !important;
-
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.28) !important;
-  cursor: pointer !important;
-  transition: 0.2s ease !important;
-}
-
-/* Ícones dentro dos botões */
-.popup-topo button img,
-.acoes-topo button img {
-  width: 25px !important;
-  height: 25px !important;
-  object-fit: contain !important;
-  margin: 0 !important;
-  pointer-events: none !important;
-}
-
-/* Efeito no PC */
-@media (hover: hover) and (pointer: fine) {
-  .popup-topo button:hover,
-  .acoes-topo button:hover {
-    background: linear-gradient(135deg, var(--green), var(--cyan)) !important;
-    color: #04111f !important;
-    transform: translateY(-2px) scale(1.04) !important;
-    box-shadow: 0 14px 34px rgba(34, 211, 238, 0.22) !important;
-  }
-}
-
-/* Mobile */
-@media (max-width: 900px) {
-  .popup-topo {
-    min-height: 82px !important;
-    padding: 16px !important;
-    padding-top: calc(24px + env(safe-area-inset-top)) !important;
-  }
-
-  .popup-topo button,
-  .acoes-topo button {
-    width: 54px !important;
-    height: 54px !important;
-    min-width: 54px !important;
-    min-height: 54px !important;
-    font-size: 26px !important;
-  }
-}
-
-/* Celular pequeno */
-@media (max-width: 480px) {
-  .popup-topo {
-    min-height: 78px !important;
-    padding-left: 13px !important;
-    padding-right: 13px !important;
-  }
-
-  .popup-topo button,
-  .acoes-topo button {
-    width: 50px !important;
-    height: 50px !important;
-    min-width: 50px !important;
-    min-height: 50px !important;
-    font-size: 24px !important;
-  }
-}
-
-/* ============================================================
-   MOBILE - CONFIANÇA COMPACTA EM ÍCONES REDONDOS
-   PC continua igual. No celular remove os quadrados grandes.
-============================================================ */
-
-@media (max-width: 900px) {
-  .confianca {
-    width: calc(100% - 18px) !important;
-    max-width: calc(100% - 18px) !important;
-    margin: 8px auto 12px !important;
-    padding: 6px 2px 4px !important;
-    display: grid !important;
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-    gap: 6px !important;
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    overflow: visible !important;
-  }
-
-  .confianca-card {
-    min-height: 0 !important;
-    height: auto !important;
-    padding: 0 !important;
-    border: none !important;
-    border-radius: 0 !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    gap: 5px !important;
-    text-align: center !important;
-    cursor: pointer !important;
-    -webkit-tap-highlight-color: transparent !important;
-  }
-
-  .confianca-card:hover {
-    transform: none !important;
-    border-color: transparent !important;
-    box-shadow: none !important;
-  }
-
-  .confianca-card .icone-circulo {
-    width: 48px !important;
-    height: 48px !important;
-    min-width: 48px !important;
-    min-height: 48px !important;
-    margin: 0 auto !important;
-    border-radius: 50% !important;
-    background:
-      radial-gradient(circle at top, rgba(34, 211, 238, 0.20), transparent 58%),
-      rgba(15, 23, 42, 0.92) !important;
-    border: 1px solid rgba(34, 211, 238, 0.34) !important;
-    box-shadow:
-      0 8px 22px rgba(0, 0, 0, 0.28),
-      inset 0 0 0 1px rgba(255, 255, 255, 0.04) !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-  }
-
-  .confianca-card .icone-circulo img,
-  .confianca-card img,
-  .confianca-card svg {
-    width: 23px !important;
-    height: 23px !important;
-    object-fit: contain !important;
-  }
-
-  .confianca-card h3 {
-    margin: 2px 0 0 !important;
-    max-width: 82px !important;
-    color: #f8fafc !important;
-    font-size: 10.8px !important;
-    font-weight: 900 !important;
-    line-height: 1.12 !important;
-    letter-spacing: -0.02em !important;
-    text-align: center !important;
-  }
-
-  .confianca-card p {
-    display: none !important;
-  }
-
-  .confianca-card:active .icone-circulo {
-    transform: scale(0.94) !important;
-    border-color: rgba(34, 197, 94, 0.52) !important;
-  }
-}
-
-@media (max-width: 480px) {
-  .confianca {
-    width: calc(100% - 14px) !important;
-    max-width: calc(100% - 14px) !important;
-    gap: 5px !important;
-    margin-top: 6px !important;
-    margin-bottom: 10px !important;
-  }
-
-  .confianca-card .icone-circulo {
-    width: 44px !important;
-    height: 44px !important;
-    min-width: 44px !important;
-    min-height: 44px !important;
-  }
-
-  .confianca-card .icone-circulo img,
-  .confianca-card img,
-  .confianca-card svg {
-    width: 21px !important;
-    height: 21px !important;
-  }
-
-  .confianca-card h3 {
-    max-width: 76px !important;
-    font-size: 10px !important;
-    line-height: 1.1 !important;
-  }
-}
-
-@media (max-width: 360px) {
-  .confianca {
-    gap: 4px !important;
-  }
-
-  .confianca-card .icone-circulo {
-    width: 40px !important;
-    height: 40px !important;
-    min-width: 40px !important;
-    min-height: 40px !important;
-  }
-
-  .confianca-card .icone-circulo img,
-  .confianca-card img,
-  .confianca-card svg {
-    width: 19px !important;
-    height: 19px !important;
-  }
-
-  .confianca-card h3 {
-    font-size: 9px !important;
-  }
-}
-
-/* ============================================================
-   TELINHA DE TEXTO DA CONFIANÇA - ESTILO
-   A abertura/fechamento funciona com o script.js abaixo.
-============================================================ */
+/* MODAL CONFIANÇA */
 
 .modal-confianca {
   position: fixed;
@@ -3697,5 +3119,40 @@ body.modo-desktop {
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+/* TOQUE REAL */
+
+@media (hover: none) and (pointer: coarse) {
+  .produto:hover {
+    transform: none !important;
+  }
+
+  .produto:hover::after {
+    transform: translateX(-100%) !important;
+  }
+
+  .rede-link:hover,
+  .footer-redes a:hover,
+  .btn-comprar:hover,
+  .popup-comprar:hover,
+  .btn-chat:hover,
+  .popup-topo button:hover,
+  .acoes-topo button:hover {
+    transform: none !important;
+  }
+}
+
+/* REDUZ ANIMAÇÕES */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }
