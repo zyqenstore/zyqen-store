@@ -9,6 +9,7 @@
 .metricas{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:12px}.metrica{background:rgba(2,6,23,.62);border:1px solid rgba(148,163,184,.22);border-radius:16px;padding:14px}.metrica strong{display:block;font-size:24px;color:#fff}.metrica span{display:block;color:#94a3b8;font-size:12px;margin-top:4px}.clique-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0}.clique-item{background:rgba(15,23,42,.8);border:1px solid rgba(148,163,184,.18);border-radius:12px;padding:8px;color:#cbd5e1;font-size:12px}.clique-item strong{display:block;color:#fff;font-size:16px;margin-top:3px}.ranking{display:grid;gap:10px;margin-top:12px}.ranking-item{display:grid;grid-template-columns:42px 1fr auto;gap:10px;align-items:center;background:rgba(2,6,23,.55);border:1px solid rgba(148,163,184,.18);border-radius:14px;padding:10px}.ranking-pos{width:34px;height:34px;border-radius:12px;background:linear-gradient(135deg,#22d3ee,#8b5cf6);display:flex;align-items:center;justify-content:center;font-weight:900}.ranking-item p{margin:3px 0 0;color:#94a3b8;font-size:12px}.ranking-total{font-weight:900;color:#86efac} .ranking-vazio{color:#94a3b8;font-size:13px;margin:0}
 .historico-lista{display:grid;gap:10px;max-height:65vh;overflow:auto;padding-right:4px}.historico-item{background:rgba(2,6,23,.62);border:1px solid rgba(148,163,184,.22);border-radius:16px;padding:13px}.historico-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.historico-top strong{color:#fff}.historico-data{color:#94a3b8;font-size:12px;white-space:nowrap}.historico-detalhes{margin-top:8px;color:#cbd5e1;font-size:12px;line-height:1.55}.historico-produtos{margin-top:8px;padding:8px;border-radius:12px;background:rgba(15,23,42,.75);border:1px solid rgba(148,163,184,.16);color:#cbd5e1;font-size:12px}.btn-mini{padding:9px 10px;margin-top:8px;border-radius:11px;font-size:12px}
 @media(max-width:1000px){.metricas{grid-template-columns:repeat(2,1fr)}.menu{grid-template-columns:repeat(2,1fr)}.grid4{grid-template-columns:1fr 1fr}}@media(max-width:700px){body{padding:12px}.topbar,.grid,.grid3,.grid4,.toolbar,.acoes3,.metricas{grid-template-columns:1fr}.menu{grid-template-columns:1fr}.menu button{min-height:auto}}
+.btn-google{display:flex;align-items:center;justify-content:center;gap:10px;background:#fff!important;color:#0f172a!important;border:1px solid rgba(148,163,184,.35)!important;box-shadow:0 16px 40px rgba(0,0,0,.22)}.btn-google:hover{transform:translateY(-1px);box-shadow:0 20px 50px rgba(34,211,238,.16)}.google-bola{width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#4285f4,#34a853,#fbbc05,#ea4335);color:#fff;font-weight:900;font-size:17px;flex-shrink:0}.login-google-info{text-align:center;margin:14px 0 0}.login-seguranca{background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.18);border-radius:14px;padding:12px;margin-top:12px;text-align:center}
 </style>
 </head>
 
@@ -17,10 +18,15 @@
 <div id="login" class="login">
   <div class="loginbox">
     <h2>🔐 Painel Admin</h2>
-    <p class="help">Entre com o e-mail autorizado do Firebase.<br>Apenas <strong>zyqenstore@gmail.com</strong> pode administrar.</p>
-    <label>E-mail</label><input id="emailAdmin" type="email" value="zyqenstore@gmail.com">
-    <label>Senha</label><input id="senhaAdmin" type="password" placeholder="Sua senha">
-    <button id="btnEntrar">Entrar no painel</button>
+    <p class="help" style="text-align:center">Entre com sua conta Google autorizada.<br>Apenas <strong>kaiccarvalhosouzaa@gmail.com</strong> pode administrar.</p>
+
+    <button id="btnEntrar" class="btn-google" type="button">
+      <span class="google-bola">G</span>
+      Entrar com Google
+    </button>
+
+    <p class="help login-google-info">Sem campo de senha no painel. A confirmação é feita pelo Google/Firebase.</p>
+    <p class="help login-seguranca">Se abrir uma conta diferente, escolha <strong>kaiccarvalhosouzaa@gmail.com</strong>. Qualquer outro e-mail será bloqueado automaticamente.</p>
   </div>
 </div>
 
@@ -274,10 +280,12 @@
 <script type="module">
 import { db, auth } from "./firebase.js";
 import { collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
-import { signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
+import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
 
 const $ = id => document.getElementById(id);
-const EMAIL_ADMIN = "zyqenstore@gmail.com";
+const EMAIL_ADMIN = "kaiccarvalhosouzaa@gmail.com";
+const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({ prompt: "select_account" });
 
 let produtos = [];
 let categorias = [];
@@ -333,15 +341,33 @@ function proteger(){
 }
 
 async function entrar(){
-  const email=$("emailAdmin").value.trim();
-  const senha=$("senhaAdmin").value;
-  if(!email || !senha){alert("Digite o e-mail e a senha.");return;}
-  $("btnEntrar").disabled=true;$("btnEntrar").textContent="Entrando...";
+  $("btnEntrar").disabled=true;
+  $("btnEntrar").innerHTML=`<span class="google-bola">G</span> Entrando...`;
+
   try{
-    const c=await signInWithEmailAndPassword(auth,email,senha);
-    if(c.user.email!==EMAIL_ADMIN){await signOut(auth);alert("Este e-mail não tem permissão.");}
-  }catch(e){console.error(e);alert("Erro ao entrar. Confira e-mail e senha.");}
-  $("btnEntrar").disabled=false;$("btnEntrar").textContent="Entrar no painel";
+    const c=await signInWithPopup(auth,googleProvider);
+
+    if(!c.user || c.user.email!==EMAIL_ADMIN){
+      await signOut(auth);
+      alert("Este e-mail não tem permissão. Entre com kaiccarvalhosouzaa@gmail.com.");
+      return;
+    }
+  }catch(e){
+    console.error(e);
+
+    if(e.code==="auth/popup-closed-by-user"){
+      alert("Login cancelado. Clique em Entrar com Google e escolha a conta autorizada.");
+    }else if(e.code==="auth/operation-not-allowed"){
+      alert("Login com Google ainda não está ativado no Firebase. Ative em Authentication > Sign-in method > Google.");
+    }else if(e.code==="auth/unauthorized-domain"){
+      alert("Domínio não autorizado no Firebase. Adicione zyqenstore.github.io em Authentication > Settings > Authorized domains.");
+    }else{
+      alert("Erro ao entrar com Google. Verifique se o login Google está ativado no Firebase.");
+    }
+  }
+
+  $("btnEntrar").disabled=false;
+  $("btnEntrar").innerHTML=`<span class="google-bola">G</span> Entrar com Google`;
 }
 
 async function sair(){await signOut(auth);}
@@ -1023,8 +1049,6 @@ function importarJson(){const t=$("jsonImportar").value.trim();if(!t){mostrarSta
 function aplicarSelect(selectId,inputId){const v=$(selectId).value;if(v)$(inputId).value=v;}
 
 $("btnEntrar").addEventListener("click",entrar);
-$("senhaAdmin").addEventListener("keydown",e=>{if(e.key==="Enter")entrar()});
-$("emailAdmin").addEventListener("keydown",e=>{if(e.key==="Enter")entrar()});
 $("btnSair").addEventListener("click",sair);
 
 $("btnSalvarCaminho").addEventListener("click",salvarCaminho);
