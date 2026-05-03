@@ -1,17 +1,32 @@
-const CACHE_NAME = "zyqen-store-cache-v1";
-const RUNTIME_CACHE = "zyqen-store-runtime-v1";
+const CACHE_NAME = "zyqen-store-cache-v2";
+const RUNTIME_CACHE = "zyqen-store-runtime-v2";
+
+const BASE = "/zyqen-store/";
 
 const APP_SHELL = [
-  "./",
-  "./index.html",
-  "./manifest.json",
-  "./style.css?v=29",
-  "./script.js?v=29",
-  "./firebase.js",
-  "./imagens/logo/logo.png",
-  "./imagens/logo/favicon.png",
-  "./imagens/icons/icon-192.png",
-  "./imagens/icons/icon-512.png"
+  BASE,
+  BASE + "index.html",
+  BASE + "manifest.json",
+  BASE + "style.css?v=29",
+  BASE + "script.js?v=29",
+  BASE + "firebase.js",
+
+  BASE + "imagens/logo/logo.png",
+  BASE + "imagens/logo/favicon.png",
+
+  BASE + "imagens/icons/icon-192.png",
+  BASE + "imagens/icons/icon-512.png",
+  BASE + "imagens/icons/icon-maskable-512.png",
+
+  BASE + "imagens/icones/search.svg",
+  BASE + "imagens/icones/flame.svg",
+  BASE + "imagens/icones/star.svg",
+  BASE + "imagens/icones/share-2.svg",
+  BASE + "imagens/icones/arrow-left.svg",
+  BASE + "imagens/icones/message-square.svg",
+
+  BASE + "imagens/redes/instagram.jpg",
+  BASE + "imagens/redes/whatsapp.jpg"
 ];
 
 self.addEventListener("install", function (event) {
@@ -59,6 +74,10 @@ self.addEventListener("fetch", function (event) {
     return;
   }
 
+  if (!url.pathname.startsWith(BASE)) {
+    return;
+  }
+
   if (request.mode === "navigate") {
     event.respondWith(
       fetch(request)
@@ -72,8 +91,8 @@ self.addEventListener("fetch", function (event) {
           return response;
         })
         .catch(function () {
-          return caches.match("./index.html").then(function (cachedPage) {
-            return cachedPage || caches.match("./");
+          return caches.match(BASE + "index.html").then(function (cachedPage) {
+            return cachedPage || caches.match(BASE);
           });
         })
     );
@@ -94,12 +113,8 @@ self.addEventListener("fetch", function (event) {
 
   if (ehArquivoEstatico) {
     event.respondWith(
-      caches.match(request).then(function (cachedResponse) {
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-
-        return fetch(request).then(function (networkResponse) {
+      fetch(request)
+        .then(function (networkResponse) {
           const responseClone = networkResponse.clone();
 
           caches.open(RUNTIME_CACHE).then(function (cache) {
@@ -107,8 +122,10 @@ self.addEventListener("fetch", function (event) {
           });
 
           return networkResponse;
-        });
-      })
+        })
+        .catch(function () {
+          return caches.match(request);
+        })
     );
   }
 });
