@@ -10,6 +10,7 @@
 .historico-lista{display:grid;gap:10px;max-height:65vh;overflow:auto;padding-right:4px}.historico-item{background:rgba(2,6,23,.62);border:1px solid rgba(148,163,184,.22);border-radius:16px;padding:13px}.historico-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.historico-top strong{color:#fff}.historico-data{color:#94a3b8;font-size:12px;white-space:nowrap}.historico-detalhes{margin-top:8px;color:#cbd5e1;font-size:12px;line-height:1.55}.historico-produtos{margin-top:8px;padding:8px;border-radius:12px;background:rgba(15,23,42,.75);border:1px solid rgba(148,163,184,.16);color:#cbd5e1;font-size:12px}.btn-mini{padding:9px 10px;margin-top:8px;border-radius:11px;font-size:12px}
 @media(max-width:1000px){.metricas{grid-template-columns:repeat(2,1fr)}.menu{grid-template-columns:repeat(2,1fr)}.grid4{grid-template-columns:1fr 1fr}}@media(max-width:700px){body{padding:12px}.topbar,.grid,.grid3,.grid4,.toolbar,.acoes3,.metricas{grid-template-columns:1fr}.menu{grid-template-columns:1fr}.menu button{min-height:auto}}
 .btn-google{display:flex;align-items:center;justify-content:center;gap:10px;background:#fff!important;color:#0f172a!important;border:1px solid rgba(148,163,184,.35)!important;box-shadow:0 16px 40px rgba(0,0,0,.22)}.btn-google:hover{transform:translateY(-1px);box-shadow:0 20px 50px rgba(34,211,238,.16)}.google-bola{width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#4285f4,#34a853,#fbbc05,#ea4335);color:#fff;font-weight:900;font-size:17px;flex-shrink:0}.login-google-info{text-align:center;margin:14px 0 0}.login-seguranca{background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.18);border-radius:14px;padding:12px;margin-top:12px;text-align:center}
+.cor-categoria-box{margin-top:12px;padding:14px;border-radius:16px;background:rgba(2,6,23,.48);border:1px solid rgba(148,163,184,.22)}.cor-categoria-linha{display:grid;grid-template-columns:90px 1fr;gap:12px;align-items:end}.cor-categoria-linha input[type=color]{height:48px;padding:4px;cursor:pointer}.cor-preview{display:flex;align-items:center;gap:10px;margin-top:10px;color:#cbd5e1;font-size:13px}.cor-bolinha{width:24px;height:24px;border-radius:50%;border:2px solid rgba(255,255,255,.3);box-shadow:0 0 18px rgba(34,211,238,.18)}.linha-preview{height:4px;flex:1;border-radius:999px;background:linear-gradient(90deg,var(--cor-preview,#22c55e),transparent)}
 </style>
 </head>
 
@@ -153,6 +154,26 @@
         <div><label>Ordem</label><input id="catOrdem" type="number" placeholder="Ex: 3"></div>
       </div>
 
+      <div class="cor-categoria-box">
+        <label style="margin-top:0">Cor da linha da categoria</label>
+        <p class="help" style="margin:6px 0 0">Escolha a cor da linha que aparece ao lado do nome da categoria no site.</p>
+
+        <div class="cor-categoria-linha">
+          <div>
+            <input id="catCorLinha" type="color" value="#22c55e" aria-label="Escolher cor da linha da categoria">
+          </div>
+          <div>
+            <input id="catCorLinhaTexto" placeholder="#22c55e" value="#22c55e">
+          </div>
+        </div>
+
+        <div id="previewCorLinha" class="cor-preview" style="--cor-preview:#22c55e">
+          <span class="cor-bolinha" style="background:#22c55e"></span>
+          <span>Prévia da linha</span>
+          <span class="linha-preview"></span>
+        </div>
+      </div>
+
       <div class="grid">
         <div><label>Caminho das imagens</label><select id="catImgSelect"></select><input id="catImgPath" placeholder="Ex: imagens/shopee/"></div>
         <div><label>Extensão das imagens</label><select id="catImgExt"><option value=".jpg">.jpg</option><option value=".png">.png</option><option value=".webp">.webp</option><option value=".jpeg">.jpeg</option></select></div>
@@ -280,7 +301,7 @@
 <script type="module">
 import { db, auth } from "./firebase.js";
 import { collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
-import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
+import { GoogleAuthProvider, signInWithRedirect, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
 
 const $ = id => document.getElementById(id);
 const EMAIL_ADMIN = "kaiccarvalhosouzaa@gmail.com";
@@ -314,8 +335,8 @@ const CAMINHOS_PADRAO = [
 ];
 
 const CATEGORIAS_PADRAO = [
-  {nome:"Mercado Livre",slug:"mercado-livre",tipo:"produto",caminhoImagens:"imagens/mercado/",caminhoVideos:"videos/mercado/",caminhoIcones:"imagens/icones/",extImagem:".jpg",extVideo:".mp4",extIcone:".svg",icone:"imagens/icones/shopping-cart.svg",ordem:1,ativa:true},
-  {nome:"Cakto",slug:"cakto",tipo:"cakto",caminhoImagens:"imagens/cakto/",caminhoVideos:"videos/cakto/",caminhoIcones:"imagens/icones/",extImagem:".jpg",extVideo:".mp4",extIcone:".svg",icone:"imagens/icones/package.svg",ordem:2,ativa:true}
+  {nome:"Mercado Livre",slug:"mercado-livre",tipo:"produto",caminhoImagens:"imagens/mercado/",caminhoVideos:"videos/mercado/",caminhoIcones:"imagens/icones/",extImagem:".jpg",extVideo:".mp4",extIcone:".svg",icone:"imagens/icones/shopping-cart.svg",corLinha:"#facc15",ordem:1,ativa:true},
+  {nome:"Cakto",slug:"cakto",tipo:"cakto",caminhoImagens:"imagens/cakto/",caminhoVideos:"videos/cakto/",caminhoIcones:"imagens/icones/",extImagem:".jpg",extVideo:".mp4",extIcone:".svg",icone:"imagens/icones/package.svg",corLinha:"#22c55e",ordem:2,ativa:true}
 ];
 
 function abrirArea(id){
@@ -345,7 +366,7 @@ async function entrar(){
   $("btnEntrar").innerHTML=`<span class="google-bola">G</span> Entrando...`;
 
   try{
-    const c=await signInWithPopup(auth,googleProvider);
+    const c=await signInWithRedirect(auth,googleProvider);
 
     if(!c.user || c.user.email!==EMAIL_ADMIN){
       await signOut(auth);
@@ -414,11 +435,36 @@ function limparPrefixo(caminho,base,ex){
   if(ex && v.toLowerCase().endsWith(ex.toLowerCase()))v=v.slice(0,-ex.length);
   return v;
 }
+function corSegura(cor,padrao="#22c55e"){
+  const v=String(cor||"").trim();
+  return /^#[0-9a-fA-F]{6}$/.test(v)?v:padrao;
+}
+function corPadraoCategoria(slug,nome=""){
+  const texto=`${slug} ${nome}`.toLowerCase();
+  if(texto.includes("mercado"))return "#facc15";
+  if(texto.includes("shopee"))return "#f97316";
+  if(texto.includes("cakto"))return "#22c55e";
+  if(texto.includes("amazon"))return "#0ea5e9";
+  if(texto.includes("digital"))return "#8b5cf6";
+  return "#22c55e";
+}
+function sincronizarCorCategoria(origem="color"){
+  const color=$("catCorLinha");
+  const texto=$("catCorLinhaTexto");
+  const preview=$("previewCorLinha");
+  if(!color||!texto||!preview)return;
+  let cor=origem==="text"?corSegura(texto.value,color.value||"#22c55e"):corSegura(color.value,"#22c55e");
+  color.value=cor;
+  texto.value=cor;
+  preview.style.setProperty("--cor-preview",cor);
+  const bolinha=preview.querySelector(".cor-bolinha");
+  if(bolinha)bolinha.style.background=cor;
+}
 
 function normCaminho(c){return {docId:c.docId||"",nome:c.nome||"Caminho",tipo:c.tipo||"imagem",caminho:barra(c.caminho||""),extensao:ext(c.extensao||".jpg"),ordem:Number(c.ordem)||999,ativo:c.ativo!==false};}
 function normCategoria(c){
   const nome=c.nome||"Categoria", slug=c.slug||slugify(nome);
-  return {docId:c.docId||"",nome,slug,tipo:c.tipo||"produto",caminhoImagens:barra(c.caminhoImagens||`imagens/${slug}/`),caminhoVideos:barra(c.caminhoVideos||`videos/${slug}/`),caminhoIcones:barra(c.caminhoIcones||"imagens/icones/"),extImagem:ext(c.extImagem||".jpg"),extVideo:ext(c.extVideo||".mp4"),extIcone:ext(c.extIcone||".svg"),icone:c.icone||"imagens/icones/package.svg",ordem:Number(c.ordem)||999,ativa:c.ativa!==false};
+  return {docId:c.docId||"",nome,slug,tipo:c.tipo||"produto",caminhoImagens:barra(c.caminhoImagens||`imagens/${slug}/`),caminhoVideos:barra(c.caminhoVideos||`videos/${slug}/`),caminhoIcones:barra(c.caminhoIcones||"imagens/icones/"),extImagem:ext(c.extImagem||".jpg"),extVideo:ext(c.extVideo||".mp4"),extIcone:ext(c.extIcone||".svg"),icone:c.icone||"imagens/icones/package.svg",corLinha:corSegura(c.corLinha||c.corCategoria,corPadraoCategoria(slug,nome)),ordem:Number(c.ordem)||999,ativa:c.ativa!==false};
 }
 
 function caminhosUso(tipo){return (caminhos.length?caminhos:CAMINHOS_PADRAO).filter(c=>c.tipo===tipo&&c.ativo!==false).sort((a,b)=>(Number(a.ordem)||999)-(Number(b.ordem)||999));}
@@ -632,7 +678,7 @@ function montarCategoria(){
   const caminhoIcones=barra($("catIconPath").value.trim()||"imagens/icones/");
   const extIcone=ext($("catIconExt").value||".svg");
   const icone=completar($("catIcon").value.trim()||"package",caminhoIcones,extIcone);
-  return {nome,slug,tipo:$("catTipo").value,caminhoImagens:barra($("catImgPath").value.trim()||`imagens/${slug}/`),caminhoVideos:barra($("catVidPath").value.trim()||`videos/${slug}/`),caminhoIcones,extImagem:ext($("catImgExt").value||".jpg"),extVideo:ext($("catVidExt").value||".mp4"),extIcone,icone,ordem:Number($("catOrdem").value)||999,ativa:$("catAtiva").checked,atualizadoEm:serverTimestamp()};
+  return {nome,slug,tipo:$("catTipo").value,caminhoImagens:barra($("catImgPath").value.trim()||`imagens/${slug}/`),caminhoVideos:barra($("catVidPath").value.trim()||`videos/${slug}/`),caminhoIcones,extImagem:ext($("catImgExt").value||".jpg"),extVideo:ext($("catVidExt").value||".mp4"),extIcone,icone,corLinha:corSegura($("catCorLinha").value||$("catCorLinhaTexto").value,corPadraoCategoria(slug,nome)),ordem:Number($("catOrdem").value)||999,ativa:$("catAtiva").checked,atualizadoEm:serverTimestamp()};
 }
 
 async function salvarCategoria(){
@@ -652,14 +698,14 @@ async function salvarCategoria(){
 
 function limparCategoria(){
   ["catNome","catSlug","catImgPath","catVidPath","catIconPath","catIcon","catOrdem"].forEach(id=>$(id).value="");
-  $("catTipo").value="produto";$("catImgExt").value=".jpg";$("catVidExt").value=".mp4";$("catIconExt").value=".svg";$("catAtiva").checked=true;
-  editCategoriaId=null;$("btnSalvarCategoria").textContent="Salvar categoria";$("btnCancelarCategoria").style.display="none";atualizarSelectsCaminhos();previewIcone();
+  $("catTipo").value="produto";$("catImgExt").value=".jpg";$("catVidExt").value=".mp4";$("catIconExt").value=".svg";$("catAtiva").checked=true;$("catCorLinha").value="#22c55e";$("catCorLinhaTexto").value="#22c55e";
+  editCategoriaId=null;$("btnSalvarCategoria").textContent="Salvar categoria";$("btnCancelarCategoria").style.display="none";atualizarSelectsCaminhos();previewIcone();sincronizarCorCategoria();
 }
 
 function editarCategoria(id){
   const c=categorias.find(x=>x.docId===id); if(!c)return;
-  editCategoriaId=id;$("catNome").value=c.nome;$("catSlug").value=c.slug;$("catTipo").value=c.tipo;$("catImgPath").value=c.caminhoImagens;$("catVidPath").value=c.caminhoVideos;$("catIconPath").value=c.caminhoIcones;$("catImgExt").value=c.extImagem;$("catVidExt").value=c.extVideo;$("catIconExt").value=c.extIcone;$("catIcon").value=limparPrefixo(c.icone,c.caminhoIcones,c.extIcone);$("catOrdem").value=c.ordem||"";$("catAtiva").checked=c.ativa!==false;
-  $("btnSalvarCategoria").textContent="Atualizar categoria";$("btnCancelarCategoria").style.display="block";previewIcone();abrirArea("categorias");
+  editCategoriaId=id;$("catNome").value=c.nome;$("catSlug").value=c.slug;$("catTipo").value=c.tipo;$("catImgPath").value=c.caminhoImagens;$("catVidPath").value=c.caminhoVideos;$("catIconPath").value=c.caminhoIcones;$("catImgExt").value=c.extImagem;$("catVidExt").value=c.extVideo;$("catIconExt").value=c.extIcone;$("catIcon").value=limparPrefixo(c.icone,c.caminhoIcones,c.extIcone);$("catCorLinha").value=corSegura(c.corLinha,corPadraoCategoria(c.slug,c.nome));$("catCorLinhaTexto").value=$("catCorLinha").value;$("catOrdem").value=c.ordem||"";$("catAtiva").checked=c.ativa!==false;
+  $("btnSalvarCategoria").textContent="Atualizar categoria";$("btnCancelarCategoria").style.display="block";previewIcone();sincronizarCorCategoria();abrirArea("categorias");
 }
 
 function deletarCategoria(id){
@@ -688,6 +734,7 @@ function renderCategorias(){
       <p><strong>Imagens:</strong> ${esc(c.caminhoImagens)} ${esc(c.extImagem)}</p>
       <p><strong>Vídeos:</strong> ${esc(c.caminhoVideos)} ${esc(c.extVideo)}</p>
       <p><strong>Ícone:</strong> ${esc(c.icone)}</p>
+      <p><strong>Cor da linha:</strong> <span class="cor-bolinha" style="display:inline-block;vertical-align:middle;background:${esc(c.corLinha||"#22c55e")}"></span> ${esc(c.corLinha||"#22c55e")}</p>
       <div class="acoes"><button class="edit" onclick="editarCategoria('${c.docId}')">Editar</button><button class="del" onclick="deletarCategoria('${c.docId}')">Deletar</button></div>
     </div>`).join(""):`<p class="help">Nenhuma categoria criada ainda.</p>`;
 }
@@ -1058,7 +1105,9 @@ $("btnCriarCaminhosPadrao").addEventListener("click",criarCaminhosPadrao);
 $("btnSalvarCategoria").addEventListener("click",salvarCategoria);
 $("btnCancelarCategoria").addEventListener("click",limparCategoria);
 $("btnCriarCategoriasPadrao").addEventListener("click",criarCategoriasPadrao);
-$("catNome").addEventListener("input",()=>{if(!$("catSlug").value.trim()){const s=slugify($("catNome").value);$("catSlug").value=s;$("catImgPath").value=s?`imagens/${s}/`:"";$("catVidPath").value=s?`videos/${s}/`:"";}previewIcone()});
+$("catCorLinha").addEventListener("input",()=>sincronizarCorCategoria("color"));
+$("catCorLinhaTexto").addEventListener("input",()=>sincronizarCorCategoria("text"));
+$("catNome").addEventListener("input",()=>{if(!$("catSlug").value.trim()){const s=slugify($("catNome").value);$("catSlug").value=s;$("catImgPath").value=s?`imagens/${s}/`:"";$("catVidPath").value=s?`videos/${s}/`:"";if(!$("catCorLinhaTexto").value.trim()||$("catCorLinhaTexto").value==="#22c55e"){const cor=corPadraoCategoria(s,$("catNome").value);$("catCorLinha").value=cor;$("catCorLinhaTexto").value=cor;sincronizarCorCategoria();}}previewIcone()});
 $("catSlug").addEventListener("input",()=>{const s=slugify($("catSlug").value);$("catSlug").value=s;if(!$("catImgPath").value.trim())$("catImgPath").value=s?`imagens/${s}/`:"";if(!$("catVidPath").value.trim())$("catVidPath").value=s?`videos/${s}/`:"";previewIcone()});
 $("catImgSelect").addEventListener("change",()=>aplicarPath("catImgSelect","catImgPath","catImgExt"));
 $("catVidSelect").addEventListener("change",()=>aplicarPath("catVidSelect","catVidPath","catVidExt"));

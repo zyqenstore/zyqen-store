@@ -482,9 +482,41 @@ function normalizarProduto(produto) {
   };
 }
 
+function corSeguraCategoria(cor, padrao = "#22c55e") {
+  const valor = String(cor || "").trim();
+
+  if (/^#[0-9a-fA-F]{6}$/.test(valor)) {
+    return valor.toLowerCase();
+  }
+
+  if (/^#[0-9a-fA-F]{3}$/.test(valor)) {
+    return "#" + valor
+      .slice(1)
+      .split("")
+      .map(letra => letra + letra)
+      .join("")
+      .toLowerCase();
+  }
+
+  return padrao;
+}
+
+function corPadraoCategoria(slug, nome = "") {
+  const texto = `${slug} ${nome}`.toLowerCase();
+
+  if (texto.includes("mercado")) return "#facc15";
+  if (texto.includes("shopee")) return "#f97316";
+  if (texto.includes("cakto")) return "#22c55e";
+  if (texto.includes("amazon")) return "#0ea5e9";
+  if (texto.includes("digital")) return "#8b5cf6";
+
+  return "#22c55e";
+}
+
 function normalizarCategoria(categoria) {
   const nome = categoria.nome || categoria.categoria || "Categoria";
   const slug = categoria.slug || slugify(nome);
+  const corPadrao = corPadraoCategoria(slug, nome);
 
   return {
     docId: categoria.docId || "",
@@ -498,6 +530,7 @@ function normalizarCategoria(categoria) {
     extVideo: categoria.extVideo || ".mp4",
     extIcone: categoria.extIcone || ".svg",
     icone: categoria.icone || escolherIconeCategoria(nome, slug),
+    corLinha: corSeguraCategoria(categoria.corLinha || categoria.corCategoria, corPadrao),
     ordem: Number(categoria.ordem) || 999,
     ativa: categoria.ativa !== false
   };
@@ -516,6 +549,7 @@ function categoriasPadrao() {
       extVideo: ".mp4",
       extIcone: ".svg",
       icone: ICONES.shoppingCart,
+      corLinha: "#facc15",
       ordem: 1,
       ativa: true
     },
@@ -530,6 +564,7 @@ function categoriasPadrao() {
       extVideo: ".mp4",
       extIcone: ".svg",
       icone: ICONES.package,
+      corLinha: "#22c55e",
       ordem: 2,
       ativa: true
     }
@@ -1029,21 +1064,36 @@ function renderizarSecoesCategorias(categorias) {
     return;
   }
 
-  container.innerHTML = categorias.map(cat => `
-    <section id="secao-${escaparHTML(cat.slug)}" class="categoria-loja" data-categoria="${escaparHTML(cat.slug)}">
-      <h2 class="titulo-categoria-dinamica">
-        <img 
-          src="${cat.icone || ICONES.package}" 
-          alt="${escaparHTML(cat.nome)}"
-          onerror="this.onerror=null;this.src='${ICONES.package}'"
-        >
-        ${escaparHTML(cat.nome)}
-      </h2>
+  container.innerHTML = categorias.map(cat => {
+    const corLinha = corSeguraCategoria(
+      cat.corLinha,
+      corPadraoCategoria(cat.slug, cat.nome)
+    );
 
-      <div id="produtos-${escaparHTML(cat.slug)}" class="grid"></div>
-      <div id="paginacao-${escaparHTML(cat.slug)}" class="paginacao-loja"></div>
-    </section>
-  `).join("");
+    return `
+      <section 
+        id="secao-${escaparHTML(cat.slug)}" 
+        class="categoria-loja" 
+        data-categoria="${escaparHTML(cat.slug)}"
+        style="--cor-categoria:${escaparHTML(corLinha)}"
+      >
+        <h2 
+          class="titulo-categoria-dinamica" 
+          style="--cor-categoria:${escaparHTML(corLinha)}"
+        >
+          <img 
+            src="${cat.icone || ICONES.package}" 
+            alt="${escaparHTML(cat.nome)}"
+            onerror="this.onerror=null;this.src='${ICONES.package}'"
+          >
+          ${escaparHTML(cat.nome)}
+        </h2>
+
+        <div id="produtos-${escaparHTML(cat.slug)}" class="grid"></div>
+        <div id="paginacao-${escaparHTML(cat.slug)}" class="paginacao-loja"></div>
+      </section>
+    `;
+  }).join("");
 }
 
 function renderizarProdutosComPaginacao(produtos, categoria) {
