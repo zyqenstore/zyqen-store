@@ -366,34 +366,39 @@ async function entrar(){
   $("btnEntrar").innerHTML=`<span class="google-bola">G</span> Entrando...`;
 
   try{
-    const c=await signInWithRedirect(auth,googleProvider);
-
-    if(!c.user || c.user.email!==EMAIL_ADMIN){
-      await signOut(auth);
-      alert("Este e-mail não tem permissão. Entre com kaiccarvalhosouzaa@gmail.com.");
-      return;
-    }
+    await signInWithRedirect(auth,googleProvider);
   }catch(e){
     console.error(e);
 
-    if(e.code==="auth/popup-closed-by-user"){
-      alert("Login cancelado. Clique em Entrar com Google e escolha a conta autorizada.");
-    }else if(e.code==="auth/operation-not-allowed"){
-      alert("Login com Google ainda não está ativado no Firebase. Ative em Authentication > Sign-in method > Google.");
+    if(e.code==="auth/operation-not-allowed"){
+      alert("Login com Google ainda não está ativado no Firebase. Ative em Authentication > Método de login > Google.");
     }else if(e.code==="auth/unauthorized-domain"){
-      alert("Domínio não autorizado no Firebase. Adicione zyqenstore.github.io em Authentication > Settings > Authorized domains.");
+      alert("Domínio não autorizado no Firebase. Adicione zyqenstore.github.io em Authentication > Configurações > Domínios autorizados.");
     }else{
-      alert("Erro ao entrar com Google. Verifique se o login Google está ativado no Firebase.");
+      alert("Erro ao entrar com Google. Código: "+(e.code||e.message||"erro desconhecido"));
     }
-  }
 
-  $("btnEntrar").disabled=false;
-  $("btnEntrar").innerHTML=`<span class="google-bola">G</span> Entrar com Google`;
+    $("btnEntrar").disabled=false;
+    $("btnEntrar").innerHTML=`<span class="google-bola">G</span> Entrar com Google`;
+  }
 }
 
 async function sair(){await signOut(auth);}
 
-onAuthStateChanged(auth,user=>{
+function resetarPainelBloqueado(){
+  $("login").classList.remove("oculto");
+  $("usuarioLogado").textContent="";
+  produtos=[];categorias=[];caminhos=[];historicoCliques=[];
+  renderTudo();
+  if(unsubProdutos){unsubProdutos();unsubProdutos=null;}
+  if(unsubCategorias){unsubCategorias();unsubCategorias=null;}
+  if(unsubCaminhos){unsubCaminhos();unsubCaminhos=null;}
+  if(unsubHistoricoCliques){unsubHistoricoCliques();unsubHistoricoCliques=null;}
+  $("btnEntrar").disabled=false;
+  $("btnEntrar").innerHTML=`<span class="google-bola">G</span> Entrar com Google`;
+}
+
+onAuthStateChanged(auth,async user=>{
   if(user && user.email===EMAIL_ADMIN){
     $("login").classList.add("oculto");
     $("usuarioLogado").textContent=`Logado como: ${user.email}`;
@@ -402,16 +407,16 @@ onAuthStateChanged(auth,user=>{
     if(!unsubProdutos) listarProdutos();
     if(!unsubHistoricoCliques) listarHistoricoCliques();
     abrirArea("produtos");
-  }else{
-    $("login").classList.remove("oculto");
-    $("usuarioLogado").textContent="";
-    produtos=[];categorias=[];caminhos=[];historicoCliques=[];
-    renderTudo();
-    if(unsubProdutos){unsubProdutos();unsubProdutos=null;}
-    if(unsubCategorias){unsubCategorias();unsubCategorias=null;}
-    if(unsubCaminhos){unsubCaminhos();unsubCaminhos=null;}
-    if(unsubHistoricoCliques){unsubHistoricoCliques();unsubHistoricoCliques=null;}
+    return;
   }
+
+  if(user && user.email!==EMAIL_ADMIN){
+    alert("Este e-mail não tem permissão. Entre com kaiccarvalhosouzaa@gmail.com.");
+    await signOut(auth);
+    return;
+  }
+
+  resetarPainelBloqueado();
 });
 
 function esc(t){return String(t||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");}
