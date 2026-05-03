@@ -14,8 +14,23 @@
 
   <title>Zyqen Store</title>
 
+  <!-- PWA / APP INSTALÁVEL -->
+  <meta name="theme-color" content="#020617">
+  <meta name="background-color" content="#020617">
+  <meta name="application-name" content="Zyqen Store">
+  <meta name="description" content="Zyqen Store - ofertas selecionadas todos os dias.">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <!-- iPhone / iPad -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Zyqen Store">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <link rel="manifest" href="manifest.json?v=1">
+  <link rel="apple-touch-icon" href="imagens/icons/icon-192.png">
+
   <link rel="icon" href="imagens/logo/favicon.png">
-  <link rel="stylesheet" href="style.css?v=28">
+  <link rel="stylesheet" href="style.css?v=29">
 
   <style>
     html,
@@ -835,8 +850,8 @@
 
         <div class="resumo-avaliacao">
           <h3>
-            <span id="popup-avaliacao-media"></span>
-            <span id="popup-avaliacao-total"></span>
+            <span id="popup-avaliacao-media-resumo"></span>
+            <span id="popup-avaliacao-total-resumo"></span>
           </h3>
 
           <div class="barra-avaliacoes">
@@ -946,61 +961,81 @@
 
 <script>
   (function bloquearZoomSite() {
-    document.documentElement.style.touchAction = "manipulation";
-    document.body.style.touchAction = "manipulation";
+    const html = document.documentElement;
+    const body = document.body;
 
-    document.addEventListener("gesturestart", function (e) {
-      e.preventDefault();
-    }, { passive: false });
+    const ehMobile = window.matchMedia("(max-width: 900px)").matches;
 
-    document.addEventListener("gesturechange", function (e) {
-      e.preventDefault();
-    }, { passive: false });
+    html.style.overflowX = "hidden";
+    html.style.maxWidth = "100%";
 
-    document.addEventListener("gestureend", function (e) {
-      e.preventDefault();
-    }, { passive: false });
+    body.style.overflowX = "hidden";
+    body.style.maxWidth = "100%";
 
-    document.addEventListener("touchmove", function (e) {
-      if (e.touches && e.touches.length > 1) {
-        e.preventDefault();
+    if (!ehMobile) {
+      html.style.touchAction = "auto";
+      body.style.touchAction = "auto";
+      return;
+    }
+
+    html.style.touchAction = "manipulation";
+    body.style.touchAction = "manipulation";
+
+    const impedir = function (event) {
+      event.preventDefault();
+    };
+
+    document.addEventListener("gesturestart", impedir, { passive: false });
+    document.addEventListener("gesturechange", impedir, { passive: false });
+    document.addEventListener("gestureend", impedir, { passive: false });
+
+    document.addEventListener("touchmove", function (event) {
+      if (!window.matchMedia("(max-width: 900px)").matches) return;
+
+      if (event.touches && event.touches.length > 1) {
+        event.preventDefault();
       }
     }, { passive: false });
 
     let ultimoToque = 0;
 
-    document.addEventListener("touchend", function (e) {
+    document.addEventListener("touchend", function (event) {
+      if (!window.matchMedia("(max-width: 900px)").matches) return;
+
       const agora = Date.now();
 
       if (agora - ultimoToque <= 320) {
-        e.preventDefault();
+        event.preventDefault();
       }
 
       ultimoToque = agora;
     }, { passive: false });
 
-    document.addEventListener("wheel", function (e) {
-      if (e.ctrlKey || e.metaKey) {
-        e.preventDefault();
+    document.addEventListener("wheel", function (event) {
+      if (!window.matchMedia("(max-width: 900px)").matches) return;
+
+      if (event.ctrlKey || event.metaKey) {
+        event.preventDefault();
       }
     }, { passive: false });
 
-    document.addEventListener("keydown", function (e) {
-      const tecla = String(e.key || "").toLowerCase();
+    document.addEventListener("keydown", function (event) {
+      if (!window.matchMedia("(max-width: 900px)").matches) return;
 
-      if (
-        (e.ctrlKey || e.metaKey) &&
-        (
-          tecla === "+" ||
-          tecla === "-" ||
-          tecla === "=" ||
-          tecla === "0" ||
-          tecla === "_" ||
-          tecla === "add" ||
-          tecla === "subtract"
-        )
-      ) {
-        e.preventDefault();
+      const tecla = String(event.key || "").toLowerCase();
+
+      const teclaZoom = [
+        "+",
+        "-",
+        "=",
+        "0",
+        "_",
+        "add",
+        "subtract"
+      ].includes(tecla);
+
+      if ((event.ctrlKey || event.metaKey) && teclaZoom) {
+        event.preventDefault();
       }
     }, { passive: false });
 
@@ -1037,8 +1072,26 @@
     }
   }
 
+  function registrarPWA() {
+    if (!("serviceWorker" in navigator)) {
+      console.log("Service Worker não é suportado neste navegador.");
+      return;
+    }
+
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("./service-worker.js")
+        .then(function (registration) {
+          console.log("PWA ativo. Service Worker registrado:", registration.scope);
+        })
+        .catch(function (error) {
+          console.error("Erro ao registrar Service Worker:", error);
+        });
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     atualizarAreaDestaque();
+    registrarPWA();
 
     const produtoDestaque = document.getElementById("produto-destaque");
 
@@ -1056,7 +1109,7 @@
   });
 </script>
 
-<script type="module" src="script.js?v=28"></script>
+<script type="module" src="script.js?v=29"></script>
 
 </body>
 </html>
