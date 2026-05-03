@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("orientationchange", agendarDetectarDispositivo);
 });
 
-/* CHECADOR DE DISPOSITIVO */
+
 
 function detectarDispositivo() {
   const html = document.documentElement;
@@ -165,7 +165,7 @@ function agendarDetectarDispositivo() {
   }, 120);
 }
 
-/* BLOQUEIO DE ZOOM / SITE FIXO */
+
 
 function bloquearZoomSite() {
   const html = document.documentElement;
@@ -266,7 +266,7 @@ function ajustarSiteFixo() {
   window.addEventListener("resize", aplicar);
 }
 
-/* MODAL DE CONFIANÇA NO MOBILE */
+
 
 function prepararConfiancaMobile() {
   const cards = Array.from(document.querySelectorAll(".confianca-card"));
@@ -377,7 +377,7 @@ function prepararConfiancaMobile() {
   });
 }
 
-/* FIREBASE */
+
 
 function carregarCategoriasFirebase() {
   const categoriasRef = collection(db, "categorias");
@@ -450,7 +450,7 @@ function carregarProdutosFirebase() {
   });
 }
 
-/* NORMALIZAÇÃO */
+
 
 function produtoEstaAtivo(produto) {
   return produto.ativo !== false;
@@ -641,7 +641,7 @@ function nomeCategoriaProduto(produto) {
   return produto.categoria || produto.categoriaSlug || "Produto";
 }
 
-/* BUSCA INTELIGENTE */
+
 
 function criarControlesBuscaInteligente() {
   const pesquisa = document.getElementById("pesquisa");
@@ -949,7 +949,7 @@ function aplicarOrdenacaoProdutos(produtos) {
   });
 }
 
-/* ESTRUTURA / CATEGORIAS / PRODUTOS */
+
 
 function garantirEstruturaDinamica() {
   if (document.getElementById("categorias-container")) return;
@@ -1174,7 +1174,7 @@ function criarCardProduto(produto) {
   `;
 }
 
-/* PAGINAÇÃO */
+
 
 function resetarPaginas() {
   paginasCategorias = {};
@@ -1297,7 +1297,7 @@ function renderizarPaginacao(slug, totalProdutos, paginacaoEl) {
   paginacaoEl.innerHTML = html;
 }
 
-/* DESTAQUE */
+
 
 function mostrarProdutoDestaque() {
   const destaque = listaProdutos.find(produto =>
@@ -1335,7 +1335,7 @@ function atualizarAreaDestaque() {
   }
 }
 
-/* POPUP */
+
 
 function abrirPopupProduto(id) {
   const produto = listaProdutos.find(p =>
@@ -1690,7 +1690,7 @@ function imagemAnteriorPopup() {
   atualizarImagem(atual);
 }
 
-/* COMENTÁRIOS */
+
 
 function mostrarComentariosProduto(produto) {
   const lista = document.getElementById("popup-lista-comentarios");
@@ -1951,7 +1951,7 @@ function fecharPopupSucesso() {
   fecharPopupSucessoComentario();
 }
 
-/* CLIQUES */
+
 
 function campoClique(tipo) {
   const mapa = {
@@ -2030,7 +2030,7 @@ function compartilharProduto() {
   }
 }
 
-/* ESTILOS INJETADOS PELO JS */
+
 
 function injetarEstiloBuscaInteligente() {
   if (document.getElementById("css-busca-inteligente-zyqen")) return;
@@ -2478,7 +2478,7 @@ function injetarEstiloPaginacao() {
   document.head.appendChild(style);
 }
 
-/* UTILITÁRIOS */
+
 
 function gerarEstrelas(avaliacao) {
   let html = `<span class="estrelas-icone">`;
@@ -2614,8 +2614,6 @@ function escaparJS(texto) {
     .replaceAll("'", "\\'")
     .replaceAll('"', "&quot;");
 }
-
-/* FUNÇÕES USADAS NO HTML */
 
 window.abrirPopupProduto = abrirPopupProduto;
 window.fecharPopup = fecharPopup;

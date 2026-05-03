@@ -29,7 +29,7 @@
   --radius-card: 18px;
 }
 
-/* BASE */
+
 
 html {
   width: 100%;
@@ -129,7 +129,7 @@ button {
   font-size: 16px;
 }
 
-/* HEADER */
+
 
 header {
   width: min(var(--site-max), calc(100% - 28px));
@@ -166,7 +166,7 @@ header p {
   filter: drop-shadow(0 12px 28px rgba(34, 211, 238, 0.18));
 }
 
-/* REDES TOPO */
+
 
 .redes-topo {
   margin-top: 12px;
@@ -207,7 +207,7 @@ header p {
   border-radius: 50%;
 }
 
-/* ÍCONES */
+
 
 .icone-lucide {
   width: 20px;
@@ -258,7 +258,7 @@ header p {
   gap: 8px;
 }
 
-/* OFERTA DO DIA */
+
 
 .oferta-dia {
   display: none !important;
@@ -373,7 +373,7 @@ header p {
   border-color: rgba(34, 211, 238, 0.50);
 }
 
-/* CONFIANÇA */
+
 
 .confianca {
   width: min(var(--site-max), calc(100% - 28px));
@@ -419,7 +419,7 @@ header p {
   line-height: 1.45;
 }
 
-/* FILTROS */
+
 
 .filtros {
   width: min(var(--site-max), calc(100% - 28px));
@@ -504,7 +504,7 @@ header p {
   transform: scale(1.05);
 }
 
-/* BUSCA INTELIGENTE */
+
 
 .busca-inteligente-painel {
   width: min(94%, 1120px);
@@ -693,7 +693,7 @@ header p {
   display: none !important;
 }
 
-/* MAIN */
+
 
 main {
   width: min(var(--site-max), calc(100% - 28px));
@@ -761,7 +761,7 @@ main section h2::after,
   color: var(--muted);
 }
 
-/* GRID PRODUTOS */
+
 
 .grid {
   display: grid;
@@ -790,7 +790,7 @@ main section h2::after,
   }
 }
 
-/* CARD PRODUTO */
+
 
 .produto {
   width: 100%;
@@ -1000,7 +1000,7 @@ main section h2::after,
   transform: scale(1.03);
 }
 
-/* BOTÕES DE IMAGEM ANTIGOS */
+
 
 .btn-img {
   position: absolute;
@@ -1035,7 +1035,7 @@ main section h2::after,
   right: 8px;
 }
 
-/* ESTRELAS */
+
 
 .estrelas-icone {
   display: inline-flex;
@@ -1059,7 +1059,7 @@ main section h2::after,
   filter: invert(63%) sepia(11%) saturate(564%) hue-rotate(176deg) brightness(92%) contrast(84%);
 }
 
-/* PAGINAÇÃO */
+
 
 .paginacao-loja {
   display: flex;
@@ -1128,7 +1128,7 @@ main section h2::after,
   font-weight: bold;
 }
 
-/* POPUP */
+
 
 .popup {
   position: fixed;
@@ -1330,7 +1330,7 @@ main section h2::after,
   filter: invert(56%) sepia(77%) saturate(2100%) hue-rotate(226deg) brightness(96%) contrast(96%);
 }
 
-/* POPUP INFO */
+
 
 .popup-info {
   width: 100%;
@@ -1470,7 +1470,7 @@ main section h2::after,
   margin: 12px 0;
 }
 
-/* BARRA COMPRA */
+
 
 .barra-compra {
   position: sticky;
@@ -1540,7 +1540,7 @@ main section h2::after,
   transform: scale(1.03);
 }
 
-/* COMENTÁRIOS */
+
 
 .popup-comentarios {
   width: 100%;
@@ -1739,7 +1739,7 @@ main section h2::after,
   margin-top: 8px;
 }
 
-/* FORM COMENTÁRIO */
+
 
 #form-comentario,
 .form-comentario {
@@ -1833,7 +1833,7 @@ main section h2::after,
   margin-top: 0;
 }
 
-/* POPUP SUCESSO */
+
 
 .popup-sucesso-comentario,
 .popup-sucesso {
@@ -1928,7 +1928,7 @@ main section h2::after,
   }
 }
 
-/* FOOTER */
+
 
 .footer-melhorado {
   display: flex;
@@ -2021,7 +2021,7 @@ main section h2::after,
   border-radius: 50%;
 }
 
-/* PÁGINAS DE TEXTO */
+
 
 .pagina-texto {
   max-width: 800px;
@@ -2046,7 +2046,7 @@ main section h2::after,
   line-height: 1.6;
 }
 
-/* DESKTOP FULL WIDTH */
+
 
 @media (min-width: 901px) {
   :root {
@@ -2183,7 +2183,7 @@ main section h2::after,
   }
 }
 
-/* CHECADOR DO SCRIPT */
+
 
 body.modo-mobile,
 body.modo-tablet,
@@ -2205,7 +2205,7 @@ body.modo-desktop {
   --tipo-dispositivo: "desktop";
 }
 
-/* ORGANIZAÇÃO GERAL DOS FILTROS E CATEGORIAS */
+
 
 .busca-inteligente-painel,
 #botoes-filtro.filtros-categoria-loja {
@@ -2223,7 +2223,7 @@ body.modo-desktop {
   user-select: none;
 }
 
-/* MOBILE / TABLET */
+
 
 @media (max-width: 900px) {
   html,
@@ -2793,7 +2793,7 @@ body.modo-desktop {
   }
 }
 
-/* CELULAR PEQUENO */
+
 
 @media (max-width: 480px) {
   header {
@@ -2953,7 +2953,7 @@ body.modo-desktop {
   }
 }
 
-/* CELULAR MUITO PEQUENO */
+
 
 @media (max-width: 360px) {
   .grid {
@@ -3015,7 +3015,7 @@ body.modo-desktop {
   }
 }
 
-/* TABLET */
+
 
 @media (min-width: 769px) and (max-width: 1180px) {
   .confianca {
@@ -3038,7 +3038,6 @@ body.modo-desktop {
   }
 }
 
-/* MODAL CONFIANÇA */
 
 .modal-confianca {
   position: fixed;
@@ -3135,7 +3134,7 @@ body.modo-desktop {
   }
 }
 
-/* TOQUE REAL */
+
 
 @media (hover: none) and (pointer: coarse) {
   .produto:hover {
@@ -3157,7 +3156,6 @@ body.modo-desktop {
   }
 }
 
-/* REDUZ ANIMAÇÕES */
 
 @media (prefers-reduced-motion: reduce) {
   *,
