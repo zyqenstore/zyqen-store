@@ -3167,3 +3167,49 @@ body.modo-desktop {
     transition-duration: 0.01ms !important;
   }
 }
+
+
+
+.produto-parcelamento {
+  display: block;
+  margin: 4px 0 8px;
+  color: #86efac;
+  font-size: 12.5px;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.produto-parcelamento::before {
+  content: "💳 ";
+}
+
+.popup-parcelamento,
+#popup-parcelamento {
+  display: block;
+  margin: -6px 0 12px;
+  color: #86efac;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.popup-parcelamento::before,
+#popup-parcelamento::before {
+  content: "💳 ";
+}
+
+
+@media (max-width: 900px) {
+  .produto-parcelamento {
+    margin: 3px 0 7px;
+    font-size: 11.5px;
+    line-height: 1.2;
+  }
+
+  .popup-parcelamento,
+  #popup-parcelamento {
+    margin: -4px 0 10px;
+    font-size: 13px;
+  }
+}

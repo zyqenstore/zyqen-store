@@ -478,7 +478,8 @@ function normalizarProduto(produto) {
     cliquesWhatsapp: Number(produto.cliquesWhatsapp) || 0,
     cliquesCompartilhar: Number(produto.cliquesCompartilhar) || 0,
     cliquesInstagram: Number(produto.cliquesInstagram) || 0,
-    cliquesTotal: Number(produto.cliquesTotal) || 0
+    cliquesTotal: Number(produto.cliquesTotal) || 0,
+    parcelamento: String(produto.parcelamento || "").trim()
   };
 }
 
@@ -1170,6 +1171,12 @@ function criarCardProduto(produto) {
       </div>
 
       <strong>${escaparHTML(produto.preco || "")}</strong>
+
+        ${produto.parcelamento ? `
+      <span class="produto-parcelamento">
+        ${escaparHTML(produto.parcelamento)}
+      </span>
+      ` : ""}
     </div>
   `;
 }
@@ -1361,7 +1368,25 @@ function abrirPopupProduto(id) {
   if (nomeEl) nomeEl.textContent = produto.nome || "";
   if (categoriaEl) categoriaEl.textContent = nomeCategoriaProduto(produto);
   if (descricaoEl) descricaoEl.textContent = produto.descricao || "";
-  if (precoEl) precoEl.textContent = produto.preco || "";
+  
+  let parcelamentoEl = document.getElementById("popup-parcelamento");
+
+if (!parcelamentoEl && precoEl) {
+  parcelamentoEl = document.createElement("span");
+  parcelamentoEl.id = "popup-parcelamento";
+  parcelamentoEl.className = "popup-parcelamento";
+  precoEl.insertAdjacentElement("afterend", parcelamentoEl);
+}
+
+if (parcelamentoEl) {
+  if (produto.parcelamento) {
+    parcelamentoEl.textContent = produto.parcelamento;
+    parcelamentoEl.style.display = "block";
+  } else {
+    parcelamentoEl.textContent = "";
+    parcelamentoEl.style.display = "none";
+  }
+}
 
   const antigo = document.getElementById("popup-preco-antigo");
 
