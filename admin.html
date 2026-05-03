@@ -18,16 +18,15 @@
 
 <div id="login" class="login">
   <div class="loginbox">
-    <h2>🔐 Painel Admin</h2>
-    <p class="help" style="text-align:center">Entre com sua conta Google autorizada.<br>Apenas <strong>kaiccarvalhosouzaa@gmail.com</strong> pode administrar.</p>
+    <h2>🔐 Painel ADM</h2>
+    <p class="help" style="text-align:center">Entre com sua conta autorizada.</p>
 
     <button id="btnEntrar" class="btn-google" type="button">
       <span class="google-bola">G</span>
-      Entrar com Google
-    </button>
+      Entrar</button>
 
-    <p class="help login-google-info">Sem campo de senha no painel. A confirmação é feita pelo Google/Firebase.</p>
-    <p class="help login-seguranca">Se abrir uma conta diferente, escolha <strong>kaiccarvalhosouzaa@gmail.com</strong>. Qualquer outro e-mail será bloqueado automaticamente.</p>
+    <p class="help login-google-info">painel a confirmação é feita pelo Google.</p>
+    <p class="help login-seguranca">Se abrir uma conta diferente. Qualquer outro e-mail será bloqueado automaticamente.</p>
   </div>
 </div>
 
@@ -394,7 +393,7 @@ async function entrar(){
     }
 
     $("btnEntrar").disabled=false;
-    $("btnEntrar").innerHTML=`<span class="google-bola">G</span> Entrar com Google`;
+    $("btnEntrar").innerHTML=`<span class="google-bola">G</span> Entrar`;
   }
 }
 async function sair(){await signOut(auth);}
@@ -409,7 +408,7 @@ function resetarPainelBloqueado(){
   if(unsubCaminhos){unsubCaminhos();unsubCaminhos=null;}
   if(unsubHistoricoCliques){unsubHistoricoCliques();unsubHistoricoCliques=null;}
   $("btnEntrar").disabled=false;
-  $("btnEntrar").innerHTML=`<span class="google-bola">G</span> Entrar com Google`;
+  $("btnEntrar").innerHTML=`<span class="google-bola">G</span> Entrar`;
 }
 
 onAuthStateChanged(auth,async user=>{
