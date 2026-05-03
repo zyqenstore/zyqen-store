@@ -14,9 +14,9 @@ const APP_SHELL = [
   BASE + "imagens/logo/logo.png",
   BASE + "imagens/logo/favicon.png",
 
-  BASE + "imagens/icons/icon-192.png",
-  BASE + "imagens/icons/icon-512.png",
-  BASE + "imagens/icons/icon-maskable-512.png",
+  BASE + "imagens/icons/icon1.png",
+  BASE + "imagens/icons/icon1.png",
+  BASE + "imagens/icons/icon12.png",
 
   BASE + "imagens/icones/search.svg",
   BASE + "imagens/icones/flame.svg",

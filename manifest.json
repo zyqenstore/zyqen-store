@@ -14,19 +14,19 @@
   "categories": ["shopping", "lifestyle"],
   "icons": [
     {
-      "src": "/zyqen-store/imagens/icons/icon-192.png",
+      "src": "/zyqen-store/imagens/icons/icon11.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/zyqen-store/imagens/icons/icon-512.png",
+      "src": "/zyqen-store/imagens/icons/icon12.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/zyqen-store/imagens/icons/icon-maskable-512.png",
+      "src": "/zyqen-store/imagens/icons/icon13.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
