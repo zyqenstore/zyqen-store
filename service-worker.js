@@ -1,5 +1,5 @@
-const CACHE_NAME = "zyqen-store-cache-v3";
-const RUNTIME_CACHE = "zyqen-store-runtime-v3";
+const CACHE_NAME = "zyqen-store-cache-v4";
+const RUNTIME_CACHE = "zyqen-store-runtime-v4";
 
 const BASE = "/zyqen-store/";
 
