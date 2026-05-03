@@ -301,7 +301,7 @@
 <script type="module">
 import { db, auth } from "./firebase.js";
 import { collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
-import { GoogleAuthProvider, signInWithRedirect, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
+import { GoogleAuthProvider, signInWithPopup, signInWithRedirect, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
 
 const $ = id => document.getElementById(id);
 const EMAIL_ADMIN = "kaiccarvalhosouzaa@gmail.com";
@@ -366,11 +366,26 @@ async function entrar(){
   $("btnEntrar").innerHTML=`<span class="google-bola">G</span> Entrando...`;
 
   try{
-    await signInWithRedirect(auth,googleProvider);
+    const resultado=await signInWithPopup(auth,googleProvider);
+    const user=resultado.user;
+
+    if(!user || user.email!==EMAIL_ADMIN){
+      await signOut(auth);
+      alert("Este e-mail não tem permissão. Entre com kaiccarvalhosouzaa@gmail.com.");
+      return;
+    }
   }catch(e){
     console.error(e);
 
-    if(e.code==="auth/operation-not-allowed"){
+    if(e.code==="auth/popup-blocked" || e.code==="auth/popup-closed-by-user" || e.code==="auth/cancelled-popup-request"){
+      try{
+        await signInWithRedirect(auth,googleProvider);
+        return;
+      }catch(erroRedirect){
+        console.error(erroRedirect);
+        alert("Erro ao entrar com Google. Código: "+(erroRedirect.code||erroRedirect.message||"erro desconhecido"));
+      }
+    }else if(e.code==="auth/operation-not-allowed"){
       alert("Login com Google ainda não está ativado no Firebase. Ative em Authentication > Método de login > Google.");
     }else if(e.code==="auth/unauthorized-domain"){
       alert("Domínio não autorizado no Firebase. Adicione zyqenstore.github.io em Authentication > Configurações > Domínios autorizados.");
@@ -382,7 +397,6 @@ async function entrar(){
     $("btnEntrar").innerHTML=`<span class="google-bola">G</span> Entrar com Google`;
   }
 }
-
 async function sair(){await signOut(auth);}
 
 function resetarPainelBloqueado(){
