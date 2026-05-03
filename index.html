@@ -31,7 +31,6 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/zyqen-store/imagens/icons/icon11.png">
 <link rel="icon" type="image/png" sizes="512x512" href="/zyqen-store/imagens/icons/icon12.png">
 
-  <link rel="icon" href="imagens/logo/favicon.png">
   <link rel="stylesheet" href="style.css?v=29">
 
   <style>
@@ -1074,22 +1073,34 @@
     }
   }
 
-  function registrarPWA() {
-    if (!("serviceWorker" in navigator)) {
-      console.log("Service Worker não é suportado neste navegador.");
-      return;
-    }
-
-    window.addEventListener("load", function () {
-      navigator.serviceWorker.register("./service-worker.js")
-        .then(function (registration) {
-          console.log("PWA ativo. Service Worker registrado:", registration.scope);
-        })
-        .catch(function (error) {
-          console.error("Erro ao registrar Service Worker:", error);
-        });
-    });
+function registrarPWA() {
+  if (!("serviceWorker" in navigator)) {
+    console.log("Service Worker não é suportado neste navegador.");
+    return;
   }
+
+  const registrar = function () {
+    navigator.serviceWorker.register("/zyqen-store/service-worker.js", {
+      scope: "/zyqen-store/"
+    })
+      .then(function (registration) {
+        console.log("PWA ativo. Service Worker registrado:", registration.scope);
+
+        if (registration.update) {
+          registration.update();
+        }
+      })
+      .catch(function (error) {
+        console.error("Erro ao registrar Service Worker:", error);
+      });
+  };
+
+  if (document.readyState === "complete") {
+    registrar();
+  } else {
+    window.addEventListener("load", registrar, { once: true });
+  }
+}
 
   document.addEventListener("DOMContentLoaded", function () {
     atualizarAreaDestaque();
