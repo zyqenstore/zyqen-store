@@ -1363,13 +1363,18 @@ function abrirPopupProduto(id) {
   const nomeEl = document.getElementById("popup-nome");
   const categoriaEl = document.getElementById("popup-categoria");
   const descricaoEl = document.getElementById("popup-descricao");
-  const precoEl = document.getElementById("popup-preco");
-
   if (nomeEl) nomeEl.textContent = produto.nome || "";
-  if (categoriaEl) categoriaEl.textContent = nomeCategoriaProduto(produto);
-  if (descricaoEl) descricaoEl.textContent = produto.descricao || "";
-  
-  let parcelamentoEl = document.getElementById("popup-parcelamento");
+if (categoriaEl) categoriaEl.textContent = nomeCategoriaProduto(produto);
+if (descricaoEl) descricaoEl.textContent = produto.descricao || "";
+
+/* PREÇO PRINCIPAL DO PRODUTO */
+if (precoEl) {
+  precoEl.textContent = produto.preco || "";
+  precoEl.style.display = produto.preco ? "block" : "none";
+}
+
+/* PARCELAMENTO / CARTÃO */
+let parcelamentoEl = document.getElementById("popup-parcelamento");
 
 if (!parcelamentoEl && precoEl) {
   parcelamentoEl = document.createElement("span");
