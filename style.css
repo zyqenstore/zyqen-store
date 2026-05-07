@@ -1386,6 +1386,98 @@ main section h2::after,
   min-height: 36px;
 }
 
+
+
+/* ============================================ */
+/* 🔥 NOVOS ESTILOS - PREÇOS AGRUPADOS E CONFIANÇA */
+/* ============================================ */
+
+.popup-precos-area {
+  margin: 20px 0;
+  padding: 16px;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border: 1px solid #334155;
+  border-radius: 16px;
+}
+
+#popup-preco {
+  display: block;
+  color: #22c55e;
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 5px 0 2px;
+}
+
+#popup-preco-antigo {
+  display: block;
+  color: #94a3b8;
+  text-decoration: line-through;
+  font-size: 1.1rem;
+  margin-bottom: 2px;
+}
+
+#popup-parcelamento,
+.popup-parcelamento {
+  display: block;
+  color: #86efac;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-top: 8px;
+  padding: 6px 0;
+  border-top: 1px dashed #334155;
+}
+
+.popup-confianca-bloco {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 20px 0;
+  padding: 15px;
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+}
+
+.confianca-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  padding: 5px 0;
+}
+
+.confianca-item span {
+  font-size: 1.4rem;
+}
+
+.confianca-item strong {
+  display: block;
+  color: #f8fafc;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.confianca-item small {
+  color: #94a3b8;
+  font-size: 0.7rem;
+}
+
+.titulo-secao-popup {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #e2e8f0;
+  margin: 20px 0 10px;
+  border-bottom: 1px solid #334155;
+  padding-bottom: 8px;
+}
+
+/* ============================================ */
+/* FIM DOS NOVOS ESTILOS */
+/* ============================================ */
+
+
+
 .popup-detalhes,
 .popup-observacoes,
 #popup-detalhes,
@@ -2044,6 +2136,86 @@ main section h2::after,
 .pagina-texto li {
   color: var(--muted2);
   line-height: 1.6;
+}
+
+
+
+/* ============================================ */
+/* 🔥 RESPONSIVO PARA OS NOVOS BLOCOS */
+/* ============================================ */
+
+@media (max-width: 900px) {
+  .popup-precos-area {
+    margin: 16px 0;
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  #popup-preco {
+    font-size: 1.8rem;
+  }
+
+  #popup-preco-antigo {
+    font-size: 1rem;
+  }
+
+  #popup-parcelamento,
+  .popup-parcelamento {
+    font-size: 0.9rem;
+    margin-top: 6px;
+    padding: 4px 0;
+  }
+
+  .popup-confianca-bloco {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 16px 0;
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+  .confianca-item {
+    gap: 6px;
+    padding: 4px 0;
+  }
+
+  .confianca-item span {
+    font-size: 1.2rem;
+  }
+
+  .confianca-item strong {
+    font-size: 0.75rem;
+  }
+
+  .confianca-item small {
+    font-size: 0.65rem;
+  }
+
+  .titulo-secao-popup {
+    font-size: 0.9rem;
+    margin: 16px 0 8px;
+    padding-bottom: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .popup-precos-area {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  #popup-preco {
+    font-size: 1.6rem;
+  }
+
+  .popup-confianca-bloco {
+    gap: 6px;
+    padding: 10px;
+  }
+
+  .confianca-item span {
+    font-size: 1.1rem;
+  }
 }
 
 
@@ -2791,6 +2963,59 @@ body.modo-desktop {
     gap: 5px !important;
     line-height: 1.3 !important;
   }
+
+  /* 🔥 Ajustes dos blocos novos no mobile */
+  .popup-precos-area {
+    margin: 16px 0 !important;
+    padding: 14px !important;
+    border-radius: 14px !important;
+  }
+
+  #popup-preco {
+    font-size: 1.8rem !important;
+  }
+
+  #popup-preco-antigo {
+    font-size: 1rem !important;
+  }
+
+  #popup-parcelamento,
+  .popup-parcelamento {
+    font-size: 0.9rem !important;
+    margin-top: 6px !important;
+    padding: 4px 0 !important;
+  }
+
+  .popup-confianca-bloco {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    margin: 16px 0 !important;
+    padding: 12px !important;
+    border-radius: 14px !important;
+  }
+
+  .confianca-item {
+    gap: 6px !important;
+    padding: 4px 0 !important;
+  }
+
+  .confianca-item span {
+    font-size: 1.2rem !important;
+  }
+
+  .confianca-item strong {
+    font-size: 0.75rem !important;
+  }
+
+  .confianca-item small {
+    font-size: 0.65rem !important;
+  }
+
+  .titulo-secao-popup {
+    font-size: 0.9rem !important;
+    margin: 16px 0 8px !important;
+    padding-bottom: 6px !important;
+  }
 }
 
 
@@ -2950,6 +3175,25 @@ body.modo-desktop {
 
   .footer-box {
     padding: 15px 12px !important;
+  }
+
+  /* 🔥 Ajustes dos blocos novos no 480px */
+  .popup-precos-area {
+    padding: 12px !important;
+    border-radius: 12px !important;
+  }
+
+  #popup-preco {
+    font-size: 1.6rem !important;
+  }
+
+  .popup-confianca-bloco {
+    gap: 6px !important;
+    padding: 10px !important;
+  }
+
+  .confianca-item span {
+    font-size: 1.1rem !important;
   }
 }
 
@@ -3181,7 +3425,7 @@ body.modo-desktop {
 }
 
 .produto-parcelamento::before {
-  content: "💳 ";
+  content: " ";
 }
 
 .popup-parcelamento,
@@ -3196,7 +3440,7 @@ body.modo-desktop {
 
 .popup-parcelamento::before,
 #popup-parcelamento::before {
-  content: "💳 ";
+  content: "";
 }
 
 

@@ -821,23 +821,41 @@
     <div id="popup-thumbs" class="miniaturas-imagens"></div>
 
     <div class="popup-info">
+      <!-- Categoria / Selo -->
       <span id="popup-categoria"></span>
+      
+      <!-- Nome do produto -->
       <h2 id="popup-nome"></h2>
 
+      <!-- Avaliação com estrelas -->
       <div class="popup-avaliacao">
         <span id="popup-avaliacao-media"></span>
         <span id="popup-avaliacao-total"></span>
         <div id="popup-estrelas"></div>
       </div>
 
+      <!-- 🔥 NOVO: Bloco de preços agrupados (preço antigo + preço atual + parcelamento) -->
+      <div id="popup-precos-area" class="popup-precos-area">
+        <span id="popup-preco-antigo"></span>
+        <strong id="popup-preco"></strong>
+        <span id="popup-parcelamento" class="popup-parcelamento"></span>
+        <!-- 🔥 NOVO: Destaque abaixo do parcelamento -->
+        <div id="popup-destaque-parcelamento" class="popup-destaque-parcelamento"></div>
+      </div>
+
+      <!-- Descrição do produto -->
       <p id="popup-descricao"></p>
 
+      <!-- 🔥 NOVO: Bloco de confiança (grid 2x2 com ícones e textos editáveis) -->
+      <div id="popup-confianca-bloco" class="popup-confianca-bloco"></div>
+
+      <!-- Detalhes / Características -->
       <div id="popup-detalhes"></div>
+      
+      <!-- Observações -->
       <div id="popup-observacoes"></div>
 
-      <span id="popup-preco-antigo"></span>
-      <strong id="popup-preco"></strong>
-
+      <!-- Barra de compra fixa (Chat + Comprar Agora) -->
       <div class="barra-compra">
 
         <button id="popup-whatsapp" class="btn-chat">
@@ -848,6 +866,7 @@
         <a id="popup-comprar" target="_blank" class="btn-comprar" rel="noopener">Comprar agora</a>
       </div>
 
+      <!-- Área de comentários e avaliações -->
       <div class="popup-comentarios">
 
         <div class="resumo-avaliacao">
