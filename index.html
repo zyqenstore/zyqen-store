@@ -14,25 +14,23 @@
 
   <title>Zyqen Store</title>
 
-
   <meta name="theme-color" content="#020617">
   <meta name="background-color" content="#020617">
   <meta name="application-name" content="Zyqen Store">
   <meta name="description" content="Zyqen Store - ofertas selecionadas todos os dias.">
   <meta name="mobile-web-app-capable" content="yes">
 
-  
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Zyqen Store">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-<link rel="manifest" href="/zyqen-store/manifest.json?v=4">
-<link rel="apple-touch-icon" sizes="180x180" href="/zyqen-store/imagens/icons/icon12.png">
-<link rel="icon" type="image/png" sizes="192x192" href="/zyqen-store/imagens/icons/icon11.png">
-<link rel="icon" type="image/png" sizes="512x512" href="/zyqen-store/imagens/icons/icon12.png">
+  <link rel="manifest" href="/zyqen-store/manifest.json?v=4">
+  <link rel="apple-touch-icon" sizes="180x180" href="/zyqen-store/imagens/icons/icon12.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/zyqen-store/imagens/icons/icon11.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/zyqen-store/imagens/icons/icon12.png">
 
   <link rel="icon" href="imagens/logo/favicon.png">
-  <link rel="stylesheet" href="style.css?v=31">
+  <link rel="stylesheet" href="style.css?v=32">
 
   <style>
     html,
@@ -425,9 +423,10 @@
     .btn-chat img {
       width: 22px;
       height: 22px;
-      object-fit: cover;
-      border-radius: 50%;
+      object-fit: contain;
+      border-radius: 0;
       flex-shrink: 0;
+      filter: brightness(0) invert(1);
     }
 
     .campo-nota-comentario {
@@ -821,52 +820,46 @@
     <div id="popup-thumbs" class="miniaturas-imagens"></div>
 
     <div class="popup-info">
-      <!-- Categoria / Selo -->
       <span id="popup-categoria"></span>
       
-      <!-- Nome do produto -->
       <h2 id="popup-nome"></h2>
 
-      <!-- Avaliação com estrelas -->
       <div class="popup-avaliacao">
         <span id="popup-avaliacao-media"></span>
         <span id="popup-avaliacao-total"></span>
         <div id="popup-estrelas"></div>
       </div>
 
-      <!-- 🔥 NOVO: Bloco de preços agrupados (preço antigo + preço atual + parcelamento) -->
       <div id="popup-precos-area" class="popup-precos-area">
         <span id="popup-preco-antigo"></span>
         <strong id="popup-preco"></strong>
         <span id="popup-parcelamento" class="popup-parcelamento"></span>
-        <!-- 🔥 NOVO: Destaque abaixo do parcelamento -->
         <div id="popup-destaque-parcelamento" class="popup-destaque-parcelamento"></div>
       </div>
 
-      <!-- Descrição do produto -->
       <p id="popup-descricao"></p>
 
-      <!-- 🔥 NOVO: Bloco de confiança (grid 2x2 com ícones e textos editáveis) -->
       <div id="popup-confianca-bloco" class="popup-confianca-bloco"></div>
 
-      <!-- Detalhes / Características -->
       <div id="popup-detalhes"></div>
       
-      <!-- Observações -->
       <div id="popup-observacoes"></div>
 
-      <!-- Barra de compra fixa (Chat + Comprar Agora) -->
       <div class="barra-compra">
 
-        <button id="popup-whatsapp" class="btn-chat">
-          <img src="imagens/redes/whatsapp.jpg" alt="WhatsApp">
-          Chat
+        <button 
+          id="popup-chatbot" 
+          class="btn-chat"
+          type="button"
+          onclick="abrirChatProduto()"
+        >
+          <img src="imagens/icones/message-square.svg" alt="Chat do produto">
+          Perguntar
         </button>
 
         <a id="popup-comprar" target="_blank" class="btn-comprar" rel="noopener">Comprar agora</a>
       </div>
 
-      <!-- Área de comentários e avaliações -->
       <div class="popup-comentarios">
 
         <div class="resumo-avaliacao">
@@ -975,6 +968,100 @@
     </p>
 
     <button onclick="fecharPopupSucessoComentario()">OK</button>
+  </div>
+</div>
+
+<div 
+  id="chat-produto-widget" 
+  class="chat-produto-widget" 
+  aria-hidden="true"
+  hidden
+>
+  <div id="chat-produto-card" class="chat-produto-card">
+
+    <div id="chat-produto-topo" class="chat-produto-topo">
+      <div class="chat-produto-titulo">
+        <div class="chat-produto-icone">
+          <img src="imagens/icones/message-square.svg" alt="Chat inteligente">
+        </div>
+
+        <div>
+          <strong>Assistente do produto</strong>
+          <span id="chat-produto-status">Arraste esta janela para qualquer lugar</span>
+        </div>
+      </div>
+
+      <div class="chat-produto-acoes">
+        <button 
+          type="button" 
+          id="chat-produto-minimizar" 
+          onclick="minimizarChatProduto()" 
+          aria-label="Minimizar chat"
+        >
+          —
+        </button>
+
+        <button 
+          type="button" 
+          id="chat-produto-fechar" 
+          onclick="fecharChatProduto()" 
+          aria-label="Fechar chat"
+        >
+          ×
+        </button>
+      </div>
+    </div>
+
+    <div id="chat-produto-contexto" class="chat-produto-contexto">
+      <div class="chat-produto-img-box">
+        <img id="chat-produto-img" src="" alt="Imagem do produto">
+      </div>
+
+      <div>
+        <strong id="chat-produto-nome">Produto selecionado</strong>
+        <span id="chat-produto-preco">Tire suas dúvidas antes de comprar</span>
+      </div>
+    </div>
+
+    <div id="chat-produto-mensagens" class="chat-produto-mensagens">
+      <div class="chat-msg chat-msg-bot">
+        <p>
+          Olá! Eu sou o assistente da Zyqen Store. Me pergunte sobre preço, parcelamento, características, avaliações ou se vale a pena comprar este produto.
+        </p>
+      </div>
+    </div>
+
+    <div id="chat-produto-sugestoes" class="chat-produto-sugestoes">
+      <button type="button" data-pergunta="Esse produto vale a pena?">Vale a pena?</button>
+      <button type="button" data-pergunta="Quais são as características desse produto?">Características</button>
+      <button type="button" data-pergunta="Tem parcelamento?">Parcelamento</button>
+      <button type="button" data-pergunta="Esse produto é seguro?">É seguro?</button>
+    </div>
+
+    <form id="chat-produto-form" class="chat-produto-form" autocomplete="off">
+      <input 
+        id="chat-produto-input"
+        type="text"
+        placeholder="Digite sua pergunta sobre o produto..."
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="sentences"
+        spellcheck="false"
+      >
+
+      <button type="submit" aria-label="Enviar pergunta">
+        <img src="imagens/icones/send.svg" alt="Enviar">
+      </button>
+    </form>
+
+    <button 
+      id="chat-produto-whatsapp" 
+      class="chat-produto-whatsapp" 
+      type="button"
+    >
+      Chamar atendimento humano no WhatsApp
+    </button>
+
   </div>
 </div>
 
@@ -1093,34 +1180,62 @@
     }
   }
 
-function registrarPWA() {
-  if (!("serviceWorker" in navigator)) {
-    console.log("Service Worker não é suportado neste navegador.");
-    return;
+  function abrirChatProduto() {
+    const chat = document.getElementById("chat-produto-widget");
+
+    if (!chat) return;
+
+    chat.hidden = false;
+    chat.setAttribute("aria-hidden", "false");
+    chat.classList.add("ativo");
   }
 
-  const registrar = function () {
-    navigator.serviceWorker.register("/zyqen-store/service-worker.js", {
-      scope: "/zyqen-store/"
-    })
-      .then(function (registration) {
-        console.log("PWA ativo. Service Worker registrado:", registration.scope);
+  function fecharChatProduto() {
+    const chat = document.getElementById("chat-produto-widget");
 
-        if (registration.update) {
-          registration.update();
-        }
+    if (!chat) return;
+
+    chat.classList.remove("ativo");
+    chat.setAttribute("aria-hidden", "true");
+    chat.hidden = true;
+  }
+
+  function minimizarChatProduto() {
+    const chat = document.getElementById("chat-produto-widget");
+
+    if (!chat) return;
+
+    chat.classList.toggle("minimizado");
+  }
+
+  function registrarPWA() {
+    if (!("serviceWorker" in navigator)) {
+      console.log("Service Worker não é suportado neste navegador.");
+      return;
+    }
+
+    const registrar = function () {
+      navigator.serviceWorker.register("/zyqen-store/service-worker.js", {
+        scope: "/zyqen-store/"
       })
-      .catch(function (error) {
-        console.error("Erro ao registrar Service Worker:", error);
-      });
-  };
+        .then(function (registration) {
+          console.log("PWA ativo. Service Worker registrado:", registration.scope);
 
-  if (document.readyState === "complete") {
-    registrar();
-  } else {
-    window.addEventListener("load", registrar, { once: true });
+          if (registration.update) {
+            registration.update();
+          }
+        })
+        .catch(function (error) {
+          console.error("Erro ao registrar Service Worker:", error);
+        });
+    };
+
+    if (document.readyState === "complete") {
+      registrar();
+    } else {
+      window.addEventListener("load", registrar, { once: true });
+    }
   }
-}
 
   document.addEventListener("DOMContentLoaded", function () {
     atualizarAreaDestaque();
@@ -1142,7 +1257,7 @@ function registrarPWA() {
   });
 </script>
 
-<script type="module" src="script.js?v=31"></script>
+<script type="module" src="script.js?v=33"></script>
 
 </body>
 </html>
