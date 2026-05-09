@@ -39,6 +39,10 @@ let chatUltimaIntencao = "";
 let chatHistoricoPerguntas = [];
 let chatPerguntasSemResposta = 0;
 
+let sugestoesChatArrastando = false;
+let sugestoesChatInicioX = 0;
+let sugestoesChatScrollInicial = 0;
+
 const BASE_ICONES_PRODUTO = "imagens/pagina-produtos/";
 const PRODUTOS_POR_PAGINA = 8;
 const TELEFONE_WHATSAPP = "5575981768068";
@@ -109,6 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
   injetarEstiloIconesJS();
   injetarEstiloSelosConfianca();
   injetarEstiloDigitandoChat();
+  injetarEstiloChatSugestoesArrastavel();
 
   criarControlesBuscaInteligente();
   garantirEstruturaDinamica();
@@ -1983,6 +1988,13 @@ function prepararChatProduto() {
 
   if (sugestoes) {
     sugestoes.addEventListener("click", event => {
+      if (sugestoes.dataset.arrastou === "sim") {
+        event.preventDefault();
+        event.stopPropagation();
+        sugestoes.dataset.arrastou = "nao";
+        return;
+      }
+
       const btn = event.target.closest("button[data-pergunta]");
 
       if (!btn) return;
@@ -2000,6 +2012,7 @@ function prepararChatProduto() {
   }
 
   ativarArrastarChatProduto();
+  ativarArrastarSugestoesChatProduto();
 }
 
 function abrirChatProduto() {
@@ -2165,6 +2178,76 @@ function manterChatDentroDaTela() {
   chat.style.bottom = "auto";
 }
 
+function ativarArrastarSugestoesChatProduto() {
+  const area = document.getElementById("chat-produto-sugestoes");
+
+  if (!area || area.dataset.arrastoAtivo === "sim") return;
+
+  area.dataset.arrastoAtivo = "sim";
+  area.dataset.arrastou = "nao";
+
+  area.addEventListener(
+    "wheel",
+    event => {
+      const podeRolar = area.scrollWidth > area.clientWidth;
+
+      if (!podeRolar) return;
+
+      if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
+        area.scrollLeft += event.deltaY;
+        event.preventDefault();
+      }
+    },
+    { passive: false }
+  );
+
+  area.addEventListener("pointerdown", event => {
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+
+    const podeRolar = area.scrollWidth > area.clientWidth;
+
+    if (!podeRolar) return;
+
+    sugestoesChatArrastando = true;
+    sugestoesChatInicioX = event.clientX;
+    sugestoesChatScrollInicial = area.scrollLeft;
+
+    area.dataset.arrastou = "nao";
+    area.classList.add("arrastando");
+
+    area.setPointerCapture?.(event.pointerId);
+  });
+
+  area.addEventListener("pointermove", event => {
+    if (!sugestoesChatArrastando) return;
+
+    const distancia = event.clientX - sugestoesChatInicioX;
+
+    if (Math.abs(distancia) > 5) {
+      area.dataset.arrastou = "sim";
+    }
+
+    area.scrollLeft = sugestoesChatScrollInicial - distancia;
+
+    event.preventDefault();
+  });
+
+  const parar = () => {
+    if (!sugestoesChatArrastando) return;
+
+    sugestoesChatArrastando = false;
+    area.classList.remove("arrastando");
+
+    setTimeout(() => {
+      area.dataset.arrastou = "nao";
+    }, 120);
+  };
+
+  area.addEventListener("pointerup", parar);
+  area.addEventListener("pointercancel", parar);
+  area.addEventListener("pointerleave", parar);
+}
+
 function atualizarContextoChatProduto(produto) {
   if (!produto) return;
 
@@ -2234,6 +2317,9 @@ function atualizarSugestoesChatProduto(produto) {
   area.innerHTML = sugestoes
     .map(s => `<button type="button" data-pergunta="${escaparHTML(s.pergunta)}">${escaparHTML(s.rotulo)}</button>`)
     .join("");
+
+  area.scrollLeft = 0;
+  ativarArrastarSugestoesChatProduto();
 }
 
 function montarSugestoesProduto(produto) {
@@ -3617,6 +3703,65 @@ function injetarEstiloSelosConfianca() {
         width:18px;
         height:18px;
       }
+    }
+  `;
+
+  document.head.appendChild(style);
+}
+
+function injetarEstiloChatSugestoesArrastavel() {
+  if (document.getElementById("css-chat-sugestoes-arrastavel-zyqen")) return;
+
+  const style = document.createElement("style");
+  style.id = "css-chat-sugestoes-arrastavel-zyqen";
+
+  style.innerHTML = `
+    #chat-produto-sugestoes{
+      display:flex!important;
+      align-items:center!important;
+      gap:8px!important;
+      width:100%!important;
+      max-width:100%!important;
+      overflow-x:auto!important;
+      overflow-y:hidden!important;
+      flex-wrap:nowrap!important;
+      scroll-behavior:smooth;
+      cursor:grab;
+      user-select:none;
+      -webkit-user-select:none;
+      touch-action:pan-x;
+      padding-bottom:5px;
+      scrollbar-width:thin;
+      scrollbar-color:rgba(34,211,238,.45) transparent;
+    }
+
+    #chat-produto-sugestoes.arrastando{
+      cursor:grabbing!important;
+      scroll-behavior:auto!important;
+    }
+
+    #chat-produto-sugestoes button{
+      flex:0 0 auto!important;
+      white-space:nowrap!important;
+      user-select:none!important;
+      -webkit-user-select:none!important;
+    }
+
+    #chat-produto-sugestoes::-webkit-scrollbar{
+      height:5px;
+    }
+
+    #chat-produto-sugestoes::-webkit-scrollbar-track{
+      background:transparent;
+    }
+
+    #chat-produto-sugestoes::-webkit-scrollbar-thumb{
+      background:rgba(34,211,238,.45);
+      border-radius:999px;
+    }
+
+    #chat-produto-sugestoes::-webkit-scrollbar-thumb:hover{
+      background:rgba(34,211,238,.75);
     }
   `;
 
