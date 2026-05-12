@@ -308,11 +308,29 @@
 
 <script type="module">
 import { db, auth } from "./firebase.js";
-import { collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
-import { GoogleAuthProvider, signInWithPopup, signInWithRedirect, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
+import {
+  collection,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  serverTimestamp,
+  setDoc
+} from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithRedirect,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
 
 const $ = id => document.getElementById(id);
+
 const EMAIL_ADMIN = "kaiccarvalhosouzaa@gmail.com";
+
 const googleProvider = new GoogleAuthProvider();
 googleProvider.setCustomParameters({ prompt: "select_account" });
 
@@ -320,6 +338,7 @@ let produtos = [];
 let categorias = [];
 let caminhos = [];
 let selosConfiancaAdmin = [];
+
 let editProdutoId = null;
 let editProdutoOriginal = null;
 let editCategoriaId = null;
@@ -329,25 +348,274 @@ let fakesTemp = [];
 let editComentario = null;
 let fakeAberto = null;
 let realAberto = null;
+
 let unsubProdutos = null;
 let unsubCategorias = null;
 let unsubCaminhos = null;
 let unsubHistoricoCliques = null;
 let unsubSelos = null;
+
 let historicoCliques = [];
 
 const CAMINHOS_PADRAO = [
-  {nome:"Mercado imagens",tipo:"imagem",caminho:"imagens/mercado/",extensao:".jpg",ordem:1,ativo:true},
-  {nome:"Cakto imagens",tipo:"imagem",caminho:"imagens/cakto/",extensao:".jpg",ordem:2,ativo:true},
-  {nome:"Mercado vídeos",tipo:"video",caminho:"videos/mercado/",extensao:".mp4",ordem:3,ativo:true},
-  {nome:"Cakto vídeos",tipo:"video",caminho:"videos/cakto/",extensao:".mp4",ordem:4,ativo:true},
-  {nome:"Ícones Lucide",tipo:"icone",caminho:"imagens/icones/",extensao:".svg",ordem:5,ativo:true}
+  {
+    nome: "Mercado imagens",
+    tipo: "imagem",
+    caminho: "imagens/mercado/",
+    extensao: ".jpg",
+    ordem: 1,
+    ativo: true
+  },
+  {
+    nome: "Shopee imagens",
+    tipo: "imagem",
+    caminho: "imagens/shopee/",
+    extensao: ".jpg",
+    ordem: 2,
+    ativo: true
+  },
+  {
+    nome: "Cakto imagens",
+    tipo: "imagem",
+    caminho: "imagens/cakto/",
+    extensao: ".jpg",
+    ordem: 3,
+    ativo: true
+  },
+  {
+    nome: "Mercado vídeos",
+    tipo: "video",
+    caminho: "videos/mercado/",
+    extensao: ".mp4",
+    ordem: 4,
+    ativo: true
+  },
+  {
+    nome: "Shopee vídeos",
+    tipo: "video",
+    caminho: "videos/shopee/",
+    extensao: ".mp4",
+    ordem: 5,
+    ativo: true
+  },
+  {
+    nome: "Cakto vídeos",
+    tipo: "video",
+    caminho: "videos/cakto/",
+    extensao: ".mp4",
+    ordem: 6,
+    ativo: true
+  },
+  {
+    nome: "Ícones Lucide",
+    tipo: "icone",
+    caminho: "imagens/icones/",
+    extensao: ".svg",
+    ordem: 7,
+    ativo: true
+  }
 ];
 
 const CATEGORIAS_PADRAO = [
-  {nome:"Mercado Livre",slug:"mercado-livre",tipo:"produto",caminhoImagens:"imagens/mercado/",caminhoVideos:"videos/mercado/",caminhoIcones:"imagens/icones/",extImagem:".jpg",extVideo:".mp4",extIcone:".svg",icone:"imagens/icones/shopping-cart.svg",corLinha:"#facc15",ordem:1,ativa:true},
-  {nome:"Cakto",slug:"cakto",tipo:"cakto",caminhoImagens:"imagens/cakto/",caminhoVideos:"videos/cakto/",caminhoIcones:"imagens/icones/",extImagem:".jpg",extVideo:".mp4",extIcone:".svg",icone:"imagens/icones/package.svg",corLinha:"#22c55e",ordem:2,ativa:true}
+  {
+    nome: "Mercado Livre",
+    slug: "mercado-livre",
+    tipo: "produto",
+    caminhoImagens: "imagens/mercado/",
+    caminhoVideos: "videos/mercado/",
+    caminhoIcones: "imagens/icones/",
+    extImagem: ".jpg",
+    extVideo: ".mp4",
+    extIcone: ".svg",
+    icone: "imagens/icones/shopping-cart.svg",
+    corLinha: "#facc15",
+    ordem: 1,
+    ativa: true
+  },
+  {
+    nome: "Shopee",
+    slug: "shopee",
+    tipo: "produto",
+    caminhoImagens: "imagens/shopee/",
+    caminhoVideos: "videos/shopee/",
+    caminhoIcones: "imagens/icones/",
+    extImagem: ".jpg",
+    extVideo: ".mp4",
+    extIcone: ".svg",
+    icone: "imagens/icones/shopping-cart.svg",
+    corLinha: "#f97316",
+    ordem: 2,
+    ativa: true
+  },
+  {
+    nome: "Cakto",
+    slug: "cakto",
+    tipo: "cakto",
+    caminhoImagens: "imagens/cakto/",
+    caminhoVideos: "videos/cakto/",
+    caminhoIcones: "imagens/icones/",
+    extImagem: ".jpg",
+    extVideo: ".mp4",
+    extIcone: ".svg",
+    icone: "imagens/icones/package.svg",
+    corLinha: "#22c55e",
+    ordem: 3,
+    ativa: true
+  }
 ];
+
+const DEPARTAMENTOS_PADRAO = [
+  "Moda",
+  "Eletrônicos",
+  "Celulares",
+  "Games",
+  "Casa",
+  "Beleza",
+  "Infantil",
+  "Informática",
+  "Fitness",
+  "Automotivo",
+  "Pet",
+  "Ferramentas",
+  "Cozinha",
+  "Decoração",
+  "Digital"
+];
+
+const SUBCATEGORIAS_PADRAO = {
+  moda: [
+    "Feminina",
+    "Masculina",
+    "Infantil",
+    "Calçados",
+    "Bolsas",
+    "Relógios",
+    "Acessórios",
+    "Roupas"
+  ],
+  eletronicos: [
+    "Celular",
+    "Televisão",
+    "Fone de ouvido",
+    "Carregador",
+    "Smartwatch",
+    "Caixa de som",
+    "Câmera",
+    "Acessórios"
+  ],
+  celulares: [
+    "Capinhas",
+    "Carregadores",
+    "Películas",
+    "Fones",
+    "Suportes",
+    "Cabos",
+    "Power Bank",
+    "Smartphones"
+  ],
+  games: [
+    "Console",
+    "Controle",
+    "Headset Gamer",
+    "Mouse Gamer",
+    "Teclado Gamer",
+    "Jogos",
+    "Cadeira Gamer",
+    "Acessórios Gamer"
+  ],
+  casa: [
+    "Cozinha",
+    "Quarto",
+    "Sala",
+    "Banheiro",
+    "Organização",
+    "Limpeza",
+    "Decoração",
+    "Iluminação"
+  ],
+  beleza: [
+    "Maquiagem",
+    "Cabelo",
+    "Skincare",
+    "Perfume",
+    "Unhas",
+    "Barbearia",
+    "Cuidados pessoais"
+  ],
+  infantil: [
+    "Brinquedos",
+    "Roupas infantis",
+    "Material escolar",
+    "Bebê",
+    "Jogos educativos",
+    "Acessórios infantis"
+  ],
+  informatica: [
+    "Notebook",
+    "Mouse",
+    "Teclado",
+    "Monitor",
+    "Impressora",
+    "Pendrive",
+    "SSD",
+    "Acessórios"
+  ],
+  fitness: [
+    "Treino em casa",
+    "Roupas fitness",
+    "Acessórios fitness",
+    "Suplementos",
+    "Yoga",
+    "Musculação"
+  ],
+  automotivo: [
+    "Som automotivo",
+    "Acessórios para carro",
+    "Moto",
+    "Limpeza automotiva",
+    "Ferramentas automotivas"
+  ],
+  pet: [
+    "Cachorro",
+    "Gato",
+    "Brinquedos pet",
+    "Camas pet",
+    "Acessórios pet",
+    "Higiene pet"
+  ],
+  ferramentas: [
+    "Furadeira",
+    "Parafusadeira",
+    "Kit ferramentas",
+    "Medição",
+    "Jardim",
+    "Construção"
+  ],
+  cozinha: [
+    "Panelas",
+    "Utensílios",
+    "Eletroportáteis",
+    "Organizadores",
+    "Copos",
+    "Facas"
+  ],
+  decoracao: [
+    "LED",
+    "Quadros",
+    "Tapetes",
+    "Espelhos",
+    "Vasos",
+    "Organização"
+  ],
+  digital: [
+    "Curso",
+    "E-book",
+    "Mentoria",
+    "Planilha",
+    "Acesso digital",
+    "Treinamento"
+  ]
+};
 
 const BASE_ICONES_PRODUTO = "imagens/pagina-produtos/";
 const EXT_ICONE = ".svg";
@@ -359,393 +627,2680 @@ const CORES_ICONES_SELOS = {
   garantia: "azul"
 };
 
-function iconeSelo(nome){ return BASE_ICONES_PRODUTO + nome + EXT_ICONE; }
+function iconeSelo(nome) {
+  return BASE_ICONES_PRODUTO + nome + EXT_ICONE;
+}
 
 const SELOS_PADRAO = [
-  { docId: "frete", icone: iconeSelo("truck"), titulo: "Frete Grátis", descricao: "Chegará grátis", ativo: true },
-  { docId: "loja", icone: iconeSelo("check-square"), titulo: "Loja Oficial", descricao: "+10mil vendidos", ativo: true },
-  { docId: "devolucao", icone: iconeSelo("rotate"), titulo: "Devolução Grátis", descricao: "Até 30 dias", ativo: true },
-  { docId: "garantia", icone: iconeSelo("shield"), titulo: "Compra Garantida", descricao: "Protegida pela plataforma", ativo: true }
+  {
+    docId: "frete",
+    icone: iconeSelo("truck"),
+    titulo: "Frete Grátis",
+    descricao: "Chegará grátis",
+    ativo: true
+  },
+  {
+    docId: "loja",
+    icone: iconeSelo("check-square"),
+    titulo: "Loja Oficial",
+    descricao: "+10mil vendidos",
+    ativo: true
+  },
+  {
+    docId: "devolucao",
+    icone: iconeSelo("rotate"),
+    titulo: "Devolução Grátis",
+    descricao: "Até 30 dias",
+    ativo: true
+  },
+  {
+    docId: "garantia",
+    icone: iconeSelo("shield"),
+    titulo: "Compra Garantida",
+    descricao: "Protegida pela plataforma",
+    ativo: true
+  }
 ];
 
-function abrirArea(id){
-  document.querySelectorAll(".area").forEach(a=>a.classList.remove("ativa"));
-  document.querySelectorAll(".menu-btn").forEach(b=>b.classList.toggle("ativo",b.dataset.area===id));
+/* =========================================================
+   MENU / STATUS / LOGIN
+========================================================= */
+
+function abrirArea(id) {
+  document.querySelectorAll(".area").forEach(a => a.classList.remove("ativa"));
+  document.querySelectorAll(".menu-btn").forEach(b => {
+    b.classList.toggle("ativo", b.dataset.area === id);
+  });
+
   $(id)?.classList.add("ativa");
-  window.scrollTo({top:0,behavior:"smooth"});
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-document.querySelectorAll(".menu-btn").forEach(btn=>btn.addEventListener("click",()=>abrirArea(btn.dataset.area)));
+document.querySelectorAll(".menu-btn").forEach(btn => {
+  btn.addEventListener("click", () => abrirArea(btn.dataset.area));
+});
 
-function mostrarStatus(msg,tipo="ok"){
-  $("status").innerHTML = `<div class="aviso ${tipo==="erro"?"erro":""}">${msg}</div>`;
-  setTimeout(()=>$("status").innerHTML="",6000);
+function mostrarStatus(msg, tipo = "ok") {
+  $("status").innerHTML = `<div class="aviso ${tipo === "erro" ? "erro" : ""}">${msg}</div>`;
+
+  setTimeout(() => {
+    $("status").innerHTML = "";
+  }, 6000);
 }
 
-function proteger(){
-  if(!auth.currentUser || auth.currentUser.email!==EMAIL_ADMIN){
-    mostrarStatus("Você precisa estar logado com o e-mail admin.","erro");
+function proteger() {
+  if (!auth.currentUser || auth.currentUser.email !== EMAIL_ADMIN) {
+    mostrarStatus("Você precisa estar logado com o e-mail admin.", "erro");
     return false;
   }
+
   return true;
 }
 
-async function entrar(){
-  $("btnEntrar").disabled=true;
-  $("btnEntrar").innerHTML=`<span class="google-bola">G</span> Entrando...`;
-  try{
-    const resultado=await signInWithPopup(auth,googleProvider);
-    const user=resultado.user;
-    if(!user || user.email!==EMAIL_ADMIN){
+async function entrar() {
+  $("btnEntrar").disabled = true;
+  $("btnEntrar").innerHTML = `<span class="google-bola">G</span> Entrando...`;
+
+  try {
+    const resultado = await signInWithPopup(auth, googleProvider);
+    const user = resultado.user;
+
+    if (!user || user.email !== EMAIL_ADMIN) {
       await signOut(auth);
       alert("Este e-mail não tem permissão. Entre com kaiccarvalhosouzaa@gmail.com.");
       return;
     }
-  }catch(e){
+  } catch (e) {
     console.error(e);
-    if(e.code==="auth/popup-blocked" || e.code==="auth/popup-closed-by-user" || e.code==="auth/cancelled-popup-request"){
-      try{await signInWithRedirect(auth,googleProvider);return;}catch(erroRedirect){console.error(erroRedirect);alert("Erro ao entrar com Google. Código: "+(erroRedirect.code||erroRedirect.message||"erro desconhecido"));}
-    }else if(e.code==="auth/operation-not-allowed"){alert("Login com Google ainda não está ativado no Firebase. Ative em Authentication > Método de login > Google.");}
-    else if(e.code==="auth/unauthorized-domain"){alert("Domínio não autorizado no Firebase. Adicione zyqenstore.github.io em Authentication > Configurações > Domínios autorizados.");}
-    else{alert("Erro ao entrar com Google. Código: "+(e.code||e.message||"erro desconhecido"));}
-    $("btnEntrar").disabled=false;
-    $("btnEntrar").innerHTML=`<span class="google-bola">G</span> Entrar`;
+
+    if (
+      e.code === "auth/popup-blocked" ||
+      e.code === "auth/popup-closed-by-user" ||
+      e.code === "auth/cancelled-popup-request"
+    ) {
+      try {
+        await signInWithRedirect(auth, googleProvider);
+        return;
+      } catch (erroRedirect) {
+        console.error(erroRedirect);
+        alert("Erro ao entrar com Google. Código: " + (erroRedirect.code || erroRedirect.message || "erro desconhecido"));
+      }
+    } else if (e.code === "auth/operation-not-allowed") {
+      alert("Login com Google ainda não está ativado no Firebase. Ative em Authentication > Método de login > Google.");
+    } else if (e.code === "auth/unauthorized-domain") {
+      alert("Domínio não autorizado no Firebase. Adicione zyqenstore.github.io em Authentication > Configurações > Domínios autorizados.");
+    } else {
+      alert("Erro ao entrar com Google. Código: " + (e.code || e.message || "erro desconhecido"));
+    }
+
+    $("btnEntrar").disabled = false;
+    $("btnEntrar").innerHTML = `<span class="google-bola">G</span> Entrar`;
   }
 }
-async function sair(){await signOut(auth);}
 
-function resetarPainelBloqueado(){
-  $("login").classList.remove("oculto");
-  $("usuarioLogado").textContent="";
-  produtos=[];categorias=[];caminhos=[];historicoCliques=[];selosConfiancaAdmin=[];
-  renderTudo();
-  if(unsubProdutos){unsubProdutos();unsubProdutos=null;}
-  if(unsubCategorias){unsubCategorias();unsubCategorias=null;}
-  if(unsubCaminhos){unsubCaminhos();unsubCaminhos=null;}
-  if(unsubHistoricoCliques){unsubHistoricoCliques();unsubHistoricoCliques=null;}
-  if(unsubSelos){unsubSelos();unsubSelos=null;}
-  $("btnEntrar").disabled=false;
-  $("btnEntrar").innerHTML=`<span class="google-bola">G</span> Entrar`;
+async function sair() {
+  await signOut(auth);
 }
 
-onAuthStateChanged(auth,async user=>{
-  if(user && user.email===EMAIL_ADMIN){
+function resetarPainelBloqueado() {
+  $("login").classList.remove("oculto");
+  $("usuarioLogado").textContent = "";
+
+  produtos = [];
+  categorias = [];
+  caminhos = [];
+  historicoCliques = [];
+  selosConfiancaAdmin = [];
+
+  renderTudo();
+
+  if (unsubProdutos) {
+    unsubProdutos();
+    unsubProdutos = null;
+  }
+
+  if (unsubCategorias) {
+    unsubCategorias();
+    unsubCategorias = null;
+  }
+
+  if (unsubCaminhos) {
+    unsubCaminhos();
+    unsubCaminhos = null;
+  }
+
+  if (unsubHistoricoCliques) {
+    unsubHistoricoCliques();
+    unsubHistoricoCliques = null;
+  }
+
+  if (unsubSelos) {
+    unsubSelos();
+    unsubSelos = null;
+  }
+
+  $("btnEntrar").disabled = false;
+  $("btnEntrar").innerHTML = `<span class="google-bola">G</span> Entrar`;
+}
+
+onAuthStateChanged(auth, async user => {
+  if (user && user.email === EMAIL_ADMIN) {
     $("login").classList.add("oculto");
-    $("usuarioLogado").textContent=`Logado como: ${user.email}`;
-    if(!unsubCaminhos) listarCaminhos();
-    if(!unsubCategorias) listarCategorias();
-    if(!unsubProdutos) listarProdutos();
-    if(!unsubHistoricoCliques) listarHistoricoCliques();
-    if(!unsubSelos) listarSelosConfianca();
+    $("usuarioLogado").textContent = `Logado como: ${user.email}`;
+
+    if (!unsubCaminhos) listarCaminhos();
+    if (!unsubCategorias) listarCategorias();
+    if (!unsubProdutos) listarProdutos();
+    if (!unsubHistoricoCliques) listarHistoricoCliques();
+    if (!unsubSelos) listarSelosConfianca();
+
     abrirArea("produtos");
     return;
   }
-  if(user && user.email!==EMAIL_ADMIN){
+
+  if (user && user.email !== EMAIL_ADMIN) {
     alert("Este e-mail não tem permissão. Entre com kaiccarvalhosouzaa@gmail.com.");
     await signOut(auth);
     return;
   }
+
   resetarPainelBloqueado();
 });
 
-function esc(t){return String(t||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");}
-function linhas(t){return String(t||"").split("\n").map(l=>l.trim()).filter(Boolean);}
-function idNovo(){return Date.now()+Math.floor(Math.random()*999);}
-function slugify(t){return String(t||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");}
-function barra(c){c=String(c||"").trim();return !c?"":c.endsWith("/")?c:c+"/";}
-function ext(e){e=String(e||"").trim().toLowerCase();return !e?"":e.startsWith(".")?e:"."+e;}
-function temExt(c){return /\.[a-z0-9]{2,5}(\?.*)?$/i.test(String(c||""));}
-function url(c){return /^https?:\/\//i.test(String(c||""));}
-function completar(nome,base,ex){let n=String(nome||"").trim();base=barra(base);ex=ext(ex);if(!n)return "";if(url(n))return n;if(n.includes("/")||n.includes("\\"))return temExt(n)?n:n+ex;return base+n+(temExt(n)?"":ex);}
-function limparPrefixo(caminho,base,ex){let v=String(caminho||"");base=barra(base||"");ex=ext(ex||"");if(base && v.startsWith(base))v=v.replace(base,"");if(ex && v.toLowerCase().endsWith(ex.toLowerCase()))v=v.slice(0,-ex.length);return v;}
-function corSegura(cor,padrao="#22c55e"){const v=String(cor||"").trim();return /^#[0-9a-fA-F]{6}$/.test(v)?v:padrao;}
-function corPadraoCategoria(slug,nome=""){const texto=`${slug} ${nome}`.toLowerCase();if(texto.includes("mercado"))return "#facc15";if(texto.includes("shopee"))return "#f97316";if(texto.includes("cakto"))return "#22c55e";if(texto.includes("amazon"))return "#0ea5e9";if(texto.includes("digital"))return "#8b5cf6";return "#22c55e";}
-function sincronizarCorCategoria(origem="color"){const color=$("catCorLinha");const texto=$("catCorLinhaTexto");const preview=$("previewCorLinha");if(!color||!texto||!preview)return;let cor=origem==="text"?corSegura(texto.value,color.value||"#22c55e"):corSegura(color.value,"#22c55e");color.value=cor;texto.value=cor;preview.style.setProperty("--cor-preview",cor);const bolinha=preview.querySelector(".cor-bolinha");if(bolinha)bolinha.style.background=cor;}
+/* =========================================================
+   UTILITÁRIOS
+========================================================= */
 
-function normCaminho(c){return {docId:c.docId||"",nome:c.nome||"Caminho",tipo:c.tipo||"imagem",caminho:barra(c.caminho||""),extensao:ext(c.extensao||".jpg"),ordem:Number(c.ordem)||999,ativo:c.ativo!==false};}
-function normCategoria(c){const nome=c.nome||"Categoria", slug=c.slug||slugify(nome);return {docId:c.docId||"",nome,slug,tipo:c.tipo||"produto",caminhoImagens:barra(c.caminhoImagens||`imagens/${slug}/`),caminhoVideos:barra(c.caminhoVideos||`videos/${slug}/`),caminhoIcones:barra(c.caminhoIcones||"imagens/icones/"),extImagem:ext(c.extImagem||".jpg"),extVideo:ext(c.extVideo||".mp4"),extIcone:ext(c.extIcone||".svg"),icone:c.icone||"imagens/icones/package.svg",corLinha:corSegura(c.corLinha||c.corCategoria,corPadraoCategoria(slug,nome)),ordem:Number(c.ordem)||999,ativa:c.ativa!==false};}
-function normSelo(c){return {docId:c.docId||"",icone:String(c.icone||iconeSelo("shield")),titulo:String(c.titulo||""),descricao:String(c.descricao||""),ativo:c.ativo!==false};}
-
-function caminhosUso(tipo){return (caminhos.length?caminhos:CAMINHOS_PADRAO).filter(c=>c.tipo===tipo&&c.ativo!==false).sort((a,b)=>(Number(a.ordem)||999)-(Number(b.ordem)||999));}
-function categoriasUso(){return (categorias.length?categorias:CATEGORIAS_PADRAO).filter(c=>c.ativa!==false).sort((a,b)=>(Number(a.ordem)||999)-(Number(b.ordem)||999));}
-function catAtual(){return categoriasUso().find(c=>c.slug===$("categoria").value)||categoriasUso()[0]||CATEGORIAS_PADRAO[0];}
-
-function listarSelosConfianca(){
-  unsubSelos=onSnapshot(collection(db,"selosConfianca"),snap=>{
-    const docs=snap.docs.map(d=>normSelo({docId:d.id,...d.data()}));
-    const mapa=new Map();
-    docs.forEach(s=>mapa.set(s.docId,s));
-    selosConfiancaAdmin=SELOS_PADRAO.map(p=>mapa.get(p.docId)||p);
-    renderSelosConfianca();
-  },e=>{console.error(e);mostrarStatus("Erro ao carregar selos.","erro");});
+function esc(t) {
+  return String(t || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
-function renderSelosConfianca(){
-  const lista=$("listaSelosAdmin");
-  if(!lista)return;
-  lista.innerHTML=selosConfiancaAdmin.map((s,i)=>{
-    const corClasse = CORES_ICONES_SELOS[s.docId] === "azul" ? "icone-azul" : "icone-verde";
-    return `
-    <div class="selo-card">
-      <div class="selo-icone-preview">
-        <img src="${esc(s.icone)}" alt="${esc(s.titulo)}" class="${corClasse}" onerror="this.style.display='none'">
-      </div>
-      <h4>${esc(s.titulo||"Selo "+i)}</h4>
-      <div>
-        <label>Nome do ícone (sem extensão)</label>
-        <input type="text" data-selo="${s.docId}" data-campo="icone" value="${esc(limparPrefixo(s.icone,BASE_ICONES_PRODUTO,EXT_ICONE))}" placeholder="truck">
-        <div class="previewbox" style="margin-top:4px;font-size:11px">Caminho: ${esc(s.icone)}</div>
-      </div>
-      <div>
-        <label>Título</label>
-        <input type="text" data-selo="${s.docId}" data-campo="titulo" value="${esc(s.titulo||"")}" placeholder="Frete Grátis">
-      </div>
-      <div>
-        <label>Descrição</label>
-        <input type="text" data-selo="${s.docId}" data-campo="descricao" value="${esc(s.descricao||"")}" placeholder="Chegará grátis">
-      </div>
-      <div class="check">
-        <input type="checkbox" data-selo="${s.docId}" data-campo="ativo" ${s.ativo!==false?"checked":""}>
-        <label style="margin:0">Ativo no site</label>
-      </div>
-    </div>
-  `;}).join("");
-  $("statusSelos").textContent=`${selosConfiancaAdmin.length} selo(s) configurado(s). Ícones em: ${BASE_ICONES_PRODUTO}`;
+function linhas(t) {
+  return String(t || "")
+    .split("\n")
+    .map(l => l.trim())
+    .filter(Boolean);
 }
 
-async function salvarSelosConfianca(){
-  if(!proteger())return;
-  $("btnSalvarSelos").disabled=true;
-  $("btnSalvarSelos").textContent="Salvando...";
-  try{
-    const inputs=document.querySelectorAll("#listaSelosAdmin input[data-selo]");
-    const dados=new Map();
-    inputs.forEach(inp=>{
-      const docId=inp.dataset.selo;
-      const campo=inp.dataset.campo;
-      if(!dados.has(docId))dados.set(docId,{docId});
-      if(inp.type==="checkbox")dados.get(docId)[campo]=inp.checked;
-      else if(campo==="icone"){
-        const valor=inp.value.trim();
-        dados.get(docId)[campo]=valor?iconeSelo(valor):inp.value.trim();
-      }
-      else dados.get(docId)[campo]=inp.value.trim();
-    });
-    for(const [docId,valor] of dados){
-      await setDoc(doc(db,"selosConfianca",docId),{...valor,atualizadoEm:serverTimestamp()},{merge:true});
-    }
-    mostrarStatus("✅ Selos de confiança salvos com sucesso!");
-  }catch(e){console.error(e);mostrarStatus("Erro ao salvar selos.","erro");}
-  $("btnSalvarSelos").disabled=false;
-  $("btnSalvarSelos").textContent="💾 Salvar todas as configurações";
+function idNovo() {
+  return Date.now() + Math.floor(Math.random() * 999);
 }
 
-function listarCaminhos(){unsubCaminhos=onSnapshot(collection(db,"caminhos"),snap=>{caminhos=snap.docs.map(d=>normCaminho({docId:d.id,...d.data()}));renderCaminhos();atualizarSelectsCaminhos();previewMidia();previewIcone();},e=>{console.error(e);mostrarStatus("Erro ao carregar caminhos.","erro");});}
-function listarCategorias(){unsubCategorias=onSnapshot(collection(db,"categorias"),snap=>{categorias=snap.docs.map(d=>normCategoria({docId:d.id,...d.data()}));renderCategorias();atualizarSelectsCategorias();atualizarSelectsCaminhos();renderProdutos();},e=>{console.error(e);mostrarStatus("Erro ao carregar categorias.","erro");});}
-function listarProdutos(){unsubProdutos=onSnapshot(collection(db,"produtos"),snap=>{produtos=snap.docs.map(d=>({docId:d.id,...d.data()}));renderProdutos();renderResumoCliques();renderComentarios();renderFakes();selectProdutoFake();},e=>{console.error(e);mostrarStatus("Erro ao carregar produtos.","erro");});}
-function listarHistoricoCliques(){unsubHistoricoCliques=onSnapshot(collection(db,"historicoCliques"),snap=>{historicoCliques=snap.docs.map(d=>({docId:d.id,...d.data()}));renderHistoricoCliques();},e=>{console.error(e);mostrarStatus("Erro ao carregar histórico de cliques.","erro");});}
-function dataHistorico(item){const d=item.zeradoEm;if(d && typeof d.toDate==="function")return d.toDate();if(d && d.seconds)return new Date(d.seconds*1000);if(item.criadoEm && typeof item.criadoEm==="string")return new Date(item.criadoEm);return new Date(0);}
-function formatarDataHistorico(item){const d=dataHistorico(item);if(!d || isNaN(d.getTime()) || d.getTime()===0)return "Agora / aguardando servidor";return d.toLocaleString("pt-BR");}
-function abrirHistoricoCliques(){renderHistoricoCliques();$("modalHistoricoCliques").classList.add("ativo");}
-function fecharHistoricoCliques(){$("modalHistoricoCliques").classList.remove("ativo");}
-function renderHistoricoCliques(){const lista=$("listaHistoricoCliques");if(!lista)return;const itens=historicoCliques.slice().sort((a,b)=>dataHistorico(b)-dataHistorico(a)).slice(0,80);lista.innerHTML=itens.length?itens.map(h=>{const tipo=h.tipo==="todos"?"Todos os produtos":"Produto";const total=nClique(h.cliquesTotal);let produtosHtml="";if(Array.isArray(h.produtosZerados) && h.produtosZerados.length){produtosHtml=`<div class="historico-produtos"><strong>Produtos zerados:</strong><br>${h.produtosZerados.slice(0,20).map(p=>`${esc(p.nome||"Produto")} — ${nClique(p.total)} clique(s)`).join("<br>")}${h.produtosZerados.length>20?`<br>+ ${h.produtosZerados.length-20} produto(s)`:""}</div>`;}return `<div class="historico-item"><div class="historico-top"><div><strong>${tipo}</strong><div class="historico-detalhes">${h.produtoNome?`Produto: ${esc(h.produtoNome)}<br>`:""}Zerado por: ${esc(h.zeradoPor||"admin")}<br>Total antes de zerar: <strong>${total}</strong></div></div><div class="historico-data">${formatarDataHistorico(h)}</div></div><div class="historico-detalhes">Comprar: ${nClique(h.cliquesComprar)} • WhatsApp: ${nClique(h.cliquesWhatsapp)} • Compartilhar: ${nClique(h.cliquesCompartilhar)} • Instagram: ${nClique(h.cliquesInstagram)}</div>${produtosHtml}</div>`;}).join(""):`<p class="help">Ainda não existe histórico de zeragem.</p>`;}
-
-function renderTudo(){renderCaminhos();renderCategorias();atualizarSelectsCategorias();atualizarSelectsCaminhos();renderProdutos();renderResumoCliques();renderComentarios();renderFakes();selectProdutoFake();renderSelosConfianca();}
-
-function preencherSelectCaminho(selectId,tipo,valor){const s=$(selectId);if(!s)return;const atual=valor||s.value;s.innerHTML=`<option value="">Escolher caminho salvo...</option>`+caminhosUso(tipo).map(c=>`<option value="${esc(c.caminho)}" data-ext="${esc(c.extensao)}">${esc(c.nome)} — ${esc(c.caminho)} ${esc(c.extensao)}</option>`).join("");if([...s.options].some(o=>o.value===atual))s.value=atual;}
-function preencherSelectProduto(selectId,tipo){const s=$(selectId);if(!s)return;const atual=s.value;s.innerHTML=`<option value="__categoria__">Usar caminho da categoria</option>`+caminhosUso(tipo).map(c=>`<option value="${esc(c.caminho)}" data-ext="${esc(c.extensao)}">${esc(c.nome)} — ${esc(c.caminho)} ${esc(c.extensao)}</option>`).join("");if([...s.options].some(o=>o.value===atual))s.value=atual;}
-function atualizarSelectsCaminhos(){preencherSelectCaminho("catImgSelect","imagem",$("catImgPath").value);preencherSelectCaminho("catVidSelect","video",$("catVidPath").value);preencherSelectCaminho("catIconPathSelect","icone",$("catIconPath").value);preencherSelectProduto("prodImgPath","imagem");preencherSelectProduto("prodVidPath","video");}
-function atualizarSelectsCategorias(){const cats=categoriasUso();const vc=$("categoria").value, vf=$("filtroCategoriaAdmin").value;$("categoria").innerHTML=cats.map(c=>`<option value="${c.slug}">${esc(c.nome)}</option>`).join("");if(cats.some(c=>c.slug===vc))$("categoria").value=vc;$("filtroCategoriaAdmin").innerHTML=`<option value="Todos">Todos</option>${cats.map(c=>`<option value="${c.slug}">${esc(c.nome)}</option>`).join("")}<option value="Destaques">Somente destaques</option>`;if(vf==="Todos"||vf==="Destaques"||cats.some(c=>c.slug===vf))$("filtroCategoriaAdmin").value=vf;padroesCategoria();}
-function aplicarPath(selectId,inputId,extId){const s=$(selectId), inp=$(inputId), ex=$(extId);if(s.value)inp.value=s.value;const op=s.options[s.selectedIndex];if(op?.dataset.ext && ex)ex.value=op.dataset.ext;previewIcone();}
-function montarCaminho(){return {nome:$("camNome").value.trim(),tipo:$("camTipo").value,caminho:barra($("camCaminho").value.trim()),extensao:ext($("camExt").value),ordem:Number($("camOrdem").value)||999,ativo:$("camAtivo").checked,atualizadoEm:serverTimestamp()};}
-async function salvarCaminho(){if(!proteger())return;const c=montarCaminho();if(!c.nome||!c.caminho){mostrarStatus("Preencha nome e caminho.","erro");return;}$("btnSalvarCaminho").disabled=true;try{if(editCaminhoId)await updateDoc(doc(db,"caminhos",editCaminhoId),c);else{c.criadoEm=serverTimestamp();await addDoc(collection(db,"caminhos"),c);}limparCaminho();mostrarStatus("✅ Caminho salvo!");}catch(e){console.error(e);mostrarStatus("Erro ao salvar caminho.","erro");}$("btnSalvarCaminho").disabled=false;}
-function limparCaminho(){["camNome","camCaminho","camOrdem"].forEach(id=>$(id).value="");$("camTipo").value="imagem";$("camExt").value=".jpg";$("camAtivo").checked=true;editCaminhoId=null;$("btnSalvarCaminho").textContent="Salvar caminho";$("btnCancelarCaminho").style.display="none";}
-function editarCaminho(id){const c=caminhos.find(x=>x.docId===id);if(!c)return;editCaminhoId=id;$("camNome").value=c.nome;$("camTipo").value=c.tipo;$("camExt").value=c.extensao;$("camCaminho").value=c.caminho;$("camOrdem").value=c.ordem||"";$("camAtivo").checked=c.ativo!==false;$("btnSalvarCaminho").textContent="Atualizar caminho";$("btnCancelarCaminho").style.display="block";abrirArea("categorias");}
-function deletarCaminho(id){const c=caminhos.find(x=>x.docId===id);confirmar(`Excluir o caminho "${c?.nome||""}"?`,async()=>{await deleteDoc(doc(db,"caminhos",id));mostrarStatus("🗑️ Caminho deletado.");});}
-async function criarCaminhosPadrao(){if(!proteger())return;confirmar("Criar caminhos padrão?",async()=>{for(const c of CAMINHOS_PADRAO){if(!caminhos.some(x=>x.tipo===c.tipo&&x.caminho===c.caminho)){await addDoc(collection(db,"caminhos"),{...c,criadoEm:serverTimestamp(),atualizadoEm:serverTimestamp()});}}mostrarStatus("✅ Caminhos padrão criados/verificados.");});}
-function renderCaminhos(){$("contadorCaminhos").textContent=`${caminhos.length} caminho(s) cadastrado(s).`;$("listaCaminhos").innerHTML=caminhos.length?caminhos.slice().sort((a,b)=>(a.ordem||999)-(b.ordem||999)).map(c=>`<div class="card"><h4>${esc(c.nome)}</h4><span class="badge">${esc(c.tipo)}</span><span class="badge">${esc(c.extensao)}</span>${c.ativo?`<span class="badge">Ativo</span>`:`<span class="badge redbadge">Inativo</span>`}<p><strong>Caminho:</strong> ${esc(c.caminho)}</p><div class="acoes"><button class="edit" onclick="editarCaminho('${c.docId}')">Editar</button><button class="del" onclick="deletarCaminho('${c.docId}')">Deletar</button></div></div>`).join(""):`<p class="help">Nenhum caminho salvo. Clique em criar caminhos padrão.</p>`;}
-function montarCategoria(){const nome=$("catNome").value.trim();const slug=slugify($("catSlug").value.trim()||nome);const caminhoIcones=barra($("catIconPath").value.trim()||"imagens/icones/");const extIcone=ext($("catIconExt").value||".svg");const icone=completar($("catIcon").value.trim()||"package",caminhoIcones,extIcone);return {nome,slug,tipo:$("catTipo").value,caminhoImagens:barra($("catImgPath").value.trim()||`imagens/${slug}/`),caminhoVideos:barra($("catVidPath").value.trim()||`videos/${slug}/`),caminhoIcones,extImagem:ext($("catImgExt").value||".jpg"),extVideo:ext($("catVidExt").value||".mp4"),extIcone,icone,corLinha:corSegura($("catCorLinha").value||$("catCorLinhaTexto").value,corPadraoCategoria(slug,nome)),ordem:Number($("catOrdem").value)||999,ativa:$("catAtiva").checked,atualizadoEm:serverTimestamp()};}
-async function salvarCategoria(){if(!proteger())return;const c=montarCategoria();if(!c.nome){mostrarStatus("Digite o nome da categoria.","erro");return;}if(categorias.some(x=>x.slug===c.slug&&x.docId!==editCategoriaId)){mostrarStatus("Já existe categoria com esse slug.","erro");return;}if(!(await testarArquivo(c.icone,"icone"))){mostrarStatus(`Ícone não encontrado: ${c.icone}`,"erro");return;}$("btnSalvarCategoria").disabled=true;try{if(editCategoriaId)await updateDoc(doc(db,"categorias",editCategoriaId),c);else{c.criadoEm=serverTimestamp();await addDoc(collection(db,"categorias"),c);}limparCategoria();mostrarStatus("✅ Categoria salva!");}catch(e){console.error(e);mostrarStatus("Erro ao salvar categoria.","erro");}$("btnSalvarCategoria").disabled=false;}
-function limparCategoria(){["catNome","catSlug","catImgPath","catVidPath","catIconPath","catIcon","catOrdem"].forEach(id=>$(id).value="");$("catTipo").value="produto";$("catImgExt").value=".jpg";$("catVidExt").value=".mp4";$("catIconExt").value=".svg";$("catAtiva").checked=true;$("catCorLinha").value="#22c55e";$("catCorLinhaTexto").value="#22c55e";editCategoriaId=null;$("btnSalvarCategoria").textContent="Salvar categoria";$("btnCancelarCategoria").style.display="none";atualizarSelectsCaminhos();previewIcone();sincronizarCorCategoria();}
-function editarCategoria(id){const c=categorias.find(x=>x.docId===id);if(!c)return;editCategoriaId=id;$("catNome").value=c.nome;$("catSlug").value=c.slug;$("catTipo").value=c.tipo;$("catImgPath").value=c.caminhoImagens;$("catVidPath").value=c.caminhoVideos;$("catIconPath").value=c.caminhoIcones;$("catImgExt").value=c.extImagem;$("catVidExt").value=c.extVideo;$("catIconExt").value=c.extIcone;$("catIcon").value=limparPrefixo(c.icone,c.caminhoIcones,c.extIcone);$("catCorLinha").value=corSegura(c.corLinha,corPadraoCategoria(c.slug,c.nome));$("catCorLinhaTexto").value=$("catCorLinha").value;$("catOrdem").value=c.ordem||"";$("catAtiva").checked=c.ativa!==false;$("btnSalvarCategoria").textContent="Atualizar categoria";$("btnCancelarCategoria").style.display="block";previewIcone();sincronizarCorCategoria();abrirArea("categorias");}
-function deletarCategoria(id){const c=categorias.find(x=>x.docId===id);confirmar(`Excluir a categoria "${c?.nome||""}"?`,async()=>{await deleteDoc(doc(db,"categorias",id));mostrarStatus("🗑️ Categoria deletada.");});}
-async function criarCategoriasPadrao(){if(!proteger())return;confirmar("Criar categorias padrão Mercado Livre e Cakto?",async()=>{for(const c of CATEGORIAS_PADRAO){if(!categorias.some(x=>x.slug===c.slug)){await addDoc(collection(db,"categorias"),{...c,criadoEm:serverTimestamp(),atualizadoEm:serverTimestamp()});}}mostrarStatus("✅ Categorias padrão criadas/verificadas.");});}
-function renderCategorias(){$("contadorCategorias").textContent=`${categorias.length} categoria(s) cadastrada(s).`;$("listaCategorias").innerHTML=categorias.length?categorias.slice().sort((a,b)=>(a.ordem||999)-(b.ordem||999)).map(c=>`<div class="card"><h4>${esc(c.nome)}</h4><span class="badge">${esc(c.slug)}</span><span class="badge">${esc(c.tipo)}</span>${c.ativa?`<span class="badge">Ativa</span>`:`<span class="badge redbadge">Inativa</span>`}<p><strong>Imagens:</strong> ${esc(c.caminhoImagens)} ${esc(c.extImagem)}</p><p><strong>Vídeos:</strong> ${esc(c.caminhoVideos)} ${esc(c.extVideo)}</p><p><strong>Ícone:</strong> ${esc(c.icone)}</p><p><strong>Cor da linha:</strong> <span class="cor-bolinha" style="display:inline-block;vertical-align:middle;background:${esc(c.corLinha||"#22c55e")}"></span> ${esc(c.corLinha||"#22c55e")}</p><div class="acoes"><button class="edit" onclick="editarCategoria('${c.docId}')">Editar</button><button class="del" onclick="deletarCategoria('${c.docId}')">Deletar</button></div></div>`).join(""):`<p class="help">Nenhuma categoria criada ainda.</p>`;}
-
-function baseImg(){const c=catAtual(),v=$("prodImgPath").value;return v&&v!=="__categoria__"?barra(v):barra(c.caminhoImagens);}
-function baseVid(){const c=catAtual(),v=$("prodVidPath").value;return v&&v!=="__categoria__"?barra(v):barra(c.caminhoVideos);}
-function extImg(){const c=catAtual(),v=$("prodImgExt").value;return v==="__categoria__"?c.extImagem:v;}
-function extVid(){const c=catAtual(),v=$("prodVidExt").value;return v==="__categoria__"?c.extVideo:v;}
-function imagensCampo(){return linhas($("imagens").value).map(x=>completar(x,baseImg(),extImg())).filter(Boolean);}
-function videosCampo(){return linhas($("videos").value).map(x=>completar(x,baseVid(),extVid())).filter(Boolean);}
-function previewMidia(){const imgs=imagensCampo(), vids=videosCampo();$("previewImagens").textContent=imgs.length?"Prévia: "+imgs.join(" | "):"Prévia das imagens finais aparecerá aqui.";$("previewVideos").textContent=vids.length?"Prévia: "+vids.join(" | "):"Prévia dos vídeos finais aparecerá aqui.";}
-function previewIcone(){const final=completar($("catIcon").value.trim()||"package",$("catIconPath").value.trim()||"imagens/icones/",$("catIconExt").value||".svg");$("previewIcone").textContent="Ícone final: "+final;}
-
-function testarImagem(u){return new Promise(r=>{const i=new Image();i.onload=()=>r(true);i.onerror=()=>r(false);i.src=u+(u.includes("?")?"&":"?")+"v="+Date.now();});}
-async function testarArquivo(u,tipo){if(!u)return false;if(tipo==="imagem"||tipo==="icone")return await testarImagem(u);try{const h=await fetch(u,{method:"HEAD",cache:"no-store"});if(h.ok)return true;}catch(e){}try{const g=await fetch(u,{cache:"no-store"});return g.ok;}catch(e){return false;}}
-async function testarLista(lista,tipo){const erros=[];for(const u of lista){if(!(await testarArquivo(u,tipo)))erros.push(u);}return erros;}
-function resultadoTeste(titulo,erros){const b=$("resultadoTeste");b.classList.add("ativo");if(!erros.length){b.classList.remove("erro");b.innerHTML=`<strong>✅ ${titulo}</strong><br>Todos os arquivos foram encontrados.`;return;}b.classList.add("erro");b.innerHTML=`<strong>❌ ${titulo}</strong><br>Não encontrei estes arquivos:<ul>${erros.map(e=>`<li>${esc(e)}</li>`).join("")}</ul>`;}
-async function testarImagens(){const imgs=imagensCampo();if(!imgs.length){mostrarStatus("Digite pelo menos uma imagem.","erro");return [];}const erros=await testarLista(imgs,"imagem");resultadoTeste("Teste de imagens",erros);return erros;}
-async function testarVideos(){const vids=videosCampo();if(!vids.length){mostrarStatus("Nenhum vídeo para testar. Isso não impede salvar.","ok");return [];}const erros=await testarLista(vids,"video");resultadoTeste("Teste de vídeos",erros);return erros;}
-async function validarMidias(){const imgs=imagensCampo(), vids=videosCampo();if(!imgs.length){mostrarStatus("Adicione pelo menos uma imagem.","erro");return false;}const erros=[...(await testarLista(imgs,"imagem")),...(await testarLista(vids,"video"))];if(erros.length){resultadoTeste("Arquivos não encontrados",erros);mostrarStatus("Corrija os arquivos não encontrados antes de salvar.","erro");return false;}return true;}
-
-function preco(v){v=String(v||"").trim();if(!v)return "";if(v.toLowerCase().includes("acesso"))return v;if(v.startsWith("R$"))return v;return "R$ "+v;}
-function numPreco(v){return Number(String(v||"").replace("R$","").replace(/\./g,"").replace(",",".").replace(/[^\d.]/g,""))||0;}
-function nivelAuto(){const p=numPreco($("preco").value);if(!p)return $("nivelPreco").value||"baixo";if(p<=80)return"baixo";if(p<=250)return"medio";return"alto";}
-function atualizaNivel(){if($("nivelPrecoAuto").checked){$("nivelPreco").value=nivelAuto();$("nivelPreco").disabled=true}else $("nivelPreco").disabled=false;}
-function padroesCategoria(){const c=catAtual(),t=c.tipo||"produto";if(!$("selo").value.trim())$("selo").value=(t==="cakto"||t==="digital")?"Produto digital":"Oferta";if(!$("urgencia").value.trim())$("urgencia").value=(t==="cakto"||t==="digital")?"💰 Produto digital":"🔥 Oferta por tempo limitado";if(!$("botao").value.trim())$("botao").value=(t==="cakto"||t==="digital")?"Quero acessar agora":"Comprar agora";$("tipo").value=t;}
-
-const nomes=["Lucas Carvalho","João Pedro","Maria Lopes","Ana Clara","Carlos Eduardo","Bruna Santos","Rafael Almeida","Camila Rocha","Juliana Lima","Felipe Martins","Leticia Martins","Bruno Gomes","Gabriel Martins","Marcely Santos","Fabio Silva","Rafaela Souza","Paulo Henrique","Aline Costa","Marcos Vinicius","Larissa Mendes"];
-const frases=["Muito bom, recomendo!","Chegou certinho e gostei bastante.","Valeu muito a pena.","Qualidade top pelo preço.","Gostei bastante, compraria novamente.","Produto muito bom e fácil de comprar.","Atendeu minhas expectativas.","Achei bem melhor do que esperava.","Funciona direitinho, gostei.","Bem explicado e direto ao ponto.","Chegou conforme anunciado.","Gostei do custo-benefício.","Comprei meio desconfiado, mas gostei.","Achei simples e bom pelo valor.","Pra mim serviu muito bem.","Gostei, chegou tudo ok.","Produto bom, nada a reclamar.","Foi fácil comprar pelo link.","Gostei da indicação.","Achei bem útil no dia a dia."];
-function erroDig(t){return t.replace("Muito","Mto").replace("Chegou","Xegou").replace("certinho","certim").replace("Gostei","Gotei").replace("produto","produtto").replace(".","");}
-function fake(opts={}){const min=Math.min(Number(opts.min)||4,Number(opts.max)||5),max=Math.max(Number(opts.min)||4,Number(opts.max)||5);let texto=frases[Math.floor(Math.random()*frases.length)];if(opts.erros&&Math.random()>.35)texto=erroDig(texto);return{id:idNovo(),nome:nomes[Math.floor(Math.random()*nomes.length)],texto,nota:Math.floor(Math.random()*(max-min+1))+min,origem:"fake",criadoEm:new Date().toISOString()};}
-function comentariosForm(){const qtd=Number($("qtdComentarios").value);if(qtd){return Array.from({length:qtd},()=>fake());}const m=$("comentariosManuais").value.trim();if(!m)return[];return m.split("\n").map(l=>{const p=l.split("|");return{id:idNovo(),nome:p[0]?.trim()||"Cliente",texto:p[1]?.trim()||"",nota:Number(p[2])||5,origem:"manual",criadoEm:new Date().toISOString()}}).filter(c=>c.texto);}
-function origemComentario(c={}){return String(c.origem || c.tipo || c.status || "").trim().toLowerCase();}
-function comentarioEhReal(c={}){const origem = origemComentario(c);return origem === "site" || origem === "real" || origem === "cliente" || origem === "publicado";}
-function comentarioEhFake(c={}){return !comentarioEhReal(c);}
-function comentarioIdAdmin(c={}, index=0, produtoDocId=""){return String(c.id || c.comentarioId || c.codigo || `semid_${produtoDocId}_${index}`);}
-function normalizarComentarioAdmin(c={}, index=0, produtoDocId=""){const origem = origemComentario(c) || "manual";return {...c,_comentarioIndex:index,_comentarioKey:comentarioIdAdmin(c,index,produtoDocId),id:c.id || c.comentarioId || c.codigo || comentarioIdAdmin(c,index,produtoDocId),nome:c.nome || c.name || "Cliente",texto:c.texto || c.message || c.comentario || c.descricao || "",nota:Number(c.nota || c.avaliacao || c.rating) || 5,origem};}
-function comentariosTexto(coms=[]){return (Array.isArray(coms)?coms:[]).filter(c=>comentarioEhFake(c)).map(c=>`${c.nome||c.name||"Cliente"} | ${c.texto||c.message||c.comentario||""} | ${c.nota||c.avaliacao||5}`).join("\n");}
-
-function limparProduto(){
-  ["nome","descricao","preco","precoAntigo","parcelamento","textoParcelamento","textoDestaque","link","selo","urgencia","botao","tipoDestaque","imagens","videos","detalhes","observacoes","avaliacao","avaliacoes","vendidos","qtdComentarios","comentariosManuais"].forEach(id=>$(id).value="");
-  const c=categoriasUso()[0]||CATEGORIAS_PADRAO[0];$("categoria").value=c.slug;$("tipo").value=c.tipo||"produto";$("nivelPreco").value="baixo";$("nivelPrecoAuto").checked=true;$("destaque").checked=false;$("recomendado").checked=true;$("ativoProduto").checked=true;$("prodImgPath").value="__categoria__";$("prodVidPath").value="__categoria__";$("prodImgExt").value="__categoria__";$("prodVidExt").value="__categoria__";
-  editProdutoId=null;editProdutoOriginal=null;$("btnSalvarProduto").textContent="🔥 Salvar no Firebase";$("btnCancelarProduto").style.display="none";$("infoEdicao").style.display="none";$("resultadoTeste").classList.remove("ativo","erro");$("resultadoTeste").innerHTML="";padroesCategoria();atualizaNivel();previewMidia();
+function slugify(t) {
+  return String(t || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 }
 
-function montarProduto(){
-  const nome=$("nome").value.trim(), c=catAtual();
-  const comentariosExistentes=Array.isArray(editProdutoOriginal?.comentarios)?editProdutoOriginal.comentarios:[];
-  const reais=comentariosExistentes.filter(comentarioEhReal);
-  const fakesExistentes=comentariosExistentes.filter(comentarioEhFake);
-  const novosFakes=comentariosForm();
-  const comentariosFinais=novosFakes.length?[...novosFakes,...reais]:[...fakesExistentes,...reais];
-  return{
-    id:editProdutoOriginal?.id||idNovo(),nome,descricao:$("descricao").value.trim(),
-    preco:preco($("preco").value),precoAntigo:$("precoAntigo").value.trim()?preco($("precoAntigo").value):null,
-    parcelamento:$("parcelamento").value.trim(),
-    textoParcelamento:$("textoParcelamento").value.trim(),
-    textoDestaque:$("textoDestaque").value.trim(),
-    imagens:imagensCampo(),videos:videosCampo(),link:$("link").value.trim(),
-    categoria:c.nome,categoriaSlug:c.slug,
-    selo:$("selo").value.trim()||((c.tipo==="cakto"||c.tipo==="digital")?"Produto digital":"Oferta"),
-    avaliacao:Number($("avaliacao").value)||5,avaliacoes:Number($("avaliacoes").value)||0,vendidos:Number($("vendidos").value)||0,
-    urgencia:$("urgencia").value.trim()||((c.tipo==="cakto"||c.tipo==="digital")?"💰 Produto digital":"🔥 Oferta por tempo limitado"),
-    botao:$("botao").value.trim()||((c.tipo==="cakto"||c.tipo==="digital")?"Quero acessar agora":"Comprar agora"),
-    destaque:$("destaque").checked,tipoDestaque:$("tipoDestaque").value.trim(),tipo:$("tipo").value,
-    nivelPreco:$("nivelPrecoAuto").checked?nivelAuto():$("nivelPreco").value,nivelPrecoAuto:$("nivelPrecoAuto").checked,
-    recomendado:$("recomendado").checked,ativo:$("ativoProduto").checked,
-    cliquesComprar:nClique(editProdutoOriginal?.cliquesComprar),cliquesWhatsapp:nClique(editProdutoOriginal?.cliquesWhatsapp),
-    cliquesCompartilhar:nClique(editProdutoOriginal?.cliquesCompartilhar),cliquesInstagram:nClique(editProdutoOriginal?.cliquesInstagram),
-    cliquesTotal:nClique(editProdutoOriginal?.cliquesTotal),
-    detalhes:linhas($("detalhes").value),observacoes:linhas($("observacoes").value),
-    mensagemWhatsapp:`Olá, quero saber mais sobre ${nome}.`,comentarios:comentariosFinais,atualizadoEm:serverTimestamp()
+function barra(c) {
+  c = String(c || "").trim();
+  return !c ? "" : c.endsWith("/") ? c : c + "/";
+}
+
+function ext(e) {
+  e = String(e || "").trim().toLowerCase();
+  return !e ? "" : e.startsWith(".") ? e : "." + e;
+}
+
+function temExt(c) {
+  return /\.[a-z0-9]{2,5}(\?.*)?$/i.test(String(c || ""));
+}
+
+function url(c) {
+  return /^https?:\/\//i.test(String(c || ""));
+}
+
+function completar(nome, base, ex) {
+  let n = String(nome || "").trim();
+
+  base = barra(base);
+  ex = ext(ex);
+
+  if (!n) return "";
+  if (url(n)) return n;
+
+  if (n.includes("/") || n.includes("\\")) {
+    return temExt(n) ? n : n + ex;
+  }
+
+  return base + n + (temExt(n) ? "" : ex);
+}
+
+function limparPrefixo(caminho, base, ex) {
+  let v = String(caminho || "");
+
+  base = barra(base || "");
+  ex = ext(ex || "");
+
+  if (base && v.startsWith(base)) v = v.replace(base, "");
+  if (ex && v.toLowerCase().endsWith(ex.toLowerCase())) v = v.slice(0, -ex.length);
+
+  return v;
+}
+
+function corSegura(cor, padrao = "#22c55e") {
+  const v = String(cor || "").trim();
+  return /^#[0-9a-fA-F]{6}$/.test(v) ? v : padrao;
+}
+
+function corPadraoCategoria(slug, nome = "") {
+  const texto = `${slug} ${nome}`.toLowerCase();
+
+  if (texto.includes("mercado")) return "#facc15";
+  if (texto.includes("shopee")) return "#f97316";
+  if (texto.includes("cakto")) return "#22c55e";
+  if (texto.includes("amazon")) return "#0ea5e9";
+  if (texto.includes("digital")) return "#8b5cf6";
+
+  return "#22c55e";
+}
+
+function sincronizarCorCategoria(origem = "color") {
+  const color = $("catCorLinha");
+  const texto = $("catCorLinhaTexto");
+  const preview = $("previewCorLinha");
+
+  if (!color || !texto || !preview) return;
+
+  let cor =
+    origem === "text"
+      ? corSegura(texto.value, color.value || "#22c55e")
+      : corSegura(color.value, "#22c55e");
+
+  color.value = cor;
+  texto.value = cor;
+  preview.style.setProperty("--cor-preview", cor);
+
+  const bolinha = preview.querySelector(".cor-bolinha");
+
+  if (bolinha) bolinha.style.background = cor;
+}
+
+function nClique(v) {
+  return Number(v) || 0;
+}
+
+/* =========================================================
+   NORMALIZADORES
+========================================================= */
+
+function normCaminho(c) {
+  return {
+    docId: c.docId || "",
+    nome: c.nome || "Caminho",
+    tipo: c.tipo || "imagem",
+    caminho: barra(c.caminho || ""),
+    extensao: ext(c.extensao || ".jpg"),
+    ordem: Number(c.ordem) || 999,
+    ativo: c.ativo !== false
   };
 }
 
-async function salvarProduto(){if(!proteger())return;if(!$("nome").value.trim()){mostrarStatus("Digite o nome do produto.","erro");return;}if(!$("link").value.trim()){mostrarStatus("Digite o link de compra.","erro");return;}if(!(await validarMidias()))return;$("btnSalvarProduto").disabled=true;$("btnSalvarProduto").textContent=editProdutoId?"Atualizando...":"Salvando...";try{const p=montarProduto();if(editProdutoId)await updateDoc(doc(db,"produtos",editProdutoId),p);else{p.criadoEm=serverTimestamp();await addDoc(collection(db,"produtos"),p);}mostrarStatus("✅ Produto salvo!");limparProduto();abrirArea("produtos");}catch(e){console.error(e);mostrarStatus("Erro ao salvar produto.","erro");}$("btnSalvarProduto").disabled=false;$("btnSalvarProduto").textContent=editProdutoId?"✅ Atualizar produto":"🔥 Salvar no Firebase";}
+function normCategoria(c) {
+  const nome = c.nome || "Categoria";
+  const slug = c.slug || slugify(nome);
 
-function produtoFiltrados(){const busca=$("buscaAdmin").value.toLowerCase(),f=$("filtroCategoriaAdmin").value,status=$("filtroStatusAdmin").value;return produtos.filter(p=>{const nome=(p.nome||"").toLowerCase().includes(busca);let cat=true;if(f==="Destaques")cat=p.destaque===true;else if(f!=="Todos")cat=(p.categoriaSlug||slugify(p.categoria||""))===f;let st=true;if(status==="Ativos")st=p.ativo!==false;if(status==="Inativos")st=p.ativo===false;return nome&&cat&&st;});}
-function nClique(v){return Number(v)||0;}
-function totalCliquesProduto(p){return nClique(p.cliquesTotal)||nClique(p.cliquesComprar)+nClique(p.cliquesWhatsapp)+nClique(p.cliquesCompartilhar)+nClique(p.cliquesInstagram);}
-function renderResumoCliques(){const resumo=$("resumoCliques"), ranking=$("rankingCliques");if(!resumo||!ranking)return;const totalComprar=produtos.reduce((s,p)=>s+nClique(p.cliquesComprar),0);const totalWhatsapp=produtos.reduce((s,p)=>s+nClique(p.cliquesWhatsapp),0);const totalCompartilhar=produtos.reduce((s,p)=>s+nClique(p.cliquesCompartilhar),0);const totalInstagram=produtos.reduce((s,p)=>s+nClique(p.cliquesInstagram),0);const totalGeral=produtos.reduce((s,p)=>s+totalCliquesProduto(p),0);resumo.innerHTML=`<div class="metrica"><strong>${totalGeral}</strong><span>Cliques totais</span></div><div class="metrica"><strong>${totalComprar}</strong><span>Comprar agora</span></div><div class="metrica"><strong>${totalWhatsapp}</strong><span>WhatsApp</span></div><div class="metrica"><strong>${totalCompartilhar}</strong><span>Compartilhar</span></div><div class="metrica"><strong>${totalInstagram}</strong><span>Instagram</span></div>`;const top=produtos.slice().sort((a,b)=>totalCliquesProduto(b)-totalCliquesProduto(a)).filter(p=>totalCliquesProduto(p)>0).slice(0,5);ranking.innerHTML=top.length?top.map((p,i)=>`<div class="ranking-item"><div class="ranking-pos">${i+1}</div><div><strong>${esc(p.nome||"Produto")}</strong><p>${esc(p.categoria||"-")} • Comprar: ${nClique(p.cliquesComprar)} • WhatsApp: ${nClique(p.cliquesWhatsapp)} • Compartilhar: ${nClique(p.cliquesCompartilhar)} • Instagram: ${nClique(p.cliquesInstagram)}</p></div><div class="ranking-total">${totalCliquesProduto(p)}</div></div>`).join(""):`<p class="ranking-vazio">Ainda não tem cliques registrados.</p>`;}
-function renderProdutos(){renderResumoCliques();const fs=produtoFiltrados();$("contadorProdutos").textContent=`${fs.length} produto(s) exibido(s) de ${produtos.length} cadastrado(s).`;$("listaProdutos").innerHTML=fs.length?fs.map(p=>`<div class="card"><img class="preview" src="${p.imagens?.[0]||""}" alt="${esc(p.nome||"Produto")}"><h4>${esc(p.nome||"Sem nome")}</h4>${p.ativo!==false?`<span class="badge greenbadge">Ativo</span>`:`<span class="badge redbadge">Inativo</span>`}${p.destaque?`<span class="badge yellow">Destaque</span>`:""}${p.selo?`<span class="badge">${esc(p.selo)}</span>`:""}${p.videos?.length?`<span class="badge">${p.videos.length} vídeo(s)</span>`:""}<p><strong>Preço:</strong> ${esc(p.preco||"-")}</p>${p.parcelamento?`<p class="parcelamento-info"><strong>Parcelamento:</strong> ${esc(p.parcelamento)}</p>`:""}<p><strong>Categoria:</strong> ${esc(p.categoria||"-")}</p><p><strong>Slug:</strong> ${esc(p.categoriaSlug||slugify(p.categoria||""))}</p><p><strong>Avaliação:</strong> ${p.avaliacao||0} ⭐</p><div class="clique-grid"><div class="clique-item">🧮 Total<strong>${totalCliquesProduto(p)}</strong></div><div class="clique-item">🛒 Comprar<strong>${nClique(p.cliquesComprar)}</strong></div><div class="clique-item">💬 WhatsApp<strong>${nClique(p.cliquesWhatsapp)}</strong></div><div class="clique-item">🔗 Compartilhar<strong>${nClique(p.cliquesCompartilhar)}</strong></div><div class="clique-item">📸 Instagram<strong>${nClique(p.cliquesInstagram)}</strong></div></div><button class="btn-yellow btn-mini" onclick="zerarCliquesProduto('${p.docId}')">🧹 Zerar cliques deste produto</button><div class="acoes3"><button class="edit" onclick="editarProduto('${p.docId}')">Editar</button><button class="btn-blue" onclick="duplicarProduto('${p.docId}')">Duplicar</button><button class="${p.ativo!==false?"btn-gray":"btn-green"}" onclick="toggleAtivoProduto('${p.docId}')">${p.ativo!==false?"Desativar":"Ativar"}</button></div><div class="acoes"><button class="del" onclick="deletarProduto('${p.docId}')">Deletar</button><button class="btn-gray" onclick="editarProduto('${p.docId}')">Editar completo</button></div></div>`).join(""):`<p class="help">Nenhum produto encontrado.</p>`;}
+  return {
+    docId: c.docId || "",
+    nome,
+    slug,
+    tipo: c.tipo || "produto",
+    caminhoImagens: barra(c.caminhoImagens || `imagens/${slug}/`),
+    caminhoVideos: barra(c.caminhoVideos || `videos/${slug}/`),
+    caminhoIcones: barra(c.caminhoIcones || "imagens/icones/"),
+    extImagem: ext(c.extImagem || ".jpg"),
+    extVideo: ext(c.extVideo || ".mp4"),
+    extIcone: ext(c.extIcone || ".svg"),
+    icone: c.icone || "imagens/icones/package.svg",
+    corLinha: corSegura(c.corLinha || c.corCategoria, corPadraoCategoria(slug, nome)),
+    ordem: Number(c.ordem) || 999,
+    ativa: c.ativa !== false
+  };
+}
 
-function selectProdutoFake(){const s=$("produtoFakeSelect"),v=s.value;s.innerHTML=produtos.length?`<option value="">Escolha um produto...</option>`+produtos.map(p=>`<option value="${p.docId}">${esc(p.nome||"Produto")}</option>`).join(""):`<option value="">Nenhum produto cadastrado</option>`;if(v&&produtos.some(p=>p.docId===v))s.value=v;}
-function editarProduto(id){const p=produtos.find(x=>x.docId===id);if(!p)return;editProdutoId=id;editProdutoOriginal=p;$("nome").value=p.nome||"";$("descricao").value=p.descricao||"";$("preco").value=p.preco||"";$("precoAntigo").value=p.precoAntigo||"";$("parcelamento").value=p.parcelamento||"";$("textoParcelamento").value=p.textoParcelamento||"";$("textoDestaque").value=p.textoDestaque||"";$("categoria").value=p.categoriaSlug||slugify(p.categoria||"");$("link").value=p.link||"";$("selo").value=p.selo||"";$("urgencia").value=p.urgencia||"";$("botao").value=p.botao||"";$("destaque").checked=!!p.destaque;$("tipoDestaque").value=p.tipoDestaque||"";$("tipo").value=p.tipo||catAtual().tipo||"produto";$("nivelPreco").value=p.nivelPreco||"baixo";$("nivelPrecoAuto").checked=p.nivelPrecoAuto??false;$("recomendado").checked=p.recomendado??true;$("ativoProduto").checked=p.ativo!==false;$("imagens").value=(p.imagens||[]).map(x=>limparPrefixo(x,catAtual().caminhoImagens,catAtual().extImagem)).join("\n");$("videos").value=(p.videos||[]).map(x=>limparPrefixo(x,catAtual().caminhoVideos,catAtual().extVideo)).join("\n");$("detalhes").value=(p.detalhes||[]).join("\n");$("observacoes").value=(p.observacoes||[]).join("\n");$("avaliacao").value=p.avaliacao||"";$("avaliacoes").value=p.avaliacoes||"";$("vendidos").value=p.vendidos||"";$("qtdComentarios").value="";$("comentariosManuais").value=comentariosTexto(p.comentarios||[]);$("prodImgPath").value="__categoria__";$("prodVidPath").value="__categoria__";$("prodImgExt").value="__categoria__";$("prodVidExt").value="__categoria__";$("btnSalvarProduto").textContent="✅ Atualizar produto";$("btnCancelarProduto").style.display="block";$("infoEdicao").style.display="block";atualizaNivel();previewMidia();abrirArea("formProduto");}
-function deletarProduto(id){const p=produtos.find(x=>x.docId===id);confirmar(`Deletar "${p?.nome||""}"?`,async()=>{await deleteDoc(doc(db,"produtos",id));mostrarStatus("🗑️ Produto deletado.");if(editProdutoId===id)limparProduto();});}
-function dadosCliquesProduto(p){return {cliquesComprar:nClique(p?.cliquesComprar),cliquesWhatsapp:nClique(p?.cliquesWhatsapp),cliquesCompartilhar:nClique(p?.cliquesCompartilhar),cliquesInstagram:nClique(p?.cliquesInstagram),cliquesTotal:totalCliquesProduto(p||{})};}
-function zerarCliquesObj(){return {cliquesComprar:0,cliquesWhatsapp:0,cliquesCompartilhar:0,cliquesInstagram:0,cliquesTotal:0,atualizadoEm:serverTimestamp()};}
-async function salvarHistoricoZeragem(dados){await addDoc(collection(db,"historicoCliques"),{...dados,zeradoPor:auth.currentUser?.email || EMAIL_ADMIN,zeradoEm:serverTimestamp(),criadoEm:new Date().toISOString()});}
-function zerarCliquesProduto(id){if(!proteger())return;const p=produtos.find(x=>x.docId===id);if(!p)return;const total=totalCliquesProduto(p);if(total<=0){mostrarStatus("Esse produto já está com os cliques zerados.");return;}confirmar(`Zerar os ${total} clique(s) do produto "${p.nome||""}"?`,async()=>{const dados=dadosCliquesProduto(p);await salvarHistoricoZeragem({tipo:"produto",produtoDocId:p.docId,produtoId:p.id||null,produtoNome:p.nome||"Produto",categoria:p.categoria||"",...dados});await updateDoc(doc(db,"produtos",p.docId),zerarCliquesObj());mostrarStatus("✅ Cliques do produto zerados e histórico salvo.");});}
-function zerarTodosCliques(){if(!proteger())return;const comCliques=produtos.filter(p=>totalCliquesProduto(p)>0);const total=comCliques.reduce((s,p)=>s+totalCliquesProduto(p),0);if(!comCliques.length){mostrarStatus("Nenhum produto tem cliques para zerar.");return;}confirmar(`Zerar ${total} clique(s) de ${comCliques.length} produto(s)?`,async()=>{const resumo={cliquesComprar:comCliques.reduce((s,p)=>s+nClique(p.cliquesComprar),0),cliquesWhatsapp:comCliques.reduce((s,p)=>s+nClique(p.cliquesWhatsapp),0),cliquesCompartilhar:comCliques.reduce((s,p)=>s+nClique(p.cliquesCompartilhar),0),cliquesInstagram:comCliques.reduce((s,p)=>s+nClique(p.cliquesInstagram),0),cliquesTotal:total};await salvarHistoricoZeragem({tipo:"todos",produtosQuantidade:comCliques.length,produtosZerados:comCliques.map(p=>({docId:p.docId,id:p.id||null,nome:p.nome||"Produto",categoria:p.categoria||"",comprar:nClique(p.cliquesComprar),whatsapp:nClique(p.cliquesWhatsapp),compartilhar:nClique(p.cliquesCompartilhar),instagram:nClique(p.cliquesInstagram),total:totalCliquesProduto(p)})),...resumo});for(const p of comCliques){await updateDoc(doc(db,"produtos",p.docId),zerarCliquesObj());}mostrarStatus("✅ Todos os cliques foram zerados e o histórico foi salvo.");});}
-function duplicarProduto(id){if(!proteger())return;const p=produtos.find(x=>x.docId===id);if(!p)return;confirmar(`Duplicar o produto "${p.nome||""}"?`,async()=>{const copia={...p};delete copia.docId;copia.id=idNovo();copia.nome=`${p.nome||"Produto"} (cópia)`;copia.destaque=false;copia.ativo=true;copia.cliquesComprar=0;copia.cliquesWhatsapp=0;copia.cliquesCompartilhar=0;copia.cliquesInstagram=0;copia.cliquesTotal=0;copia.criadoEm=serverTimestamp();copia.atualizadoEm=serverTimestamp();await addDoc(collection(db,"produtos"),copia);mostrarStatus("✅ Produto duplicado com sucesso!");});}
-async function toggleAtivoProduto(id){if(!proteger())return;const p=produtos.find(x=>x.docId===id);if(!p)return;const novoStatus=!(p.ativo!==false);await updateDoc(doc(db,"produtos",id),{ativo:novoStatus,atualizadoEm:serverTimestamp()});mostrarStatus(novoStatus?"✅ Produto ativado!":"🚫 Produto desativado!");}
-function gerarFakePreview(){if(!$("produtoFakeSelect").value){mostrarStatus("Escolha um produto.","erro");return;}const qtd=Math.max(1,Number($("qtdFake").value)||1),min=Number($("notaMinFake").value)||4,max=Number($("notaMaxFake").value)||5,erros=$("fakeComErros").checked;fakesTemp=Array.from({length:qtd},()=>fake({min,max,erros}));$("previewFakes").innerHTML=fakesTemp.map(c=>`<div class="card"><h4>${esc(c.nome)} — ${"⭐".repeat(c.nota)}</h4><p>${esc(c.texto)}</p></div>`).join("");}
-async function salvarFakes(){const id=$("produtoFakeSelect").value;if(!id||!fakesTemp.length){mostrarStatus("Escolha um produto e gere uma prévia.","erro");return;}const p=produtos.find(x=>x.docId===id);await updateDoc(doc(db,"produtos",id),{comentarios:[...(p.comentarios||[]),...fakesTemp],atualizadoEm:serverTimestamp()});fakesTemp=[];$("previewFakes").innerHTML="";mostrarStatus("✅ Comentários salvos.");}
-function pegarComentarios(real){const arr=[];produtos.forEach(p=>{const lista=Array.isArray(p.comentarios)?p.comentarios:[];lista.forEach((comentario,index)=>{const c=normalizarComentarioAdmin(comentario,index,p.docId);const r=comentarioEhReal(c);if(real===r && String(c.texto||"").trim()){arr.push({produtoDocId:p.docId,produtoNome:p.nome||"Produto",...c});}});});return arr.sort((a,b)=>new Date(b.criadoEm||0)-new Date(a.criadoEm||0));}
-function filtrarCom(real){const busca=$(real?"buscaReais":"buscaFakes").value.toLowerCase(),f=$(real?"filtroReais":"filtroFakes").value;return pegarComentarios(real).filter(c=>`${c.nome||""} ${c.email||""} ${c.texto||""} ${c.produtoNome||""}`.toLowerCase().includes(busca)&&(f==="Todos"||Number(c.nota)===Number(f)));}
-function agrupar(cs){const g={};cs.forEach(c=>{if(!g[c.produtoDocId])g[c.produtoDocId]={produtoDocId:c.produtoDocId,produtoNome:c.produtoNome,comentarios:[]};g[c.produtoDocId].comentarios.push(c);});return Object.values(g).sort((a,b)=>a.produtoNome.localeCompare(b.produtoNome));}
-function renderComentarios(){renderListaComentarios(true)}
-function renderFakes(){renderListaComentarios(false)}
-function renderListaComentarios(real){const cs=filtrarCom(real),gr=agrupar(cs),lista=$(real?"listaReais":"listaFakes"),cont=$(real?"contadorReais":"contadorFakes"),aberto=real?realAberto:fakeAberto;cont.textContent=`${cs.length} comentário(s) em ${gr.length} produto(s).`;lista.innerHTML=cs.length?gr.map(g=>{const a=aberto===g.produtoDocId;return`<div class="grupo"><div class="grupo-head" onclick="${real?"toggleReal":"toggleFake"}('${g.produtoDocId}')"><div><strong>${esc(g.produtoNome)}</strong><p>${g.comentarios.length} comentário(s)</p></div><div class="seta ${a?"ativo":""}">›</div></div><div class="grupo-cont ${a?"ativo":""}">${g.comentarios.map(c=>`<div class="card"><h4>${"⭐".repeat(Number(c.nota)||5)}${"☆".repeat(5-(Number(c.nota)||5))}</h4><p><strong>Nome:</strong> ${esc(c.nome||"Cliente")}</p>${real?`<p><strong>E-mail:</strong> ${esc(c.email||"Sem e-mail")}</p>`:`<span class="badge">${esc(c.origem||"manual")}</span>`}<div class="comentario">${esc(c.texto||"")}</div>${!real?`<div class="acoes"><button class="edit" onclick="abrirEditarComentario('${c.produtoDocId}','${c._comentarioKey}');event.stopPropagation()">Editar</button><button class="del" onclick="pedirExcluirComentario('${c.produtoDocId}','${c._comentarioKey}');event.stopPropagation()">Excluir</button></div>`:`<button class="del" onclick="pedirExcluirComentario('${c.produtoDocId}','${c._comentarioKey}');event.stopPropagation()">Excluir</button>`}</div>`).join("")}</div></div>`}).join(""):`<p class="help">Nenhum comentário encontrado.</p>`;}
-function toggleReal(id){realAberto=realAberto===id?null:id;renderComentarios()}
-function toggleFake(id){fakeAberto=fakeAberto===id?null:id;renderFakes()}
-function abrirEditarComentario(produtoDocId,comentarioId){const p=produtos.find(x=>x.docId===produtoDocId);const lista=Array.isArray(p?.comentarios)?p.comentarios:[];const index=lista.findIndex((x,i)=>String(comentarioIdAdmin(x,i,produtoDocId))===String(comentarioId));if(index<0)return;const c=normalizarComentarioAdmin(lista[index],index,produtoDocId);editComentario={produtoDocId,comentarioId};$("editComentNome").value=c.nome||"";$("editComentTexto").value=c.texto||"";$("editComentNota").value=String(c.nota||5);$("modalEditarComentario").classList.add("ativo");}
-function fecharEditComentario(){$("modalEditarComentario").classList.remove("ativo");editComentario=null;}
-async function salvarEditComentario(){if(!editComentario)return;const p=produtos.find(x=>x.docId===editComentario.produtoDocId);const lista=Array.isArray(p?.comentarios)?p.comentarios:[];const novos=lista.map((c,i)=>String(comentarioIdAdmin(c,i,editComentario.produtoDocId))===String(editComentario.comentarioId)?{...c,id:c.id||idNovo(),nome:$("editComentNome").value.trim(),texto:$("editComentTexto").value.trim(),nota:Number($("editComentNota").value)||5,origem:comentarioEhReal(c)?(c.origem||"site"):(c.origem||"manual"),atualizadoEm:new Date().toISOString()}:c);await updateDoc(doc(db,"produtos",editComentario.produtoDocId),{comentarios:novos,atualizadoEm:serverTimestamp()});fecharEditComentario();mostrarStatus("✅ Comentário atualizado.");}
-function pedirExcluirComentario(produtoDocId,comentarioId){confirmar("Excluir esse comentário?",async()=>{const p=produtos.find(x=>x.docId===produtoDocId);const lista=Array.isArray(p?.comentarios)?p.comentarios:[];const novos=lista.filter((c,i)=>String(comentarioIdAdmin(c,i,produtoDocId))!==String(comentarioId));await updateDoc(doc(db,"produtos",produtoDocId),{comentarios:novos,atualizadoEm:serverTimestamp()});mostrarStatus("🗑️ Comentário excluído.");});}
-function confirmar(txt,cb){$("textoConfirmacao").textContent=txt;acaoConfirmada=cb;$("modalConfirmacao").classList.add("ativo");}
-function fecharConfirmacao(){$("modalConfirmacao").classList.remove("ativo");acaoConfirmada=null;}
-async function confirmarAcao(){if(typeof acaoConfirmada==="function")await acaoConfirmada();fecharConfirmacao();}
-function normalizarImportado(p){const nomeCat=p.categoria||"Mercado Livre",slug=p.categoriaSlug||slugify(nomeCat),c=categoriasUso().find(x=>x.slug===slug)||normCategoria({nome:nomeCat,slug});return{id:p.id||idNovo(),nome:p.nome||"",descricao:p.descricao||"",preco:p.preco||"",precoAntigo:p.precoAntigo||null,parcelamento:p.parcelamento||"",textoParcelamento:p.textoParcelamento||"",textoDestaque:p.textoDestaque||"",imagens:p.imagens||[],videos:p.videos||[],link:p.link||"",categoria:c.nome,categoriaSlug:c.slug,selo:p.selo||"Oferta",avaliacao:Number(p.avaliacao)||5,avaliacoes:Number(p.avaliacoes)||0,vendidos:Number(p.vendidos)||0,urgencia:p.urgencia||"🔥 Oferta por tempo limitado",botao:p.botao||"Comprar agora",destaque:!!p.destaque,tipoDestaque:p.tipoDestaque||"",tipo:p.tipo||c.tipo||"produto",nivelPreco:p.nivelPreco||"baixo",nivelPrecoAuto:p.nivelPrecoAuto??false,recomendado:p.recomendado??true,ativo:p.ativo!==false,cliquesComprar:Number(p.cliquesComprar)||0,cliquesWhatsapp:Number(p.cliquesWhatsapp)||0,cliquesCompartilhar:Number(p.cliquesCompartilhar)||0,cliquesInstagram:Number(p.cliquesInstagram)||0,cliquesTotal:Number(p.cliquesTotal)||0,detalhes:p.detalhes||[],observacoes:p.observacoes||[],mensagemWhatsapp:p.mensagemWhatsapp||`Olá, quero saber mais sobre ${p.nome||"este produto"}.`,comentarios:p.comentarios||[],criadoEm:serverTimestamp(),atualizadoEm:serverTimestamp()}}
-function importarJson(){const t=$("jsonImportar").value.trim();if(!t){mostrarStatus("Cole o JSON antigo antes.","erro");return;}let d;try{d=JSON.parse(t)}catch{mostrarStatus("JSON inválido.","erro");return;}const arr=Array.isArray(d)?d:d.produtos;if(!Array.isArray(arr)||!arr.length){mostrarStatus("Nenhum produto encontrado.","erro");return;}confirmar(`Importar ${arr.length} produto(s)?`,async()=>{for(const p of arr)await addDoc(collection(db,"produtos"),normalizarImportado(p));$("jsonImportar").value="";mostrarStatus(`✅ ${arr.length} produto(s) importado(s).`);});}
-function aplicarSelect(selectId,inputId){const v=$(selectId).value;if(v)$(inputId).value=v;}
+function normSelo(c) {
+  return {
+    docId: c.docId || "",
+    icone: String(c.icone || iconeSelo("shield")),
+    titulo: String(c.titulo || ""),
+    descricao: String(c.descricao || ""),
+    ativo: c.ativo !== false
+  };
+}
 
-$("btnEntrar").addEventListener("click",entrar);
-$("btnSair").addEventListener("click",sair);
-$("btnSalvarCaminho").addEventListener("click",salvarCaminho);
-$("btnCancelarCaminho").addEventListener("click",limparCaminho);
-$("btnCriarCaminhosPadrao").addEventListener("click",criarCaminhosPadrao);
-$("btnSalvarCategoria").addEventListener("click",salvarCategoria);
-$("btnCancelarCategoria").addEventListener("click",limparCategoria);
-$("btnCriarCategoriasPadrao").addEventListener("click",criarCategoriasPadrao);
-$("catCorLinha").addEventListener("input",()=>sincronizarCorCategoria("color"));
-$("catCorLinhaTexto").addEventListener("input",()=>sincronizarCorCategoria("text"));
-$("catNome").addEventListener("input",()=>{if(!$("catSlug").value.trim()){const s=slugify($("catNome").value);$("catSlug").value=s;$("catImgPath").value=s?`imagens/${s}/`:"";$("catVidPath").value=s?`videos/${s}/`:"";if(!$("catCorLinhaTexto").value.trim()||$("catCorLinhaTexto").value==="#22c55e"){const cor=corPadraoCategoria(s,$("catNome").value);$("catCorLinha").value=cor;$("catCorLinhaTexto").value=cor;sincronizarCorCategoria();}}previewIcone()});
-$("catSlug").addEventListener("input",()=>{const s=slugify($("catSlug").value);$("catSlug").value=s;if(!$("catImgPath").value.trim())$("catImgPath").value=s?`imagens/${s}/`:"";if(!$("catVidPath").value.trim())$("catVidPath").value=s?`videos/${s}/`:"";previewIcone()});
-$("catImgSelect").addEventListener("change",()=>aplicarPath("catImgSelect","catImgPath","catImgExt"));
-$("catVidSelect").addEventListener("change",()=>aplicarPath("catVidSelect","catVidPath","catVidExt"));
-$("catIconPathSelect").addEventListener("change",()=>aplicarPath("catIconPathSelect","catIconPath","catIconExt"));
-["catIconPath","catIconExt","catIcon"].forEach(id=>{$(id).addEventListener("input",previewIcone);$(id).addEventListener("change",previewIcone);});
-$("btnSalvarProduto").addEventListener("click",salvarProduto);
-$("btnCancelarProduto").addEventListener("click",limparProduto);
-$("btnImportarJson").addEventListener("click",importarJson);
-$("categoria").addEventListener("change",()=>{$("selo").value="";$("urgencia").value="";$("botao").value="";padroesCategoria();previewMidia()});
-["prodImgPath","prodVidPath","prodImgExt","prodVidExt","imagens","videos"].forEach(id=>{$(id).addEventListener("input",previewMidia);$(id).addEventListener("change",previewMidia);});
-$("btnTestarImagens").addEventListener("click",testarImagens);
-$("btnTestarVideos").addEventListener("click",testarVideos);
-$("tipoDestaqueSelect").addEventListener("change",()=>aplicarSelect("tipoDestaqueSelect","tipoDestaque"));
-$("seloSelect").addEventListener("change",()=>aplicarSelect("seloSelect","selo"));
-$("urgenciaSelect").addEventListener("change",()=>aplicarSelect("urgenciaSelect","urgencia"));
-$("botaoSelect").addEventListener("change",()=>aplicarSelect("botaoSelect","botao"));
-$("btnAddObservacao").addEventListener("click",()=>{const v=$("observacaoSelect").value;if(!v)return;const a=$("observacoes").value.trim();$("observacoes").value=a?a+"\n"+v:v});
-$("nivelPrecoAuto").addEventListener("change",atualizaNivel);
-$("preco").addEventListener("input",atualizaNivel);
-$("buscaAdmin").addEventListener("input",renderProdutos);
-$("filtroCategoriaAdmin").addEventListener("change",renderProdutos);
-$("filtroStatusAdmin").addEventListener("change",renderProdutos);
-$("btnGerarFake").addEventListener("click",gerarFakePreview);
-$("btnSalvarFake").addEventListener("click",salvarFakes);
-$("buscaFakes").addEventListener("input",renderFakes);
-$("filtroFakes").addEventListener("change",renderFakes);
-$("buscaReais").addEventListener("input",renderComentarios);
-$("filtroReais").addEventListener("change",renderComentarios);
-$("btnCancelarConfirmacao").addEventListener("click",fecharConfirmacao);
-$("btnConfirmar").addEventListener("click",confirmarAcao);
-$("btnCancelarEditComentario").addEventListener("click",fecharEditComentario);
-$("btnSalvarEditComentario").addEventListener("click",salvarEditComentario);
-$("btnZerarTodosCliques").addEventListener("click",zerarTodosCliques);
-$("btnAbrirHistoricoCliques").addEventListener("click",abrirHistoricoCliques);
-$("btnFecharHistoricoCliques").addEventListener("click",fecharHistoricoCliques);
-$("btnSalvarSelos").addEventListener("click",salvarSelosConfianca);
+/* =========================================================
+   HIERARQUIA NOVA: PLATAFORMA > DEPARTAMENTO > SUBCATEGORIA
+========================================================= */
 
-window.editarCaminho=editarCaminho;
-window.deletarCaminho=deletarCaminho;
-window.editarCategoria=editarCategoria;
-window.deletarCategoria=deletarCategoria;
-window.editarProduto=editarProduto;
-window.deletarProduto=deletarProduto;
-window.duplicarProduto=duplicarProduto;
-window.toggleAtivoProduto=toggleAtivoProduto;
-window.zerarCliquesProduto=zerarCliquesProduto;
-window.toggleReal=toggleReal;
-window.toggleFake=toggleFake;
-window.abrirEditarComentario=abrirEditarComentario;
-window.pedirExcluirComentario=pedirExcluirComentario;
+function garantirCamposHierarquiaProduto() {
+  const categoria = $("categoria");
+
+  if (!categoria || $("plataformaProduto")) return;
+
+  categoria.insertAdjacentHTML(
+    "afterend",
+    `
+    <div class="box" id="boxHierarquiaProduto" style="margin-top:14px">
+      <h3>🧭 Categoria inteligente</h3>
+      <p class="help">
+        Aqui você organiza o produto em níveis. Exemplo:
+        <strong>Mercado Livre › Moda › Feminina</strong>.
+      </p>
+
+      <div class="grid3">
+        <div>
+          <label>Plataforma</label>
+          <select id="plataformaProduto"></select>
+        </div>
+
+        <div>
+          <label>Departamento</label>
+          <select id="departamentoProduto"></select>
+          <input id="departamentoManual" placeholder="Ou escreva outro departamento">
+        </div>
+
+        <div>
+          <label>Subcategoria</label>
+          <select id="subcategoriaProduto"></select>
+          <input id="subcategoriaManual" placeholder="Ou escreva outra subcategoria">
+        </div>
+      </div>
+
+      <p class="help">
+        Se você preencher o campo manual, ele vai substituir a opção escolhida no seletor.
+      </p>
+    </div>
+  `
+  );
+}
+
+function nomeSlugDoSelect(selectId, manualId = null) {
+  const select = $(selectId);
+  const manual = manualId ? $(manualId) : null;
+
+  let nome = manual && manual.value.trim() ? manual.value.trim() : "";
+
+  if (!nome && select) {
+    nome = select.options[select.selectedIndex]?.textContent || "";
+  }
+
+  if (nome === "Escolher..." || nome === "Nenhum") nome = "";
+
+  const slug = slugify(nome);
+
+  return { nome, slug };
+}
+
+function preencherSelectBasico(select, lista, valor = "") {
+  if (!select) return;
+
+  const atual = valor || select.value;
+
+  select.innerHTML =
+    `<option value="">Escolher...</option>` +
+    lista
+      .map(item => {
+        const nome = typeof item === "string" ? item : item.nome;
+        const slug = typeof item === "string" ? slugify(item) : item.slug;
+
+        return `<option value="${esc(slug)}">${esc(nome)}</option>`;
+      })
+      .join("");
+
+  if ([...select.options].some(o => o.value === atual)) {
+    select.value = atual;
+  }
+}
+
+function atualizarSelectHierarquia(valorDept = "", valorSub = "") {
+  const dept = $("departamentoProduto");
+  const sub = $("subcategoriaProduto");
+
+  preencherSelectBasico(dept, DEPARTAMENTOS_PADRAO, valorDept);
+
+  const deptSlug = dept?.value || valorDept || "";
+  const subs = SUBCATEGORIAS_PADRAO[deptSlug] || [];
+
+  preencherSelectBasico(sub, subs, valorSub);
+}
+
+function atualizarPlataformaProduto(valor = "") {
+  const s = $("plataformaProduto");
+
+  if (!s) return;
+
+  const cats = categoriasUso();
+  const atual = valor || s.value || $("categoria")?.value || "";
+
+  s.innerHTML = cats
+    .map(c => `<option value="${esc(c.slug)}">${esc(c.nome)}</option>`)
+    .join("");
+
+  if ([...s.options].some(o => o.value === atual)) {
+    s.value = atual;
+  } else if (cats[0]) {
+    s.value = cats[0].slug;
+  }
+}
+
+function pegarHierarquiaProduto() {
+  const cat = catAtual();
+
+  const plataformaSelect = $("plataformaProduto");
+  const plataformaSlug = plataformaSelect?.value || cat.slug;
+  const plataformaCat = categoriasUso().find(c => c.slug === plataformaSlug) || cat;
+
+  const dep = nomeSlugDoSelect("departamentoProduto", "departamentoManual");
+  const sub = nomeSlugDoSelect("subcategoriaProduto", "subcategoriaManual");
+
+  return {
+    plataforma: plataformaCat.nome,
+    plataformaSlug: plataformaCat.slug,
+    departamento: dep.nome,
+    departamentoSlug: dep.slug,
+    subcategoria: sub.nome,
+    subcategoriaSlug: sub.slug
+  };
+}
+
+function aplicarHierarquiaNoFormulario(produto = null) {
+  garantirCamposHierarquiaProduto();
+
+  const plataformaSlug =
+    produto?.plataformaSlug ||
+    produto?.categoriaSlug ||
+    slugify(produto?.plataforma || produto?.categoria || "") ||
+    $("categoria")?.value ||
+    "";
+
+  const departamentoNome = produto?.departamento || produto?.departamentoNome || "";
+  const departamentoSlug = produto?.departamentoSlug || slugify(departamentoNome);
+
+  const subcategoriaNome =
+    produto?.subcategoria ||
+    produto?.subCategoria ||
+    produto?.subcategoriaNome ||
+    produto?.subCategoriaNome ||
+    "";
+
+  const subcategoriaSlug = produto?.subcategoriaSlug || produto?.subCategoriaSlug || slugify(subcategoriaNome);
+
+  atualizarPlataformaProduto(plataformaSlug);
+  atualizarSelectHierarquia(departamentoSlug, subcategoriaSlug);
+
+  if ($("departamentoManual")) {
+    const existe = DEPARTAMENTOS_PADRAO.map(slugify).includes(departamentoSlug);
+    $("departamentoManual").value = existe ? "" : departamentoNome;
+  }
+
+  if ($("subcategoriaManual")) {
+    const subs = SUBCATEGORIAS_PADRAO[departamentoSlug] || [];
+    const existe = subs.map(slugify).includes(subcategoriaSlug);
+    $("subcategoriaManual").value = existe ? "" : subcategoriaNome;
+  }
+}
+
+/* =========================================================
+   CAMINHOS / CATEGORIAS
+========================================================= */
+
+function caminhosUso(tipo) {
+  return (caminhos.length ? caminhos : CAMINHOS_PADRAO)
+    .filter(c => c.tipo === tipo && c.ativo !== false)
+    .sort((a, b) => (Number(a.ordem) || 999) - (Number(b.ordem) || 999));
+}
+
+function categoriasUso() {
+  return (categorias.length ? categorias : CATEGORIAS_PADRAO)
+    .filter(c => c.ativa !== false)
+    .sort((a, b) => (Number(a.ordem) || 999) - (Number(b.ordem) || 999));
+}
+
+function catAtual() {
+  return categoriasUso().find(c => c.slug === $("categoria").value) || categoriasUso()[0] || CATEGORIAS_PADRAO[0];
+}
+
+function listarCaminhos() {
+  unsubCaminhos = onSnapshot(
+    collection(db, "caminhos"),
+    snap => {
+      caminhos = snap.docs.map(d => normCaminho({ docId: d.id, ...d.data() }));
+      renderCaminhos();
+      atualizarSelectsCaminhos();
+      previewMidia();
+      previewIcone();
+    },
+    e => {
+      console.error(e);
+      mostrarStatus("Erro ao carregar caminhos.", "erro");
+    }
+  );
+}
+
+function listarCategorias() {
+  unsubCategorias = onSnapshot(
+    collection(db, "categorias"),
+    snap => {
+      categorias = snap.docs.map(d => normCategoria({ docId: d.id, ...d.data() }));
+
+      renderCategorias();
+      atualizarSelectsCategorias();
+      atualizarSelectsCaminhos();
+      renderProdutos();
+    },
+    e => {
+      console.error(e);
+      mostrarStatus("Erro ao carregar categorias.", "erro");
+    }
+  );
+}
+
+function preencherSelectCaminho(selectId, tipo, valor) {
+  const s = $(selectId);
+
+  if (!s) return;
+
+  const atual = valor || s.value;
+
+  s.innerHTML =
+    `<option value="">Escolher caminho salvo...</option>` +
+    caminhosUso(tipo)
+      .map(c => `<option value="${esc(c.caminho)}" data-ext="${esc(c.extensao)}">${esc(c.nome)} — ${esc(c.caminho)} ${esc(c.extensao)}</option>`)
+      .join("");
+
+  if ([...s.options].some(o => o.value === atual)) {
+    s.value = atual;
+  }
+}
+
+function preencherSelectProduto(selectId, tipo) {
+  const s = $(selectId);
+
+  if (!s) return;
+
+  const atual = s.value;
+
+  s.innerHTML =
+    `<option value="__categoria__">Usar caminho da categoria</option>` +
+    caminhosUso(tipo)
+      .map(c => `<option value="${esc(c.caminho)}" data-ext="${esc(c.extensao)}">${esc(c.nome)} — ${esc(c.caminho)} ${esc(c.extensao)}</option>`)
+      .join("");
+
+  if ([...s.options].some(o => o.value === atual)) {
+    s.value = atual;
+  }
+}
+
+function atualizarSelectsCaminhos() {
+  preencherSelectCaminho("catImgSelect", "imagem", $("catImgPath").value);
+  preencherSelectCaminho("catVidSelect", "video", $("catVidPath").value);
+  preencherSelectCaminho("catIconPathSelect", "icone", $("catIconPath").value);
+  preencherSelectProduto("prodImgPath", "imagem");
+  preencherSelectProduto("prodVidPath", "video");
+}
+
+function atualizarSelectsCategorias() {
+  const cats = categoriasUso();
+  const vc = $("categoria").value;
+  const vf = $("filtroCategoriaAdmin").value;
+
+  $("categoria").innerHTML = cats.map(c => `<option value="${esc(c.slug)}">${esc(c.nome)}</option>`).join("");
+
+  if (cats.some(c => c.slug === vc)) {
+    $("categoria").value = vc;
+  }
+
+  $("filtroCategoriaAdmin").innerHTML =
+    `<option value="Todos">Todos</option>` +
+    cats.map(c => `<option value="${esc(c.slug)}">${esc(c.nome)}</option>`).join("") +
+    `<option value="Destaques">Somente destaques</option>`;
+
+  if (vf === "Todos" || vf === "Destaques" || cats.some(c => c.slug === vf)) {
+    $("filtroCategoriaAdmin").value = vf;
+  }
+
+  garantirCamposHierarquiaProduto();
+  atualizarPlataformaProduto($("categoria").value);
+  atualizarSelectHierarquia($("departamentoProduto")?.value || "", $("subcategoriaProduto")?.value || "");
+
+  padroesCategoria();
+}
+
+function aplicarPath(selectId, inputId, extId) {
+  const s = $(selectId);
+  const inp = $(inputId);
+  const ex = $(extId);
+
+  if (s.value) inp.value = s.value;
+
+  const op = s.options[s.selectedIndex];
+
+  if (op?.dataset.ext && ex) ex.value = op.dataset.ext;
+
+  previewIcone();
+}
+
+function montarCaminho() {
+  return {
+    nome: $("camNome").value.trim(),
+    tipo: $("camTipo").value,
+    caminho: barra($("camCaminho").value.trim()),
+    extensao: ext($("camExt").value),
+    ordem: Number($("camOrdem").value) || 999,
+    ativo: $("camAtivo").checked,
+    atualizadoEm: serverTimestamp()
+  };
+}
+
+async function salvarCaminho() {
+  if (!proteger()) return;
+
+  const c = montarCaminho();
+
+  if (!c.nome || !c.caminho) {
+    mostrarStatus("Preencha nome e caminho.", "erro");
+    return;
+  }
+
+  $("btnSalvarCaminho").disabled = true;
+
+  try {
+    if (editCaminhoId) {
+      await updateDoc(doc(db, "caminhos", editCaminhoId), c);
+    } else {
+      c.criadoEm = serverTimestamp();
+      await addDoc(collection(db, "caminhos"), c);
+    }
+
+    limparCaminho();
+    mostrarStatus("✅ Caminho salvo!");
+  } catch (e) {
+    console.error(e);
+    mostrarStatus("Erro ao salvar caminho.", "erro");
+  }
+
+  $("btnSalvarCaminho").disabled = false;
+}
+
+function limparCaminho() {
+  ["camNome", "camCaminho", "camOrdem"].forEach(id => ($(id).value = ""));
+
+  $("camTipo").value = "imagem";
+  $("camExt").value = ".jpg";
+  $("camAtivo").checked = true;
+
+  editCaminhoId = null;
+
+  $("btnSalvarCaminho").textContent = "Salvar caminho";
+  $("btnCancelarCaminho").style.display = "none";
+}
+
+function editarCaminho(id) {
+  const c = caminhos.find(x => x.docId === id);
+
+  if (!c) return;
+
+  editCaminhoId = id;
+
+  $("camNome").value = c.nome;
+  $("camTipo").value = c.tipo;
+  $("camExt").value = c.extensao;
+  $("camCaminho").value = c.caminho;
+  $("camOrdem").value = c.ordem || "";
+  $("camAtivo").checked = c.ativo !== false;
+
+  $("btnSalvarCaminho").textContent = "Atualizar caminho";
+  $("btnCancelarCaminho").style.display = "block";
+
+  abrirArea("categorias");
+}
+
+function deletarCaminho(id) {
+  const c = caminhos.find(x => x.docId === id);
+
+  confirmar(`Excluir o caminho "${c?.nome || ""}"?`, async () => {
+    await deleteDoc(doc(db, "caminhos", id));
+    mostrarStatus("🗑️ Caminho deletado.");
+  });
+}
+
+async function criarCaminhosPadrao() {
+  if (!proteger()) return;
+
+  confirmar("Criar caminhos padrão?", async () => {
+    for (const c of CAMINHOS_PADRAO) {
+      if (!caminhos.some(x => x.tipo === c.tipo && x.caminho === c.caminho)) {
+        await addDoc(collection(db, "caminhos"), {
+          ...c,
+          criadoEm: serverTimestamp(),
+          atualizadoEm: serverTimestamp()
+        });
+      }
+    }
+
+    mostrarStatus("✅ Caminhos padrão criados/verificados.");
+  });
+}
+
+function renderCaminhos() {
+  $("contadorCaminhos").textContent = `${caminhos.length} caminho(s) cadastrado(s).`;
+
+  $("listaCaminhos").innerHTML = caminhos.length
+    ? caminhos
+        .slice()
+        .sort((a, b) => (a.ordem || 999) - (b.ordem || 999))
+        .map(
+          c => `
+      <div class="card">
+        <h4>${esc(c.nome)}</h4>
+        <span class="badge">${esc(c.tipo)}</span>
+        <span class="badge">${esc(c.extensao)}</span>
+        ${c.ativo ? `<span class="badge">Ativo</span>` : `<span class="badge redbadge">Inativo</span>`}
+        <p><strong>Caminho:</strong> ${esc(c.caminho)}</p>
+        <div class="acoes">
+          <button class="edit" onclick="editarCaminho('${c.docId}')">Editar</button>
+          <button class="del" onclick="deletarCaminho('${c.docId}')">Deletar</button>
+        </div>
+      </div>
+    `
+        )
+        .join("")
+    : `<p class="help">Nenhum caminho salvo. Clique em criar caminhos padrão.</p>`;
+}
+
+function montarCategoria() {
+  const nome = $("catNome").value.trim();
+  const slug = slugify($("catSlug").value.trim() || nome);
+
+  const caminhoIcones = barra($("catIconPath").value.trim() || "imagens/icones/");
+  const extIcone = ext($("catIconExt").value || ".svg");
+  const icone = completar($("catIcon").value.trim() || "package", caminhoIcones, extIcone);
+
+  return {
+    nome,
+    slug,
+    tipo: $("catTipo").value,
+    caminhoImagens: barra($("catImgPath").value.trim() || `imagens/${slug}/`),
+    caminhoVideos: barra($("catVidPath").value.trim() || `videos/${slug}/`),
+    caminhoIcones,
+    extImagem: ext($("catImgExt").value || ".jpg"),
+    extVideo: ext($("catVidExt").value || ".mp4"),
+    extIcone,
+    icone,
+    corLinha: corSegura($("catCorLinha").value || $("catCorLinhaTexto").value, corPadraoCategoria(slug, nome)),
+    ordem: Number($("catOrdem").value) || 999,
+    ativa: $("catAtiva").checked,
+    atualizadoEm: serverTimestamp()
+  };
+}
+
+async function salvarCategoria() {
+  if (!proteger()) return;
+
+  const c = montarCategoria();
+
+  if (!c.nome) {
+    mostrarStatus("Digite o nome da categoria.", "erro");
+    return;
+  }
+
+  if (categorias.some(x => x.slug === c.slug && x.docId !== editCategoriaId)) {
+    mostrarStatus("Já existe categoria com esse slug.", "erro");
+    return;
+  }
+
+  if (!(await testarArquivo(c.icone, "icone"))) {
+    mostrarStatus(`Ícone não encontrado: ${c.icone}`, "erro");
+    return;
+  }
+
+  $("btnSalvarCategoria").disabled = true;
+
+  try {
+    if (editCategoriaId) {
+      await updateDoc(doc(db, "categorias", editCategoriaId), c);
+    } else {
+      c.criadoEm = serverTimestamp();
+      await addDoc(collection(db, "categorias"), c);
+    }
+
+    limparCategoria();
+    mostrarStatus("✅ Categoria salva!");
+  } catch (e) {
+    console.error(e);
+    mostrarStatus("Erro ao salvar categoria.", "erro");
+  }
+
+  $("btnSalvarCategoria").disabled = false;
+}
+
+function limparCategoria() {
+  ["catNome", "catSlug", "catImgPath", "catVidPath", "catIconPath", "catIcon", "catOrdem"].forEach(id => {
+    $(id).value = "";
+  });
+
+  $("catTipo").value = "produto";
+  $("catImgExt").value = ".jpg";
+  $("catVidExt").value = ".mp4";
+  $("catIconExt").value = ".svg";
+  $("catAtiva").checked = true;
+  $("catCorLinha").value = "#22c55e";
+  $("catCorLinhaTexto").value = "#22c55e";
+
+  editCategoriaId = null;
+
+  $("btnSalvarCategoria").textContent = "Salvar categoria";
+  $("btnCancelarCategoria").style.display = "none";
+
+  atualizarSelectsCaminhos();
+  previewIcone();
+  sincronizarCorCategoria();
+}
+
+function editarCategoria(id) {
+  const c = categorias.find(x => x.docId === id);
+
+  if (!c) return;
+
+  editCategoriaId = id;
+
+  $("catNome").value = c.nome;
+  $("catSlug").value = c.slug;
+  $("catTipo").value = c.tipo;
+  $("catImgPath").value = c.caminhoImagens;
+  $("catVidPath").value = c.caminhoVideos;
+  $("catIconPath").value = c.caminhoIcones;
+  $("catImgExt").value = c.extImagem;
+  $("catVidExt").value = c.extVideo;
+  $("catIconExt").value = c.extIcone;
+  $("catIcon").value = limparPrefixo(c.icone, c.caminhoIcones, c.extIcone);
+  $("catCorLinha").value = corSegura(c.corLinha, corPadraoCategoria(c.slug, c.nome));
+  $("catCorLinhaTexto").value = $("catCorLinha").value;
+  $("catOrdem").value = c.ordem || "";
+  $("catAtiva").checked = c.ativa !== false;
+
+  $("btnSalvarCategoria").textContent = "Atualizar categoria";
+  $("btnCancelarCategoria").style.display = "block";
+
+  previewIcone();
+  sincronizarCorCategoria();
+  abrirArea("categorias");
+}
+
+function deletarCategoria(id) {
+  const c = categorias.find(x => x.docId === id);
+
+  confirmar(`Excluir a categoria "${c?.nome || ""}"?`, async () => {
+    await deleteDoc(doc(db, "categorias", id));
+    mostrarStatus("🗑️ Categoria deletada.");
+  });
+}
+
+async function criarCategoriasPadrao() {
+  if (!proteger()) return;
+
+  confirmar("Criar categorias padrão Mercado Livre, Shopee e Cakto?", async () => {
+    for (const c of CATEGORIAS_PADRAO) {
+      if (!categorias.some(x => x.slug === c.slug)) {
+        await addDoc(collection(db, "categorias"), {
+          ...c,
+          criadoEm: serverTimestamp(),
+          atualizadoEm: serverTimestamp()
+        });
+      }
+    }
+
+    mostrarStatus("✅ Categorias padrão criadas/verificadas.");
+  });
+}
+
+function renderCategorias() {
+  $("contadorCategorias").textContent = `${categorias.length} categoria(s) cadastrada(s).`;
+
+  $("listaCategorias").innerHTML = categorias.length
+    ? categorias
+        .slice()
+        .sort((a, b) => (a.ordem || 999) - (b.ordem || 999))
+        .map(
+          c => `
+      <div class="card">
+        <h4>${esc(c.nome)}</h4>
+        <span class="badge">${esc(c.slug)}</span>
+        <span class="badge">${esc(c.tipo)}</span>
+        ${c.ativa ? `<span class="badge">Ativa</span>` : `<span class="badge redbadge">Inativa</span>`}
+        <p><strong>Imagens:</strong> ${esc(c.caminhoImagens)} ${esc(c.extImagem)}</p>
+        <p><strong>Vídeos:</strong> ${esc(c.caminhoVideos)} ${esc(c.extVideo)}</p>
+        <p><strong>Ícone:</strong> ${esc(c.icone)}</p>
+        <p>
+          <strong>Cor da linha:</strong>
+          <span class="cor-bolinha" style="display:inline-block;vertical-align:middle;background:${esc(c.corLinha || "#22c55e")}"></span>
+          ${esc(c.corLinha || "#22c55e")}
+        </p>
+        <div class="acoes">
+          <button class="edit" onclick="editarCategoria('${c.docId}')">Editar</button>
+          <button class="del" onclick="deletarCategoria('${c.docId}')">Deletar</button>
+        </div>
+      </div>
+    `
+        )
+        .join("")
+    : `<p class="help">Nenhuma categoria criada ainda.</p>`;
+}
+
+/* =========================================================
+   MÍDIAS
+========================================================= */
+
+function baseImg() {
+  const c = catAtual();
+  const v = $("prodImgPath").value;
+
+  return v && v !== "__categoria__" ? barra(v) : barra(c.caminhoImagens);
+}
+
+function baseVid() {
+  const c = catAtual();
+  const v = $("prodVidPath").value;
+
+  return v && v !== "__categoria__" ? barra(v) : barra(c.caminhoVideos);
+}
+
+function extImg() {
+  const c = catAtual();
+  const v = $("prodImgExt").value;
+
+  return v === "__categoria__" ? c.extImagem : v;
+}
+
+function extVid() {
+  const c = catAtual();
+  const v = $("prodVidExt").value;
+
+  return v === "__categoria__" ? c.extVideo : v;
+}
+
+function imagensCampo() {
+  return linhas($("imagens").value).map(x => completar(x, baseImg(), extImg())).filter(Boolean);
+}
+
+function videosCampo() {
+  return linhas($("videos").value).map(x => completar(x, baseVid(), extVid())).filter(Boolean);
+}
+
+function previewMidia() {
+  const imgs = imagensCampo();
+  const vids = videosCampo();
+
+  $("previewImagens").textContent = imgs.length ? "Prévia: " + imgs.join(" | ") : "Prévia das imagens finais aparecerá aqui.";
+  $("previewVideos").textContent = vids.length ? "Prévia: " + vids.join(" | ") : "Prévia dos vídeos finais aparecerá aqui.";
+}
+
+function previewIcone() {
+  const final = completar(
+    $("catIcon").value.trim() || "package",
+    $("catIconPath").value.trim() || "imagens/icones/",
+    $("catIconExt").value || ".svg"
+  );
+
+  $("previewIcone").textContent = "Ícone final: " + final;
+}
+
+function testarImagem(u) {
+  return new Promise(r => {
+    const i = new Image();
+
+    i.onload = () => r(true);
+    i.onerror = () => r(false);
+    i.src = u + (u.includes("?") ? "&" : "?") + "v=" + Date.now();
+  });
+}
+
+async function testarArquivo(u, tipo) {
+  if (!u) return false;
+
+  if (tipo === "imagem" || tipo === "icone") {
+    return await testarImagem(u);
+  }
+
+  try {
+    const h = await fetch(u, { method: "HEAD", cache: "no-store" });
+
+    if (h.ok) return true;
+  } catch (e) {}
+
+  try {
+    const g = await fetch(u, { cache: "no-store" });
+    return g.ok;
+  } catch (e) {
+    return false;
+  }
+}
+
+async function testarLista(lista, tipo) {
+  const erros = [];
+
+  for (const u of lista) {
+    if (!(await testarArquivo(u, tipo))) {
+      erros.push(u);
+    }
+  }
+
+  return erros;
+}
+
+function resultadoTeste(titulo, erros) {
+  const b = $("resultadoTeste");
+
+  b.classList.add("ativo");
+
+  if (!erros.length) {
+    b.classList.remove("erro");
+    b.innerHTML = `<strong>✅ ${titulo}</strong><br>Todos os arquivos foram encontrados.`;
+    return;
+  }
+
+  b.classList.add("erro");
+  b.innerHTML = `<strong>❌ ${titulo}</strong><br>Não encontrei estes arquivos:<ul>${erros.map(e => `<li>${esc(e)}</li>`).join("")}</ul>`;
+}
+
+async function testarImagens() {
+  const imgs = imagensCampo();
+
+  if (!imgs.length) {
+    mostrarStatus("Digite pelo menos uma imagem.", "erro");
+    return [];
+  }
+
+  const erros = await testarLista(imgs, "imagem");
+
+  resultadoTeste("Teste de imagens", erros);
+
+  return erros;
+}
+
+async function testarVideos() {
+  const vids = videosCampo();
+
+  if (!vids.length) {
+    mostrarStatus("Nenhum vídeo para testar. Isso não impede salvar.", "ok");
+    return [];
+  }
+
+  const erros = await testarLista(vids, "video");
+
+  resultadoTeste("Teste de vídeos", erros);
+
+  return erros;
+}
+
+async function validarMidias() {
+  const imgs = imagensCampo();
+  const vids = videosCampo();
+
+  if (!imgs.length) {
+    mostrarStatus("Adicione pelo menos uma imagem.", "erro");
+    return false;
+  }
+
+  const erros = [...(await testarLista(imgs, "imagem")), ...(await testarLista(vids, "video"))];
+
+  if (erros.length) {
+    resultadoTeste("Arquivos não encontrados", erros);
+    mostrarStatus("Corrija os arquivos não encontrados antes de salvar.", "erro");
+    return false;
+  }
+
+  return true;
+}
+
+/* =========================================================
+   PRODUTOS
+========================================================= */
+
+function preco(v) {
+  v = String(v || "").trim();
+
+  if (!v) return "";
+  if (v.toLowerCase().includes("acesso")) return v;
+  if (v.startsWith("R$")) return v;
+
+  return "R$ " + v;
+}
+
+function numPreco(v) {
+  return (
+    Number(
+      String(v || "")
+        .replace("R$", "")
+        .replace(/\./g, "")
+        .replace(",", ".")
+        .replace(/[^\d.]/g, "")
+    ) || 0
+  );
+}
+
+function nivelAuto() {
+  const p = numPreco($("preco").value);
+
+  if (!p) return $("nivelPreco").value || "baixo";
+  if (p <= 80) return "baixo";
+  if (p <= 250) return "medio";
+
+  return "alto";
+}
+
+function atualizaNivel() {
+  if ($("nivelPrecoAuto").checked) {
+    $("nivelPreco").value = nivelAuto();
+    $("nivelPreco").disabled = true;
+  } else {
+    $("nivelPreco").disabled = false;
+  }
+}
+
+function padroesCategoria() {
+  const c = catAtual();
+  const t = c.tipo || "produto";
+
+  if (!$("selo").value.trim()) {
+    $("selo").value = t === "cakto" || t === "digital" ? "Produto digital" : "Oferta";
+  }
+
+  if (!$("urgencia").value.trim()) {
+    $("urgencia").value = t === "cakto" || t === "digital" ? "💰 Produto digital" : "🔥 Oferta por tempo limitado";
+  }
+
+  if (!$("botao").value.trim()) {
+    $("botao").value = t === "cakto" || t === "digital" ? "Quero acessar agora" : "Comprar agora";
+  }
+
+  $("tipo").value = t;
+}
+
+function limparProduto() {
+  [
+    "nome",
+    "descricao",
+    "preco",
+    "precoAntigo",
+    "parcelamento",
+    "textoParcelamento",
+    "textoDestaque",
+    "link",
+    "selo",
+    "urgencia",
+    "botao",
+    "tipoDestaque",
+    "imagens",
+    "videos",
+    "detalhes",
+    "observacoes",
+    "avaliacao",
+    "avaliacoes",
+    "vendidos",
+    "qtdComentarios",
+    "comentariosManuais"
+  ].forEach(id => {
+    $(id).value = "";
+  });
+
+  const c = categoriasUso()[0] || CATEGORIAS_PADRAO[0];
+
+  $("categoria").value = c.slug;
+  $("tipo").value = c.tipo || "produto";
+  $("nivelPreco").value = "baixo";
+  $("nivelPrecoAuto").checked = true;
+  $("destaque").checked = false;
+  $("recomendado").checked = true;
+  $("ativoProduto").checked = true;
+  $("prodImgPath").value = "__categoria__";
+  $("prodVidPath").value = "__categoria__";
+  $("prodImgExt").value = "__categoria__";
+  $("prodVidExt").value = "__categoria__";
+
+  if ($("departamentoManual")) $("departamentoManual").value = "";
+  if ($("subcategoriaManual")) $("subcategoriaManual").value = "";
+
+  aplicarHierarquiaNoFormulario();
+
+  editProdutoId = null;
+  editProdutoOriginal = null;
+
+  $("btnSalvarProduto").textContent = "🔥 Salvar no Firebase";
+  $("btnCancelarProduto").style.display = "none";
+  $("infoEdicao").style.display = "none";
+  $("resultadoTeste").classList.remove("ativo", "erro");
+  $("resultadoTeste").innerHTML = "";
+
+  padroesCategoria();
+  atualizaNivel();
+  previewMidia();
+}
+
+function montarProduto() {
+  const nome = $("nome").value.trim();
+  const c = catAtual();
+  const h = pegarHierarquiaProduto();
+
+  const comentariosExistentes = Array.isArray(editProdutoOriginal?.comentarios) ? editProdutoOriginal.comentarios : [];
+  const reais = comentariosExistentes.filter(comentarioEhReal);
+  const fakesExistentes = comentariosExistentes.filter(comentarioEhFake);
+  const novosFakes = comentariosForm();
+  const comentariosFinais = novosFakes.length ? [...novosFakes, ...reais] : [...fakesExistentes, ...reais];
+
+  return {
+    id: editProdutoOriginal?.id || idNovo(),
+    nome,
+    descricao: $("descricao").value.trim(),
+    preco: preco($("preco").value),
+    precoAntigo: $("precoAntigo").value.trim() ? preco($("precoAntigo").value) : null,
+    parcelamento: $("parcelamento").value.trim(),
+    textoParcelamento: $("textoParcelamento").value.trim(),
+    textoDestaque: $("textoDestaque").value.trim(),
+    imagens: imagensCampo(),
+    videos: videosCampo(),
+    link: $("link").value.trim(),
+
+    categoria: c.nome,
+    categoriaSlug: c.slug,
+
+    plataforma: h.plataforma,
+    plataformaSlug: h.plataformaSlug,
+    departamento: h.departamento,
+    departamentoSlug: h.departamentoSlug,
+    subcategoria: h.subcategoria,
+    subcategoriaSlug: h.subcategoriaSlug,
+
+    selo: $("selo").value.trim() || (c.tipo === "cakto" || c.tipo === "digital" ? "Produto digital" : "Oferta"),
+    avaliacao: Number($("avaliacao").value) || 5,
+    avaliacoes: Number($("avaliacoes").value) || 0,
+    vendidos: Number($("vendidos").value) || 0,
+    urgencia: $("urgencia").value.trim() || (c.tipo === "cakto" || c.tipo === "digital" ? "💰 Produto digital" : "🔥 Oferta por tempo limitado"),
+    botao: $("botao").value.trim() || (c.tipo === "cakto" || c.tipo === "digital" ? "Quero acessar agora" : "Comprar agora"),
+    destaque: $("destaque").checked,
+    tipoDestaque: $("tipoDestaque").value.trim(),
+    tipo: $("tipo").value,
+    nivelPreco: $("nivelPrecoAuto").checked ? nivelAuto() : $("nivelPreco").value,
+    nivelPrecoAuto: $("nivelPrecoAuto").checked,
+    recomendado: $("recomendado").checked,
+    ativo: $("ativoProduto").checked,
+    cliquesComprar: nClique(editProdutoOriginal?.cliquesComprar),
+    cliquesWhatsapp: nClique(editProdutoOriginal?.cliquesWhatsapp),
+    cliquesCompartilhar: nClique(editProdutoOriginal?.cliquesCompartilhar),
+    cliquesInstagram: nClique(editProdutoOriginal?.cliquesInstagram),
+    cliquesTotal: nClique(editProdutoOriginal?.cliquesTotal),
+    detalhes: linhas($("detalhes").value),
+    observacoes: linhas($("observacoes").value),
+    mensagemWhatsapp: `Olá, quero saber mais sobre ${nome}.`,
+    comentarios: comentariosFinais,
+    atualizadoEm: serverTimestamp()
+  };
+}
+
+async function salvarProduto() {
+  if (!proteger()) return;
+
+  if (!$("nome").value.trim()) {
+    mostrarStatus("Digite o nome do produto.", "erro");
+    return;
+  }
+
+  if (!$("link").value.trim()) {
+    mostrarStatus("Digite o link de compra.", "erro");
+    return;
+  }
+
+  if (!(await validarMidias())) return;
+
+  $("btnSalvarProduto").disabled = true;
+  $("btnSalvarProduto").textContent = editProdutoId ? "Atualizando..." : "Salvando...";
+
+  try {
+    const p = montarProduto();
+
+    if (editProdutoId) {
+      await updateDoc(doc(db, "produtos", editProdutoId), p);
+    } else {
+      p.criadoEm = serverTimestamp();
+      await addDoc(collection(db, "produtos"), p);
+    }
+
+    mostrarStatus("✅ Produto salvo!");
+    limparProduto();
+    abrirArea("produtos");
+  } catch (e) {
+    console.error(e);
+    mostrarStatus("Erro ao salvar produto.", "erro");
+  }
+
+  $("btnSalvarProduto").disabled = false;
+  $("btnSalvarProduto").textContent = editProdutoId ? "✅ Atualizar produto" : "🔥 Salvar no Firebase";
+}
+
+function produtoFiltrados() {
+  const busca = $("buscaAdmin").value.toLowerCase();
+  const f = $("filtroCategoriaAdmin").value;
+  const status = $("filtroStatusAdmin").value;
+
+  return produtos.filter(p => {
+    const textoBusca = `
+      ${p.nome || ""}
+      ${p.categoria || ""}
+      ${p.plataforma || ""}
+      ${p.departamento || ""}
+      ${p.subcategoria || ""}
+    `.toLowerCase();
+
+    const nome = textoBusca.includes(busca);
+
+    let cat = true;
+
+    if (f === "Destaques") {
+      cat = p.destaque === true;
+    } else if (f !== "Todos") {
+      cat = (p.categoriaSlug || p.plataformaSlug || slugify(p.categoria || p.plataforma || "")) === f;
+    }
+
+    let st = true;
+
+    if (status === "Ativos") st = p.ativo !== false;
+    if (status === "Inativos") st = p.ativo === false;
+
+    return nome && cat && st;
+  });
+}
+
+function totalCliquesProduto(p) {
+  return nClique(p.cliquesTotal) || nClique(p.cliquesComprar) + nClique(p.cliquesWhatsapp) + nClique(p.cliquesCompartilhar) + nClique(p.cliquesInstagram);
+}
+
+function renderProdutos() {
+  renderResumoCliques();
+
+  const fs = produtoFiltrados();
+
+  $("contadorProdutos").textContent = `${fs.length} produto(s) exibido(s) de ${produtos.length} cadastrado(s).`;
+
+  $("listaProdutos").innerHTML = fs.length
+    ? fs
+        .map(
+          p => `
+      <div class="card">
+        <img class="preview" src="${p.imagens?.[0] || ""}" alt="${esc(p.nome || "Produto")}">
+        <h4>${esc(p.nome || "Sem nome")}</h4>
+
+        ${p.ativo !== false ? `<span class="badge greenbadge">Ativo</span>` : `<span class="badge redbadge">Inativo</span>`}
+        ${p.destaque ? `<span class="badge yellow">Destaque</span>` : ""}
+        ${p.selo ? `<span class="badge">${esc(p.selo)}</span>` : ""}
+        ${p.videos?.length ? `<span class="badge">${p.videos.length} vídeo(s)</span>` : ""}
+
+        <p><strong>Preço:</strong> ${esc(p.preco || "-")}</p>
+        ${p.parcelamento ? `<p class="parcelamento-info"><strong>Parcelamento:</strong> ${esc(p.parcelamento)}</p>` : ""}
+
+        <p><strong>Categoria:</strong> ${esc(p.categoria || "-")}</p>
+        <p><strong>Plataforma:</strong> ${esc(p.plataforma || p.categoria || "-")}</p>
+        <p><strong>Departamento:</strong> ${esc(p.departamento || "-")}</p>
+        <p><strong>Subcategoria:</strong> ${esc(p.subcategoria || "-")}</p>
+        <p><strong>Avaliação:</strong> ${p.avaliacao || 0} ⭐</p>
+
+        <div class="clique-grid">
+          <div class="clique-item">🧮 Total<strong>${totalCliquesProduto(p)}</strong></div>
+          <div class="clique-item">🛒 Comprar<strong>${nClique(p.cliquesComprar)}</strong></div>
+          <div class="clique-item">💬 WhatsApp<strong>${nClique(p.cliquesWhatsapp)}</strong></div>
+          <div class="clique-item">🔗 Compartilhar<strong>${nClique(p.cliquesCompartilhar)}</strong></div>
+          <div class="clique-item">📸 Instagram<strong>${nClique(p.cliquesInstagram)}</strong></div>
+        </div>
+
+        <button class="btn-yellow btn-mini" onclick="zerarCliquesProduto('${p.docId}')">🧹 Zerar cliques deste produto</button>
+
+        <div class="acoes3">
+          <button class="edit" onclick="editarProduto('${p.docId}')">Editar</button>
+          <button class="btn-blue" onclick="duplicarProduto('${p.docId}')">Duplicar</button>
+          <button class="${p.ativo !== false ? "btn-gray" : "btn-green"}" onclick="toggleAtivoProduto('${p.docId}')">${p.ativo !== false ? "Desativar" : "Ativar"}</button>
+        </div>
+
+        <div class="acoes">
+          <button class="del" onclick="deletarProduto('${p.docId}')">Deletar</button>
+          <button class="btn-gray" onclick="editarProduto('${p.docId}')">Editar completo</button>
+        </div>
+      </div>
+    `
+        )
+        .join("")
+    : `<p class="help">Nenhum produto encontrado.</p>`;
+}
+
+function editarProduto(id) {
+  const p = produtos.find(x => x.docId === id);
+
+  if (!p) return;
+
+  editProdutoId = id;
+  editProdutoOriginal = p;
+
+  $("nome").value = p.nome || "";
+  $("descricao").value = p.descricao || "";
+  $("preco").value = p.preco || "";
+  $("precoAntigo").value = p.precoAntigo || "";
+  $("parcelamento").value = p.parcelamento || "";
+  $("textoParcelamento").value = p.textoParcelamento || "";
+  $("textoDestaque").value = p.textoDestaque || "";
+
+  $("categoria").value = p.categoriaSlug || p.plataformaSlug || slugify(p.categoria || p.plataforma || "");
+
+  $("link").value = p.link || "";
+  $("selo").value = p.selo || "";
+  $("urgencia").value = p.urgencia || "";
+  $("botao").value = p.botao || "";
+  $("destaque").checked = !!p.destaque;
+  $("tipoDestaque").value = p.tipoDestaque || "";
+  $("tipo").value = p.tipo || catAtual().tipo || "produto";
+  $("nivelPreco").value = p.nivelPreco || "baixo";
+  $("nivelPrecoAuto").checked = p.nivelPrecoAuto ?? false;
+  $("recomendado").checked = p.recomendado ?? true;
+  $("ativoProduto").checked = p.ativo !== false;
+
+  $("imagens").value = (p.imagens || []).map(x => limparPrefixo(x, catAtual().caminhoImagens, catAtual().extImagem)).join("\n");
+  $("videos").value = (p.videos || []).map(x => limparPrefixo(x, catAtual().caminhoVideos, catAtual().extVideo)).join("\n");
+  $("detalhes").value = (p.detalhes || []).join("\n");
+  $("observacoes").value = (p.observacoes || []).join("\n");
+  $("avaliacao").value = p.avaliacao || "";
+  $("avaliacoes").value = p.avaliacoes || "";
+  $("vendidos").value = p.vendidos || "";
+  $("qtdComentarios").value = "";
+  $("comentariosManuais").value = comentariosTexto(p.comentarios || []);
+
+  $("prodImgPath").value = "__categoria__";
+  $("prodVidPath").value = "__categoria__";
+  $("prodImgExt").value = "__categoria__";
+  $("prodVidExt").value = "__categoria__";
+
+  aplicarHierarquiaNoFormulario(p);
+
+  $("btnSalvarProduto").textContent = "✅ Atualizar produto";
+  $("btnCancelarProduto").style.display = "block";
+  $("infoEdicao").style.display = "block";
+
+  atualizaNivel();
+  previewMidia();
+  abrirArea("formProduto");
+}
+
+function deletarProduto(id) {
+  const p = produtos.find(x => x.docId === id);
+
+  confirmar(`Deletar "${p?.nome || ""}"?`, async () => {
+    await deleteDoc(doc(db, "produtos", id));
+    mostrarStatus("🗑️ Produto deletado.");
+
+    if (editProdutoId === id) limparProduto();
+  });
+}
+
+function duplicarProduto(id) {
+  if (!proteger()) return;
+
+  const p = produtos.find(x => x.docId === id);
+
+  if (!p) return;
+
+  confirmar(`Duplicar o produto "${p.nome || ""}"?`, async () => {
+    const copia = { ...p };
+
+    delete copia.docId;
+
+    copia.id = idNovo();
+    copia.nome = `${p.nome || "Produto"} (cópia)`;
+    copia.destaque = false;
+    copia.ativo = true;
+    copia.cliquesComprar = 0;
+    copia.cliquesWhatsapp = 0;
+    copia.cliquesCompartilhar = 0;
+    copia.cliquesInstagram = 0;
+    copia.cliquesTotal = 0;
+    copia.criadoEm = serverTimestamp();
+    copia.atualizadoEm = serverTimestamp();
+
+    await addDoc(collection(db, "produtos"), copia);
+
+    mostrarStatus("✅ Produto duplicado com sucesso!");
+  });
+}
+
+async function toggleAtivoProduto(id) {
+  if (!proteger()) return;
+
+  const p = produtos.find(x => x.docId === id);
+
+  if (!p) return;
+
+  const novoStatus = !(p.ativo !== false);
+
+  await updateDoc(doc(db, "produtos", id), {
+    ativo: novoStatus,
+    atualizadoEm: serverTimestamp()
+  });
+
+  mostrarStatus(novoStatus ? "✅ Produto ativado!" : "🚫 Produto desativado!");
+}
+
+function listarProdutos() {
+  unsubProdutos = onSnapshot(
+    collection(db, "produtos"),
+    snap => {
+      produtos = snap.docs.map(d => ({ docId: d.id, ...d.data() }));
+
+      renderProdutos();
+      renderResumoCliques();
+      renderComentarios();
+      renderFakes();
+      selectProdutoFake();
+    },
+    e => {
+      console.error(e);
+      mostrarStatus("Erro ao carregar produtos.", "erro");
+    }
+  );
+}
+
+/* =========================================================
+   CLIQUES
+========================================================= */
+
+function renderResumoCliques() {
+  const resumo = $("resumoCliques");
+  const ranking = $("rankingCliques");
+
+  if (!resumo || !ranking) return;
+
+  const totalComprar = produtos.reduce((s, p) => s + nClique(p.cliquesComprar), 0);
+  const totalWhatsapp = produtos.reduce((s, p) => s + nClique(p.cliquesWhatsapp), 0);
+  const totalCompartilhar = produtos.reduce((s, p) => s + nClique(p.cliquesCompartilhar), 0);
+  const totalInstagram = produtos.reduce((s, p) => s + nClique(p.cliquesInstagram), 0);
+  const totalGeral = produtos.reduce((s, p) => s + totalCliquesProduto(p), 0);
+
+  resumo.innerHTML = `
+    <div class="metrica"><strong>${totalGeral}</strong><span>Cliques totais</span></div>
+    <div class="metrica"><strong>${totalComprar}</strong><span>Comprar agora</span></div>
+    <div class="metrica"><strong>${totalWhatsapp}</strong><span>WhatsApp</span></div>
+    <div class="metrica"><strong>${totalCompartilhar}</strong><span>Compartilhar</span></div>
+    <div class="metrica"><strong>${totalInstagram}</strong><span>Instagram</span></div>
+  `;
+
+  const top = produtos
+    .slice()
+    .sort((a, b) => totalCliquesProduto(b) - totalCliquesProduto(a))
+    .filter(p => totalCliquesProduto(p) > 0)
+    .slice(0, 5);
+
+  ranking.innerHTML = top.length
+    ? top
+        .map(
+          (p, i) => `
+      <div class="ranking-item">
+        <div class="ranking-pos">${i + 1}</div>
+        <div>
+          <strong>${esc(p.nome || "Produto")}</strong>
+          <p>
+            ${esc(p.categoria || "-")}
+            ${p.departamento ? " • " + esc(p.departamento) : ""}
+            ${p.subcategoria ? " • " + esc(p.subcategoria) : ""}
+            • Comprar: ${nClique(p.cliquesComprar)}
+            • WhatsApp: ${nClique(p.cliquesWhatsapp)}
+            • Compartilhar: ${nClique(p.cliquesCompartilhar)}
+            • Instagram: ${nClique(p.cliquesInstagram)}
+          </p>
+        </div>
+        <div class="ranking-total">${totalCliquesProduto(p)}</div>
+      </div>
+    `
+        )
+        .join("")
+    : `<p class="ranking-vazio">Ainda não tem cliques registrados.</p>`;
+}
+
+function dadosCliquesProduto(p) {
+  return {
+    cliquesComprar: nClique(p?.cliquesComprar),
+    cliquesWhatsapp: nClique(p?.cliquesWhatsapp),
+    cliquesCompartilhar: nClique(p?.cliquesCompartilhar),
+    cliquesInstagram: nClique(p?.cliquesInstagram),
+    cliquesTotal: totalCliquesProduto(p || {})
+  };
+}
+
+function zerarCliquesObj() {
+  return {
+    cliquesComprar: 0,
+    cliquesWhatsapp: 0,
+    cliquesCompartilhar: 0,
+    cliquesInstagram: 0,
+    cliquesTotal: 0,
+    atualizadoEm: serverTimestamp()
+  };
+}
+
+async function salvarHistoricoZeragem(dados) {
+  await addDoc(collection(db, "historicoCliques"), {
+    ...dados,
+    zeradoPor: auth.currentUser?.email || EMAIL_ADMIN,
+    zeradoEm: serverTimestamp(),
+    criadoEm: new Date().toISOString()
+  });
+}
+
+function zerarCliquesProduto(id) {
+  if (!proteger()) return;
+
+  const p = produtos.find(x => x.docId === id);
+
+  if (!p) return;
+
+  const total = totalCliquesProduto(p);
+
+  if (total <= 0) {
+    mostrarStatus("Esse produto já está com os cliques zerados.");
+    return;
+  }
+
+  confirmar(`Zerar os ${total} clique(s) do produto "${p.nome || ""}"?`, async () => {
+    const dados = dadosCliquesProduto(p);
+
+    await salvarHistoricoZeragem({
+      tipo: "produto",
+      produtoDocId: p.docId,
+      produtoId: p.id || null,
+      produtoNome: p.nome || "Produto",
+      categoria: p.categoria || "",
+      plataforma: p.plataforma || p.categoria || "",
+      departamento: p.departamento || "",
+      subcategoria: p.subcategoria || "",
+      ...dados
+    });
+
+    await updateDoc(doc(db, "produtos", p.docId), zerarCliquesObj());
+
+    mostrarStatus("✅ Cliques do produto zerados e histórico salvo.");
+  });
+}
+
+function zerarTodosCliques() {
+  if (!proteger()) return;
+
+  const comCliques = produtos.filter(p => totalCliquesProduto(p) > 0);
+  const total = comCliques.reduce((s, p) => s + totalCliquesProduto(p), 0);
+
+  if (!comCliques.length) {
+    mostrarStatus("Nenhum produto tem cliques para zerar.");
+    return;
+  }
+
+  confirmar(`Zerar ${total} clique(s) de ${comCliques.length} produto(s)?`, async () => {
+    const resumo = {
+      cliquesComprar: comCliques.reduce((s, p) => s + nClique(p.cliquesComprar), 0),
+      cliquesWhatsapp: comCliques.reduce((s, p) => s + nClique(p.cliquesWhatsapp), 0),
+      cliquesCompartilhar: comCliques.reduce((s, p) => s + nClique(p.cliquesCompartilhar), 0),
+      cliquesInstagram: comCliques.reduce((s, p) => s + nClique(p.cliquesInstagram), 0),
+      cliquesTotal: total
+    };
+
+    await salvarHistoricoZeragem({
+      tipo: "todos",
+      produtosQuantidade: comCliques.length,
+      produtosZerados: comCliques.map(p => ({
+        docId: p.docId,
+        id: p.id || null,
+        nome: p.nome || "Produto",
+        categoria: p.categoria || "",
+        plataforma: p.plataforma || p.categoria || "",
+        departamento: p.departamento || "",
+        subcategoria: p.subcategoria || "",
+        comprar: nClique(p.cliquesComprar),
+        whatsapp: nClique(p.cliquesWhatsapp),
+        compartilhar: nClique(p.cliquesCompartilhar),
+        instagram: nClique(p.cliquesInstagram),
+        total: totalCliquesProduto(p)
+      })),
+      ...resumo
+    });
+
+    for (const p of comCliques) {
+      await updateDoc(doc(db, "produtos", p.docId), zerarCliquesObj());
+    }
+
+    mostrarStatus("✅ Todos os cliques foram zerados e o histórico foi salvo.");
+  });
+}
+
+function listarHistoricoCliques() {
+  unsubHistoricoCliques = onSnapshot(
+    collection(db, "historicoCliques"),
+    snap => {
+      historicoCliques = snap.docs.map(d => ({ docId: d.id, ...d.data() }));
+      renderHistoricoCliques();
+    },
+    e => {
+      console.error(e);
+      mostrarStatus("Erro ao carregar histórico de cliques.", "erro");
+    }
+  );
+}
+
+function dataHistorico(item) {
+  const d = item.zeradoEm;
+
+  if (d && typeof d.toDate === "function") return d.toDate();
+  if (d && d.seconds) return new Date(d.seconds * 1000);
+  if (item.criadoEm && typeof item.criadoEm === "string") return new Date(item.criadoEm);
+
+  return new Date(0);
+}
+
+function formatarDataHistorico(item) {
+  const d = dataHistorico(item);
+
+  if (!d || isNaN(d.getTime()) || d.getTime() === 0) return "Agora / aguardando servidor";
+
+  return d.toLocaleString("pt-BR");
+}
+
+function abrirHistoricoCliques() {
+  renderHistoricoCliques();
+  $("modalHistoricoCliques").classList.add("ativo");
+}
+
+function fecharHistoricoCliques() {
+  $("modalHistoricoCliques").classList.remove("ativo");
+}
+
+function renderHistoricoCliques() {
+  const lista = $("listaHistoricoCliques");
+
+  if (!lista) return;
+
+  const itens = historicoCliques
+    .slice()
+    .sort((a, b) => dataHistorico(b) - dataHistorico(a))
+    .slice(0, 80);
+
+  lista.innerHTML = itens.length
+    ? itens
+        .map(h => {
+          const tipo = h.tipo === "todos" ? "Todos os produtos" : "Produto";
+          const total = nClique(h.cliquesTotal);
+
+          let produtosHtml = "";
+
+          if (Array.isArray(h.produtosZerados) && h.produtosZerados.length) {
+            produtosHtml = `
+            <div class="historico-produtos">
+              <strong>Produtos zerados:</strong><br>
+              ${h.produtosZerados
+                .slice(0, 20)
+                .map(p => `${esc(p.nome || "Produto")} — ${nClique(p.total)} clique(s)`)
+                .join("<br>")}
+              ${h.produtosZerados.length > 20 ? `<br>+ ${h.produtosZerados.length - 20} produto(s)` : ""}
+            </div>
+          `;
+          }
+
+          return `
+          <div class="historico-item">
+            <div class="historico-top">
+              <div>
+                <strong>${tipo}</strong>
+                <div class="historico-detalhes">
+                  ${h.produtoNome ? `Produto: ${esc(h.produtoNome)}<br>` : ""}
+                  Zerado por: ${esc(h.zeradoPor || "admin")}<br>
+                  Total antes de zerar: <strong>${total}</strong>
+                </div>
+              </div>
+              <div class="historico-data">${formatarDataHistorico(h)}</div>
+            </div>
+            <div class="historico-detalhes">
+              Comprar: ${nClique(h.cliquesComprar)}
+              • WhatsApp: ${nClique(h.cliquesWhatsapp)}
+              • Compartilhar: ${nClique(h.cliquesCompartilhar)}
+              • Instagram: ${nClique(h.cliquesInstagram)}
+            </div>
+            ${produtosHtml}
+          </div>
+        `;
+        })
+        .join("")
+    : `<p class="help">Ainda não existe histórico de zeragem.</p>`;
+}
+
+/* =========================================================
+   SELOS DE CONFIANÇA
+========================================================= */
+
+function listarSelosConfianca() {
+  unsubSelos = onSnapshot(
+    collection(db, "selosConfianca"),
+    snap => {
+      const docs = snap.docs.map(d => normSelo({ docId: d.id, ...d.data() }));
+      const mapa = new Map();
+
+      docs.forEach(s => mapa.set(s.docId, s));
+
+      selosConfiancaAdmin = SELOS_PADRAO.map(p => mapa.get(p.docId) || p);
+
+      renderSelosConfianca();
+    },
+    e => {
+      console.error(e);
+      mostrarStatus("Erro ao carregar selos.", "erro");
+    }
+  );
+}
+
+function renderSelosConfianca() {
+  const lista = $("listaSelosAdmin");
+
+  if (!lista) return;
+
+  lista.innerHTML = selosConfiancaAdmin
+    .map((s, i) => {
+      const corClasse = CORES_ICONES_SELOS[s.docId] === "azul" ? "icone-azul" : "icone-verde";
+
+      return `
+      <div class="selo-card">
+        <div class="selo-icone-preview">
+          <img src="${esc(s.icone)}" alt="${esc(s.titulo)}" class="${corClasse}" onerror="this.style.display='none'">
+        </div>
+
+        <h4>${esc(s.titulo || "Selo " + i)}</h4>
+
+        <div>
+          <label>Nome do ícone (sem extensão)</label>
+          <input type="text" data-selo="${s.docId}" data-campo="icone" value="${esc(limparPrefixo(s.icone, BASE_ICONES_PRODUTO, EXT_ICONE))}" placeholder="truck">
+          <div class="previewbox" style="margin-top:4px;font-size:11px">Caminho: ${esc(s.icone)}</div>
+        </div>
+
+        <div>
+          <label>Título</label>
+          <input type="text" data-selo="${s.docId}" data-campo="titulo" value="${esc(s.titulo || "")}" placeholder="Frete Grátis">
+        </div>
+
+        <div>
+          <label>Descrição</label>
+          <input type="text" data-selo="${s.docId}" data-campo="descricao" value="${esc(s.descricao || "")}" placeholder="Chegará grátis">
+        </div>
+
+        <div class="check">
+          <input type="checkbox" data-selo="${s.docId}" data-campo="ativo" ${s.ativo !== false ? "checked" : ""}>
+          <label style="margin:0">Ativo no site</label>
+        </div>
+      </div>
+    `;
+    })
+    .join("");
+
+  $("statusSelos").textContent = `${selosConfiancaAdmin.length} selo(s) configurado(s). Ícones em: ${BASE_ICONES_PRODUTO}`;
+}
+
+async function salvarSelosConfianca() {
+  if (!proteger()) return;
+
+  $("btnSalvarSelos").disabled = true;
+  $("btnSalvarSelos").textContent = "Salvando...";
+
+  try {
+    const inputs = document.querySelectorAll("#listaSelosAdmin input[data-selo]");
+    const dados = new Map();
+
+    inputs.forEach(inp => {
+      const docId = inp.dataset.selo;
+      const campo = inp.dataset.campo;
+
+      if (!dados.has(docId)) dados.set(docId, { docId });
+
+      if (inp.type === "checkbox") {
+        dados.get(docId)[campo] = inp.checked;
+      } else if (campo === "icone") {
+        const valor = inp.value.trim();
+        dados.get(docId)[campo] = valor ? iconeSelo(valor) : inp.value.trim();
+      } else {
+        dados.get(docId)[campo] = inp.value.trim();
+      }
+    });
+
+    for (const [docId, valor] of dados) {
+      await setDoc(
+        doc(db, "selosConfianca", docId),
+        {
+          ...valor,
+          atualizadoEm: serverTimestamp()
+        },
+        { merge: true }
+      );
+    }
+
+    mostrarStatus("✅ Selos de confiança salvos com sucesso!");
+  } catch (e) {
+    console.error(e);
+    mostrarStatus("Erro ao salvar selos.", "erro");
+  }
+
+  $("btnSalvarSelos").disabled = false;
+  $("btnSalvarSelos").textContent = "💾 Salvar todas as configurações";
+}
+
+/* =========================================================
+   COMENTÁRIOS
+========================================================= */
+
+const nomes = [
+  "Lucas Carvalho",
+  "João Pedro",
+  "Maria Lopes",
+  "Ana Clara",
+  "Carlos Eduardo",
+  "Bruna Santos",
+  "Rafael Almeida",
+  "Camila Rocha",
+  "Juliana Lima",
+  "Felipe Martins",
+  "Leticia Martins",
+  "Bruno Gomes",
+  "Gabriel Martins",
+  "Marcely Santos",
+  "Fabio Silva",
+  "Rafaela Souza",
+  "Paulo Henrique",
+  "Aline Costa",
+  "Marcos Vinicius",
+  "Larissa Mendes"
+];
+
+const frases = [
+  "Muito bom, recomendo!",
+  "Chegou certinho e gostei bastante.",
+  "Valeu muito a pena.",
+  "Qualidade top pelo preço.",
+  "Gostei bastante, compraria novamente.",
+  "Produto muito bom e fácil de comprar.",
+  "Atendeu minhas expectativas.",
+  "Achei bem melhor do que esperava.",
+  "Funciona direitinho, gostei.",
+  "Bem explicado e direto ao ponto.",
+  "Chegou conforme anunciado.",
+  "Gostei do custo-benefício.",
+  "Comprei meio desconfiado, mas gostei.",
+  "Achei simples e bom pelo valor.",
+  "Pra mim serviu muito bem.",
+  "Gostei, chegou tudo ok.",
+  "Produto bom, nada a reclamar.",
+  "Foi fácil comprar pelo link.",
+  "Gostei da indicação.",
+  "Achei bem útil no dia a dia."
+];
+
+function erroDig(t) {
+  return t.replace("Muito", "Mto").replace("Chegou", "Xegou").replace("certinho", "certim").replace("Gostei", "Gotei").replace("produto", "produtto").replace(".", "");
+}
+
+function fake(opts = {}) {
+  const min = Math.min(Number(opts.min) || 4, Number(opts.max) || 5);
+  const max = Math.max(Number(opts.min) || 4, Number(opts.max) || 5);
+
+  let texto = frases[Math.floor(Math.random() * frases.length)];
+
+  if (opts.erros && Math.random() > 0.35) texto = erroDig(texto);
+
+  return {
+    id: idNovo(),
+    nome: nomes[Math.floor(Math.random() * nomes.length)],
+    texto,
+    nota: Math.floor(Math.random() * (max - min + 1)) + min,
+    origem: "fake",
+    criadoEm: new Date().toISOString()
+  };
+}
+
+function comentariosForm() {
+  const qtd = Number($("qtdComentarios").value);
+
+  if (qtd) {
+    return Array.from({ length: qtd }, () => fake());
+  }
+
+  const m = $("comentariosManuais").value.trim();
+
+  if (!m) return [];
+
+  return m
+    .split("\n")
+    .map(l => {
+      const p = l.split("|");
+
+      return {
+        id: idNovo(),
+        nome: p[0]?.trim() || "Cliente",
+        texto: p[1]?.trim() || "",
+        nota: Number(p[2]) || 5,
+        origem: "manual",
+        criadoEm: new Date().toISOString()
+      };
+    })
+    .filter(c => c.texto);
+}
+
+function origemComentario(c = {}) {
+  return String(c.origem || c.tipo || c.status || "").trim().toLowerCase();
+}
+
+function comentarioEhReal(c = {}) {
+  const origem = origemComentario(c);
+
+  return origem === "site" || origem === "real" || origem === "cliente" || origem === "publicado";
+}
+
+function comentarioEhFake(c = {}) {
+  return !comentarioEhReal(c);
+}
+
+function comentarioIdAdmin(c = {}, index = 0, produtoDocId = "") {
+  return String(c.id || c.comentarioId || c.codigo || `semid_${produtoDocId}_${index}`);
+}
+
+function normalizarComentarioAdmin(c = {}, index = 0, produtoDocId = "") {
+  const origem = origemComentario(c) || "manual";
+
+  return {
+    ...c,
+    _comentarioIndex: index,
+    _comentarioKey: comentarioIdAdmin(c, index, produtoDocId),
+    id: c.id || c.comentarioId || c.codigo || comentarioIdAdmin(c, index, produtoDocId),
+    nome: c.nome || c.name || "Cliente",
+    texto: c.texto || c.message || c.comentario || c.descricao || "",
+    nota: Number(c.nota || c.avaliacao || c.rating) || 5,
+    origem
+  };
+}
+
+function comentariosTexto(coms = []) {
+  return (Array.isArray(coms) ? coms : [])
+    .filter(c => comentarioEhFake(c))
+    .map(c => `${c.nome || c.name || "Cliente"} | ${c.texto || c.message || c.comentario || ""} | ${c.nota || c.avaliacao || 5}`)
+    .join("\n");
+}
+
+function selectProdutoFake() {
+  const s = $("produtoFakeSelect");
+  const v = s.value;
+
+  s.innerHTML = produtos.length
+    ? `<option value="">Escolha um produto...</option>` + produtos.map(p => `<option value="${p.docId}">${esc(p.nome || "Produto")}</option>`).join("")
+    : `<option value="">Nenhum produto cadastrado</option>`;
+
+  if (v && produtos.some(p => p.docId === v)) s.value = v;
+}
+
+function gerarFakePreview() {
+  if (!$("produtoFakeSelect").value) {
+    mostrarStatus("Escolha um produto.", "erro");
+    return;
+  }
+
+  const qtd = Math.max(1, Number($("qtdFake").value) || 1);
+  const min = Number($("notaMinFake").value) || 4;
+  const max = Number($("notaMaxFake").value) || 5;
+  const erros = $("fakeComErros").checked;
+
+  fakesTemp = Array.from({ length: qtd }, () => fake({ min, max, erros }));
+
+  $("previewFakes").innerHTML = fakesTemp
+    .map(
+      c => `
+    <div class="card">
+      <h4>${esc(c.nome)} — ${"⭐".repeat(c.nota)}</h4>
+      <p>${esc(c.texto)}</p>
+    </div>
+  `
+    )
+    .join("");
+}
+
+async function salvarFakes() {
+  const id = $("produtoFakeSelect").value;
+
+  if (!id || !fakesTemp.length) {
+    mostrarStatus("Escolha um produto e gere uma prévia.", "erro");
+    return;
+  }
+
+  const p = produtos.find(x => x.docId === id);
+
+  await updateDoc(doc(db, "produtos", id), {
+    comentarios: [...(p.comentarios || []), ...fakesTemp],
+    atualizadoEm: serverTimestamp()
+  });
+
+  fakesTemp = [];
+  $("previewFakes").innerHTML = "";
+
+  mostrarStatus("✅ Comentários salvos.");
+}
+
+function pegarComentarios(real) {
+  const arr = [];
+
+  produtos.forEach(p => {
+    const lista = Array.isArray(p.comentarios) ? p.comentarios : [];
+
+    lista.forEach((comentario, index) => {
+      const c = normalizarComentarioAdmin(comentario, index, p.docId);
+      const r = comentarioEhReal(c);
+
+      if (real === r && String(c.texto || "").trim()) {
+        arr.push({
+          produtoDocId: p.docId,
+          produtoNome: p.nome || "Produto",
+          ...c
+        });
+      }
+    });
+  });
+
+  return arr.sort((a, b) => new Date(b.criadoEm || 0) - new Date(a.criadoEm || 0));
+}
+
+function filtrarCom(real) {
+  const busca = $(real ? "buscaReais" : "buscaFakes").value.toLowerCase();
+  const f = $(real ? "filtroReais" : "filtroFakes").value;
+
+  return pegarComentarios(real).filter(c => {
+    return (
+      `${c.nome || ""} ${c.email || ""} ${c.texto || ""} ${c.produtoNome || ""}`.toLowerCase().includes(busca) &&
+      (f === "Todos" || Number(c.nota) === Number(f))
+    );
+  });
+}
+
+function agrupar(cs) {
+  const g = {};
+
+  cs.forEach(c => {
+    if (!g[c.produtoDocId]) {
+      g[c.produtoDocId] = {
+        produtoDocId: c.produtoDocId,
+        produtoNome: c.produtoNome,
+        comentarios: []
+      };
+    }
+
+    g[c.produtoDocId].comentarios.push(c);
+  });
+
+  return Object.values(g).sort((a, b) => a.produtoNome.localeCompare(b.produtoNome));
+}
+
+function renderComentarios() {
+  renderListaComentarios(true);
+}
+
+function renderFakes() {
+  renderListaComentarios(false);
+}
+
+function renderListaComentarios(real) {
+  const cs = filtrarCom(real);
+  const gr = agrupar(cs);
+  const lista = $(real ? "listaReais" : "listaFakes");
+  const cont = $(real ? "contadorReais" : "contadorFakes");
+  const aberto = real ? realAberto : fakeAberto;
+
+  cont.textContent = `${cs.length} comentário(s) em ${gr.length} produto(s).`;
+
+  lista.innerHTML = cs.length
+    ? gr
+        .map(g => {
+          const a = aberto === g.produtoDocId;
+
+          return `
+        <div class="grupo">
+          <div class="grupo-head" onclick="${real ? "toggleReal" : "toggleFake"}('${g.produtoDocId}')">
+            <div>
+              <strong>${esc(g.produtoNome)}</strong>
+              <p>${g.comentarios.length} comentário(s)</p>
+            </div>
+            <div class="seta ${a ? "ativo" : ""}">›</div>
+          </div>
+
+          <div class="grupo-cont ${a ? "ativo" : ""}">
+            ${g.comentarios
+              .map(
+                c => `
+              <div class="card">
+                <h4>${"⭐".repeat(Number(c.nota) || 5)}${"☆".repeat(5 - (Number(c.nota) || 5))}</h4>
+                <p><strong>Nome:</strong> ${esc(c.nome || "Cliente")}</p>
+                ${
+                  real
+                    ? `<p><strong>E-mail:</strong> ${esc(c.email || "Sem e-mail")}</p>`
+                    : `<span class="badge">${esc(c.origem || "manual")}</span>`
+                }
+                <div class="comentario">${esc(c.texto || "")}</div>
+                ${
+                  !real
+                    ? `<div class="acoes">
+                        <button class="edit" onclick="abrirEditarComentario('${c.produtoDocId}','${c._comentarioKey}');event.stopPropagation()">Editar</button>
+                        <button class="del" onclick="pedirExcluirComentario('${c.produtoDocId}','${c._comentarioKey}');event.stopPropagation()">Excluir</button>
+                      </div>`
+                    : `<button class="del" onclick="pedirExcluirComentario('${c.produtoDocId}','${c._comentarioKey}');event.stopPropagation()">Excluir</button>`
+                }
+              </div>
+            `
+              )
+              .join("")}
+          </div>
+        </div>
+      `;
+        })
+        .join("")
+    : `<p class="help">Nenhum comentário encontrado.</p>`;
+}
+
+function toggleReal(id) {
+  realAberto = realAberto === id ? null : id;
+  renderComentarios();
+}
+
+function toggleFake(id) {
+  fakeAberto = fakeAberto === id ? null : id;
+  renderFakes();
+}
+
+function abrirEditarComentario(produtoDocId, comentarioId) {
+  const p = produtos.find(x => x.docId === produtoDocId);
+  const lista = Array.isArray(p?.comentarios) ? p.comentarios : [];
+
+  const index = lista.findIndex((x, i) => String(comentarioIdAdmin(x, i, produtoDocId)) === String(comentarioId));
+
+  if (index < 0) return;
+
+  const c = normalizarComentarioAdmin(lista[index], index, produtoDocId);
+
+  editComentario = { produtoDocId, comentarioId };
+
+  $("editComentNome").value = c.nome || "";
+  $("editComentTexto").value = c.texto || "";
+  $("editComentNota").value = String(c.nota || 5);
+
+  $("modalEditarComentario").classList.add("ativo");
+}
+
+function fecharEditComentario() {
+  $("modalEditarComentario").classList.remove("ativo");
+  editComentario = null;
+}
+
+async function salvarEditComentario() {
+  if (!editComentario) return;
+
+  const p = produtos.find(x => x.docId === editComentario.produtoDocId);
+  const lista = Array.isArray(p?.comentarios) ? p.comentarios : [];
+
+  const novos = lista.map((c, i) => {
+    if (String(comentarioIdAdmin(c, i, editComentario.produtoDocId)) === String(editComentario.comentarioId)) {
+      return {
+        ...c,
+        id: c.id || idNovo(),
+        nome: $("editComentNome").value.trim(),
+        texto: $("editComentTexto").value.trim(),
+        nota: Number($("editComentNota").value) || 5,
+        origem: comentarioEhReal(c) ? c.origem || "site" : c.origem || "manual",
+        atualizadoEm: new Date().toISOString()
+      };
+    }
+
+    return c;
+  });
+
+  await updateDoc(doc(db, "produtos", editComentario.produtoDocId), {
+    comentarios: novos,
+    atualizadoEm: serverTimestamp()
+  });
+
+  fecharEditComentario();
+  mostrarStatus("✅ Comentário atualizado.");
+}
+
+function pedirExcluirComentario(produtoDocId, comentarioId) {
+  confirmar("Excluir esse comentário?", async () => {
+    const p = produtos.find(x => x.docId === produtoDocId);
+    const lista = Array.isArray(p?.comentarios) ? p.comentarios : [];
+
+    const novos = lista.filter((c, i) => String(comentarioIdAdmin(c, i, produtoDocId)) !== String(comentarioId));
+
+    await updateDoc(doc(db, "produtos", produtoDocId), {
+      comentarios: novos,
+      atualizadoEm: serverTimestamp()
+    });
+
+    mostrarStatus("🗑️ Comentário excluído.");
+  });
+}
+
+/* =========================================================
+   IMPORTAR JSON
+========================================================= */
+
+function normalizarImportado(p) {
+  const nomeCat = p.categoria || p.plataforma || "Mercado Livre";
+  const slug = p.categoriaSlug || p.plataformaSlug || slugify(nomeCat);
+  const c = categoriasUso().find(x => x.slug === slug) || normCategoria({ nome: nomeCat, slug });
+
+  const departamento = p.departamento || "";
+  const subcategoria = p.subcategoria || "";
+
+  return {
+    id: p.id || idNovo(),
+    nome: p.nome || "",
+    descricao: p.descricao || "",
+    preco: p.preco || "",
+    precoAntigo: p.precoAntigo || null,
+    parcelamento: p.parcelamento || "",
+    textoParcelamento: p.textoParcelamento || "",
+    textoDestaque: p.textoDestaque || "",
+    imagens: p.imagens || [],
+    videos: p.videos || [],
+    link: p.link || "",
+
+    categoria: c.nome,
+    categoriaSlug: c.slug,
+
+    plataforma: p.plataforma || c.nome,
+    plataformaSlug: p.plataformaSlug || c.slug,
+    departamento,
+    departamentoSlug: p.departamentoSlug || slugify(departamento),
+    subcategoria,
+    subcategoriaSlug: p.subcategoriaSlug || slugify(subcategoria),
+
+    selo: p.selo || "Oferta",
+    avaliacao: Number(p.avaliacao) || 5,
+    avaliacoes: Number(p.avaliacoes) || 0,
+    vendidos: Number(p.vendidos) || 0,
+    urgencia: p.urgencia || "🔥 Oferta por tempo limitado",
+    botao: p.botao || "Comprar agora",
+    destaque: !!p.destaque,
+    tipoDestaque: p.tipoDestaque || "",
+    tipo: p.tipo || c.tipo || "produto",
+    nivelPreco: p.nivelPreco || "baixo",
+    nivelPrecoAuto: p.nivelPrecoAuto ?? false,
+    recomendado: p.recomendado ?? true,
+    ativo: p.ativo !== false,
+    cliquesComprar: Number(p.cliquesComprar) || 0,
+    cliquesWhatsapp: Number(p.cliquesWhatsapp) || 0,
+    cliquesCompartilhar: Number(p.cliquesCompartilhar) || 0,
+    cliquesInstagram: Number(p.cliquesInstagram) || 0,
+    cliquesTotal: Number(p.cliquesTotal) || 0,
+    detalhes: p.detalhes || [],
+    observacoes: p.observacoes || [],
+    mensagemWhatsapp: p.mensagemWhatsapp || `Olá, quero saber mais sobre ${p.nome || "este produto"}.`,
+    comentarios: p.comentarios || [],
+    criadoEm: serverTimestamp(),
+    atualizadoEm: serverTimestamp()
+  };
+}
+
+function importarJson() {
+  const t = $("jsonImportar").value.trim();
+
+  if (!t) {
+    mostrarStatus("Cole o JSON antigo antes.", "erro");
+    return;
+  }
+
+  let d;
+
+  try {
+    d = JSON.parse(t);
+  } catch {
+    mostrarStatus("JSON inválido.", "erro");
+    return;
+  }
+
+  const arr = Array.isArray(d) ? d : d.produtos;
+
+  if (!Array.isArray(arr) || !arr.length) {
+    mostrarStatus("Nenhum produto encontrado.", "erro");
+    return;
+  }
+
+  confirmar(`Importar ${arr.length} produto(s)?`, async () => {
+    for (const p of arr) {
+      await addDoc(collection(db, "produtos"), normalizarImportado(p));
+    }
+
+    $("jsonImportar").value = "";
+
+    mostrarStatus(`✅ ${arr.length} produto(s) importado(s).`);
+  });
+}
+
+/* =========================================================
+   CONFIRMAÇÃO / RENDER GERAL
+========================================================= */
+
+function confirmar(txt, cb) {
+  $("textoConfirmacao").textContent = txt;
+  acaoConfirmada = cb;
+  $("modalConfirmacao").classList.add("ativo");
+}
+
+function fecharConfirmacao() {
+  $("modalConfirmacao").classList.remove("ativo");
+  acaoConfirmada = null;
+}
+
+async function confirmarAcao() {
+  if (typeof acaoConfirmada === "function") {
+    await acaoConfirmada();
+  }
+
+  fecharConfirmacao();
+}
+
+function aplicarSelect(selectId, inputId) {
+  const v = $(selectId).value;
+
+  if (v) $(inputId).value = v;
+}
+
+function renderTudo() {
+  renderCaminhos();
+  renderCategorias();
+  atualizarSelectsCategorias();
+  atualizarSelectsCaminhos();
+  renderProdutos();
+  renderResumoCliques();
+  renderComentarios();
+  renderFakes();
+  selectProdutoFake();
+  renderSelosConfianca();
+}
+
+/* =========================================================
+   EVENTOS
+========================================================= */
+
+garantirCamposHierarquiaProduto();
+
+$("btnEntrar").addEventListener("click", entrar);
+$("btnSair").addEventListener("click", sair);
+
+$("btnSalvarCaminho").addEventListener("click", salvarCaminho);
+$("btnCancelarCaminho").addEventListener("click", limparCaminho);
+$("btnCriarCaminhosPadrao").addEventListener("click", criarCaminhosPadrao);
+
+$("btnSalvarCategoria").addEventListener("click", salvarCategoria);
+$("btnCancelarCategoria").addEventListener("click", limparCategoria);
+$("btnCriarCategoriasPadrao").addEventListener("click", criarCategoriasPadrao);
+
+$("catCorLinha").addEventListener("input", () => sincronizarCorCategoria("color"));
+$("catCorLinhaTexto").addEventListener("input", () => sincronizarCorCategoria("text"));
+
+$("catNome").addEventListener("input", () => {
+  if (!$("catSlug").value.trim()) {
+    const s = slugify($("catNome").value);
+
+    $("catSlug").value = s;
+    $("catImgPath").value = s ? `imagens/${s}/` : "";
+    $("catVidPath").value = s ? `videos/${s}/` : "";
+
+    if (!$("catCorLinhaTexto").value.trim() || $("catCorLinhaTexto").value === "#22c55e") {
+      const cor = corPadraoCategoria(s, $("catNome").value);
+      $("catCorLinha").value = cor;
+      $("catCorLinhaTexto").value = cor;
+      sincronizarCorCategoria();
+    }
+  }
+
+  previewIcone();
+});
+
+$("catSlug").addEventListener("input", () => {
+  const s = slugify($("catSlug").value);
+
+  $("catSlug").value = s;
+
+  if (!$("catImgPath").value.trim()) $("catImgPath").value = s ? `imagens/${s}/` : "";
+  if (!$("catVidPath").value.trim()) $("catVidPath").value = s ? `videos/${s}/` : "";
+
+  previewIcone();
+});
+
+$("catImgSelect").addEventListener("change", () => aplicarPath("catImgSelect", "catImgPath", "catImgExt"));
+$("catVidSelect").addEventListener("change", () => aplicarPath("catVidSelect", "catVidPath", "catVidExt"));
+$("catIconPathSelect").addEventListener("change", () => aplicarPath("catIconPathSelect", "catIconPath", "catIconExt"));
+
+["catIconPath", "catIconExt", "catIcon"].forEach(id => {
+  $(id).addEventListener("input", previewIcone);
+  $(id).addEventListener("change", previewIcone);
+});
+
+$("btnSalvarProduto").addEventListener("click", salvarProduto);
+$("btnCancelarProduto").addEventListener("click", limparProduto);
+$("btnImportarJson").addEventListener("click", importarJson);
+
+$("categoria").addEventListener("change", () => {
+  $("selo").value = "";
+  $("urgencia").value = "";
+  $("botao").value = "";
+
+  atualizarPlataformaProduto($("categoria").value);
+  padroesCategoria();
+  previewMidia();
+});
+
+$("plataformaProduto")?.addEventListener("change", () => {
+  if ($("categoria") && $("plataformaProduto").value) {
+    $("categoria").value = $("plataformaProduto").value;
+  }
+
+  $("selo").value = "";
+  $("urgencia").value = "";
+  $("botao").value = "";
+
+  padroesCategoria();
+  previewMidia();
+});
+
+$("departamentoProduto")?.addEventListener("change", () => {
+  $("departamentoManual").value = "";
+  atualizarSelectHierarquia($("departamentoProduto").value, "");
+});
+
+$("subcategoriaProduto")?.addEventListener("change", () => {
+  $("subcategoriaManual").value = "";
+});
+
+["prodImgPath", "prodVidPath", "prodImgExt", "prodVidExt", "imagens", "videos"].forEach(id => {
+  $(id).addEventListener("input", previewMidia);
+  $(id).addEventListener("change", previewMidia);
+});
+
+$("btnTestarImagens").addEventListener("click", testarImagens);
+$("btnTestarVideos").addEventListener("click", testarVideos);
+
+$("tipoDestaqueSelect").addEventListener("change", () => aplicarSelect("tipoDestaqueSelect", "tipoDestaque"));
+$("seloSelect").addEventListener("change", () => aplicarSelect("seloSelect", "selo"));
+$("urgenciaSelect").addEventListener("change", () => aplicarSelect("urgenciaSelect", "urgencia"));
+$("botaoSelect").addEventListener("change", () => aplicarSelect("botaoSelect", "botao"));
+
+$("btnAddObservacao").addEventListener("click", () => {
+  const v = $("observacaoSelect").value;
+
+  if (!v) return;
+
+  const a = $("observacoes").value.trim();
+
+  $("observacoes").value = a ? a + "\n" + v : v;
+});
+
+$("nivelPrecoAuto").addEventListener("change", atualizaNivel);
+$("preco").addEventListener("input", atualizaNivel);
+
+$("buscaAdmin").addEventListener("input", renderProdutos);
+$("filtroCategoriaAdmin").addEventListener("change", renderProdutos);
+$("filtroStatusAdmin").addEventListener("change", renderProdutos);
+
+$("btnGerarFake").addEventListener("click", gerarFakePreview);
+$("btnSalvarFake").addEventListener("click", salvarFakes);
+
+$("buscaFakes").addEventListener("input", renderFakes);
+$("filtroFakes").addEventListener("change", renderFakes);
+$("buscaReais").addEventListener("input", renderComentarios);
+$("filtroReais").addEventListener("change", renderComentarios);
+
+$("btnCancelarConfirmacao").addEventListener("click", fecharConfirmacao);
+$("btnConfirmar").addEventListener("click", confirmarAcao);
+
+$("btnCancelarEditComentario").addEventListener("click", fecharEditComentario);
+$("btnSalvarEditComentario").addEventListener("click", salvarEditComentario);
+
+$("btnZerarTodosCliques").addEventListener("click", zerarTodosCliques);
+$("btnAbrirHistoricoCliques").addEventListener("click", abrirHistoricoCliques);
+$("btnFecharHistoricoCliques").addEventListener("click", fecharHistoricoCliques);
+
+$("btnSalvarSelos").addEventListener("click", salvarSelosConfianca);
+
+/* =========================================================
+   FUNÇÕES GLOBAIS
+========================================================= */
+
+window.editarCaminho = editarCaminho;
+window.deletarCaminho = deletarCaminho;
+window.editarCategoria = editarCategoria;
+window.deletarCategoria = deletarCategoria;
+window.editarProduto = editarProduto;
+window.deletarProduto = deletarProduto;
+window.duplicarProduto = duplicarProduto;
+window.toggleAtivoProduto = toggleAtivoProduto;
+window.zerarCliquesProduto = zerarCliquesProduto;
+window.toggleReal = toggleReal;
+window.toggleFake = toggleFake;
+window.abrirEditarComentario = abrirEditarComentario;
+window.pedirExcluirComentario = pedirExcluirComentario;
+
+/* =========================================================
+   INICIAR PAINEL
+========================================================= */
 
 atualizarSelectsCategorias();
 atualizarSelectsCaminhos();
+aplicarHierarquiaNoFormulario();
 padroesCategoria();
 atualizaNivel();
 previewMidia();

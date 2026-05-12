@@ -3560,3 +3560,337 @@ body.modo-desktop {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* =========================================================
+   CATEGORIAS INTELIGENTES
+   Plataforma > Departamento > Subcategoria
+========================================================= */
+
+#botoes-filtro.filtros-hierarquia-loja {
+  width: min(94%, 1120px);
+  margin: 10px auto 26px !important;
+  padding: 16px !important;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at top left, rgba(34, 211, 238, 0.12), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(34, 197, 94, 0.10), transparent 34%),
+    rgba(15, 23, 42, 0.62);
+  border: 1px solid rgba(148, 163, 184, 0.20);
+  box-shadow: 0 18px 55px rgba(0, 0, 0, 0.26);
+  backdrop-filter: blur(10px);
+  display: block;
+  box-sizing: border-box;
+}
+
+#botoes-filtro.filtros-hierarquia-loja .titulo-categorias-organizado {
+  color: #f8fafc;
+  font-size: 14px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  text-align: center;
+  margin: 0 0 14px;
+}
+
+.filtro-hierarquia-grupo {
+  width: 100%;
+  margin: 0 0 14px;
+  padding: 13px;
+  border-radius: 18px;
+  background: rgba(2, 6, 23, 0.38);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+.filtro-hierarquia-grupo:last-of-type {
+  margin-bottom: 0;
+}
+
+.filtro-hierarquia-titulo {
+  width: 100%;
+  margin: 0 0 10px;
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  text-align: center;
+}
+
+.botoes-hierarquia,
+#botoes-filtro .botoes-hierarquia {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.botoes-hierarquia button,
+#botoes-filtro.filtros-hierarquia-loja button {
+  min-height: 40px;
+  border: 1px solid rgba(148, 163, 184, 0.25) !important;
+  border-radius: 999px !important;
+  padding: 9px 14px !important;
+  background: rgba(15, 23, 42, 0.88) !important;
+  color: #e2e8f0 !important;
+  cursor: pointer !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+  line-height: 1.1 !important;
+  white-space: nowrap;
+  transition: 0.22s ease !important;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.16) !important;
+  touch-action: manipulation;
+}
+
+.botoes-hierarquia button:hover,
+#botoes-filtro.filtros-hierarquia-loja button:hover {
+  transform: translateY(-2px);
+  border-color: rgba(34, 211, 238, 0.72) !important;
+  box-shadow: 0 12px 26px rgba(34, 211, 238, 0.13) !important;
+}
+
+.botoes-hierarquia button.ativo,
+#botoes-filtro.filtros-hierarquia-loja button.ativo {
+  background: linear-gradient(90deg, #22c55e, #22d3ee) !important;
+  color: #04111f !important;
+  border-color: transparent !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.15) inset,
+    0 12px 30px rgba(34, 211, 238, 0.22),
+    0 8px 26px rgba(34, 197, 94, 0.18) !important;
+  transform: translateY(-1px);
+}
+
+.botoes-hierarquia button:disabled,
+#botoes-filtro.filtros-hierarquia-loja button:disabled {
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.botoes-hierarquia button.desativado {
+  background: rgba(30, 41, 59, 0.52) !important;
+  color: #94a3b8 !important;
+}
+
+.caminho-filtro-loja {
+  margin-top: 14px;
+  padding: 12px 13px;
+  border-radius: 16px;
+  background:
+    linear-gradient(135deg, rgba(34, 211, 238, 0.09), rgba(34, 197, 94, 0.07)),
+    rgba(2, 6, 23, 0.58);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  color: #cbd5e1;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.caminho-filtro-loja strong {
+  color: #ffffff;
+  font-weight: 900;
+}
+
+.caminho-filtro-loja span {
+  color: #22d3ee;
+  font-weight: 900;
+  margin: 0 5px;
+}
+
+.caminho-filtro-loja button {
+  width: auto !important;
+  min-height: 34px !important;
+  margin: 10px auto 0 !important;
+  padding: 8px 12px !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px !important;
+  background: rgba(239, 68, 68, 0.12) !important;
+  color: #fca5a5 !important;
+  border: 1px solid rgba(239, 68, 68, 0.30) !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  box-shadow: none !important;
+}
+
+.caminho-filtro-loja button:hover {
+  background: rgba(239, 68, 68, 0.20) !important;
+  border-color: rgba(239, 68, 68, 0.48) !important;
+  color: #fecaca !important;
+  transform: translateY(-1px);
+}
+
+/* Nome pequeno acima do produto, exemplo: Moda */
+.produto-mini-categoria {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0 0;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: rgba(34, 211, 238, 0.10);
+  border: 1px solid rgba(34, 211, 238, 0.22);
+  color: #67e8f9;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+/* =========================================================
+   CATEGORIAS INTELIGENTES - DESKTOP
+========================================================= */
+
+@media (min-width: 901px) {
+  #botoes-filtro.filtros-hierarquia-loja {
+    width: calc(100% - 32px) !important;
+    max-width: none !important;
+    padding: 18px !important;
+  }
+
+  .filtro-hierarquia-grupo {
+    padding: 15px;
+  }
+
+  .botoes-hierarquia button,
+  #botoes-filtro.filtros-hierarquia-loja button {
+    font-size: 13px !important;
+    padding: 10px 15px !important;
+  }
+
+  .caminho-filtro-loja {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .caminho-filtro-loja button {
+    margin: 0 0 0 8px !important;
+  }
+}
+
+@media (min-width: 1400px) {
+  #botoes-filtro.filtros-hierarquia-loja {
+    width: calc(100% - 40px) !important;
+  }
+}
+
+@media (min-width: 1700px) {
+  #botoes-filtro.filtros-hierarquia-loja {
+    width: calc(100% - 48px) !important;
+  }
+}
+
+/* =========================================================
+   CATEGORIAS INTELIGENTES - MOBILE
+========================================================= */
+
+@media (max-width: 900px) {
+  #botoes-filtro.filtros-hierarquia-loja {
+    width: calc(100% - 14px) !important;
+    max-width: calc(100% - 14px) !important;
+    margin: 8px auto 12px !important;
+    padding: 10px !important;
+    border-radius: 18px !important;
+  }
+
+  #botoes-filtro.filtros-hierarquia-loja .titulo-categorias-organizado {
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+
+  .filtro-hierarquia-grupo {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 15px;
+  }
+
+  .filtro-hierarquia-titulo {
+    font-size: 10.8px;
+    margin-bottom: 8px;
+  }
+
+  .botoes-hierarquia,
+  #botoes-filtro .botoes-hierarquia {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 4px;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .botoes-hierarquia::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .botoes-hierarquia::-webkit-scrollbar-track {
+    background: rgba(15, 23, 42, 0.45);
+    border-radius: 999px;
+  }
+
+  .botoes-hierarquia::-webkit-scrollbar-thumb {
+    background: rgba(34, 211, 238, 0.42);
+    border-radius: 999px;
+  }
+
+  .botoes-hierarquia button,
+  #botoes-filtro.filtros-hierarquia-loja button {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    min-height: 34px !important;
+    padding: 7px 10px !important;
+    font-size: 11.5px !important;
+  }
+
+  .caminho-filtro-loja {
+    margin-top: 10px;
+    padding: 10px;
+    font-size: 11.5px;
+    border-radius: 14px;
+  }
+
+  .caminho-filtro-loja button {
+    min-height: 32px !important;
+    margin-top: 8px !important;
+    padding: 7px 10px !important;
+    font-size: 11px !important;
+  }
+
+  .produto-mini-categoria {
+    margin-top: 8px;
+    padding: 4px 7px;
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 420px) {
+  #botoes-filtro.filtros-hierarquia-loja {
+    width: calc(100% - 10px) !important;
+    max-width: calc(100% - 10px) !important;
+    padding: 8px !important;
+  }
+
+  .filtro-hierarquia-grupo {
+    padding: 8px;
+  }
+
+  .botoes-hierarquia button,
+  #botoes-filtro.filtros-hierarquia-loja button {
+    min-height: 32px !important;
+    padding: 6px 9px !important;
+    font-size: 10.8px !important;
+  }
+}
