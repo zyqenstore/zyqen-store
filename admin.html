@@ -802,8 +802,7 @@
       margin-bottom: 16px;
     }
 
-    .field,
-    .field-inline {
+    .field {
       display: grid;
       gap: 7px;
     }
@@ -874,22 +873,12 @@
       gap: 14px;
     }
 
-    .form-grid-4 {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0,1fr));
-      gap: 14px;
-    }
-
     .span-2 {
       grid-column: span 2;
     }
 
     .span-3 {
       grid-column: span 3;
-    }
-
-    .span-4 {
-      grid-column: span 4;
     }
 
     .check-line {
@@ -1006,8 +995,7 @@
 
     .banner-grid,
     .comment-list,
-    .selo-grid,
-    .category-grid {
+    .selo-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 14px;
@@ -1180,6 +1168,7 @@
 
       .top-actions {
         justify-content: space-between;
+        flex-wrap: wrap;
       }
 
       .user-box {
@@ -1189,14 +1178,12 @@
       .grid-metrics,
       .form-grid,
       .form-grid-3,
-      .form-grid-4,
       .toolbar {
         grid-template-columns: 1fr;
       }
 
       .span-2,
-      .span-3,
-      .span-4 {
+      .span-3 {
         grid-column: auto;
       }
 
@@ -1279,7 +1266,7 @@
 
         <button class="nav-btn" type="button" data-page="formProduto">
           <img class="nav-icon" src="imagens/icones/plus.svg" onerror="this.style.display='none'" alt="">
-          <span>Adicionar produto</span>
+          <span>Adicionar</span>
         </button>
 
         <button class="nav-btn" type="button" data-page="categorias">
@@ -1304,8 +1291,8 @@
       </nav>
 
       <div class="sidebar-help">
-        <strong>Precisa de ajuda?</strong>
-        <span>Edite a loja com segurança. As alterações são salvas no Firebase em tempo real.</span>
+        <strong>Controle privado</strong>
+        <span>Somente seu e-mail admin consegue acessar. Os produtos são salvos em tempo real no Firebase.</span>
       </div>
     </aside>
 
@@ -1321,10 +1308,6 @@
             <img src="imagens/icones/store.svg" onerror="this.style.display='none'" alt="">
             <span class="icon-dot"></span>
           </a>
-
-          <button class="icon-btn" type="button" title="Notificações">
-            <img src="imagens/icones/bell.svg" onerror="this.style.display='none'" alt="">
-          </button>
 
           <div class="user-box">
             <div id="userAvatar" class="avatar">A</div>
@@ -1345,7 +1328,7 @@
           <div>
             <span class="eyebrow">Visão geral</span>
             <h1>Controle total da Zyqen Store</h1>
-            <p>Resumo dos produtos, cliques, banners e comentários. Visual premium branco/dourado, igual ao novo padrão da loja.</p>
+            <p>Resumo dos produtos, cliques, banners e comentários. Painel privado para administrar sua vitrine afiliada.</p>
           </div>
 
           <button class="gold-btn" type="button" data-go="formProduto">Adicionar produto</button>
@@ -1367,7 +1350,7 @@
             </div>
             <span>Destaques</span>
             <strong id="metricDestaques">0</strong>
-            <small>Ofertas em evidência</small>
+            <small>Produtos em evidência</small>
           </article>
 
           <article class="metric-card">
@@ -1394,7 +1377,7 @@
             </div>
             <span>Comentários</span>
             <strong id="metricComentarios">0</strong>
-            <small>Reais e automáticos</small>
+            <small>Avaliações cadastradas</small>
           </article>
         </div>
 
@@ -1410,7 +1393,7 @@
                 <thead>
                   <tr>
                     <th>Produto</th>
-                    <th>Categoria</th>
+                    <th>Fonte</th>
                     <th>Preço</th>
                     <th>Status</th>
                     <th>Ações</th>
@@ -1452,7 +1435,7 @@
                 <i><img src="imagens/icones/badge.svg" onerror="this.style.display='none'" alt=""></i>
                 <span>
                   <strong>Categorias</strong>
-                  <span>Shopee, Mercado Livre e nichos</span>
+                  <span>Fontes internas e nichos</span>
                 </span>
                 <em>›</em>
               </button>
@@ -1470,7 +1453,7 @@
                 <i><img src="imagens/icones/shield-check.svg" onerror="this.style.display='none'" alt=""></i>
                 <span>
                   <strong>Selos de confiança</strong>
-                  <span>Frete, garantia e loja</span>
+                  <span>Compra, segurança e seleção</span>
                 </span>
                 <em>›</em>
               </button>
@@ -1495,7 +1478,7 @@
             <input id="prodSearch" type="search" placeholder="Buscar produto...">
 
             <select id="filtroProdutoPlataforma">
-              <option value="Todos">Todas as plataformas</option>
+              <option value="Todos">Todas as fontes</option>
             </select>
 
             <select id="filtroProdutoStatus">
@@ -1518,7 +1501,7 @@
               <thead>
                 <tr>
                   <th>Produto</th>
-                  <th>Marketplace</th>
+                  <th>Fonte</th>
                   <th>Departamento</th>
                   <th>Preço</th>
                   <th>Cliques</th>
@@ -1553,7 +1536,7 @@
           <div>
             <span class="eyebrow">Cadastro</span>
             <h1 id="formProdutoTitulo">Adicionar produto</h1>
-            <p id="editInfo">Preencha os dados do produto afiliado. Os campos combinam com a estrutura usada pela loja pública.</p>
+            <p id="editInfo">Preencha os dados do produto afiliado. Os campos combinam com a loja pública nova.</p>
           </div>
 
           <button class="secondary-btn" type="button" data-go="produtos">Voltar para produtos</button>
@@ -1572,7 +1555,7 @@
               <div class="form-grid">
                 <div class="field span-2">
                   <label>Nome do produto</label>
-                  <input id="pNome" placeholder="Ex: Fone de Ouvido Bluetooth ProSound 7">
+                  <input id="pNome" placeholder="Ex: Fone de Ouvido Bluetooth">
                 </div>
 
                 <div class="field span-2">
@@ -1602,7 +1585,7 @@
 
                 <div class="field span-2">
                   <label>Destaque abaixo do parcelamento</label>
-                  <input id="pTextoDestaque" placeholder="Ex: Em até 10x sem juros no cartão">
+                  <input id="pTextoDestaque" placeholder="Ex: Produto bem avaliado">
                 </div>
 
                 <div class="field span-2">
@@ -1615,14 +1598,14 @@
             <div class="card">
               <div class="card-title">
                 <div>
-                  <h2>Categorias e marketplace</h2>
-                  <p>Use Shopee, Mercado Livre, Cakto ou outro como plataforma/categoria, sem dizer que é loja oficial.</p>
+                  <h2>Fonte e categorias</h2>
+                  <p>A fonte é interna para organizar seus produtos. Na loja pública podemos mostrar nomes neutros.</p>
                 </div>
               </div>
 
               <div class="form-grid-3">
                 <div class="field">
-                  <label>Marketplace / Plataforma</label>
+                  <label>Fonte interna</label>
                   <select id="pPlataforma"></select>
                 </div>
 
@@ -1669,7 +1652,7 @@
               <div class="card-title">
                 <div>
                   <h2>Mídias</h2>
-                  <p>Você pode colar URL completa ou escrever só o nome do arquivo. O painel completa pasta e extensão.</p>
+                  <p>Cole URL completa ou só o nome do arquivo. O painel completa pasta e extensão.</p>
                 </div>
               </div>
 
@@ -1691,7 +1674,7 @@
 
                 <div class="field span-2">
                   <label>Imagens - uma por linha</label>
-                  <textarea id="pImagens" placeholder="fone1&#10;fone2&#10;https://site.com/imagem.webp"></textarea>
+                  <textarea id="pImagens" placeholder="produto1&#10;produto2&#10;https://site.com/imagem.webp"></textarea>
                   <div id="previewImagens" class="preview-images"></div>
                 </div>
 
@@ -1731,7 +1714,7 @@
 
                 <div class="field">
                   <label>Observações</label>
-                  <textarea id="pObservacoes" placeholder="Preço e disponibilidade podem mudar&#10;Compra feita na plataforma oficial"></textarea>
+                  <textarea id="pObservacoes" placeholder="Preço e disponibilidade podem mudar&#10;Compra feita na plataforma parceira"></textarea>
                 </div>
 
                 <div class="field span-2">
@@ -1760,12 +1743,12 @@
 
                 <div class="field span-2">
                   <label>Urgência</label>
-                  <input id="pUrgencia" placeholder="Ex: 🔥 Oferta por tempo limitado">
+                  <input id="pUrgencia" placeholder="Ex: Oferta por tempo limitado">
                 </div>
 
                 <div class="field span-2">
                   <label>Texto do botão</label>
-                  <input id="pBotao" placeholder="Ex: Ver oferta no Mercado Livre">
+                  <input id="pBotao" placeholder="Ex: Comprar agora">
                 </div>
 
                 <div class="field span-2">
@@ -1854,20 +1837,6 @@
                   <label>Ordem</label>
                   <input id="pBannerOrdem" type="number" value="1">
                 </div>
-
-                <div class="field span-2">
-                  <label>Texto auxiliar</label>
-                  <input id="pBannerTextoAuxiliar" placeholder="Ex: Em até 12x no cartão">
-                </div>
-
-                <div class="field span-2">
-                  <label>Estilo</label>
-                  <select id="pBannerEstilo">
-                    <option value="padrao">Padrão</option>
-                    <option value="centralizado">Centralizado</option>
-                    <option value="clean">Clean premium</option>
-                  </select>
-                </div>
               </div>
             </div>
           </aside>
@@ -1884,8 +1853,8 @@
         <div class="page-head">
           <div>
             <span class="eyebrow">Categorias</span>
-            <h1>Marketplace e categorias</h1>
-            <p>Crie plataformas como Shopee e Mercado Livre, além de departamentos e subcategorias.</p>
+            <h1>Fontes internas e categorias</h1>
+            <p>Crie fontes internas, departamentos e subcategorias. Na loja pública você pode mostrar nomes neutros.</p>
           </div>
 
           <button id="btnCriarCategoriasPadrao" class="gold-btn" type="button">Criar categorias padrão</button>
@@ -1902,12 +1871,12 @@
 
             <div class="form-grid">
               <div class="field">
-                <label>Nome</label>
-                <input id="catNome" placeholder="Ex: Shopee">
+                <label>Nome público/admin</label>
+                <input id="catNome" placeholder="Ex: Parceiro A">
               </div>
 
               <div class="field">
-                <label>Slug</label>
+                <label>Slug interno</label>
                 <input id="catSlug" placeholder="Ex: shopee">
               </div>
 
@@ -1936,11 +1905,6 @@
               </div>
 
               <div class="field span-2">
-                <label>Pai geral</label>
-                <input id="catPaiSlug" placeholder="Opcional">
-              </div>
-
-              <div class="field">
                 <label>Ícone</label>
                 <input id="catIcone" placeholder="imagens/icones/shopping-cart.svg">
               </div>
@@ -1950,9 +1914,9 @@
                 <input id="catCor" type="color" value="#b98a37">
               </div>
 
-              <div class="check-line span-2">
+              <div class="check-line">
                 <input id="catAtiva" type="checkbox" checked>
-                <label for="catAtiva">Categoria ativa</label>
+                <label for="catAtiva">Ativa</label>
               </div>
             </div>
 
@@ -2067,7 +2031,7 @@
 
               <div class="field span-2">
                 <label>Ícone</label>
-                <input id="seloIcone" placeholder="imagens/pagina-produtos/shield.svg">
+                <input id="seloIcone" placeholder="imagens/icones/shield-check.svg">
               </div>
 
               <div class="check-line span-2">
@@ -2136,39 +2100,30 @@
 
     const CATEGORIAS_PADRAO = [
       {
-        nome: "Mercado Livre",
-        slug: "mercado-livre",
+        nome: "Parceiro A",
+        slug: "shopee",
         tipo: "plataforma",
-        icone: "imagens/icones/shopping-cart.svg",
+        icone: "imagens/icones/shopping-bag.svg",
         cor: "#b98a37",
         ordem: 1,
         ativa: true
       },
       {
-        nome: "Shopee",
-        slug: "shopee",
+        nome: "Parceiro B",
+        slug: "mercado-livre",
         tipo: "plataforma",
-        icone: "imagens/icones/shopping-bag.svg",
-        cor: "#d96c25",
+        icone: "imagens/icones/package.svg",
+        cor: "#b98a37",
         ordem: 2,
         ativa: true
       },
       {
-        nome: "Cakto",
-        slug: "cakto",
-        tipo: "plataforma",
-        icone: "imagens/icones/package.svg",
-        cor: "#2f8f55",
-        ordem: 3,
-        ativa: true
-      },
-      {
         nome: "Digital",
-        slug: "digital",
+        slug: "cakto",
         tipo: "plataforma",
         icone: "imagens/icones/download.svg",
         cor: "#4267b2",
-        ordem: 4,
+        ordem: 3,
         ativa: true
       },
       {
@@ -2229,35 +2184,27 @@
 
     const SELOS_PADRAO = [
       {
-        id: "frete",
-        titulo: "Frete Grátis",
-        descricao: "Chegará grátis",
-        icone: "imagens/pagina-produtos/truck.svg",
+        id: "compra-plataforma",
+        titulo: "Compra na plataforma",
+        descricao: "Você finaliza a compra diretamente na loja parceira.",
+        icone: "imagens/icones/shield-check.svg",
         ordem: 1,
         ativo: true
       },
       {
-        id: "loja",
-        titulo: "Loja Oficial",
-        descricao: "+10 mil vendidos",
-        icone: "imagens/pagina-produtos/check-square.svg",
+        id: "sem-pagamento-site",
+        titulo: "Sem pagamento no site",
+        descricao: "A Zyqen Store não coleta cartão, senha ou dados bancários.",
+        icone: "imagens/icones/lock.svg",
         ordem: 2,
         ativo: true
       },
       {
-        id: "devolucao",
-        titulo: "Devolução Grátis",
-        descricao: "Até 30 dias",
-        icone: "imagens/pagina-produtos/rotate.svg",
+        id: "produto-selecionado",
+        titulo: "Produto selecionado",
+        descricao: "Produto organizado para facilitar sua escolha.",
+        icone: "imagens/icones/badge-check.svg",
         ordem: 3,
-        ativo: true
-      },
-      {
-        id: "garantia",
-        titulo: "Compra Garantida",
-        descricao: "Protegida pela plataforma",
-        icone: "imagens/pagina-produtos/shield.svg",
-        ordem: 4,
         ativo: true
       }
     ];
@@ -2296,6 +2243,16 @@
       "Maquiagem",
       "Brinquedos"
     ];
+
+    const IMAGEM_FALLBACK =
+      "data:image/svg+xml;charset=UTF-8," +
+      encodeURIComponent(`
+        <svg xmlns="http://www.w3.org/2000/svg" width="500" height="500">
+          <rect width="500" height="500" fill="#f7f2e9"/>
+          <rect x="35" y="35" width="430" height="430" rx="32" fill="#fffaf2" stroke="#e6d8c2" stroke-width="4"/>
+          <text x="250" y="258" text-anchor="middle" fill="#9a7a42" font-size="22" font-family="Arial">Zyqen Store</text>
+        </svg>
+      `);
 
     function esc(valor) {
       return String(valor ?? "")
@@ -2356,94 +2313,74 @@
       const ext = String(extensao || "").trim();
 
       if (!item) return "";
-      if (/^https?:\/\//i.test(item) || item.startsWith("data:")) return item;
-
-      if (/\.[a-z0-9]{2,5}(\?.*)?$/i.test(item)) {
-        return item.includes("/") ? item : base + item;
-      }
-
-      if (item.includes("/")) return item + ext;
+      if (/^(https?:|data:|blob:)/i.test(item)) return item;
+      if (item.startsWith("/")) return item.slice(1);
+      if (/\.(jpg|jpeg|png|webp|gif|mp4|webm)$/i.test(item)) return base + item;
 
       return base + item + ext;
     }
 
-    function dataMs(produto) {
-      const c = produto?.criadoEm || produto?.createdAt || produto?.atualizadoEm;
-
-      if (c?.toMillis) return c.toMillis();
-      if (c?.seconds) return c.seconds * 1000;
-
-      return Number(produto?.id) || 0;
+    function imagemProduto(p) {
+      return Array.isArray(p.imagens) && p.imagens[0] ? p.imagens[0] : IMAGEM_FALLBACK;
     }
 
-    function imagemPrincipal(produto) {
-      return Array.isArray(produto.imagens) && produto.imagens[0]
-        ? produto.imagens[0]
-        : "data:image/svg+xml;charset=UTF-8," +
-            encodeURIComponent(`
-              <svg xmlns="http://www.w3.org/2000/svg" width="240" height="180">
-                <rect width="100%" height="100%" fill="#f6f0e6"/>
-                <text x="50%" y="50%" text-anchor="middle" fill="#9a9389" font-family="Arial" font-size="15">
-                  Sem imagem
-                </text>
-              </svg>
-            `);
+    function dataMs(p) {
+      const v = p.criadoEm || p.createdAt || p.atualizadoEm;
+
+      if (v?.toMillis) return v.toMillis();
+      if (v?.seconds) return v.seconds * 1000;
+
+      return Number(p.id) || 0;
     }
 
     function normalizarProduto(id, p) {
-      const plataforma = String(
-        p.plataforma ||
-        p.marketplace ||
-        p.categoria ||
-        "Mercado Livre"
-      ).trim();
-
-      const plataformaSlug = String(
-        p.plataformaSlug ||
-        p.marketplaceSlug ||
-        p.categoriaSlug ||
-        slugify(plataforma)
-      ).trim();
-
-      const departamento = String(
-        p.departamento ||
-        p.nicho ||
-        "Geral"
-      ).trim();
-
-      const subcategoria = String(
-        p.subcategoria ||
-        p.subCategoria ||
-        "Geral"
-      ).trim();
+      const plataforma = p.plataforma || p.categoria || "Parceiro A";
+      const plataformaSlug = p.plataformaSlug || p.categoriaSlug || slugify(plataforma);
 
       return {
         ...p,
         docId: id,
-        id: p.id || id,
-        nome: String(p.nome || p.titulo || "Produto sem nome").trim(),
-        descricao: String(p.descricao || "").trim(),
-        preco: String(p.preco || "").trim(),
-        precoAntigo: String(p.precoAntigo || "").trim(),
+        id: p.id || idNovo(),
+        nome: p.nome || "Produto sem nome",
+        descricao: p.descricao || "",
+        preco: p.preco || "",
+        precoAntigo: p.precoAntigo || "",
+        parcelamento: p.parcelamento || "",
+        textoParcelamento: p.textoParcelamento || "",
+        textoDestaque: p.textoDestaque || "",
+        imagens: Array.isArray(p.imagens) ? p.imagens : [],
+        videos: Array.isArray(p.videos) ? p.videos : [],
+        link: p.link || "",
+        categoria: p.categoria || plataforma,
+        categoriaSlug: p.categoriaSlug || plataformaSlug,
         plataforma,
         plataformaSlug,
-        categoria: String(p.categoria || plataforma).trim(),
-        categoriaSlug: String(p.categoriaSlug || plataformaSlug).trim(),
-        departamento,
-        departamentoSlug: String(p.departamentoSlug || slugify(departamento)).trim(),
-        subcategoria,
-        subcategoriaSlug: String(p.subcategoriaSlug || slugify(subcategoria)).trim(),
-        imagens: Array.isArray(p.imagens) ? p.imagens.filter(Boolean) : [],
-        videos: Array.isArray(p.videos) ? p.videos.filter(Boolean) : [],
+        departamento: p.departamento || "Geral",
+        departamentoSlug: p.departamentoSlug || slugify(p.departamento || "Geral"),
+        subcategoria: p.subcategoria || "Geral",
+        subcategoriaSlug: p.subcategoriaSlug || slugify(p.subcategoria || "Geral"),
+        selo: p.selo || "",
+        urgencia: p.urgencia || "",
+        botao: p.botao || "Comprar agora",
+        destaque: !!p.destaque,
+        recomendado: p.recomendado !== false,
+        ativo: p.ativo !== false,
+        bannerHome: !!p.bannerHome,
+        bannerTitulo: p.bannerTitulo || "",
+        bannerSubtitulo: p.bannerSubtitulo || "",
+        bannerBotao: p.bannerBotao || "Ver oferta",
+        bannerSelo: p.bannerSelo || "",
+        bannerOrdem: n(p.bannerOrdem) || 999,
+        tipoDestaque: p.tipoDestaque || "",
+        tipo: p.tipo || "produto",
+        nivelPreco: p.nivelPreco || "baixo",
         detalhes: Array.isArray(p.detalhes) ? p.detalhes : [],
         observacoes: Array.isArray(p.observacoes) ? p.observacoes : [],
         comentarios: Array.isArray(p.comentarios) ? p.comentarios : [],
         avaliacao: Number(p.avaliacao) || 0,
         avaliacoes: Number(p.avaliacoes) || 0,
         vendidos: Number(p.vendidos) || 0,
-        destaque: Boolean(p.destaque || p.tipoDestaque),
-        ativo: p.ativo !== false,
-        bannerHome: Boolean(p.bannerHome),
+        ordem: n(p.ordem) || 999,
         cliquesComprar: n(p.cliquesComprar),
         cliquesWhatsapp: n(p.cliquesWhatsapp),
         cliquesCompartilhar: n(p.cliquesCompartilhar),
@@ -2452,25 +2389,36 @@
       };
     }
 
-    function plataformasUso() {
-      const lista = categorias.filter(c =>
-        (c.tipo || "plataforma") === "plataforma" &&
-        c.ativa !== false
-      );
-
-      return lista.length
-        ? lista.sort((a, b) => n(a.ordem) - n(b.ordem))
-        : CATEGORIAS_PADRAO.filter(c => c.tipo === "plataforma");
+    function normalizarCategoria(id, c) {
+      return {
+        docId: id,
+        ...c,
+        nome: c.nome || "Categoria",
+        slug: c.slug || id || slugify(c.nome),
+        tipo: c.tipo || "departamento",
+        icone: c.icone || "",
+        cor: c.cor || "#b98a37",
+        ordem: n(c.ordem) || 999,
+        ativa: c.ativa !== false,
+        plataformaSlug: c.plataformaSlug || "",
+        departamentoSlug: c.departamentoSlug || ""
+      };
     }
 
-    function nomePlataforma(slug) {
-      return plataformasUso().find(c => c.slug === slug)?.nome ||
-        produtos.find(p => p.plataformaSlug === slug)?.plataforma ||
-        slug;
+    function normalizarSelo(id, s) {
+      return {
+        docId: id,
+        ...s,
+        titulo: s.titulo || "Selo",
+        descricao: s.descricao || s.texto || "",
+        icone: s.icone || "imagens/icones/shield-check.svg",
+        ordem: n(s.ordem) || 999,
+        ativo: s.ativo !== false
+      };
     }
 
     function aplicarStatus(msg, tipo = "ok") {
-      $("status").innerHTML = `<div class="notice ${tipo === "erro" ? "erro" : ""}">${msg}</div>`;
+      $("status").innerHTML = `<div class="notice ${tipo === "erro" ? "erro" : ""}">${esc(msg)}</div>`;
 
       clearTimeout(aplicarStatus.timer);
 
@@ -2536,11 +2484,7 @@
           query(collection(db, "categorias")),
           snapshot => {
             categorias = snapshot.docs
-              .map(d => ({
-                docId: d.id,
-                ...d.data(),
-                slug: d.data().slug || slugify(d.data().nome)
-              }))
+              .map(d => normalizarCategoria(d.id, d.data()))
               .sort((a, b) => n(a.ordem) - n(b.ordem));
 
             preencherSelects();
@@ -2555,10 +2499,7 @@
           query(collection(db, "selosConfianca")),
           snapshot => {
             selos = snapshot.docs
-              .map(d => ({
-                docId: d.id,
-                ...d.data()
-              }))
+              .map(d => normalizarSelo(d.id, d.data()))
               .sort((a, b) => n(a.ordem) - n(b.ordem));
 
             renderSelos();
@@ -2587,620 +2528,324 @@
     onAuthStateChanged(auth, async user => {
       if (user && user.email === EMAIL_ADMIN) {
         $("loginTela").classList.add("oculto");
-        $("usuarioLogado").textContent = user.email;
+        $("app").classList.remove("oculto");
+
+        $("usuarioLogado").textContent = user.email || "Administrador";
 
         if (user.photoURL) {
           $("userAvatar").innerHTML = `<img src="${esc(user.photoURL)}" alt="Admin">`;
         } else {
-          $("userAvatar").textContent = (user.email || "A").slice(0, 1).toUpperCase();
+          $("userAvatar").textContent = (user.email || "A")[0].toUpperCase();
         }
 
         iniciarListeners();
-        return;
-      }
+      } else {
+        $("loginTela").classList.remove("oculto");
+        $("app").classList.add("oculto");
+        pararListeners();
 
-      if (user && user.email !== EMAIL_ADMIN) {
-        alert("Este e-mail não tem permissão para acessar o painel admin.");
-        await signOut(auth);
-        return;
+        if (user && user.email !== EMAIL_ADMIN) {
+          loginMensagem("Este e-mail não tem permissão para acessar o painel.");
+          await signOut(auth);
+        }
       }
-
-      pararListeners();
-      $("loginTela").classList.remove("oculto");
-      loginMensagem("Somente o e-mail admin consegue abrir este painel.");
     });
 
-    function abrirPagina(id) {
-      $$(".page").forEach(p => {
-        p.classList.toggle("ativa", p.id === id);
-      });
+    function abrirPage(id) {
+      $$(".page").forEach(p => p.classList.remove("ativa"));
+      $$(".nav-btn").forEach(b => b.classList.remove("ativo"));
 
-      $$(".nav-btn").forEach(btn => {
-        btn.classList.toggle("ativo", btn.dataset.page === id);
-      });
+      const page = $(id);
+      if (page) page.classList.add("ativa");
 
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
+      const nav = document.querySelector(`.nav-btn[data-page="${id}"]`);
+      if (nav) nav.classList.add("ativo");
 
-      if (id === "formProduto" && !produtoEditId) {
-        limparProduto(false);
-      }
-    }
-
-    function preencherSelects() {
-      const plataformas = plataformasUso();
-
-      const opts = plataformas
-        .map(c => `<option value="${esc(c.slug)}">${esc(c.nome)}</option>`)
-        .join("");
-
-      $("pPlataforma").innerHTML = opts;
-      $("filtroProdutoPlataforma").innerHTML = `<option value="Todos">Todas as plataformas</option>${opts}`;
-
-      const deps = new Set([
-        ...DEPARTAMENTOS_SUGERIDOS,
-        ...produtos.map(p => p.departamento).filter(Boolean)
-      ]);
-
-      const subs = new Set([
-        ...SUBCATEGORIAS_SUGERIDAS,
-        ...produtos.map(p => p.subcategoria).filter(Boolean)
-      ]);
-
-      $("departamentosLista").innerHTML = Array.from(deps)
-        .sort()
-        .map(v => `<option value="${esc(v)}"></option>`)
-        .join("");
-
-      $("subcategoriasLista").innerHTML = Array.from(subs)
-        .sort()
-        .map(v => `<option value="${esc(v)}"></option>`)
-        .join("");
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     function renderTudo() {
-      preencherSelects();
       renderDashboard();
       renderProdutos();
       renderCategorias();
       renderBanners();
       renderComentarios();
       renderSelos();
+      preencherSelects();
     }
 
     function renderDashboard() {
-      const ativos = produtos.filter(p => p.ativo !== false).length;
-      const destaques = produtos.filter(p => p.destaque).length;
-      const banners = produtos.filter(p => p.bannerHome).length;
-
-      const comentarios = produtos.reduce((soma, p) => {
-        return soma + (Array.isArray(p.comentarios) ? p.comentarios.length : 0);
-      }, 0);
-
-      const cliques = produtos.reduce((soma, p) => {
-        return soma +
-          n(p.cliquesTotal) +
-          n(p.cliquesComprar) +
-          n(p.cliquesWhatsapp) +
-          n(p.cliquesCompartilhar) +
-          n(p.cliquesInstagram);
-      }, 0);
-
-      $("metricAtivos").textContent = ativos;
+      $("metricAtivos").textContent = produtos.filter(p => p.ativo).length;
       $("metricProdutosTotal").textContent = `${produtos.length} cadastrados`;
-      $("metricDestaques").textContent = destaques;
-      $("metricCliques").textContent = cliques.toLocaleString("pt-BR");
-      $("metricBanners").textContent = banners;
-      $("metricComentarios").textContent = comentarios;
+      $("metricDestaques").textContent = produtos.filter(p => p.destaque).length;
+      $("metricBanners").textContent = produtos.filter(p => p.bannerHome).length;
+      $("metricComentarios").textContent = produtos.reduce((s, p) => s + p.comentarios.length, 0);
+      $("metricCliques").textContent = produtos.reduce((s, p) => s + n(p.cliquesTotal), 0).toLocaleString("pt-BR");
 
       const recentes = produtos.slice(0, 6);
 
       $("dashboardRecentes").innerHTML = recentes.length
-        ? recentes.map(p => linhaProdutoDashboard(p)).join("")
+        ? recentes.map(p => `
+          <tr>
+            <td>
+              <div class="product-cell">
+                <img class="thumb" src="${esc(imagemProduto(p))}" onerror="this.src='${IMAGEM_FALLBACK}'" alt="">
+                <div>
+                  <strong>${esc(p.nome)}</strong>
+                  <span>${esc(p.departamento || "Geral")}</span>
+                </div>
+              </div>
+            </td>
+            <td>${esc(p.plataforma || p.categoria || "Fonte")}</td>
+            <td>${esc(p.preco || "Sem preço")}</td>
+            <td>${p.ativo ? `<span class="badge green">Ativo</span>` : `<span class="badge red">Inativo</span>`}</td>
+            <td>
+              <div class="actions">
+                <button class="action-btn" type="button" onclick="editarProduto('${p.docId}')">Editar</button>
+              </div>
+            </td>
+          </tr>
+        `).join("")
         : `<tr><td colspan="5"><div class="empty">Nenhum produto cadastrado ainda.</div></td></tr>`;
     }
 
-    function linhaProdutoDashboard(p) {
-      return `
-        <tr>
-          <td>
-            <div class="product-cell">
-              <img class="thumb" src="${esc(imagemPrincipal(p))}" onerror="this.src='${esc(imagemPrincipal({ imagens: [] }))}'" alt="">
-              <div>
-                <strong>${esc(p.nome)}</strong>
-                <span>${esc(p.subcategoria || p.departamento || "Geral")}</span>
-              </div>
-            </div>
-          </td>
+    function renderProdutos() {
+      const termo = slugify($("prodSearch")?.value || $("buscaGlobal")?.value || "");
+      const filtroFonte = $("filtroProdutoPlataforma")?.value || "Todos";
+      const filtroStatus = $("filtroProdutoStatus")?.value || "Todos";
 
-          <td>
-            <span class="badge">${esc(p.plataforma)}</span>
-          </td>
+      let lista = [...produtos];
 
-          <td>
-            <strong>${esc(p.preco || "-")}</strong>
-          </td>
-
-          <td>
-            ${p.ativo ? '<span class="badge green">Ativo</span>' : '<span class="badge red">Inativo</span>'}
-          </td>
-
-          <td>
-            <div class="actions">
-              <button class="action-btn" data-action="edit-product" data-id="${esc(p.docId)}">Editar</button>
-            </div>
-          </td>
-        </tr>
-      `;
-    }
-
-    function produtosFiltrados() {
-      const termoGeral = String($("buscaGlobal")?.value || "").toLowerCase().trim();
-      const termo = String($("prodSearch")?.value || "").toLowerCase().trim() || termoGeral;
-      const status = $("filtroProdutoStatus")?.value || "Todos";
-      const plataforma = $("filtroProdutoPlataforma")?.value || "Todos";
-
-      return produtos.filter(p => {
-        const texto = [
+      if (termo) {
+        lista = lista.filter(p => slugify([
           p.nome,
           p.descricao,
           p.plataforma,
           p.departamento,
           p.subcategoria,
           p.preco
-        ].join(" ").toLowerCase();
+        ].join(" ")).includes(termo));
+      }
 
-        if (termo && !texto.includes(termo)) return false;
-        if (plataforma !== "Todos" && p.plataformaSlug !== plataforma && p.categoriaSlug !== plataforma) return false;
-        if (status === "Ativos" && p.ativo === false) return false;
-        if (status === "Inativos" && p.ativo !== false) return false;
-        if (status === "Destaques" && !p.destaque) return false;
-        if (status === "Banners" && !p.bannerHome) return false;
+      if (filtroFonte !== "Todos") {
+        lista = lista.filter(p => p.plataformaSlug === filtroFonte || p.categoriaSlug === filtroFonte);
+      }
 
-        return true;
-      });
-    }
+      if (filtroStatus === "Ativos") lista = lista.filter(p => p.ativo);
+      if (filtroStatus === "Inativos") lista = lista.filter(p => !p.ativo);
+      if (filtroStatus === "Destaques") lista = lista.filter(p => p.destaque);
+      if (filtroStatus === "Banners") lista = lista.filter(p => p.bannerHome);
 
-    function renderProdutos() {
-      const lista = produtosFiltrados();
-
-      $("produtosContador").textContent =
-        lista.length === 1
-          ? "1 produto encontrado"
-          : `${lista.length} produtos encontrados`;
+      $("produtosContador").textContent = `${lista.length} produto(s) encontrado(s).`;
 
       $("produtosTbody").innerHTML = lista.length
-        ? lista.map(p => linhaProduto(p)).join("")
-        : `<tr><td colspan="7"><div class="empty">Nenhum produto encontrado.</div></td></tr>`;
-    }
-
-    function linhaProduto(p) {
-      const status = p.ativo
-        ? '<span class="badge green">Ativo</span>'
-        : '<span class="badge red">Inativo</span>';
-
-      const destaque = p.destaque
-        ? '<span class="badge">Destaque</span>'
-        : "";
-
-      const banner = p.bannerHome
-        ? '<span class="badge blue">Banner</span>'
-        : "";
-
-      const cliques =
-        n(p.cliquesTotal) ||
-        (n(p.cliquesComprar) + n(p.cliquesWhatsapp) + n(p.cliquesCompartilhar) + n(p.cliquesInstagram));
-
-      return `
-        <tr>
-          <td>
-            <div class="product-cell">
-              <img class="thumb" src="${esc(imagemPrincipal(p))}" onerror="this.src='${esc(imagemPrincipal({ imagens: [] }))}'" alt="">
-              <div>
-                <strong>${esc(p.nome)}</strong>
-                <span>${esc(p.selo || p.tipoDestaque || "Produto afiliado")}</span>
-              </div>
-            </div>
-          </td>
-
-          <td>
-            <span class="badge">${esc(p.plataforma)}</span>
-          </td>
-
-          <td>
-            ${esc(p.departamento)}
-            <br>
-            <span style="color:var(--muted);font-size:12px">${esc(p.subcategoria)}</span>
-          </td>
-
-          <td>
-            <strong>${esc(p.preco || "-")}</strong>
-          </td>
-
-          <td>
-            ${cliques.toLocaleString("pt-BR")}
-          </td>
-
-          <td>
-            ${status} ${destaque} ${banner}
-          </td>
-
-          <td>
-            <div class="actions">
-              <button class="action-btn" data-action="edit-product" data-id="${esc(p.docId)}">Editar</button>
-              <button class="action-btn" data-action="duplicate-product" data-id="${esc(p.docId)}">Duplicar</button>
-              <button class="action-btn green" data-action="toggle-product" data-id="${esc(p.docId)}">${p.ativo ? "Desativar" : "Ativar"}</button>
-              <button class="action-btn" data-action="reset-product-clicks" data-id="${esc(p.docId)}">Zerar</button>
-              <button class="action-btn red" data-action="delete-product" data-id="${esc(p.docId)}">Excluir</button>
-            </div>
-          </td>
-        </tr>
-      `;
-    }
-
-    function renderCategorias() {
-      $("catContador").textContent = `${categorias.length} categorias`;
-
-      $("catTbody").innerHTML = categorias.length
-        ? categorias.map(c => `
+        ? lista.map(p => `
           <tr>
-            <td><strong>${esc(c.nome)}</strong></td>
-            <td><span class="badge">${esc(c.tipo || "plataforma")}</span></td>
-            <td>${esc(c.slug)}</td>
-            <td>${c.ativa !== false ? '<span class="badge green">Ativa</span>' : '<span class="badge red">Inativa</span>'}</td>
+            <td>
+              <div class="product-cell">
+                <img class="thumb" src="${esc(imagemProduto(p))}" onerror="this.src='${IMAGEM_FALLBACK}'" alt="">
+                <div>
+                  <strong>${esc(p.nome)}</strong>
+                  <span>${esc(p.subcategoria || p.departamento || "Produto")}</span>
+                </div>
+              </div>
+            </td>
+            <td>${esc(p.plataforma || p.categoria || "Fonte")}</td>
+            <td>${esc(p.departamento || "Geral")}</td>
+            <td><strong>${esc(p.preco || "Sem preço")}</strong></td>
+            <td>${n(p.cliquesTotal).toLocaleString("pt-BR")}</td>
+            <td>
+              ${p.ativo ? `<span class="badge green">Ativo</span>` : `<span class="badge red">Inativo</span>`}
+              ${p.destaque ? `<span class="badge">Destaque</span>` : ""}
+              ${p.bannerHome ? `<span class="badge blue">Banner</span>` : ""}
+            </td>
             <td>
               <div class="actions">
-                <button class="action-btn" data-action="edit-category" data-id="${esc(c.docId)}">Editar</button>
-                <button class="action-btn red" data-action="delete-category" data-id="${esc(c.docId)}">Excluir</button>
+                <button class="action-btn" type="button" onclick="editarProduto('${p.docId}')">Editar</button>
+                <button class="action-btn green" type="button" onclick="duplicarProduto('${p.docId}')">Duplicar</button>
+                <button class="action-btn" type="button" onclick="alternarAtivoProduto('${p.docId}')">${p.ativo ? "Desativar" : "Ativar"}</button>
+                <button class="action-btn" type="button" onclick="zerarCliquesProduto('${p.docId}')">Zerar</button>
+                <button class="action-btn red" type="button" onclick="excluirProduto('${p.docId}')">Excluir</button>
               </div>
             </td>
           </tr>
         `).join("")
-        : `<tr><td colspan="5"><div class="empty">Nenhuma categoria criada. Use o botão “Criar categorias padrão”.</div></td></tr>`;
+        : `<tr><td colspan="7"><div class="empty">Nenhum produto encontrado.</div></td></tr>`;
     }
 
-    function renderBanners() {
-      const banners = produtos
-        .filter(p => p.bannerHome)
-        .sort((a, b) => n(a.bannerOrdem) - n(b.bannerOrdem));
+    function preencherSelects() {
+      const fontes = categorias.filter(c => c.tipo === "plataforma" && c.ativa);
 
-      $("bannerGrid").innerHTML = banners.length
-        ? banners.map(p => `
-          <article class="mini-card">
-            <img class="mini-card-img" src="${esc(imagemPrincipal(p))}" onerror="this.src='${esc(imagemPrincipal({ imagens: [] }))}'" alt="">
+      const select = $("pPlataforma");
+      const filtro = $("filtroProdutoPlataforma");
 
-            <span class="badge blue">Banner #${esc(p.bannerOrdem || 1)}</span>
-
-            <h3>${esc(p.bannerTitulo || p.nome)}</h3>
-
-            <p>${esc(p.bannerSubtitulo || p.descricao || "Sem subtítulo")}</p>
-
-            <p>
-              <strong>${esc(p.bannerBotao || "Ver oferta")}</strong>
-              ·
-              ${esc(p.bannerTextoAuxiliar || p.preco || "")}
-            </p>
-
-            <div class="actions" style="margin-top:12px">
-              <button class="action-btn" data-action="edit-product" data-id="${esc(p.docId)}">Editar banner</button>
-            </div>
-          </article>
-        `).join("")
-        : `<div class="empty" style="grid-column:1/-1">Nenhum produto marcado como banner ainda. Edite um produto e marque “Mostrar no banner da home”.</div>`;
-    }
-
-    function comentariosTodos() {
-      const todos = [];
-
-      produtos.forEach(p => {
-        (p.comentarios || []).forEach((c, index) => {
-          todos.push({
-            produto: p,
-            index,
-            ...c
-          });
-        });
-      });
-
-      return todos;
-    }
-
-    function renderComentarios() {
-      const termo = String($("commentsSearch")?.value || "").toLowerCase().trim();
-      const nota = $("commentsFilter")?.value || "Todos";
-
-      let lista = comentariosTodos();
-
-      if (termo) {
-        lista = lista.filter(c => {
-          return [
-            c.nome,
-            c.texto,
-            c.produto?.nome
-          ].join(" ").toLowerCase().includes(termo);
-        });
-      }
-
-      if (nota !== "Todos") {
-        lista = lista.filter(c => String(c.nota || c.avaliacao || 5) === nota);
-      }
-
-      $("comentariosLista").innerHTML = lista.length
-        ? lista.map(c => `
-          <article class="mini-card">
-            <span class="badge">${esc(c.nota || c.avaliacao || 5)} estrelas</span>
-
-            <h3>${esc(c.nome || "Cliente")}</h3>
-
-            <p>${esc(c.texto || c.comentario || "")}</p>
-
-            <p>
-              <strong>Produto:</strong>
-              ${esc(c.produto.nome)}
-            </p>
-
-            <div class="actions" style="margin-top:12px">
-              <button class="action-btn" data-action="edit-product" data-id="${esc(c.produto.docId)}">Editar produto</button>
-              <button class="action-btn red" data-action="delete-comment" data-id="${esc(c.produto.docId)}" data-index="${c.index}">Excluir comentário</button>
-            </div>
-          </article>
-        `).join("")
-        : `<div class="empty" style="grid-column:1/-1">Nenhum comentário encontrado.</div>`;
-    }
-
-    function renderSelos() {
-      const lista = selos.length ? selos : [];
-
-      $("selosGrid").innerHTML = lista.length
-        ? lista.map(s => `
-          <article class="mini-card">
-            <span class="badge">Ordem ${esc(s.ordem || 999)}</span>
-
-            <h3>${esc(s.titulo || "Selo")}</h3>
-
-            <p>${esc(s.descricao || "")}</p>
-
-            <p>
-              <strong>Ícone:</strong>
-              ${esc(s.icone || "")}
-            </p>
-
-            <p>
-              ${s.ativo !== false ? '<span class="badge green">Ativo</span>' : '<span class="badge red">Inativo</span>'}
-            </p>
-
-            <div class="actions" style="margin-top:12px">
-              <button class="action-btn" data-action="edit-selo" data-id="${esc(s.docId)}">Editar</button>
-              <button class="action-btn red" data-action="delete-selo" data-id="${esc(s.docId)}">Excluir</button>
-            </div>
-          </article>
-        `).join("")
-        : `<div class="empty">Nenhum selo criado. Use o botão “Criar selos padrão”.</div>`;
-    }
-
-    function caminhoPadrao(slug, tipo = "imagem") {
-      if (slug.includes("shopee")) {
-        return tipo === "video" ? "videos/shopee/" : "imagens/shopee/";
-      }
-
-      if (slug.includes("cakto") || slug.includes("digital")) {
-        return tipo === "video" ? "videos/cakto/" : "imagens/cakto/";
-      }
-
-      return tipo === "video" ? "videos/mercado/" : "imagens/mercado/";
-    }
-
-    function atualizarPastasPorPlataforma(forcar = false) {
-      const slug = $("pPlataforma").value || "mercado-livre";
-
-      if (forcar || !$("pPastaImagens").value) {
-        $("pPastaImagens").value = caminhoPadrao(slug, "imagem");
-      }
-
-      if (forcar || !$("pPastaVideos").value) {
-        $("pPastaVideos").value = caminhoPadrao(slug, "video");
-      }
-
-      const plataforma = nomePlataforma(slug).toLowerCase();
-
-      if (plataforma.includes("cakto") || plataforma.includes("digital")) {
-        $("pTipo").value = plataforma.includes("cakto") ? "cakto" : "digital";
-
-        if (!$("pBotao").value) {
-          $("pBotao").value = "Quero acessar agora";
-        }
-      } else {
-        if (!$("pBotao").value) {
-          $("pBotao").value = "Ver produto oficial";
-        }
-      }
-    }
-
-    function renderImagemPreview() {
-      const imgs = linhas($("pImagens").value)
-        .slice(0, 8)
-        .map(i => completarArquivo(i, $("pPastaImagens").value, $("pExtImagem").value));
-
-      $("previewImagens").innerHTML = imgs
-        .map(src => `<img src="${esc(src)}" onerror="this.style.opacity='.25'" alt="">`)
+      const opcoesFonte = (fontes.length ? fontes : CATEGORIAS_PADRAO.filter(c => c.tipo === "plataforma"))
+        .map(c => `<option value="${esc(c.slug)}">${esc(c.nome)} (${esc(c.slug)})</option>`)
         .join("");
+
+      if (select) select.innerHTML = opcoesFonte || `<option value="produto">Produto</option>`;
+
+      if (filtro) {
+        filtro.innerHTML = `<option value="Todos">Todas as fontes</option>` + opcoesFonte;
+      }
+
+      const deps = [...new Set([...DEPARTAMENTOS_SUGERIDOS, ...categorias.filter(c => c.tipo === "departamento").map(c => c.nome), ...produtos.map(p => p.departamento)].filter(Boolean))];
+      const subs = [...new Set([...SUBCATEGORIAS_SUGERIDAS, ...categorias.filter(c => c.tipo === "subcategoria").map(c => c.nome), ...produtos.map(p => p.subcategoria)].filter(Boolean))];
+
+      $("departamentosLista").innerHTML = deps.map(d => `<option value="${esc(d)}"></option>`).join("");
+      $("subcategoriasLista").innerHTML = subs.map(s => `<option value="${esc(s)}"></option>`).join("");
     }
 
-    function coletarProduto() {
-      const plataformaSlug = $("pPlataforma").value || "mercado-livre";
-      const plataforma = nomePlataforma(plataformaSlug);
+    function comentariosForm(valor = $("pComentarios")?.value || "") {
+      return linhas(valor).map(linha => {
+        const partes = linha.split("|").map(p => p.trim());
+
+        return {
+          nome: partes[0] || "Cliente",
+          texto: partes[1] || "",
+          nota: Number(partes[2] || 5),
+          tipo: "manual",
+          data: new Date().toISOString()
+        };
+      }).filter(c => c.texto);
+    }
+
+    function comentariosTexto(comentarios) {
+      return (comentarios || [])
+        .map(c => `${c.nome || "Cliente"} | ${c.texto || c.comentario || ""} | ${c.nota || c.avaliacao || 5}`)
+        .join("\n");
+    }
+
+    function montarProduto() {
+      const fonteSlug = $("pPlataforma").value || "shopee";
+      const fonte = categorias.find(c => c.slug === fonteSlug) || CATEGORIAS_PADRAO.find(c => c.slug === fonteSlug) || CATEGORIAS_PADRAO[0];
+
       const departamento = $("pDepartamento").value.trim() || "Geral";
       const subcategoria = $("pSubcategoria").value.trim() || "Geral";
-      const nome = $("pNome").value.trim();
 
-      const comentariosNovos = parseComentarios($("pComentarios").value);
-      const comentariosAtuais = Array.isArray(produtoEditOriginal?.comentarios)
+      const pastaImg = $("pPastaImagens").value.trim();
+      const pastaVid = $("pPastaVideos").value.trim();
+      const extImg = $("pExtImagem").value;
+      const extVid = $("pExtVideo").value;
+
+      const comentariosExistentes = Array.isArray(produtoEditOriginal?.comentarios)
         ? produtoEditOriginal.comentarios
         : [];
 
-      const valorPreco = preco($("pPreco").value);
-      const tipo = $("pTipo").value;
+      const novosComentarios = comentariosForm();
+      const comentariosFinais = novosComentarios.length ? novosComentarios : comentariosExistentes;
 
       return {
         id: produtoEditOriginal?.id || idNovo(),
-
-        nome,
+        nome: $("pNome").value.trim(),
         descricao: $("pDescricao").value.trim(),
-
-        preco: valorPreco,
+        preco: preco($("pPreco").value),
         precoAntigo: $("pPrecoAntigo").value.trim() ? preco($("pPrecoAntigo").value) : "",
-
         parcelamento: $("pParcelamento").value.trim(),
         textoParcelamento: $("pTextoParcelamento").value.trim(),
         textoDestaque: $("pTextoDestaque").value.trim(),
-
         link: $("pLink").value.trim(),
 
-        categoria: plataforma,
-        categoriaSlug: plataformaSlug,
-
-        plataforma,
-        plataformaSlug,
+        categoria: fonte.nome,
+        categoriaSlug: fonte.slug,
+        plataforma: fonte.nome,
+        plataformaSlug: fonte.slug,
 
         departamento,
         departamentoSlug: slugify(departamento),
-
         subcategoria,
         subcategoriaSlug: slugify(subcategoria),
 
-        tipo,
-        nivelPreco: $("pNivelPreco").value || nivelAuto(valorPreco),
-        ordem: Number($("pOrdem").value) || 999,
+        tipo: $("pTipo").value,
+        nivelPreco: $("pNivelPreco").value,
+        ordem: n($("pOrdem").value) || 999,
 
-        imagens: linhas($("pImagens").value).map(i =>
-          completarArquivo(i, $("pPastaImagens").value, $("pExtImagem").value)
-        ),
-
-        videos: linhas($("pVideos").value).map(i =>
-          completarArquivo(i, $("pPastaVideos").value, $("pExtVideo").value)
-        ),
-
-        selo: $("pSelo").value.trim() || (tipo === "digital" || tipo === "cakto" ? "Produto digital" : "Oferta"),
-        urgencia: $("pUrgencia").value.trim() || (tipo === "digital" || tipo === "cakto" ? "💰 Produto digital" : "🔥 Oferta por tempo limitado"),
-        botao: $("pBotao").value.trim() || (tipo === "digital" || tipo === "cakto" ? "Quero acessar agora" : "Ver produto oficial"),
-
-        destaque: $("pDestaque").checked,
-        tipoDestaque: $("pTipoDestaque").value.trim(),
-        recomendado: $("pRecomendado").checked,
-        ativo: $("pAtivo").checked,
-
-        avaliacao: Number($("pAvaliacao").value) || 5,
-        avaliacoes: Number($("pAvaliacoes").value) || 0,
-        vendidos: Number($("pVendidos").value) || 0,
+        imagens: linhas($("pImagens").value).map(x => completarArquivo(x, pastaImg, extImg)).filter(Boolean),
+        videos: linhas($("pVideos").value).map(x => completarArquivo(x, pastaVid, extVid)).filter(Boolean),
 
         detalhes: linhas($("pDetalhes").value),
         observacoes: linhas($("pObservacoes").value),
-        comentarios: comentariosNovos.length ? comentariosNovos : comentariosAtuais,
+        comentarios: comentariosFinais,
 
-        mensagemWhatsapp: `Olá, quero saber mais sobre ${nome}.`,
+        selo: $("pSelo").value.trim(),
+        urgencia: $("pUrgencia").value.trim(),
+        botao: $("pBotao").value.trim() || "Comprar agora",
+        tipoDestaque: $("pTipoDestaque").value.trim(),
+
+        destaque: $("pDestaque").checked,
+        recomendado: $("pRecomendado").checked,
+        ativo: $("pAtivo").checked,
+
+        avaliacao: Number(String($("pAvaliacao").value).replace(",", ".")) || 0,
+        avaliacoes: n($("pAvaliacoes").value),
+        vendidos: n($("pVendidos").value),
 
         bannerHome: $("pBannerHome").checked,
         bannerSelo: $("pBannerSelo").value.trim(),
         bannerTitulo: $("pBannerTitulo").value.trim(),
         bannerSubtitulo: $("pBannerSubtitulo").value.trim(),
         bannerBotao: $("pBannerBotao").value.trim() || "Ver oferta",
-        bannerTextoAuxiliar: $("pBannerTextoAuxiliar").value.trim(),
-        bannerOrdem: Number($("pBannerOrdem").value) || 1,
-        bannerEstilo: $("pBannerEstilo").value || "padrao",
+        bannerOrdem: n($("pBannerOrdem").value) || 1,
 
         cliquesComprar: n(produtoEditOriginal?.cliquesComprar),
         cliquesWhatsapp: n(produtoEditOriginal?.cliquesWhatsapp),
         cliquesCompartilhar: n(produtoEditOriginal?.cliquesCompartilhar),
         cliquesInstagram: n(produtoEditOriginal?.cliquesInstagram),
-        cliquesTotal: n(produtoEditOriginal?.cliquesTotal),
-
-        atualizadoEm: serverTimestamp()
+        cliquesTotal: n(produtoEditOriginal?.cliquesTotal)
       };
-    }
-
-    function nivelAuto(valor) {
-      const v = numero(valor);
-
-      if (v <= 80) return "baixo";
-      if (v <= 300) return "medio";
-
-      return "alto";
-    }
-
-    function parseComentarios(valor) {
-      return linhas(valor).map(linha => {
-        const partes = linha.split("|").map(p => p.trim());
-
-        return {
-          nome: partes[0] || "Cliente",
-          texto: partes[1] || partes[0] || "Gostei do produto.",
-          nota: Number(partes[2]) || 5,
-          tipo: "fake",
-          criadoEmTexto: new Date().toLocaleDateString("pt-BR")
-        };
-      });
-    }
-
-    function comentariosTexto(lista) {
-      return (lista || [])
-        .map(c => `${c.nome || "Cliente"} | ${c.texto || c.comentario || ""} | ${c.nota || c.avaliacao || 5}`)
-        .join("\n");
     }
 
     async function salvarProduto() {
       if (!protegido()) return;
 
-      const produto = coletarProduto();
+      const produto = montarProduto();
 
       if (!produto.nome) {
-        aplicarStatus("Digite o nome do produto.", "erro");
+        aplicarStatus("Preencha o nome do produto.", "erro");
         return;
       }
 
       if (!produto.link) {
-        aplicarStatus("Digite o link afiliado/de compra.", "erro");
-        return;
-      }
-
-      if (!produto.imagens.length) {
-        aplicarStatus("Adicione pelo menos uma imagem.", "erro");
+        aplicarStatus("Preencha o link afiliado/compra.", "erro");
         return;
       }
 
       try {
         if (produtoEditId) {
-          await updateDoc(doc(db, "produtos", produtoEditId), produto);
+          await updateDoc(doc(db, "produtos", produtoEditId), {
+            ...produto,
+            atualizadoEm: serverTimestamp()
+          });
+
           aplicarStatus("Produto atualizado com sucesso.");
         } else {
           await addDoc(collection(db, "produtos"), {
             ...produto,
-            criadoEm: serverTimestamp()
+            criadoEm: serverTimestamp(),
+            atualizadoEm: serverTimestamp()
           });
 
-          aplicarStatus("Produto salvo com sucesso.");
+          aplicarStatus("Produto salvo no Firebase.");
         }
 
         limparProduto();
-        abrirPagina("produtos");
+        abrirPage("produtos");
       } catch (erro) {
+        console.warn(erro);
         aplicarStatus("Erro ao salvar produto: " + erro.message, "erro");
       }
     }
 
     function editarProduto(id) {
       const p = produtos.find(item => item.docId === id);
-
       if (!p) return;
 
       produtoEditId = id;
       produtoEditOriginal = p;
 
       $("formProdutoTitulo").textContent = "Editar produto";
-      $("editInfo").textContent = `Editando: ${p.nome}`;
-      $("btnCancelarProduto").classList.remove("oculto");
       $("btnSalvarProduto").textContent = "Atualizar produto";
+      $("btnCancelarProduto").classList.remove("oculto");
 
       $("pNome").value = p.nome || "";
       $("pDescricao").value = p.descricao || "";
@@ -3211,19 +2856,18 @@
       $("pTextoDestaque").value = p.textoDestaque || "";
       $("pLink").value = p.link || "";
 
-      $("pPlataforma").value = p.plataformaSlug || p.categoriaSlug || "mercado-livre";
+      $("pPlataforma").value = p.plataformaSlug || p.categoriaSlug || "shopee";
       $("pDepartamento").value = p.departamento || "";
       $("pSubcategoria").value = p.subcategoria || "";
-
       $("pTipo").value = p.tipo || "produto";
       $("pNivelPreco").value = p.nivelPreco || "baixo";
       $("pOrdem").value = p.ordem || "";
 
-      $("pPastaImagens").value = "";
-      $("pPastaVideos").value = "";
-
       $("pImagens").value = (p.imagens || []).join("\n");
       $("pVideos").value = (p.videos || []).join("\n");
+      $("pDetalhes").value = (p.detalhes || []).join("\n");
+      $("pObservacoes").value = (p.observacoes || []).join("\n");
+      $("pComentarios").value = comentariosTexto(p.comentarios || []);
 
       $("pSelo").value = p.selo || "";
       $("pUrgencia").value = p.urgencia || "";
@@ -3238,31 +2882,24 @@
       $("pAvaliacoes").value = p.avaliacoes || "";
       $("pVendidos").value = p.vendidos || "";
 
-      $("pDetalhes").value = (p.detalhes || []).join("\n");
-      $("pObservacoes").value = (p.observacoes || []).join("\n");
-      $("pComentarios").value = comentariosTexto(p.comentarios || []);
-
       $("pBannerHome").checked = !!p.bannerHome;
       $("pBannerSelo").value = p.bannerSelo || "";
       $("pBannerTitulo").value = p.bannerTitulo || "";
       $("pBannerSubtitulo").value = p.bannerSubtitulo || "";
       $("pBannerBotao").value = p.bannerBotao || "Ver oferta";
-      $("pBannerTextoAuxiliar").value = p.bannerTextoAuxiliar || "";
       $("pBannerOrdem").value = p.bannerOrdem || 1;
-      $("pBannerEstilo").value = p.bannerEstilo || "padrao";
 
-      renderImagemPreview();
-      abrirPagina("formProduto");
+      previewImagens();
+      abrirPage("formProduto");
     }
 
-    function limparProduto(limparMensagem = true) {
+    function limparProduto() {
       produtoEditId = null;
       produtoEditOriginal = null;
 
       $("formProdutoTitulo").textContent = "Adicionar produto";
-      $("editInfo").textContent = "Preencha os dados do produto afiliado. Os campos combinam com a estrutura usada pela loja pública.";
-      $("btnCancelarProduto").classList.add("oculto");
       $("btnSalvarProduto").textContent = "Salvar no Firebase";
+      $("btnCancelarProduto").classList.add("oculto");
 
       [
         "pNome",
@@ -3278,6 +2915,9 @@
         "pOrdem",
         "pImagens",
         "pVideos",
+        "pDetalhes",
+        "pObservacoes",
+        "pComentarios",
         "pSelo",
         "pUrgencia",
         "pBotao",
@@ -3285,75 +2925,37 @@
         "pAvaliacao",
         "pAvaliacoes",
         "pVendidos",
-        "pDetalhes",
-        "pObservacoes",
-        "pComentarios",
         "pBannerSelo",
         "pBannerTitulo",
-        "pBannerSubtitulo",
-        "pBannerTextoAuxiliar"
+        "pBannerSubtitulo"
       ].forEach(id => {
-        $(id).value = "";
+        if ($(id)) $(id).value = "";
       });
 
-      $("pPlataforma").value = plataformasUso()[0]?.slug || "mercado-livre";
-      $("pTipo").value = "produto";
-      $("pNivelPreco").value = "baixo";
+      $("pPastaImagens").value = "imagens/mercado/";
+      $("pPastaVideos").value = "videos/mercado/";
       $("pExtImagem").value = ".jpg";
       $("pExtVideo").value = ".mp4";
-
+      $("pTipo").value = "produto";
+      $("pNivelPreco").value = "baixo";
       $("pDestaque").checked = false;
       $("pRecomendado").checked = true;
       $("pAtivo").checked = true;
-
       $("pBannerHome").checked = false;
       $("pBannerBotao").value = "Ver oferta";
-      $("pBannerOrdem").value = "1";
-      $("pBannerEstilo").value = "padrao";
+      $("pBannerOrdem").value = 1;
 
-      atualizarPastasPorPlataforma(true);
-      renderImagemPreview();
-
-      if (limparMensagem) {
-        aplicarStatus("Formulário limpo.");
+      if ($("pPlataforma").options.length) {
+        $("pPlataforma").selectedIndex = 0;
       }
-    }
 
-    function confirmar(texto, callback) {
-      confirmarCallback = callback;
-
-      $("textoConfirmacao").textContent = texto;
-      $("modalConfirmar").classList.add("ativo");
-      $("modalConfirmar").setAttribute("aria-hidden", "false");
-    }
-
-    function fecharConfirmar() {
-      confirmarCallback = null;
-
-      $("modalConfirmar").classList.remove("ativo");
-      $("modalConfirmar").setAttribute("aria-hidden", "true");
-    }
-
-    async function excluirProduto(id) {
-      if (!protegido()) return;
-
-      const p = produtos.find(x => x.docId === id);
-
-      confirmar(`Excluir o produto “${p?.nome || "produto"}”?`, async () => {
-        try {
-          await deleteDoc(doc(db, "produtos", id));
-          aplicarStatus("Produto excluído.");
-        } catch (erro) {
-          aplicarStatus("Erro ao excluir produto: " + erro.message, "erro");
-        }
-      });
+      $("previewImagens").innerHTML = "";
     }
 
     async function duplicarProduto(id) {
       if (!protegido()) return;
 
-      const p = produtos.find(x => x.docId === id);
-
+      const p = produtos.find(item => item.docId === id);
       if (!p) return;
 
       const copia = { ...p };
@@ -3361,57 +2963,131 @@
       delete copia.docId;
 
       copia.id = idNovo();
-      copia.nome = `${p.nome} - Cópia`;
-      copia.ativo = false;
-      copia.destaque = false;
-      copia.bannerHome = false;
+      copia.nome = "Cópia - " + copia.nome;
+      copia.criadoEm = serverTimestamp();
+      copia.atualizadoEm = serverTimestamp();
       copia.cliquesComprar = 0;
       copia.cliquesWhatsapp = 0;
       copia.cliquesCompartilhar = 0;
       copia.cliquesInstagram = 0;
       copia.cliquesTotal = 0;
-      copia.criadoEm = serverTimestamp();
-      copia.atualizadoEm = serverTimestamp();
 
       try {
         await addDoc(collection(db, "produtos"), copia);
-        aplicarStatus("Produto duplicado como inativo.");
+        aplicarStatus("Produto duplicado.");
       } catch (erro) {
-        aplicarStatus("Erro ao duplicar produto: " + erro.message, "erro");
+        aplicarStatus("Erro ao duplicar: " + erro.message, "erro");
       }
     }
 
-    async function alternarProduto(id) {
+    function excluirProduto(id) {
+      confirmar("Tem certeza que deseja excluir este produto?", async () => {
+        if (!protegido()) return;
+
+        try {
+          await deleteDoc(doc(db, "produtos", id));
+          aplicarStatus("Produto excluído.");
+        } catch (erro) {
+          aplicarStatus("Erro ao excluir: " + erro.message, "erro");
+        }
+      });
+    }
+
+    async function alternarAtivoProduto(id) {
       if (!protegido()) return;
 
-      const p = produtos.find(x => x.docId === id);
-
+      const p = produtos.find(item => item.docId === id);
       if (!p) return;
 
-      await updateDoc(doc(db, "produtos", id), {
-        ativo: !p.ativo,
-        atualizadoEm: serverTimestamp()
-      });
+      try {
+        await updateDoc(doc(db, "produtos", id), {
+          ativo: !p.ativo,
+          atualizadoEm: serverTimestamp()
+        });
 
-      aplicarStatus(p.ativo ? "Produto desativado." : "Produto ativado.");
+        aplicarStatus(p.ativo ? "Produto desativado." : "Produto ativado.");
+      } catch (erro) {
+        aplicarStatus("Erro ao alterar status: " + erro.message, "erro");
+      }
     }
 
     async function zerarCliquesProduto(id) {
       if (!protegido()) return;
 
-      await updateDoc(doc(db, "produtos", id), {
-        cliquesComprar: 0,
-        cliquesWhatsapp: 0,
-        cliquesCompartilhar: 0,
-        cliquesInstagram: 0,
-        cliquesTotal: 0,
-        atualizadoEm: serverTimestamp()
-      });
+      try {
+        await updateDoc(doc(db, "produtos", id), {
+          cliquesComprar: 0,
+          cliquesWhatsapp: 0,
+          cliquesCompartilhar: 0,
+          cliquesInstagram: 0,
+          cliquesTotal: 0,
+          atualizadoEm: serverTimestamp()
+        });
 
-      aplicarStatus("Cliques do produto zerados.");
+        aplicarStatus("Cliques zerados.");
+      } catch (erro) {
+        aplicarStatus("Erro ao zerar cliques: " + erro.message, "erro");
+      }
     }
 
-    function salvarCategoriaDados() {
+    function zerarTodosCliques() {
+      confirmar("Tem certeza que deseja zerar os cliques de TODOS os produtos?", async () => {
+        if (!protegido()) return;
+
+        try {
+          await Promise.all(produtos.map(p => updateDoc(doc(db, "produtos", p.docId), {
+            cliquesComprar: 0,
+            cliquesWhatsapp: 0,
+            cliquesCompartilhar: 0,
+            cliquesInstagram: 0,
+            cliquesTotal: 0,
+            atualizadoEm: serverTimestamp()
+          })));
+
+          aplicarStatus("Todos os cliques foram zerados.");
+        } catch (erro) {
+          aplicarStatus("Erro ao zerar todos: " + erro.message, "erro");
+        }
+      });
+    }
+
+    function previewImagens() {
+      const pasta = $("pPastaImagens").value.trim();
+      const ext = $("pExtImagem").value;
+
+      const imagens = linhas($("pImagens").value)
+        .map(x => completarArquivo(x, pasta, ext))
+        .slice(0, 8);
+
+      $("previewImagens").innerHTML = imagens.map(src => `
+        <img src="${esc(src)}" onerror="this.src='${IMAGEM_FALLBACK}'" alt="">
+      `).join("");
+    }
+
+    function renderCategorias() {
+      $("catContador").textContent = `${categorias.length} categorias`;
+
+      $("catTbody").innerHTML = categorias.length
+        ? categorias.map(c => `
+          <tr>
+            <td>
+              <strong>${esc(c.nome)}</strong>
+            </td>
+            <td><span class="badge">${esc(c.tipo)}</span></td>
+            <td>${esc(c.slug)}</td>
+            <td>${c.ativa ? `<span class="badge green">Ativa</span>` : `<span class="badge red">Inativa</span>`}</td>
+            <td>
+              <div class="actions">
+                <button class="action-btn" type="button" onclick="editarCategoria('${c.docId}')">Editar</button>
+                <button class="action-btn red" type="button" onclick="excluirCategoria('${c.docId}')">Excluir</button>
+              </div>
+            </td>
+          </tr>
+        `).join("")
+        : `<tr><td colspan="5"><div class="empty">Nenhuma categoria criada.</div></td></tr>`;
+    }
+
+    function montarCategoria() {
       const nome = $("catNome").value.trim();
       const slug = $("catSlug").value.trim() || slugify(nome);
 
@@ -3419,10 +3095,9 @@
         nome,
         slug,
         tipo: $("catTipo").value,
-        ordem: Number($("catOrdem").value) || 999,
+        ordem: n($("catOrdem").value) || 999,
         plataformaSlug: $("catPlataformaSlug").value.trim(),
         departamentoSlug: $("catDepartamentoSlug").value.trim(),
-        paiSlug: $("catPaiSlug").value.trim(),
         icone: $("catIcone").value.trim(),
         cor: $("catCor").value || "#b98a37",
         ativa: $("catAtiva").checked,
@@ -3433,10 +3108,10 @@
     async function salvarCategoria() {
       if (!protegido()) return;
 
-      const cat = salvarCategoriaDados();
+      const cat = montarCategoria();
 
-      if (!cat.nome) {
-        aplicarStatus("Digite o nome da categoria.", "erro");
+      if (!cat.nome || !cat.slug) {
+        aplicarStatus("Preencha nome e slug da categoria.", "erro");
         return;
       }
 
@@ -3445,7 +3120,7 @@
           await updateDoc(doc(db, "categorias", categoriaEditId), cat);
           aplicarStatus("Categoria atualizada.");
         } else {
-          await addDoc(collection(db, "categorias"), {
+          await setDoc(doc(db, "categorias", cat.slug), {
             ...cat,
             criadoEm: serverTimestamp()
           });
@@ -3453,15 +3128,14 @@
           aplicarStatus("Categoria criada.");
         }
 
-        limparCategoria(false);
+        limparCategoria();
       } catch (erro) {
         aplicarStatus("Erro ao salvar categoria: " + erro.message, "erro");
       }
     }
 
     function editarCategoria(id) {
-      const c = categorias.find(x => x.docId === id);
-
+      const c = categorias.find(item => item.docId === id);
       if (!c) return;
 
       categoriaEditId = id;
@@ -3471,51 +3145,36 @@
 
       $("catNome").value = c.nome || "";
       $("catSlug").value = c.slug || "";
-      $("catTipo").value = c.tipo || "plataforma";
+      $("catTipo").value = c.tipo || "departamento";
       $("catOrdem").value = c.ordem || "";
       $("catPlataformaSlug").value = c.plataformaSlug || "";
       $("catDepartamentoSlug").value = c.departamentoSlug || "";
-      $("catPaiSlug").value = c.paiSlug || "";
       $("catIcone").value = c.icone || "";
       $("catCor").value = c.cor || "#b98a37";
       $("catAtiva").checked = c.ativa !== false;
-
-      abrirPagina("categorias");
     }
 
-    function limparCategoria(msg = true) {
+    function limparCategoria() {
       categoriaEditId = null;
 
       $("catTitulo").textContent = "Nova categoria";
       $("btnCancelarCategoria").classList.add("oculto");
 
-      [
-        "catNome",
-        "catSlug",
-        "catOrdem",
-        "catPlataformaSlug",
-        "catDepartamentoSlug",
-        "catPaiSlug",
-        "catIcone"
-      ].forEach(id => {
-        $(id).value = "";
-      });
-
+      $("catNome").value = "";
+      $("catSlug").value = "";
       $("catTipo").value = "plataforma";
+      $("catOrdem").value = "";
+      $("catPlataformaSlug").value = "";
+      $("catDepartamentoSlug").value = "";
+      $("catIcone").value = "";
       $("catCor").value = "#b98a37";
       $("catAtiva").checked = true;
-
-      if (msg) {
-        aplicarStatus("Formulário de categoria limpo.");
-      }
     }
 
-    async function excluirCategoria(id) {
-      if (!protegido()) return;
+    function excluirCategoria(id) {
+      confirmar("Excluir esta categoria?", async () => {
+        if (!protegido()) return;
 
-      const c = categorias.find(x => x.docId === id);
-
-      confirmar(`Excluir a categoria “${c?.nome || "categoria"}”?`, async () => {
         try {
           await deleteDoc(doc(db, "categorias", id));
           aplicarStatus("Categoria excluída.");
@@ -3529,29 +3188,134 @@
       if (!protegido()) return;
 
       try {
-        for (const c of CATEGORIAS_PADRAO) {
-          await setDoc(
-            doc(db, "categorias", `cat-${c.slug}`),
-            {
-              ...c,
-              atualizadoEm: serverTimestamp()
-            },
-            { merge: true }
-          );
-        }
+        await Promise.all(CATEGORIAS_PADRAO.map(c => setDoc(doc(db, "categorias", c.slug), {
+          ...c,
+          criadoEm: serverTimestamp(),
+          atualizadoEm: serverTimestamp()
+        }, { merge: true })));
 
         aplicarStatus("Categorias padrão criadas/atualizadas.");
       } catch (erro) {
-        aplicarStatus("Erro ao criar categorias padrão: " + erro.message, "erro");
+        aplicarStatus("Erro ao criar categorias: " + erro.message, "erro");
       }
     }
 
-    function coletarSelo() {
+    function renderBanners() {
+      const banners = produtos
+        .filter(p => p.bannerHome)
+        .sort((a, b) => n(a.bannerOrdem) - n(b.bannerOrdem));
+
+      $("bannerGrid").innerHTML = banners.length
+        ? banners.map(p => `
+          <article class="mini-card">
+            <img class="mini-card-img" src="${esc(imagemProduto(p))}" onerror="this.src='${IMAGEM_FALLBACK}'" alt="">
+            <h3>${esc(p.bannerTitulo || p.nome)}</h3>
+            <p>${esc(p.bannerSubtitulo || p.descricao || "Sem subtítulo.")}</p>
+            <p><span class="badge">${esc(p.bannerSelo || "Banner")}</span></p>
+            <div class="actions" style="margin-top:10px">
+              <button class="action-btn" type="button" onclick="editarProduto('${p.docId}')">Editar</button>
+            </div>
+          </article>
+        `).join("")
+        : `<div class="empty">Nenhum produto marcado como banner.</div>`;
+    }
+
+    function renderComentarios() {
+      const termo = slugify($("commentsSearch")?.value || "");
+      const notaFiltro = $("commentsFilter")?.value || "Todos";
+
+      const todos = [];
+
+      produtos.forEach(p => {
+        (p.comentarios || []).forEach((c, index) => {
+          const nota = Number(c.nota || c.avaliacao || 5);
+
+          todos.push({
+            produto: p,
+            comentario: c,
+            index,
+            nota
+          });
+        });
+      });
+
+      let lista = todos;
+
+      if (termo) {
+        lista = lista.filter(item => slugify([
+          item.produto.nome,
+          item.comentario.nome,
+          item.comentario.autor,
+          item.comentario.texto,
+          item.comentario.comentario
+        ].join(" ")).includes(termo));
+      }
+
+      if (notaFiltro !== "Todos") {
+        lista = lista.filter(item => String(item.nota) === notaFiltro);
+      }
+
+      $("comentariosLista").innerHTML = lista.length
+        ? lista.map(item => `
+          <article class="mini-card">
+            <h3>${esc(item.comentario.nome || item.comentario.autor || "Cliente")}</h3>
+            <p><strong>Produto:</strong> ${esc(item.produto.nome)}</p>
+            <p>${esc(item.comentario.texto || item.comentario.comentario || "")}</p>
+            <p><span class="badge">${item.nota} estrelas</span></p>
+            <div class="actions" style="margin-top:10px">
+              <button class="action-btn red" type="button" onclick="excluirComentario('${item.produto.docId}', ${item.index})">Excluir</button>
+            </div>
+          </article>
+        `).join("")
+        : `<div class="empty">Nenhum comentário encontrado.</div>`;
+    }
+
+    function excluirComentario(produtoId, index) {
+      confirmar("Excluir este comentário?", async () => {
+        if (!protegido()) return;
+
+        const p = produtos.find(item => item.docId === produtoId);
+        if (!p) return;
+
+        const comentarios = [...(p.comentarios || [])];
+        comentarios.splice(index, 1);
+
+        try {
+          await updateDoc(doc(db, "produtos", produtoId), {
+            comentarios,
+            atualizadoEm: serverTimestamp()
+          });
+
+          aplicarStatus("Comentário excluído.");
+        } catch (erro) {
+          aplicarStatus("Erro ao excluir comentário: " + erro.message, "erro");
+        }
+      });
+    }
+
+    function renderSelos() {
+      $("selosGrid").innerHTML = selos.length
+        ? selos.map(s => `
+          <article class="mini-card">
+            <h3>${esc(s.titulo)}</h3>
+            <p>${esc(s.descricao)}</p>
+            <p><span class="badge">${s.ativo ? "Ativo" : "Inativo"}</span></p>
+            <p><strong>Ordem:</strong> ${n(s.ordem)}</p>
+            <div class="actions" style="margin-top:10px">
+              <button class="action-btn" type="button" onclick="editarSelo('${s.docId}')">Editar</button>
+              <button class="action-btn red" type="button" onclick="excluirSelo('${s.docId}')">Excluir</button>
+            </div>
+          </article>
+        `).join("")
+        : `<div class="empty">Nenhum selo criado.</div>`;
+    }
+
+    function montarSelo() {
       return {
         titulo: $("seloTituloInput").value.trim(),
         descricao: $("seloDescricao").value.trim(),
         icone: $("seloIcone").value.trim(),
-        ordem: Number($("seloOrdem").value) || 999,
+        ordem: n($("seloOrdem").value) || 999,
         ativo: $("seloAtivo").checked,
         atualizadoEm: serverTimestamp()
       };
@@ -3560,10 +3324,10 @@
     async function salvarSelo() {
       if (!protegido()) return;
 
-      const selo = coletarSelo();
+      const selo = montarSelo();
 
       if (!selo.titulo) {
-        aplicarStatus("Digite o título do selo.", "erro");
+        aplicarStatus("Preencha o título do selo.", "erro");
         return;
       }
 
@@ -3580,15 +3344,14 @@
           aplicarStatus("Selo criado.");
         }
 
-        limparSelo(false);
+        limparSelo();
       } catch (erro) {
         aplicarStatus("Erro ao salvar selo: " + erro.message, "erro");
       }
     }
 
     function editarSelo(id) {
-      const s = selos.find(x => x.docId === id);
-
+      const s = selos.find(item => item.docId === id);
       if (!s) return;
 
       seloEditId = id;
@@ -3601,36 +3364,25 @@
       $("seloIcone").value = s.icone || "";
       $("seloOrdem").value = s.ordem || "";
       $("seloAtivo").checked = s.ativo !== false;
-
-      abrirPagina("selos");
     }
 
-    function limparSelo(msg = true) {
+    function limparSelo() {
       seloEditId = null;
 
       $("seloTitulo").textContent = "Novo selo";
       $("btnCancelarSelo").classList.add("oculto");
 
-      [
-        "seloTituloInput",
-        "seloDescricao",
-        "seloIcone",
-        "seloOrdem"
-      ].forEach(id => {
-        $(id).value = "";
-      });
-
+      $("seloTituloInput").value = "";
+      $("seloDescricao").value = "";
+      $("seloIcone").value = "";
+      $("seloOrdem").value = "";
       $("seloAtivo").checked = true;
-
-      if (msg) {
-        aplicarStatus("Formulário de selo limpo.");
-      }
     }
 
-    async function excluirSelo(id) {
-      if (!protegido()) return;
+    function excluirSelo(id) {
+      confirmar("Excluir este selo?", async () => {
+        if (!protegido()) return;
 
-      confirmar("Excluir este selo de confiança?", async () => {
         try {
           await deleteDoc(doc(db, "selosConfianca", id));
           aplicarStatus("Selo excluído.");
@@ -3644,70 +3396,16 @@
       if (!protegido()) return;
 
       try {
-        for (const s of SELOS_PADRAO) {
-          await setDoc(
-            doc(db, "selosConfianca", s.id),
-            {
-              titulo: s.titulo,
-              descricao: s.descricao,
-              icone: s.icone,
-              ordem: s.ordem,
-              ativo: s.ativo,
-              atualizadoEm: serverTimestamp()
-            },
-            { merge: true }
-          );
-        }
+        await Promise.all(SELOS_PADRAO.map(s => setDoc(doc(db, "selosConfianca", s.id), {
+          ...s,
+          criadoEm: serverTimestamp(),
+          atualizadoEm: serverTimestamp()
+        }, { merge: true })));
 
         aplicarStatus("Selos padrão criados/atualizados.");
       } catch (erro) {
         aplicarStatus("Erro ao criar selos: " + erro.message, "erro");
       }
-    }
-
-    async function excluirComentario(produtoId, index) {
-      if (!protegido()) return;
-
-      const p = produtos.find(x => x.docId === produtoId);
-
-      if (!p) return;
-
-      const comentarios = [...(p.comentarios || [])];
-      comentarios.splice(Number(index), 1);
-
-      try {
-        await updateDoc(doc(db, "produtos", produtoId), {
-          comentarios,
-          atualizadoEm: serverTimestamp()
-        });
-
-        aplicarStatus("Comentário excluído.");
-      } catch (erro) {
-        aplicarStatus("Erro ao excluir comentário: " + erro.message, "erro");
-      }
-    }
-
-    async function zerarTodosCliques() {
-      if (!protegido()) return;
-
-      confirmar("Zerar os cliques de todos os produtos?", async () => {
-        try {
-          for (const p of produtos) {
-            await updateDoc(doc(db, "produtos", p.docId), {
-              cliquesComprar: 0,
-              cliquesWhatsapp: 0,
-              cliquesCompartilhar: 0,
-              cliquesInstagram: 0,
-              cliquesTotal: 0,
-              atualizadoEm: serverTimestamp()
-            });
-          }
-
-          aplicarStatus("Todos os cliques foram zerados.");
-        } catch (erro) {
-          aplicarStatus("Erro ao zerar cliques: " + erro.message, "erro");
-        }
-      });
     }
 
     async function importarJson() {
@@ -3721,152 +3419,116 @@
       }
 
       try {
-        const json = JSON.parse(texto);
-        const lista = Array.isArray(json)
-          ? json
-          : Array.isArray(json.produtos)
-            ? json.produtos
-            : [];
+        const data = JSON.parse(texto);
+        const lista = Array.isArray(data) ? data : Array.isArray(data.produtos) ? data.produtos : [];
 
         if (!lista.length) {
           aplicarStatus("JSON sem produtos.", "erro");
           return;
         }
 
-        for (const item of lista) {
-          await addDoc(collection(db, "produtos"), {
-            ...item,
-            ativo: item.ativo !== false,
-            criadoEm: serverTimestamp(),
-            atualizadoEm: serverTimestamp()
-          });
-        }
+        await Promise.all(lista.map(item => addDoc(collection(db, "produtos"), {
+          ...normalizarProduto("", item),
+          criadoEm: serverTimestamp(),
+          atualizadoEm: serverTimestamp()
+        })));
 
         $("jsonImportar").value = "";
-        aplicarStatus(`${lista.length} produtos importados.`);
+        aplicarStatus(`${lista.length} produto(s) importado(s).`);
       } catch (erro) {
-        aplicarStatus("JSON inválido ou erro ao importar: " + erro.message, "erro");
+        aplicarStatus("Erro ao importar JSON: " + erro.message, "erro");
       }
     }
 
-    document.addEventListener("click", async event => {
-      const go = event.target.closest("[data-go]");
+    function confirmar(texto, callback) {
+      confirmarCallback = callback;
+      $("textoConfirmacao").textContent = texto;
+      $("modalConfirmar").classList.add("ativo");
+      $("modalConfirmar").setAttribute("aria-hidden", "false");
+    }
 
-      if (go) {
-        abrirPagina(go.dataset.go);
-      }
+    function fecharConfirmacao() {
+      confirmarCallback = null;
+      $("modalConfirmar").classList.remove("ativo");
+      $("modalConfirmar").setAttribute("aria-hidden", "true");
+    }
 
-      const nav = event.target.closest(".nav-btn");
+    function executarConfirmacao() {
+      const fn = confirmarCallback;
+      fecharConfirmacao();
+      if (typeof fn === "function") fn();
+    }
 
-      if (nav) {
-        abrirPagina(nav.dataset.page);
-      }
+    function configurarEventos() {
+      $("btnEntrar").addEventListener("click", entrar);
+      $("btnSair").addEventListener("click", sair);
 
-      const action = event.target.closest("[data-action]");
-
-      if (!action) return;
-
-      const id = action.dataset.id;
-      const index = action.dataset.index;
-
-      const mapa = {
-        "edit-product": () => editarProduto(id),
-        "delete-product": () => excluirProduto(id),
-        "duplicate-product": () => duplicarProduto(id),
-        "toggle-product": () => alternarProduto(id),
-        "reset-product-clicks": () => zerarCliquesProduto(id),
-        "edit-category": () => editarCategoria(id),
-        "delete-category": () => excluirCategoria(id),
-        "edit-selo": () => editarSelo(id),
-        "delete-selo": () => excluirSelo(id),
-        "delete-comment": () => excluirComentario(id, index)
-      };
-
-      if (mapa[action.dataset.action]) {
-        mapa[action.dataset.action]();
-      }
-    });
-
-    $("btnEntrar").addEventListener("click", entrar);
-    $("btnSair").addEventListener("click", sair);
-
-    $("btnSalvarProduto").addEventListener("click", salvarProduto);
-    $("btnLimparProduto").addEventListener("click", () => limparProduto());
-
-    $("btnCancelarProduto").addEventListener("click", () => {
-      limparProduto(false);
-      abrirPagina("produtos");
-    });
-
-    $("btnSalvarCategoria").addEventListener("click", salvarCategoria);
-    $("btnLimparCategoria").addEventListener("click", () => limparCategoria());
-    $("btnCancelarCategoria").addEventListener("click", () => limparCategoria(false));
-    $("btnCriarCategoriasPadrao").addEventListener("click", criarCategoriasPadrao);
-
-    $("btnSalvarSelo").addEventListener("click", salvarSelo);
-    $("btnLimparSelo").addEventListener("click", () => limparSelo());
-    $("btnCancelarSelo").addEventListener("click", () => limparSelo(false));
-    $("btnCriarSelosPadrao").addEventListener("click", criarSelosPadrao);
-
-    $("btnZerarTodosCliques").addEventListener("click", zerarTodosCliques);
-    $("btnImportarJson").addEventListener("click", importarJson);
-
-    $("btnCancelarConfirmar").addEventListener("click", fecharConfirmar);
-
-    $("btnExecutarConfirmar").addEventListener("click", async () => {
-      const callback = confirmarCallback;
-      fecharConfirmar();
-
-      if (callback) {
-        await callback();
-      }
-    });
-
-    [
-      "prodSearch",
-      "filtroProdutoStatus",
-      "filtroProdutoPlataforma",
-      "buscaGlobal"
-    ].forEach(id => {
-      $(id).addEventListener("input", () => {
-        renderProdutos();
-        renderDashboard();
+      $$(".nav-btn").forEach(btn => {
+        btn.addEventListener("click", () => abrirPage(btn.dataset.page));
       });
-    });
 
-    [
-      "commentsSearch",
-      "commentsFilter"
-    ].forEach(id => {
-      $(id).addEventListener("input", renderComentarios);
-    });
+      document.addEventListener("click", e => {
+        const go = e.target.closest("[data-go]");
+        if (go) abrirPage(go.dataset.go);
+      });
 
-    $("pPlataforma").addEventListener("change", () => atualizarPastasPorPlataforma(true));
+      $("btnSalvarProduto").addEventListener("click", salvarProduto);
+      $("btnLimparProduto").addEventListener("click", limparProduto);
+      $("btnCancelarProduto").addEventListener("click", limparProduto);
 
-    [
-      "pImagens",
-      "pPastaImagens",
-      "pExtImagem"
-    ].forEach(id => {
-      $(id).addEventListener("input", renderImagemPreview);
-    });
+      $("btnSalvarCategoria").addEventListener("click", salvarCategoria);
+      $("btnLimparCategoria").addEventListener("click", limparCategoria);
+      $("btnCancelarCategoria").addEventListener("click", limparCategoria);
+      $("btnCriarCategoriasPadrao").addEventListener("click", criarCategoriasPadrao);
 
-    $("catNome").addEventListener("input", () => {
-      if (!categoriaEditId) {
-        $("catSlug").value = slugify($("catNome").value);
-      }
-    });
+      $("btnSalvarSelo").addEventListener("click", salvarSelo);
+      $("btnLimparSelo").addEventListener("click", limparSelo);
+      $("btnCancelarSelo").addEventListener("click", limparSelo);
+      $("btnCriarSelosPadrao").addEventListener("click", criarSelosPadrao);
 
-    $("pPreco").addEventListener("input", () => {
-      if (!produtoEditId) {
-        $("pNivelPreco").value = nivelAuto($("pPreco").value);
-      }
-    });
+      $("btnImportarJson").addEventListener("click", importarJson);
+      $("btnZerarTodosCliques").addEventListener("click", zerarTodosCliques);
 
+      $("btnCancelarConfirmar").addEventListener("click", fecharConfirmacao);
+      $("btnExecutarConfirmar").addEventListener("click", executarConfirmacao);
+
+      ["prodSearch", "filtroProdutoPlataforma", "filtroProdutoStatus", "buscaGlobal"].forEach(id => {
+        if ($(id)) $(id).addEventListener("input", renderProdutos);
+        if ($(id)) $(id).addEventListener("change", renderProdutos);
+      });
+
+      ["commentsSearch", "commentsFilter"].forEach(id => {
+        if ($(id)) $(id).addEventListener("input", renderComentarios);
+        if ($(id)) $(id).addEventListener("change", renderComentarios);
+      });
+
+      ["pImagens", "pPastaImagens", "pExtImagem"].forEach(id => {
+        if ($(id)) $(id).addEventListener("input", previewImagens);
+        if ($(id)) $(id).addEventListener("change", previewImagens);
+      });
+
+      $("catNome").addEventListener("input", () => {
+        if (!categoriaEditId) $("catSlug").value = slugify($("catNome").value);
+      });
+    }
+
+    window.editarProduto = editarProduto;
+    window.duplicarProduto = duplicarProduto;
+    window.alternarAtivoProduto = alternarAtivoProduto;
+    window.excluirProduto = excluirProduto;
+    window.zerarCliquesProduto = zerarCliquesProduto;
+
+    window.editarCategoria = editarCategoria;
+    window.excluirCategoria = excluirCategoria;
+
+    window.editarSelo = editarSelo;
+    window.excluirSelo = excluirSelo;
+
+    window.excluirComentario = excluirComentario;
+
+    configurarEventos();
     preencherSelects();
-    limparProduto(false);
-    limparCategoria(false);
-    limparSelo(false);
+    limparProduto();
   </script>
 </body>
 </html>
