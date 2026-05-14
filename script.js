@@ -12,11 +12,12 @@ import {
 
 /* =========================================================
    ZYQEN STORE - SCRIPT PRINCIPAL
-   Versão corrigida para a home branca/dourada atual
-   - Cards sem bug de botão atravessado
-   - Popup com galeria menor e organizada
-   - Veja também dentro do popup
-   - WhatsApp apenas dentro do robô Dúvida
+   Versão corrigida
+   - Galeria mobile estilo antigo
+   - Imagem principal completa, sem corte
+   - Mini imagens maiores e mais visíveis
+   - Popup rolando como página normal no mobile
+   - WhatsApp apenas dentro do robô de dúvida
    - Nomes públicos neutros para parceiros
 ========================================================= */
 
@@ -35,6 +36,7 @@ let paginaAtual = 1;
 
 let timerDispositivo = null;
 let cliquesEmAndamento = new Set();
+
 let chatProdutoInicializado = false;
 let chatArrastando = false;
 let chatOffsetX = 0;
@@ -110,11 +112,16 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", () => {
     agendarDeteccaoDispositivo();
     manterChatDentroDaTela();
+    aplicarCorrecaoGaleriaProduto();
   });
 
   window.addEventListener("orientationchange", () => {
     agendarDeteccaoDispositivo();
-    setTimeout(manterChatDentroDaTela, 250);
+
+    setTimeout(() => {
+      manterChatDentroDaTela();
+      aplicarCorrecaoGaleriaProduto();
+    }, 250);
   });
 });
 
@@ -130,7 +137,9 @@ function detectarDispositivo() {
 
   const largura = window.innerWidth || html.clientWidth || 0;
   const ehTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-  const mobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent || "");
+  const mobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent || ""
+  );
 
   const classes = ["modo-mobile", "modo-tablet", "modo-desktop", "tem-touch", "sem-touch"];
 
@@ -249,7 +258,9 @@ function carregarProdutosFirebase() {
 
       if (produtoAtualPopup) {
         const atualizado = listaProdutos.find(
-          p => String(p.id) === String(produtoAtualPopup.id) || String(p.docId) === String(produtoAtualPopup.docId)
+          p =>
+            String(p.id) === String(produtoAtualPopup.id) ||
+            String(p.docId) === String(produtoAtualPopup.docId)
         );
 
         if (atualizado) {
@@ -277,17 +288,37 @@ function produtoEstaAtivo(produto) {
 ========================================================= */
 
 function normalizarProduto(p) {
-  const categoriaBase = String(p.categoria || p.categoriaNome || p.marketplace || p.loja || p.plataforma || "Geral").trim();
-  const categoriaSlug = String(p.categoriaSlug || p.marketplaceSlug || p.lojaSlug || p.plataformaSlug || slugify(categoriaBase)).trim();
+  const categoriaBase = String(
+    p.categoria || p.categoriaNome || p.marketplace || p.loja || p.plataforma || "Geral"
+  ).trim();
 
-  const plataformaNome = String(p.plataforma || p.plataformaNome || p.marketplace || p.loja || categoriaBase || "Geral").trim();
-  const plataformaSlug = String(p.plataformaSlug || p.marketplaceSlug || p.lojaSlug || categoriaSlug || slugify(plataformaNome)).trim();
+  const categoriaSlug = String(
+    p.categoriaSlug || p.marketplaceSlug || p.lojaSlug || p.plataformaSlug || slugify(categoriaBase)
+  ).trim();
 
-  const departamentoNome = String(p.departamento || p.departamentoNome || p.nicho || p.grupo || p.categoriaPrincipal || "Geral").trim();
-  const departamentoSlug = String(p.departamentoSlug || p.nichoSlug || p.grupoSlug || slugify(departamentoNome)).trim();
+  const plataformaNome = String(
+    p.plataforma || p.plataformaNome || p.marketplace || p.loja || categoriaBase || "Geral"
+  ).trim();
 
-  const subcategoriaNome = String(p.subcategoria || p.subCategoria || p.subcategoriaNome || p.subCategoriaNome || p.categoriaFilha || "Geral").trim();
-  const subcategoriaSlug = String(p.subcategoriaSlug || p.subCategoriaSlug || slugify(subcategoriaNome)).trim();
+  const plataformaSlug = String(
+    p.plataformaSlug || p.marketplaceSlug || p.lojaSlug || categoriaSlug || slugify(plataformaNome)
+  ).trim();
+
+  const departamentoNome = String(
+    p.departamento || p.departamentoNome || p.nicho || p.grupo || p.categoriaPrincipal || "Geral"
+  ).trim();
+
+  const departamentoSlug = String(
+    p.departamentoSlug || p.nichoSlug || p.grupoSlug || slugify(departamentoNome)
+  ).trim();
+
+  const subcategoriaNome = String(
+    p.subcategoria || p.subCategoria || p.subcategoriaNome || p.subCategoriaNome || p.categoriaFilha || "Geral"
+  ).trim();
+
+  const subcategoriaSlug = String(
+    p.subcategoriaSlug || p.subCategoriaSlug || slugify(subcategoriaNome)
+  ).trim();
 
   return {
     ...p,
@@ -758,7 +789,13 @@ function criarCardProduto(produto) {
         <div class="produto-precos">
           ${produto.precoAntigo ? `<span class="preco-antigo">${escaparHTML(produto.precoAntigo)}</span>` : ""}
           <strong>${escaparHTML(produto.preco || "Ver preço")}</strong>
-          ${produto.parcelamento ? `<span class="produto-parcelamento">${escaparHTML(produto.parcelamento)} ${produto.textoParcelamento ? `<b>${escaparHTML(produto.textoParcelamento)}</b>` : ""}</span>` : ""}
+          ${
+            produto.parcelamento
+              ? `<span class="produto-parcelamento">${escaparHTML(produto.parcelamento)} ${
+                  produto.textoParcelamento ? `<b>${escaparHTML(produto.textoParcelamento)}</b>` : ""
+                }</span>`
+              : ""
+          }
         </div>
 
         ${produto.textoDestaque ? `<p class="produto-destaque-texto">${escaparHTML(produto.textoDestaque)}</p>` : ""}
@@ -819,7 +856,13 @@ function trocarPaginaProdutos(pagina) {
   aplicarFiltros();
 
   const secao = document.querySelector(".zq-products-section") || document.getElementById("categorias-container");
-  if (secao) secao.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  if (secao) {
+    secao.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
 }
 
 /* =========================================================
@@ -885,12 +928,16 @@ function produtoCombinaFiltroRapido(produto) {
   switch (filtroRapidoAtual) {
     case "destaques":
       return Boolean(produto.destaque || produto.tipoDestaque || produto.textoDestaque);
+
     case "ofertas":
       return Boolean(produto.precoAntigo || produto.selo || produto.urgencia || produto.tipoDestaque);
+
     case "bem-avaliados":
       return Number(produto.avaliacao) >= 4.5;
+
     case "mais-vendidos":
       return Number(produto.vendidos) >= 50;
+
     default:
       return true;
   }
@@ -929,23 +976,32 @@ function aplicarOrdenacaoProdutos(produtos) {
   switch (ordenarAtual) {
     case "menor-preco":
       return lista.sort((a, b) => numeroPreco(a.preco) - numeroPreco(b.preco));
+
     case "maior-preco":
       return lista.sort((a, b) => numeroPreco(b.preco) - numeroPreco(a.preco));
+
     case "melhor-avaliados":
       return lista.sort((a, b) => Number(b.avaliacao) - Number(a.avaliacao));
+
     case "novidades":
       return lista.sort((a, b) => dataProduto(b) - dataProduto(a));
+
     case "mais-vendidos":
       return lista.sort((a, b) => Number(b.vendidos) - Number(a.vendidos));
+
     case "relevancia":
     default:
       return lista.sort((a, b) => {
         if (a.destaque !== b.destaque) return a.destaque ? -1 : 1;
+
         const vendidos = Number(b.vendidos) - Number(a.vendidos);
         if (vendidos !== 0) return vendidos;
+
         const oa = Number(a.ordem) || 999;
         const ob = Number(b.ordem) || 999;
+
         if (oa !== ob) return oa - ob;
+
         return Number(b.avaliacao) - Number(a.avaliacao);
       });
   }
@@ -985,6 +1041,8 @@ function abrirPopupProduto(id) {
   document.body.classList.add("popup-aberto");
 
   preencherPopup(produto, true);
+
+  setTimeout(aplicarCorrecaoGaleriaProduto, 60);
 }
 
 function preencherPopup(produto, resetarMidia = true) {
@@ -1016,7 +1074,10 @@ function preencherPopup(produto, resetarMidia = true) {
   const parcelamento = document.getElementById("popup-parcelamento");
   if (parcelamento) {
     if (produto.parcelamento) {
-      parcelamento.innerHTML = `${escaparHTML(produto.parcelamento)}${produto.textoParcelamento ? ` <b>${escaparHTML(produto.textoParcelamento)}</b>` : ""}`;
+      parcelamento.innerHTML = `${escaparHTML(produto.parcelamento)}${
+        produto.textoParcelamento ? ` <b>${escaparHTML(produto.textoParcelamento)}</b>` : ""
+      }`;
+
       parcelamento.style.display = "inline-flex";
     } else {
       parcelamento.innerHTML = "";
@@ -1045,6 +1106,8 @@ function preencherPopup(produto, resetarMidia = true) {
   configurarBotaoCompraPopup(produto);
   atualizarContextoChatProduto(produto);
   atualizarSugestoesChatProduto(produto);
+
+  setTimeout(aplicarCorrecaoGaleriaProduto, 80);
 }
 
 function fecharPopup() {
@@ -1074,11 +1137,18 @@ function configurarBotaoCompraPopup(produto) {
 }
 
 function montarMidiasProduto(produto) {
-  const imagens = Array.isArray(produto.imagens) ? produto.imagens.filter(Boolean).map(src => ({ tipo: "imagem", src })) : [];
-  const videos = Array.isArray(produto.videos) ? produto.videos.filter(Boolean).map(src => ({ tipo: "video", src })) : [];
+  const imagens = Array.isArray(produto.imagens)
+    ? produto.imagens.filter(Boolean).map(src => ({ tipo: "imagem", src }))
+    : [];
+
+  const videos = Array.isArray(produto.videos)
+    ? produto.videos.filter(Boolean).map(src => ({ tipo: "video", src }))
+    : [];
+
   const midias = [...imagens, ...videos];
 
   if (!midias.length) midias.push({ tipo: "imagem", src: IMAGEM_FALLBACK });
+
   return midias;
 }
 
@@ -1087,6 +1157,7 @@ function renderizarMidiaPopup(indice = 0) {
 
   const i = Math.max(0, Math.min(Number(indice) || 0, midiasProdutoAtual.length - 1));
   const midia = midiasProdutoAtual[i];
+
   indiceMidiaAtual = i;
 
   const area = document.querySelector(".popup-imagem-area");
@@ -1134,6 +1205,8 @@ function renderizarMidiaPopup(indice = 0) {
   document.querySelectorAll(".thumb-midia").forEach((thumb, idx) => {
     thumb.classList.toggle("ativo", idx === i);
   });
+
+  aplicarCorrecaoGaleriaProduto();
 }
 
 function renderizarMiniaturas() {
@@ -1157,6 +1230,62 @@ function renderizarMiniaturas() {
       `;
     })
     .join("");
+
+  aplicarCorrecaoGaleriaProduto();
+}
+
+function aplicarCorrecaoGaleriaProduto() {
+  const area = document.querySelector(".popup-imagem-area");
+  const imagem = document.getElementById("popup-imagem");
+  const video = document.getElementById("popup-video");
+  const thumbs = document.getElementById("popup-thumbs");
+
+  if (!area) return;
+
+  area.style.setProperty("overflow", "hidden", "important");
+  area.style.setProperty("display", "grid", "important");
+  area.style.setProperty("place-items", "center", "important");
+
+  if (imagem) {
+    imagem.style.setProperty("display", imagem.style.display === "none" ? "none" : "block", "important");
+    imagem.style.setProperty("width", "100%", "important");
+    imagem.style.setProperty("height", "100%", "important");
+    imagem.style.setProperty("max-width", "100%", "important");
+    imagem.style.setProperty("max-height", "100%", "important");
+    imagem.style.setProperty("object-fit", "contain", "important");
+    imagem.style.setProperty("object-position", "center center", "important");
+    imagem.style.setProperty("padding", "0", "important");
+    imagem.style.setProperty("margin", "0", "important");
+    imagem.style.setProperty("background", "#ffffff", "important");
+  }
+
+  if (video) {
+    video.style.setProperty("width", "100%", "important");
+    video.style.setProperty("height", "100%", "important");
+    video.style.setProperty("object-fit", "contain", "important");
+    video.style.setProperty("object-position", "center center", "important");
+    video.style.setProperty("padding", "0", "important");
+    video.style.setProperty("margin", "0", "important");
+  }
+
+  if (thumbs) {
+    thumbs.querySelectorAll(".thumb-midia").forEach(thumb => {
+      thumb.style.setProperty("display", "grid", "important");
+      thumb.style.setProperty("place-items", "center", "important");
+      thumb.style.setProperty("overflow", "hidden", "important");
+    });
+
+    thumbs.querySelectorAll(".thumb-midia img").forEach(img => {
+      img.style.setProperty("width", "100%", "important");
+      img.style.setProperty("height", "100%", "important");
+      img.style.setProperty("max-width", "100%", "important");
+      img.style.setProperty("max-height", "100%", "important");
+      img.style.setProperty("object-fit", "cover", "important");
+      img.style.setProperty("object-position", "center center", "important");
+      img.style.setProperty("padding", "0", "important");
+      img.style.setProperty("margin", "0", "important");
+    });
+  }
 }
 
 function renderizarRecomendadosPopup(produto) {
@@ -1173,6 +1302,7 @@ function renderizarRecomendadosPopup(produto) {
 
       if (mesmoDepartamentoA !== mesmoDepartamentoB) return mesmoDepartamentoA - mesmoDepartamentoB;
       if (a.destaque !== b.destaque) return a.destaque ? -1 : 1;
+
       return Number(b.avaliacao) - Number(a.avaliacao);
     })
     .slice(0, 2);
@@ -1185,6 +1315,7 @@ function renderizarRecomendadosPopup(produto) {
       </div>
       <p class="zq-popup-recomendados-vazio">Quando houver mais produtos ativos, eles vão aparecer aqui automaticamente.</p>
     `;
+
     return;
   }
 
@@ -1196,7 +1327,8 @@ function renderizarRecomendadosPopup(produto) {
 
     <div class="zq-popup-recomendados-grid">
       ${recomendados
-        .map(item => `
+        .map(
+          item => `
           <button type="button" class="zq-popup-recomendado-item" data-open-product="${escaparHTML(item.id || item.docId)}">
             <img src="${escaparHTML(imagemPrincipal(item))}" alt="${escaparHTML(item.nome)}" onerror="this.onerror=null;this.src='${IMAGEM_FALLBACK}'">
             <span>
@@ -1204,7 +1336,8 @@ function renderizarRecomendadosPopup(produto) {
               <small>${escaparHTML(item.preco || "Ver preço")}</small>
             </span>
           </button>
-        `)
+        `
+        )
         .join("")}
     </div>
   `;
@@ -1220,7 +1353,11 @@ function proximaImagemPopup() {
 }
 
 function imagemAnteriorPopup() {
-  const anterior = (indiceMidiaAtual - 1 + Math.max(1, midiasProdutoAtual.length)) % Math.max(1, midiasProdutoAtual.length);
+  const anterior = (indiceMidiaAtual - 1 + Math.max(1, midiasProdutoAtual.length)) % Math.max(
+    1,
+    midiasProdutoAtual.length
+  );
+
   renderizarMidiaPopup(anterior);
 }
 
@@ -1233,6 +1370,7 @@ function ativarSwipeImagem() {
     event => {
       const area = event.target.closest?.(".popup-imagem-area");
       if (!area) return;
+
       inicioX = event.touches[0].clientX;
       inicioY = event.touches[0].clientY;
     },
@@ -1247,6 +1385,7 @@ function ativarSwipeImagem() {
 
       const fimX = event.changedTouches[0].clientX;
       const fimY = event.changedTouches[0].clientY;
+
       const dx = fimX - inicioX;
       const dy = fimY - inicioY;
 
@@ -1268,7 +1407,11 @@ function renderizarDetalhesProduto(produto) {
   detalhes.innerHTML = `
     <div class="produto-detalhes-card">
       <h3>Características do Produto</h3>
-      ${lista.length ? `<ul>${lista.map(item => `<li>${formatarDetalhe(item)}</li>`).join("")}</ul>` : `<p>As principais informações estão na descrição e na página oficial da oferta.</p>`}
+      ${
+        lista.length
+          ? `<ul>${lista.map(item => `<li>${formatarDetalhe(item)}</li>`).join("")}</ul>`
+          : `<p>As principais informações estão na descrição e na página oficial da oferta.</p>`
+      }
     </div>
   `;
 }
@@ -1313,7 +1456,8 @@ function renderizarBlocoConfianca() {
   bloco.innerHTML = `
     <div class="popup-confianca-grid">
       ${selosPadrao()
-        .map(selo => `
+        .map(
+          selo => `
           <div class="popup-confianca-item">
             <span>${renderizarIcone(selo.icone)}</span>
             <div>
@@ -1321,7 +1465,8 @@ function renderizarBlocoConfianca() {
               <p>${escaparHTML(selo.texto)}</p>
             </div>
           </div>
-        `)
+        `
+        )
         .join("")}
     </div>
   `;
@@ -1339,7 +1484,9 @@ function mostrarComentariosProduto(produto) {
       <div class="produto-observacoes-card">
         <h3>Observações</h3>
         <ul>
-          ${observacoes.map(o => `<li>${escaparHTML(typeof o === "string" ? o : o.texto || o.descricao || "")}</li>`).join("")}
+          ${observacoes
+            .map(o => `<li>${escaparHTML(typeof o === "string" ? o : o.texto || o.descricao || "")}</li>`)
+            .join("")}
         </ul>
       </div>
     `
@@ -1525,6 +1672,7 @@ async function compartilharProduto() {
         text: texto,
         url
       });
+
       return;
     } catch (_) {}
   }
@@ -1629,12 +1777,19 @@ function enviarPerguntaChatProduto(pergunta) {
   const mensagens = document.getElementById("chat-produto-mensagens");
   if (!mensagens) return;
 
-  mensagens.insertAdjacentHTML("beforeend", `<div class="chat-msg chat-msg-user"><p>${escaparHTML(pergunta)}</p></div>`);
+  mensagens.insertAdjacentHTML(
+    "beforeend",
+    `<div class="chat-msg chat-msg-user"><p>${escaparHTML(pergunta)}</p></div>`
+  );
 
   const resposta = responderPerguntaProduto(pergunta, produtoAtualPopup);
 
   setTimeout(() => {
-    mensagens.insertAdjacentHTML("beforeend", `<div class="chat-msg chat-msg-bot"><p>${escaparHTML(resposta)}</p></div>`);
+    mensagens.insertAdjacentHTML(
+      "beforeend",
+      `<div class="chat-msg chat-msg-bot"><p>${escaparHTML(resposta)}</p></div>`
+    );
+
     mensagens.scrollTop = mensagens.scrollHeight;
   }, 180);
 
@@ -1722,9 +1877,12 @@ function iniciarArrastoChat(event) {
   if (!card || event.target.closest("button")) return;
 
   chatArrastando = true;
+
   const rect = card.getBoundingClientRect();
+
   chatOffsetX = event.clientX - rect.left;
   chatOffsetY = event.clientY - rect.top;
+
   card.setPointerCapture?.(event.pointerId);
 }
 
@@ -1752,6 +1910,7 @@ function arrastarChat(event) {
 
 function pararArrastoChat() {
   if (!chatArrastando) return;
+
   chatArrastando = false;
   manterChatDentroDaTela();
 }
@@ -1865,7 +2024,13 @@ function renderizarIcone(icone) {
 
   if (!valor) return "✦";
 
-  if (valor.includes("/") || valor.endsWith(".svg") || valor.endsWith(".png") || valor.endsWith(".webp") || valor.endsWith(".jpg")) {
+  if (
+    valor.includes("/") ||
+    valor.endsWith(".svg") ||
+    valor.endsWith(".png") ||
+    valor.endsWith(".webp") ||
+    valor.endsWith(".jpg")
+  ) {
     return `<img src="${escaparHTML(valor)}" alt="" onerror="this.style.display='none'">`;
   }
 
@@ -1891,6 +2056,7 @@ function nomeCategoriaPorSlug(slug, tipo) {
   const produtos = listaProdutos.filter(produto => {
     if (tipo === "departamento") return produto.departamentoSlug === slug;
     if (tipo === "subcategoria") return produto.subcategoriaSlug === slug;
+
     return produto.plataformaSlug === slug || produto.categoriaSlug === slug;
   });
 
@@ -1937,7 +2103,7 @@ function registrarPWA() {
 }
 
 /* =========================================================
-   CSS MÍNIMO DO SCRIPT
+   CSS DO SCRIPT
 ========================================================= */
 
 function injetarEstilosMinimosDoScript() {
@@ -1978,6 +2144,55 @@ function injetarEstilosMinimosDoScript() {
       height: 430px;
       min-height: 430px;
       max-height: 430px;
+    }
+
+    .popup-imagem-area img,
+    #popup-imagem,
+    .popup-video {
+      width: 100% !important;
+      height: 100% !important;
+      max-width: 100% !important;
+      max-height: 100% !important;
+      object-fit: contain !important;
+      object-position: center center !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      background: #ffffff !important;
+    }
+
+    .popup-thumbs {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: none;
+    }
+
+    .popup-thumbs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .thumb-midia {
+      position: relative;
+      display: grid !important;
+      place-items: center !important;
+      overflow: hidden !important;
+      border: 1px solid #e8e2d7;
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .thumb-midia img {
+      width: 100% !important;
+      height: 100% !important;
+      max-width: 100% !important;
+      max-height: 100% !important;
+      object-fit: cover !important;
+      object-position: center center !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      display: block !important;
     }
 
     .zq-popup-recomendados {
@@ -2116,26 +2331,231 @@ function injetarEstilosMinimosDoScript() {
     }
 
     @media (max-width: 980px) {
+      .popup-produto.ativo {
+        display: block !important;
+      }
+
+      .popup-produto {
+        padding: 0 !important;
+        align-items: stretch !important;
+        justify-content: stretch !important;
+        background: #ffffff !important;
+        backdrop-filter: none !important;
+        overflow: hidden !important;
+      }
+
+      .popup-produto-backdrop {
+        display: none !important;
+      }
+
       .popup-produto-card {
-        width: 100%;
-        height: 100dvh;
-        max-height: 100dvh;
-        grid-template-columns: 1fr;
-        border-radius: 0;
+        width: 100vw !important;
+        height: 100dvh !important;
+        max-height: 100dvh !important;
+        display: block !important;
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        border-radius: 0 !important;
+        border: 0 !important;
+        background: #ffffff !important;
+        box-shadow: none !important;
+        padding-bottom: 84px !important;
+      }
+
+      .popup-fechar {
+        position: fixed !important;
+        top: max(10px, env(safe-area-inset-top)) !important;
+        right: 12px !important;
+        z-index: 9999 !important;
+        width: 42px !important;
+        height: 42px !important;
+        min-width: 42px !important;
+        min-height: 42px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 999px !important;
+        border: 1px solid rgba(0, 0, 0, .08) !important;
+        background: rgba(255, 255, 255, .96) !important;
+        color: #111 !important;
+        font-size: 28px !important;
+        line-height: 1 !important;
+        padding: 0 0 3px !important;
+        box-shadow: 0 10px 28px rgba(20, 18, 15, .14) !important;
+      }
+
+      .popup-galeria {
+        width: 100% !important;
+        height: auto !important;
+        max-height: none !important;
+        min-height: 0 !important;
+        display: block !important;
+        padding: 10px 12px 8px !important;
+        background: linear-gradient(180deg, #fff8ed 0%, #ffffff 100%) !important;
+        border: 0 !important;
+        overflow: visible !important;
       }
 
       .popup-imagem-area {
-        height: 330px;
-        min-height: 330px;
-        max-height: 330px;
+        width: 100% !important;
+        height: clamp(315px, 83vw, 430px) !important;
+        min-height: 315px !important;
+        max-height: 430px !important;
+        position: relative !important;
+        display: grid !important;
+        place-items: center !important;
+        border-radius: 20px !important;
+        border: 1px solid #e8e2d7 !important;
+        background: #ffffff !important;
+        overflow: hidden !important;
+        box-shadow: 0 10px 26px rgba(37, 31, 22, .075) !important;
+      }
+
+      .popup-imagem-area img,
+      #popup-imagem,
+      #popup-img,
+      #imagem-popup,
+      #imagem-principal-popup,
+      .popup-foto-principal,
+      .popup-main-img,
+      .popup-video {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+        object-fit: contain !important;
+        object-position: center center !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        background: #ffffff !important;
+      }
+
+      .popup-seta {
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+        min-height: 38px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 999px !important;
+        border: 1px solid rgba(0,0,0,.08) !important;
+        background: rgba(255,255,255,.94) !important;
+        color: #111 !important;
+        font-size: 27px !important;
+        font-weight: 800 !important;
+        line-height: 1 !important;
+        padding: 0 0 4px !important;
+        box-shadow: 0 8px 22px rgba(20,18,15,.12) !important;
+      }
+
+      .popup-seta-esq {
+        left: 9px !important;
+      }
+
+      .popup-seta-dir {
+        right: 9px !important;
+      }
+
+      .popup-contador-imagem {
+        right: 10px !important;
+        bottom: 10px !important;
+        min-height: 25px !important;
+        padding: 5px 9px !important;
+        font-size: 10px !important;
+        background: rgba(17,17,17,.68) !important;
+      }
+
+      .popup-thumbs {
+        width: 100% !important;
+        min-height: 76px !important;
+        height: 76px !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        padding: 10px 2px 4px !important;
+        scrollbar-width: none !important;
+        scroll-snap-type: x proximity !important;
+      }
+
+      .thumb-midia {
+        flex: 0 0 72px !important;
+        width: 72px !important;
+        height: 62px !important;
+        min-width: 72px !important;
+        min-height: 62px !important;
+        display: grid !important;
+        place-items: center !important;
+        border-radius: 15px !important;
+        border: 1px solid #e8e2d7 !important;
+        background: #ffffff !important;
+        overflow: hidden !important;
+        box-shadow: 0 6px 16px rgba(37,31,22,.05) !important;
+        scroll-snap-align: start !important;
+      }
+
+      .thumb-midia.ativo {
+        border-color: #b98732 !important;
+        box-shadow: 0 0 0 3px rgba(185,135,50,.14) !important;
+      }
+
+      .thumb-midia img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        object-position: center center !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
+      .popup-conteudo {
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        display: block !important;
+        overflow: visible !important;
+        padding: 8px 14px 24px !important;
+        background: #ffffff !important;
+      }
+
+      .zq-popup-recomendados {
+        display: none !important;
       }
     }
 
-    @media (max-width: 520px) {
+    @media (max-width: 430px) {
       .popup-imagem-area {
-        height: 285px;
-        min-height: 285px;
-        max-height: 285px;
+        height: clamp(305px, 82vw, 380px) !important;
+        min-height: 305px !important;
+        max-height: 380px !important;
+      }
+
+      .thumb-midia {
+        flex-basis: 70px !important;
+        width: 70px !important;
+        height: 60px !important;
+        min-width: 70px !important;
+        min-height: 60px !important;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .popup-imagem-area {
+        height: 292px !important;
+        min-height: 292px !important;
+        max-height: 292px !important;
+      }
+
+      .thumb-midia {
+        flex-basis: 66px !important;
+        width: 66px !important;
+        height: 58px !important;
+        min-width: 66px !important;
+        min-height: 58px !important;
       }
     }
   `;

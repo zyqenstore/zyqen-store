@@ -25,13 +25,13 @@
   <meta name="apple-mobile-web-app-title" content="Zyqen Store">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
-  <link rel="manifest" href="/zyqen-store/manifest.json?v=19">
+  <link rel="manifest" href="/zyqen-store/manifest.json?v=20">
   <link rel="apple-touch-icon" sizes="180x180" href="/zyqen-store/imagens/icons/icon12.png">
   <link rel="icon" type="image/png" sizes="192x192" href="/zyqen-store/imagens/icons/icon11.png">
   <link rel="icon" type="image/png" sizes="512x512" href="/zyqen-store/imagens/icons/icon12.png">
   <link rel="icon" href="imagens/logo/favicon.png">
 
-  <link rel="stylesheet" href="style.css?v=57">
+  <link rel="stylesheet" href="style.css?v=58">
 
   <style>
     *,
@@ -2247,17 +2247,17 @@
 
       .popup-imagem-area {
         width: 100% !important;
-        height: 330px !important;
-        min-height: 330px !important;
-        max-height: 330px !important;
+        height: 335px !important;
+        min-height: 335px !important;
+        max-height: 335px !important;
         position: relative !important;
         display: grid !important;
         place-items: center !important;
-        border-radius: 21px !important;
+        border-radius: 20px !important;
         border: 1px solid var(--zq-line) !important;
-        background: linear-gradient(180deg, #ffffff 0%, #fffdfa 100%) !important;
+        background: #ffffff !important;
         overflow: hidden !important;
-        box-shadow: 0 12px 28px rgba(37, 31, 22, 0.075) !important;
+        box-shadow: 0 10px 26px rgba(37, 31, 22, 0.075) !important;
         touch-action: pan-y !important;
       }
 
@@ -2268,26 +2268,24 @@
       #imagem-principal-popup,
       .popup-foto-principal,
       .popup-main-img {
-        width: 100% !important;
-        height: 100% !important;
-        max-width: 100% !important;
-        max-height: 100% !important;
+        width: auto !important;
+        height: auto !important;
+        max-width: calc(100% - 4px) !important;
+        max-height: calc(100% - 4px) !important;
         object-fit: contain !important;
         object-position: center center !important;
-        padding: 6px !important;
+        padding: 0 !important;
         touch-action: pan-y !important;
       }
 
       .popup-video {
         width: 100% !important;
         height: 100% !important;
-        max-width: 100% !important;
-        max-height: 100% !important;
         object-fit: contain !important;
-        object-position: center center !important;
-        padding: 8px !important;
+        padding: 4px !important;
         touch-action: pan-y !important;
       }
+
 
       .popup-imagem-area [style*="background"],
       .popup-imagem-area .imagem-background,
@@ -2299,10 +2297,10 @@
 
       .popup-seta {
         z-index: 80 !important;
-        width: 38px !important;
-        height: 38px !important;
-        min-width: 38px !important;
-        min-height: 38px !important;
+        width: 36px !important;
+        height: 36px !important;
+        min-width: 36px !important;
+        min-height: 36px !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -2310,10 +2308,10 @@
         border: 1px solid rgba(0, 0, 0, 0.08) !important;
         background: rgba(255, 255, 255, 0.94) !important;
         color: #111 !important;
-        font-size: 27px !important;
+        font-size: 25px !important;
         font-weight: 800 !important;
         line-height: 1 !important;
-        padding: 0 0 4px !important;
+        padding: 0 0 3px !important;
         box-shadow: 0 8px 22px rgba(20, 18, 15, 0.12) !important;
         pointer-events: auto !important;
         touch-action: manipulation !important;
@@ -2339,14 +2337,14 @@
 
       .popup-thumbs {
         width: 100% !important;
-        min-height: 66px !important;
-        height: 66px !important;
+        min-height: 62px !important;
+        height: 62px !important;
         display: flex !important;
         align-items: center !important;
         gap: 8px !important;
         overflow-x: auto !important;
         overflow-y: hidden !important;
-        padding: 7px 2px 3px !important;
+        padding: 7px 2px 2px !important;
         scrollbar-width: none !important;
         scroll-snap-type: x proximity !important;
       }
@@ -2356,25 +2354,25 @@
       }
 
       .thumb-midia {
-        flex: 0 0 60px !important;
-        width: 60px !important;
-        height: 54px !important;
-        min-width: 60px !important;
-        min-height: 54px !important;
+        flex: 0 0 58px !important;
+        width: 58px !important;
+        height: 50px !important;
+        min-width: 58px !important;
+        min-height: 50px !important;
         display: grid !important;
         place-items: center !important;
-        border-radius: 13px !important;
+        border-radius: 12px !important;
         border: 1px solid var(--zq-line) !important;
         background: #ffffff !important;
         overflow: hidden !important;
-        box-shadow: 0 5px 14px rgba(37, 31, 22, 0.045) !important;
+        box-shadow: 0 6px 16px rgba(37, 31, 22, 0.05) !important;
         pointer-events: auto !important;
         scroll-snap-align: start !important;
       }
 
       .thumb-midia.ativo {
         border-color: var(--zq-gold) !important;
-        box-shadow: 0 0 0 2px rgba(185, 135, 50, 0.16) !important;
+        box-shadow: 0 0 0 3px rgba(185, 135, 50, 0.14) !important;
       }
 
       .thumb-midia img {
@@ -2700,9 +2698,9 @@
       }
 
       .popup-imagem-area {
-        height: 310px !important;
-        min-height: 310px !important;
-        max-height: 310px !important;
+        height: 318px !important;
+        min-height: 318px !important;
+        max-height: 318px !important;
       }
 
       #popup-nome {
@@ -2714,11 +2712,11 @@
       }
 
       .thumb-midia {
-        flex-basis: 58px !important;
-        width: 58px !important;
-        height: 52px !important;
-        min-width: 58px !important;
-        min-height: 52px !important;
+        flex-basis: 56px !important;
+        width: 56px !important;
+        height: 49px !important;
+        min-width: 56px !important;
+        min-height: 49px !important;
       }
     }
 
@@ -2747,9 +2745,9 @@
       }
 
       .popup-imagem-area {
-        height: 292px !important;
-        min-height: 292px !important;
-        max-height: 292px !important;
+        height: 298px !important;
+        min-height: 298px !important;
+        max-height: 298px !important;
       }
 
       .barra-compra {
@@ -2765,32 +2763,11 @@
       .thumb-midia {
         flex-basis: 54px !important;
         width: 54px !important;
-        height: 50px !important;
+        height: 48px !important;
         min-width: 54px !important;
-        min-height: 50px !important;
+        min-height: 48px !important;
       }
     }
-
-
-    /* =========================================================
-       REFORÇO FINAL - FOTO COMPLETA NO MOBILE
-       Garante que nenhuma imagem do produto fique cortada.
-    ========================================================= */
-
-    @media (max-width: 680px) {
-      .popup-imagem-area > img,
-      .popup-imagem-area picture > img,
-      #popup-imagem {
-        object-fit: contain !important;
-        object-position: center center !important;
-      }
-
-      .thumb-midia > img {
-        object-fit: contain !important;
-        object-position: center center !important;
-      }
-    }
-
   </style>
 </head>
 
@@ -2995,7 +2972,7 @@
 
   </div>
 
-  <script type="module" src="script.js?v=55"></script>
+  <script type="module" src="script.js?v=57"></script>
 
   <script>
 
@@ -3130,5 +3107,236 @@
       attributeFilter: ["class", "style"]
     });
   </script>
+
+
+  <script>
+    /* =========================================================
+       CORREÇÃO FINAL MOBILE - IMAGEM DO PRODUTO
+       Fica depois do script.js para vencer o CSS injetado pelo JS.
+       - Foto principal maior e sem cortar
+       - Mini cards menores
+       - Mini imagens mais visíveis
+    ========================================================= */
+    (function corrigirImagemProdutoMobile() {
+      const css = `
+        @media (max-width: 680px) {
+          html body.popup-aberto {
+            overflow: hidden !important;
+            height: 100dvh !important;
+          }
+
+          html body .popup-produto.ativo {
+            display: block !important;
+            background: #ffffff !important;
+            overflow: hidden !important;
+          }
+
+          html body .popup-produto.ativo .popup-produto-card {
+            width: 100vw !important;
+            height: 100dvh !important;
+            max-height: 100dvh !important;
+            display: block !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            -webkit-overflow-scrolling: touch !important;
+            padding-bottom: 84px !important;
+            background: #ffffff !important;
+          }
+
+          html body .popup-produto.ativo .popup-galeria {
+            width: 100% !important;
+            height: auto !important;
+            display: block !important;
+            padding: 10px 12px 4px !important;
+            overflow: visible !important;
+            background: linear-gradient(180deg, #fff8ed 0%, #ffffff 100%) !important;
+            border: 0 !important;
+          }
+
+          html body .popup-produto.ativo .popup-imagem-area {
+            width: 100% !important;
+            height: 382px !important;
+            min-height: 382px !important;
+            max-height: 382px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            position: relative !important;
+            border-radius: 20px !important;
+            overflow: hidden !important;
+            background: #ffffff !important;
+            border: 1px solid #e8e2d7 !important;
+            box-shadow: 0 10px 26px rgba(37, 31, 22, 0.075) !important;
+          }
+
+          html body .popup-produto.ativo .popup-imagem-area > img#popup-imagem,
+          html body .popup-produto.ativo .popup-imagem-area > img,
+          html body .popup-produto.ativo #popup-imagem {
+            display: block !important;
+            width: 100% !important;
+            height: 100% !important;
+            max-width: 100% !important;
+            max-height: 100% !important;
+            object-fit: contain !important;
+            object-position: center center !important;
+            padding: 4px !important;
+            margin: 0 auto !important;
+            transform: none !important;
+            background: transparent !important;
+          }
+
+          html body .popup-produto.ativo .popup-video {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: contain !important;
+            object-position: center center !important;
+            padding: 4px !important;
+          }
+
+          html body .popup-produto.ativo .popup-seta {
+            width: 35px !important;
+            height: 35px !important;
+            min-width: 35px !important;
+            min-height: 35px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 0 0 3px !important;
+            border-radius: 999px !important;
+            font-size: 25px !important;
+            line-height: 1 !important;
+            background: rgba(255,255,255,.94) !important;
+            box-shadow: 0 8px 20px rgba(20,18,15,.12) !important;
+            z-index: 90 !important;
+          }
+
+          html body .popup-produto.ativo .popup-seta-esq {
+            left: 9px !important;
+          }
+
+          html body .popup-produto.ativo .popup-seta-dir {
+            right: 9px !important;
+          }
+
+          html body .popup-produto.ativo .popup-contador-imagem {
+            right: 10px !important;
+            bottom: 10px !important;
+            z-index: 95 !important;
+          }
+
+          html body .popup-produto.ativo .popup-thumbs {
+            width: 100% !important;
+            height: 58px !important;
+            min-height: 58px !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            overflow-x: auto !important;
+            overflow-y: hidden !important;
+            padding: 7px 2px 1px !important;
+            scrollbar-width: none !important;
+            scroll-snap-type: x proximity !important;
+          }
+
+          html body .popup-produto.ativo .popup-thumbs::-webkit-scrollbar {
+            display: none !important;
+          }
+
+          html body .popup-produto.ativo .thumb-midia {
+            flex: 0 0 54px !important;
+            width: 54px !important;
+            min-width: 54px !important;
+            height: 48px !important;
+            min-height: 48px !important;
+            display: grid !important;
+            place-items: center !important;
+            padding: 0 !important;
+            border-radius: 12px !important;
+            background: #ffffff !important;
+            overflow: hidden !important;
+          }
+
+          html body .popup-produto.ativo .thumb-midia.ativo {
+            border-color: #b98732 !important;
+            box-shadow: 0 0 0 2px rgba(185, 135, 50, 0.18) !important;
+          }
+
+          html body .popup-produto.ativo .thumb-midia img {
+            width: 100% !important;
+            height: 100% !important;
+            max-width: none !important;
+            max-height: none !important;
+            object-fit: cover !important;
+            object-position: center center !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            transform: scale(1.08) !important;
+          }
+
+          html body .popup-produto.ativo .popup-conteudo {
+            padding-top: 8px !important;
+          }
+        }
+
+        @media (max-width: 430px) {
+          html body .popup-produto.ativo .popup-imagem-area {
+            height: 365px !important;
+            min-height: 365px !important;
+            max-height: 365px !important;
+          }
+
+          html body .popup-produto.ativo .popup-thumbs {
+            height: 56px !important;
+            min-height: 56px !important;
+          }
+
+          html body .popup-produto.ativo .thumb-midia {
+            flex-basis: 52px !important;
+            width: 52px !important;
+            min-width: 52px !important;
+            height: 46px !important;
+            min-height: 46px !important;
+          }
+        }
+
+        @media (max-width: 360px) {
+          html body .popup-produto.ativo .popup-imagem-area {
+            height: 342px !important;
+            min-height: 342px !important;
+            max-height: 342px !important;
+          }
+
+          html body .popup-produto.ativo .thumb-midia {
+            flex-basis: 50px !important;
+            width: 50px !important;
+            min-width: 50px !important;
+            height: 44px !important;
+            min-height: 44px !important;
+          }
+        }
+      `;
+
+      function aplicar() {
+        const antigo = document.getElementById("zyqen-mobile-produto-imagem-final");
+        if (antigo) antigo.remove();
+
+        const style = document.createElement("style");
+        style.id = "zyqen-mobile-produto-imagem-final";
+        style.textContent = css;
+        document.head.appendChild(style);
+      }
+
+      aplicar();
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(aplicar, 80);
+        setTimeout(aplicar, 450);
+      });
+      window.addEventListener("load", function () {
+        setTimeout(aplicar, 300);
+        setTimeout(aplicar, 900);
+      });
+    })();
+  </script>
+
 </body>
 </html>
