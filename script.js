@@ -13,9 +13,9 @@ import {
 /* =========================================================
    ZYQEN STORE - SCRIPT PRINCIPAL
    Versão corrigida
-   - Galeria mobile estilo antigo
+   - Galeria mobile adaptável ao tamanho real da imagem
    - Imagem principal completa, sem corte
-   - Mini imagens maiores e mais visíveis
+   - Mini imagens estilo antigo, maiores e mais visíveis
    - Popup rolando como página normal no mobile
    - WhatsApp apenas dentro do robô de dúvida
    - Nomes públicos neutros para parceiros
@@ -431,7 +431,7 @@ function criarHTMLPopupProduto() {
         <button type="button" class="popup-fechar" data-fechar-popup aria-label="Fechar produto">×</button>
 
         <div class="popup-galeria">
-          <div class="popup-imagem-area">
+          <div class="popup-imagem-area" data-aspecto="quadrada">
             <button type="button" class="popup-seta popup-seta-esq" onclick="imagemAnteriorPopup()" aria-label="Imagem anterior">‹</button>
 
             <img id="popup-imagem" src="${IMAGEM_FALLBACK}" alt="Produto">
@@ -1182,6 +1182,7 @@ function renderizarMidiaPopup(indice = 0) {
 
     video.src = midia.src;
     video.style.display = "block";
+    video.onloadedmetadata = () => aplicarCorrecaoGaleriaProduto();
   } else {
     if (video) {
       video.pause();
@@ -1193,6 +1194,10 @@ function renderizarMidiaPopup(indice = 0) {
     img.src = midia.src || IMAGEM_FALLBACK;
     img.alt = produtoAtualPopup?.nome || "Produto";
     img.dataset.imagemAtual = String(i);
+
+    img.onload = () => {
+      aplicarCorrecaoGaleriaProduto();
+    };
 
     img.onerror = () => {
       img.onerror = null;
@@ -1242,33 +1247,49 @@ function aplicarCorrecaoGaleriaProduto() {
 
   if (!area) return;
 
+  const ehMobile = window.matchMedia("(max-width: 980px)").matches;
+
   area.style.setProperty("overflow", "hidden", "important");
   area.style.setProperty("display", "grid", "important");
   area.style.setProperty("place-items", "center", "important");
+  area.style.setProperty("background", "#ffffff", "important");
+
+  if (ehMobile) {
+    ajustarCaixaDaImagemPeloTamanhoReal(area, imagem, video);
+  }
 
   if (imagem) {
-    imagem.style.setProperty("display", imagem.style.display === "none" ? "none" : "block", "important");
-    imagem.style.setProperty("width", "100%", "important");
-    imagem.style.setProperty("height", "100%", "important");
+    const visivel = imagem.style.display !== "none";
+
+    imagem.style.setProperty("display", visivel ? "block" : "none", "important");
+    imagem.style.setProperty("width", "auto", "important");
+    imagem.style.setProperty("height", "auto", "important");
     imagem.style.setProperty("max-width", "100%", "important");
     imagem.style.setProperty("max-height", "100%", "important");
     imagem.style.setProperty("object-fit", "contain", "important");
     imagem.style.setProperty("object-position", "center center", "important");
     imagem.style.setProperty("padding", "0", "important");
-    imagem.style.setProperty("margin", "0", "important");
+    imagem.style.setProperty("margin", "0 auto", "important");
     imagem.style.setProperty("background", "#ffffff", "important");
   }
 
   if (video) {
-    video.style.setProperty("width", "100%", "important");
-    video.style.setProperty("height", "100%", "important");
+    video.style.setProperty("width", "auto", "important");
+    video.style.setProperty("height", "auto", "important");
+    video.style.setProperty("max-width", "100%", "important");
+    video.style.setProperty("max-height", "100%", "important");
     video.style.setProperty("object-fit", "contain", "important");
     video.style.setProperty("object-position", "center center", "important");
     video.style.setProperty("padding", "0", "important");
-    video.style.setProperty("margin", "0", "important");
+    video.style.setProperty("margin", "0 auto", "important");
   }
 
   if (thumbs) {
+    thumbs.style.setProperty("display", "flex", "important");
+    thumbs.style.setProperty("align-items", "center", "important");
+    thumbs.style.setProperty("overflow-x", "auto", "important");
+    thumbs.style.setProperty("overflow-y", "hidden", "important");
+
     thumbs.querySelectorAll(".thumb-midia").forEach(thumb => {
       thumb.style.setProperty("display", "grid", "important");
       thumb.style.setProperty("place-items", "center", "important");
@@ -1286,6 +1307,79 @@ function aplicarCorrecaoGaleriaProduto() {
       img.style.setProperty("margin", "0", "important");
     });
   }
+}
+
+function ajustarCaixaDaImagemPeloTamanhoReal(area, imagem, video) {
+  const midiaVisivel = video && video.style.display !== "none" ? video : imagem;
+
+  let larguraNatural = 1;
+  let alturaNatural = 1;
+
+  if (midiaVisivel && midiaVisivel.tagName === "VIDEO") {
+    larguraNatural = midiaVisivel.videoWidth || 1;
+    alturaNatural = midiaVisivel.videoHeight || 1;
+  } else if (midiaVisivel) {
+    larguraNatural = midiaVisivel.naturalWidth || 1;
+    alturaNatural = midiaVisivel.naturalHeight || 1;
+  }
+
+  let ratio = larguraNatural / alturaNatural;
+
+  if (!Number.isFinite(ratio) || ratio <= 0) {
+    ratio = 1;
+  }
+
+  const larguraTela = window.innerWidth || document.documentElement.clientWidth || 390;
+  const larguraArea = Math.max(280, Math.min(larguraTela - 24, 760));
+
+  let alturaIdeal = Math.round(larguraArea / ratio);
+
+  const limiteMinimo = larguraTela <= 360 ? 270 : 292;
+  const limiteMaximo = Math.min(Math.round(window.innerHeight * 0.56), 440);
+
+  if (ratio >= 1.75) {
+    alturaIdeal = Math.max(240, alturaIdeal);
+  }
+
+  if (ratio >= 1.25 && ratio < 1.75) {
+    alturaIdeal = Math.max(285, alturaIdeal);
+  }
+
+  if (ratio >= 0.82 && ratio < 1.25) {
+    alturaIdeal = Math.max(330, alturaIdeal);
+  }
+
+  if (ratio < 0.82) {
+    alturaIdeal = Math.max(360, alturaIdeal);
+  }
+
+  const alturaFinal = limitarNumero(alturaIdeal, limiteMinimo, limiteMaximo);
+
+  area.classList.remove("imagem-horizontal", "imagem-quadrada", "imagem-vertical", "imagem-panoramica");
+
+  if (ratio >= 1.75) {
+    area.classList.add("imagem-panoramica");
+    area.dataset.aspecto = "panoramica";
+  } else if (ratio >= 1.25) {
+    area.classList.add("imagem-horizontal");
+    area.dataset.aspecto = "horizontal";
+  } else if (ratio <= 0.82) {
+    area.classList.add("imagem-vertical");
+    area.dataset.aspecto = "vertical";
+  } else {
+    area.classList.add("imagem-quadrada");
+    area.dataset.aspecto = "quadrada";
+  }
+
+  area.style.setProperty("width", "100%", "important");
+  area.style.setProperty("height", `${alturaFinal}px`, "important");
+  area.style.setProperty("min-height", `${alturaFinal}px`, "important");
+  area.style.setProperty("max-height", `${alturaFinal}px`, "important");
+  area.style.setProperty("aspect-ratio", `${larguraNatural} / ${alturaNatural}`, "important");
+}
+
+function limitarNumero(numero, minimo, maximo) {
+  return Math.max(minimo, Math.min(numero, maximo));
 }
 
 function renderizarRecomendadosPopup(produto) {
@@ -2149,14 +2243,14 @@ function injetarEstilosMinimosDoScript() {
     .popup-imagem-area img,
     #popup-imagem,
     .popup-video {
-      width: 100% !important;
-      height: 100% !important;
+      width: auto !important;
+      height: auto !important;
       max-width: 100% !important;
       max-height: 100% !important;
       object-fit: contain !important;
       object-position: center center !important;
       padding: 0 !important;
-      margin: 0 !important;
+      margin: 0 auto !important;
       background: #ffffff !important;
     }
 
@@ -2399,9 +2493,6 @@ function injetarEstilosMinimosDoScript() {
 
       .popup-imagem-area {
         width: 100% !important;
-        height: clamp(315px, 83vw, 430px) !important;
-        min-height: 315px !important;
-        max-height: 430px !important;
         position: relative !important;
         display: grid !important;
         place-items: center !important;
@@ -2412,6 +2503,22 @@ function injetarEstilosMinimosDoScript() {
         box-shadow: 0 10px 26px rgba(37, 31, 22, .075) !important;
       }
 
+      .popup-imagem-area[data-aspecto="panoramica"] {
+        border-radius: 18px !important;
+      }
+
+      .popup-imagem-area[data-aspecto="horizontal"] {
+        border-radius: 19px !important;
+      }
+
+      .popup-imagem-area[data-aspecto="quadrada"] {
+        border-radius: 20px !important;
+      }
+
+      .popup-imagem-area[data-aspecto="vertical"] {
+        border-radius: 20px !important;
+      }
+
       .popup-imagem-area img,
       #popup-imagem,
       #popup-img,
@@ -2420,14 +2527,14 @@ function injetarEstilosMinimosDoScript() {
       .popup-foto-principal,
       .popup-main-img,
       .popup-video {
-        width: 100% !important;
-        height: 100% !important;
+        width: auto !important;
+        height: auto !important;
         max-width: 100% !important;
         max-height: 100% !important;
         object-fit: contain !important;
         object-position: center center !important;
         padding: 0 !important;
-        margin: 0 !important;
+        margin: 0 auto !important;
         background: #ffffff !important;
       }
 
@@ -2469,27 +2576,27 @@ function injetarEstilosMinimosDoScript() {
 
       .popup-thumbs {
         width: 100% !important;
-        min-height: 76px !important;
-        height: 76px !important;
+        min-height: 70px !important;
+        height: 70px !important;
         display: flex !important;
         align-items: center !important;
-        gap: 10px !important;
+        gap: 9px !important;
         overflow-x: auto !important;
         overflow-y: hidden !important;
-        padding: 10px 2px 4px !important;
+        padding: 9px 2px 4px !important;
         scrollbar-width: none !important;
         scroll-snap-type: x proximity !important;
       }
 
       .thumb-midia {
-        flex: 0 0 72px !important;
-        width: 72px !important;
-        height: 62px !important;
-        min-width: 72px !important;
-        min-height: 62px !important;
+        flex: 0 0 68px !important;
+        width: 68px !important;
+        height: 58px !important;
+        min-width: 68px !important;
+        min-height: 58px !important;
         display: grid !important;
         place-items: center !important;
-        border-radius: 15px !important;
+        border-radius: 14px !important;
         border: 1px solid #e8e2d7 !important;
         background: #ffffff !important;
         overflow: hidden !important;
@@ -2522,40 +2629,32 @@ function injetarEstilosMinimosDoScript() {
         background: #ffffff !important;
       }
 
+      .popup-topline {
+        margin-top: 8px !important;
+      }
+
       .zq-popup-recomendados {
         display: none !important;
       }
     }
 
     @media (max-width: 430px) {
-      .popup-imagem-area {
-        height: clamp(305px, 82vw, 380px) !important;
-        min-height: 305px !important;
-        max-height: 380px !important;
-      }
-
       .thumb-midia {
-        flex-basis: 70px !important;
-        width: 70px !important;
-        height: 60px !important;
-        min-width: 70px !important;
-        min-height: 60px !important;
+        flex-basis: 66px !important;
+        width: 66px !important;
+        height: 56px !important;
+        min-width: 66px !important;
+        min-height: 56px !important;
       }
     }
 
     @media (max-width: 360px) {
-      .popup-imagem-area {
-        height: 292px !important;
-        min-height: 292px !important;
-        max-height: 292px !important;
-      }
-
       .thumb-midia {
-        flex-basis: 66px !important;
-        width: 66px !important;
-        height: 58px !important;
-        min-width: 66px !important;
-        min-height: 58px !important;
+        flex-basis: 62px !important;
+        width: 62px !important;
+        height: 54px !important;
+        min-width: 62px !important;
+        min-height: 54px !important;
       }
     }
   `;
