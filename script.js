@@ -446,14 +446,16 @@ function criarHTMLPopupProduto() {
           <div id="popup-recomendados" class="zq-popup-recomendados"></div>
         </div>
 
-        <div class="popup-conteudo">
-          <div class="popup-topline">
-  <span id="popup-categoria" class="popup-categoria">Produto</span>
+<div class="popup-conteudo">
+  <div class="popup-topline">
+    <span id="popup-categoria" class="popup-categoria">Produto</span>
 
-  <button type="button" class="popup-share" onclick="compartilharProduto()" aria-label="Compartilhar">
-    Compartilhar
-  </button>
-</div>
+    <button type="button" class="popup-share" onclick="compartilharProduto()" aria-label="Compartilhar">
+      Compartilhar
+    </button>
+  </div>
+
+  <h2 id="popup-nome">Produto</h2>
 
           <h2 id="popup-nome">Produto</h2>
 
