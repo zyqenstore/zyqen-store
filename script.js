@@ -10,18 +10,6 @@ import {
   increment
 } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
 
-/* =========================================================
-   ZYQEN STORE - SCRIPT PRINCIPAL
-   Versão corrigida
-   - Galeria mobile adaptável ao tamanho real da imagem
-   - Imagem principal completa, sem corte
-   - Mini imagens estilo antigo, maiores e mais visíveis
-   - Popup rolando como página normal no mobile
-   - WhatsApp apenas dentro do robô de dúvida
-   - Nomes públicos neutros para parceiros
-   - Produtos recomendados clicáveis com botão de voltar
-   - Barrinha abaixo do parcelamento por parceiro/fonte
-========================================================= */
 
 let listaProdutos = [];
 let listaFaixasParceiros = [];
@@ -113,9 +101,6 @@ const FAIXAS_PARCEIROS_PADRAO = [
   }
 ];
 
-/* =========================================================
-   INICIAR SITE
-========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
   detectarDispositivo();
@@ -151,9 +136,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-/* =========================================================
-   DISPOSITIVO / ZOOM / BASE
-========================================================= */
 
 function detectarDispositivo() {
   const html = document.documentElement;
@@ -295,9 +277,6 @@ function ajustarBaseDoSite() {
   window.addEventListener("resize", aplicar);
 }
 
-/* =========================================================
-   FIREBASE
-========================================================= */
 
 function carregarProdutosFirebase() {
   const produtosRef = collection(db, "produtos");
@@ -372,9 +351,6 @@ function produtoEstaAtivo(produto) {
   return produto.ativo !== false;
 }
 
-/* =========================================================
-   NORMALIZAÇÃO
-========================================================= */
 
 function normalizarFaixaParceiro(f) {
   const nome = String(f.nome || f.titulo || "Barrinha").trim();
@@ -486,9 +462,6 @@ function normalizarProduto(p) {
   };
 }
 
-/* =========================================================
-   ESTRUTURA ESSENCIAL
-========================================================= */
 
 function garantirEstruturaEssencial() {
   let main = document.querySelector("main");
@@ -641,9 +614,6 @@ function criarHTMLChatProduto() {
   `;
 }
 
-/* =========================================================
-   BUSCA / ORDEM / CLIQUES
-========================================================= */
 
 function prepararBusca() {
   const campos = [
@@ -750,9 +720,6 @@ function prepararCliquesGerais() {
   });
 }
 
-/* =========================================================
-   FILTROS / RENDER
-========================================================= */
 
 function aplicarFiltros() {
   const termo = normalizarTexto(pegarTextoBusca());
@@ -989,9 +956,6 @@ function trocarPaginaProdutos(pagina) {
   }
 }
 
-/* =========================================================
-   FILTROS
-========================================================= */
 
 function filtrarRapido(tipo) {
   filtroRapidoAtual = tipo || "todos";
@@ -1143,9 +1107,6 @@ function normalizarOrdenacao(valor) {
   return "relevancia";
 }
 
-/* =========================================================
-   POPUP DO PRODUTO
-========================================================= */
 
 function abrirPopupProduto(id, opcoes = {}) {
   const produto = listaProdutos.find(p => String(p.id) === String(id) || String(p.docId) === String(id));
@@ -1740,15 +1701,15 @@ function renderizarFaixaParceiroPopup(produto) {
     "important"
   );
 
-  // Texto preto para ficar visível
+  
   faixaEl.style.setProperty("color", "#111111", "important");
 
-  // Fonte maior
+
   faixaEl.style.setProperty("font-size", ehMobile ? "12px" : "13px", "important");
   faixaEl.style.setProperty("font-weight", "950", "important");
   faixaEl.style.setProperty("letter-spacing", "0.01em", "important");
 
-  // Aumenta um pouco a altura da barrinha também
+
   faixaEl.style.setProperty("min-height", ehMobile ? "28px" : "31px", "important");
   faixaEl.style.setProperty("padding", ehMobile ? "6px 12px" : "7px 14px", "important");
 
@@ -1786,9 +1747,7 @@ function formatarDetalhe(item) {
   return `<strong>${escaparHTML(nome)}:</strong> ${escaparHTML(valor)}`;
 }
 
-/* =========================================================
-   CONFIANÇA / COMENTÁRIOS
-========================================================= */
+
 
 function selosPadrao() {
   return [
@@ -1978,9 +1937,6 @@ function fecharPopupSucessoComentario() {
   popup.style.display = "none";
 }
 
-/* =========================================================
-   CLIQUES / COMPARTILHAR / WHATSAPP
-========================================================= */
 
 async function registrarCliqueProduto(tipo, produto = produtoAtualPopup) {
   if (typeof produto === "string") {
@@ -2063,9 +2019,6 @@ function abrirInstagramZyqen(url = "https://www.instagram.com/zyqen_oficial") {
   window.open(url, "_blank", "noopener");
 }
 
-/* =========================================================
-   CHAT DO PRODUTO
-========================================================= */
 
 function prepararChatProduto() {
   if (chatProdutoInicializado) return;
@@ -2298,9 +2251,6 @@ function manterChatDentroDaTela() {
   card.style.bottom = "auto";
 }
 
-/* =========================================================
-   UTILITÁRIOS
-========================================================= */
 
 function hexParaRgb(hex) {
   const valor = String(hex || "#b98a37").replace("#", "").trim();
@@ -2493,9 +2443,6 @@ function registrarPWA() {
   });
 }
 
-/* =========================================================
-   CSS DO SCRIPT
-========================================================= */
 
 function injetarEstilosMinimosDoScript() {
   if (document.getElementById("zyqen-script-min-style")) return;
@@ -2633,9 +2580,6 @@ function injetarEstilosMinimosDoScript() {
   document.head.appendChild(style);
 }
 
-/* =========================================================
-   FUNÇÕES GLOBAIS PARA HTML/ONCLICK
-========================================================= */
 
 window.abrirPopupProduto = abrirPopupProduto;
 window.abrirProdutoRecomendado = abrirProdutoRecomendado;
