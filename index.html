@@ -2969,7 +2969,7 @@
 
   </div>
 
-  <script type="module" src="script.js?v=61"></script>
+  <script type="module" src="script.js?v=63"></script>
 
   <script>
 
@@ -2983,126 +2983,7 @@
         .replaceAll("'", "&#039;");
     }
 
-    function zyqenMontarProdutoRecomendadoPopup() {
-      const popup = document.getElementById("popup-produto");
-
-      if (!popup || !popup.classList.contains("ativo")) return;
-
-      const galeria = popup.querySelector(".popup-galeria");
-      const thumbs = popup.querySelector(".popup-thumbs");
-
-      if (!galeria || !thumbs) return;
-
-      let box = galeria.querySelector(".zq-popup-recomendados");
-
-      if (!box) {
-        box = document.createElement("div");
-        box.className = "zq-popup-recomendados";
-        thumbs.insertAdjacentElement("afterend", box);
-      }
-
-      const nomeAtual = document.getElementById("popup-nome")?.textContent?.trim() || "";
-
-      const cards = Array.from(document.querySelectorAll(".produto-card.zq-product-card"));
-
-      const produtos = cards
-        .map(card => {
-          const id =
-            card.getAttribute("data-open-product") ||
-            card.querySelector("[data-open-product]")?.getAttribute("data-open-product") ||
-            "";
-
-          const nome = card.querySelector(".produto-info h3")?.textContent?.trim() || "";
-          const preco = card.querySelector(".produto-precos strong")?.textContent?.trim() || "";
-          const img = card.querySelector(".produto-img-wrap img")?.getAttribute("src") || "";
-
-          return {
-            id,
-            nome,
-            preco,
-            img
-          };
-        })
-        .filter(produto => {
-          return (
-            produto.id &&
-            produto.nome &&
-            produto.img &&
-            produto.nome !== nomeAtual
-          );
-        })
-        .slice(0, 2);
-
-      if (!produtos.length) {
-        box.style.display = "block";
-
-        box.innerHTML = `
-          <div class="zq-popup-recomendados-top">
-            <strong>Veja também</strong>
-            <span>Outras opções</span>
-          </div>
-
-          <p class="zq-popup-recomendados-vazio">
-            Quando você tiver mais produtos ativos na vitrine, eles vão aparecer aqui automaticamente.
-          </p>
-        `;
-
-        return;
-      }
-
-      box.style.display = "block";
-
-      box.innerHTML = `
-        <div class="zq-popup-recomendados-top">
-          <strong>Veja também</strong>
-          <span>Outras opções</span>
-        </div>
-
-        <div class="zq-popup-recomendados-grid">
-          ${produtos.map(produto => `
-            <button
-              type="button"
-              class="zq-popup-recomendado-item"
-              data-open-product="${zyqenEscaparHTML(produto.id)}"
-            >
-              <img
-                src="${zyqenEscaparHTML(produto.img)}"
-                alt="${zyqenEscaparHTML(produto.nome)}"
-                onerror="this.style.opacity='.25'"
-              >
-
-              <span>
-                <strong>${zyqenEscaparHTML(produto.nome)}</strong>
-                <small>${zyqenEscaparHTML(produto.preco || "Ver preço")}</small>
-              </span>
-            </button>
-          `).join("")}
-        </div>
-      `;
-    }
-
-    document.addEventListener("click", function (event) {
-      if (event.target.closest("[data-open-product]")) {
-        setTimeout(zyqenMontarProdutoRecomendadoPopup, 220);
-        setTimeout(zyqenMontarProdutoRecomendadoPopup, 650);
-        setTimeout(zyqenMontarProdutoRecomendadoPopup, 1100);
-      }
-    }, true);
-
-    window.addEventListener("resize", function () {
-      setTimeout(zyqenMontarProdutoRecomendadoPopup, 150);
-    });
-
-    const zyqenObserverPopup = new MutationObserver(function () {
-      setTimeout(zyqenMontarProdutoRecomendadoPopup, 180);
-    });
-
-    zyqenObserverPopup.observe(document.body, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ["class", "style"]
-    });
+    
   </script>
 
 
@@ -3404,20 +3285,7 @@
     document.addEventListener("click", aplicarVariasVezes);
     document.addEventListener("touchend", aplicarVariasVezes);
 
-    const observar = () => {
-      if (!document.body) return;
 
-      const observer = new MutationObserver(() => {
-        aplicarSemCorte();
-      });
-
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ["class", "style", "src"]
-      });
-    };
 
     if (document.body) observar();
     else document.addEventListener("DOMContentLoaded", observar);
@@ -3465,6 +3333,53 @@
       font-size: 11px !important;
       font-weight: 850 !important;
       pointer-events: auto !important;
+    }
+  }
+</style>
+
+<style id="zyqen-compartilhar-pc-final">
+  @media (min-width: 981px) {
+    html body .popup-produto.ativo .popup-conteudo .popup-topline {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: auto 1fr auto 44px !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 0 !important;
+  margin-top: 0 !important;
+}
+
+    html body .popup-produto.ativo .popup-conteudo .popup-categoria,
+    html body .popup-produto.ativo .popup-conteudo #popup-categoria {
+      grid-column: 1 !important;
+      justify-self: start !important;
+      max-width: 180px !important;
+    }
+
+    html body .popup-produto.ativo .popup-conteudo .popup-share {
+      grid-column: 3 !important;
+      justify-self: end !important;
+      margin-left: auto !important;
+        /*Compartilhar ainda mais para a esquerda, aumenta esse valor:*/
+      margin-right: 1px !important;
+      min-height: 32px !important;
+      padding: 0 14px !important;
+      border-radius: 999px !important;
+      border: 1px solid var(--zq-line) !important;
+      background: #fffdfa !important;
+      color: var(--zq-gold3) !important;
+      font-size: 11px !important;
+      font-weight: 850 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      white-space: nowrap !important;
+    }
+
+    html body .popup-produto.ativo .popup-fechar {
+      right: 16px !important;
+      top: 16px !important;
+      z-index: 90 !important;
     }
   }
 </style>

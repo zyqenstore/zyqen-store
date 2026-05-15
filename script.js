@@ -19,10 +19,12 @@ import {
    - Popup rolando como página normal no mobile
    - WhatsApp apenas dentro do robô de dúvida
    - Nomes públicos neutros para parceiros
+   - Produtos recomendados clicáveis com botão de voltar
 ========================================================= */
 
 let listaProdutos = [];
 let produtoAtualPopup = null;
+let historicoProdutosPopup = [];
 let midiasProdutoAtual = [];
 let indiceMidiaAtual = 0;
 let comentarioEnviando = false;
@@ -170,15 +172,18 @@ function bloquearZoomMobile() {
   const html = document.documentElement;
   const body = document.body;
 
-  html.style.overflowX = "hidden";
+  html.style.width = "100%";
   html.style.maxWidth = "100%";
-  body.style.overflowX = "hidden";
-  body.style.maxWidth = "100%";
+  html.style.overflowX = "hidden";
+  html.style.touchAction = "manipulation";
 
-  const ehMobile = () => window.matchMedia("(max-width: 900px)").matches;
+  body.style.width = "100%";
+  body.style.maxWidth = "100%";
+  body.style.overflowX = "hidden";
+  body.style.touchAction = "manipulation";
 
   const impedirGesture = event => {
-    if (ehMobile()) event.preventDefault();
+    event.preventDefault();
   };
 
   document.addEventListener("gesturestart", impedirGesture, { passive: false });
@@ -188,7 +193,7 @@ function bloquearZoomMobile() {
   document.addEventListener(
     "touchmove",
     event => {
-      if (ehMobile() && event.touches && event.touches.length > 1) {
+      if (event.touches && event.touches.length > 1) {
         event.preventDefault();
       }
     },
@@ -200,8 +205,6 @@ function bloquearZoomMobile() {
   document.addEventListener(
     "touchend",
     event => {
-      if (!ehMobile()) return;
-
       const agora = Date.now();
 
       if (agora - ultimoToque <= 320) {
@@ -209,6 +212,45 @@ function bloquearZoomMobile() {
       }
 
       ultimoToque = agora;
+    },
+    { passive: false }
+  );
+
+  document.addEventListener(
+    "wheel",
+    event => {
+      if (event.ctrlKey || event.metaKey) {
+        event.preventDefault();
+      }
+    },
+    { passive: false }
+  );
+
+  document.addEventListener(
+    "keydown",
+    event => {
+      const tecla = String(event.key || "").toLowerCase();
+      const estaTentandoZoom =
+        (event.ctrlKey || event.metaKey) &&
+        (tecla === "+" ||
+          tecla === "-" ||
+          tecla === "=" ||
+          tecla === "0" ||
+          tecla === "add" ||
+          tecla === "subtract");
+
+      if (estaTentandoZoom) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    },
+    { passive: false }
+  );
+
+  document.addEventListener(
+    "dblclick",
+    event => {
+      event.preventDefault();
     },
     { passive: false }
   );
@@ -446,16 +488,14 @@ function criarHTMLPopupProduto() {
           <div id="popup-recomendados" class="zq-popup-recomendados"></div>
         </div>
 
-<div class="popup-conteudo">
-  <div class="popup-topline">
-    <span id="popup-categoria" class="popup-categoria">Produto</span>
+        <div class="popup-conteudo">
+          <div class="popup-topline">
+            <span id="popup-categoria" class="popup-categoria">Produto</span>
 
-    <button type="button" class="popup-share" onclick="compartilharProduto()" aria-label="Compartilhar">
-      Compartilhar
-    </button>
-  </div>
-
-  <h2 id="popup-nome">Produto</h2>
+            <button type="button" class="popup-share" onclick="compartilharProduto()" aria-label="Compartilhar">
+              Compartilhar
+            </button>
+          </div>
 
           <h2 id="popup-nome">Produto</h2>
 
@@ -580,10 +620,24 @@ function prepararCliquesGerais() {
       return;
     }
 
+    const voltarProduto = event.target.closest("[data-voltar-produto]");
+
+    if (voltarProduto) {
+      voltarProdutoAnterior();
+      return;
+    }
+
+    const recomendado = event.target.closest("[data-popup-recomendado]");
+
+    if (recomendado) {
+      abrirProdutoRecomendado(recomendado.dataset.popupRecomendado || recomendado.dataset.openProduct);
+      return;
+    }
+
     const open = event.target.closest("[data-open-product]");
 
     if (open) {
-      abrirPopupProduto(open.dataset.openProduct);
+      abrirPopupProduto(open.dataset.openProduct, { limparHistorico: true });
       return;
     }
 
@@ -623,7 +677,7 @@ function prepararCliquesGerais() {
 
     if (event.key === "Enter") {
       const card = event.target.closest?.(".produto-card[data-open-product]");
-      if (card) abrirPopupProduto(card.dataset.openProduct);
+      if (card) abrirPopupProduto(card.dataset.openProduct, { limparHistorico: true });
     }
   });
 }
@@ -1025,10 +1079,14 @@ function normalizarOrdenacao(valor) {
    POPUP DO PRODUTO
 ========================================================= */
 
-function abrirPopupProduto(id) {
+function abrirPopupProduto(id, opcoes = {}) {
   const produto = listaProdutos.find(p => String(p.id) === String(id) || String(p.docId) === String(id));
 
   if (!produto) return;
+
+  if (opcoes.limparHistorico !== false) {
+    historicoProdutosPopup = [];
+  }
 
   produtoAtualPopup = produto;
   midiasProdutoAtual = montarMidiasProduto(produto);
@@ -1045,6 +1103,60 @@ function abrirPopupProduto(id) {
   preencherPopup(produto, true);
 
   setTimeout(aplicarCorrecaoGaleriaProduto, 60);
+}
+
+function abrirProdutoRecomendado(id) {
+  if (!id) return;
+
+  const idNovo = String(id);
+  const idAtual = produtoAtualPopup ? String(produtoAtualPopup.id || produtoAtualPopup.docId) : "";
+
+  if (idAtual && idAtual !== idNovo) {
+    const ultimoHistorico = historicoProdutosPopup[historicoProdutosPopup.length - 1];
+
+    if (String(ultimoHistorico || "") !== idAtual) {
+      historicoProdutosPopup.push(idAtual);
+    }
+
+    if (historicoProdutosPopup.length > 12) {
+      historicoProdutosPopup = historicoProdutosPopup.slice(-12);
+    }
+  }
+
+  abrirPopupProduto(idNovo, { limparHistorico: false });
+  rolarPopupParaTopo();
+}
+
+function voltarProdutoAnterior() {
+  let idAnterior = historicoProdutosPopup.pop();
+
+  while (idAnterior && !listaProdutos.some(p => String(p.id) === String(idAnterior) || String(p.docId) === String(idAnterior))) {
+    idAnterior = historicoProdutosPopup.pop();
+  }
+
+  if (!idAnterior) return;
+
+  abrirPopupProduto(idAnterior, { limparHistorico: false });
+  rolarPopupParaTopo();
+}
+
+function rolarPopupParaTopo() {
+  const card = document.querySelector(".popup-produto-card");
+  const conteudo = document.querySelector(".popup-conteudo");
+  const galeria = document.querySelector(".popup-galeria");
+
+  [card, conteudo, galeria].forEach(el => {
+    if (!el) return;
+
+    try {
+      el.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    } catch (_) {
+      el.scrollTop = 0;
+    }
+  });
 }
 
 function preencherPopup(produto, resetarMidia = true) {
@@ -1123,6 +1235,7 @@ function fecharPopup() {
 
   document.body.classList.remove("popup-aberto");
   fecharChatProduto();
+  historicoProdutosPopup = [];
 }
 
 function configurarBotaoCompraPopup(produto) {
@@ -1339,21 +1452,10 @@ function ajustarCaixaDaImagemPeloTamanhoReal(area, imagem, video) {
   const limiteMinimo = larguraTela <= 360 ? 270 : 292;
   const limiteMaximo = Math.min(Math.round(window.innerHeight * 0.56), 440);
 
-  if (ratio >= 1.75) {
-    alturaIdeal = Math.max(240, alturaIdeal);
-  }
-
-  if (ratio >= 1.25 && ratio < 1.75) {
-    alturaIdeal = Math.max(285, alturaIdeal);
-  }
-
-  if (ratio >= 0.82 && ratio < 1.25) {
-    alturaIdeal = Math.max(330, alturaIdeal);
-  }
-
-  if (ratio < 0.82) {
-    alturaIdeal = Math.max(360, alturaIdeal);
-  }
+  if (ratio >= 1.75) alturaIdeal = Math.max(240, alturaIdeal);
+  if (ratio >= 1.25 && ratio < 1.75) alturaIdeal = Math.max(285, alturaIdeal);
+  if (ratio >= 0.82 && ratio < 1.25) alturaIdeal = Math.max(330, alturaIdeal);
+  if (ratio < 0.82) alturaIdeal = Math.max(360, alturaIdeal);
 
   const alturaFinal = limitarNumero(alturaIdeal, limiteMinimo, limiteMaximo);
 
@@ -1389,6 +1491,7 @@ function renderizarRecomendadosPopup(produto) {
   if (!box || !produto) return;
 
   const idAtual = String(produto.id || produto.docId);
+  const voltarHTML = gerarHTMLVoltarProdutoAnterior();
 
   const recomendados = listaProdutos
     .filter(item => String(item.id || item.docId) !== idAtual)
@@ -1405,6 +1508,7 @@ function renderizarRecomendadosPopup(produto) {
 
   if (!recomendados.length) {
     box.innerHTML = `
+      ${voltarHTML}
       <div class="zq-popup-recomendados-top">
         <strong>Veja também</strong>
         <span>Outras opções</span>
@@ -1416,16 +1520,18 @@ function renderizarRecomendadosPopup(produto) {
   }
 
   box.innerHTML = `
+    ${voltarHTML}
+
     <div class="zq-popup-recomendados-top">
       <strong>Veja também</strong>
-      <span>Outras opções</span>
+      <span>Toque para abrir</span>
     </div>
 
     <div class="zq-popup-recomendados-grid">
       ${recomendados
         .map(
           item => `
-          <button type="button" class="zq-popup-recomendado-item" data-open-product="${escaparHTML(item.id || item.docId)}">
+          <button type="button" class="zq-popup-recomendado-item" data-popup-recomendado="${escaparHTML(item.id || item.docId)}">
             <img src="${escaparHTML(imagemPrincipal(item))}" alt="${escaparHTML(item.nome)}" onerror="this.onerror=null;this.src='${IMAGEM_FALLBACK}'">
             <span>
               <strong>${escaparHTML(item.nome)}</strong>
@@ -1436,6 +1542,26 @@ function renderizarRecomendadosPopup(produto) {
         )
         .join("")}
     </div>
+  `;
+}
+
+function gerarHTMLVoltarProdutoAnterior() {
+  if (!historicoProdutosPopup.length) return "";
+
+  const idAnterior = historicoProdutosPopup[historicoProdutosPopup.length - 1];
+  const produtoAnterior = listaProdutos.find(
+    item => String(item.id) === String(idAnterior) || String(item.docId) === String(idAnterior)
+  );
+
+  const texto = produtoAnterior
+    ? `Voltar para ${cortarTexto(produtoAnterior.nome, 34)}`
+    : "Voltar ao produto anterior";
+
+  return `
+    <button type="button" class="zq-popup-voltar-produto" data-voltar-produto>
+      <span>←</span>
+      <strong>${escaparHTML(texto)}</strong>
+    </button>
   `;
 }
 
@@ -2115,6 +2241,14 @@ function escaparHTML(texto) {
     .replaceAll("'", "&#039;");
 }
 
+function cortarTexto(texto, limite = 42) {
+  const valor = String(texto || "").trim();
+
+  if (valor.length <= limite) return valor;
+
+  return `${valor.slice(0, limite).trim()}...`;
+}
+
 function renderizarIcone(icone) {
   const valor = String(icone || "").trim();
 
@@ -2223,157 +2357,62 @@ function injetarEstilosMinimosDoScript() {
       display: none !important;
     }
 
-    .popup-produto-card {
-      width: min(1030px, calc(100vw - 28px));
-      height: min(860px, calc(100dvh - 34px));
-      max-height: calc(100dvh - 34px);
-      grid-template-columns: minmax(360px, 470px) minmax(360px, 1fr);
-    }
-
-    .popup-galeria {
-      grid-template-rows: auto auto 1fr;
-      align-content: start;
-      overflow-y: auto;
-    }
-
-    .popup-imagem-area {
-      height: 430px;
-      min-height: 430px;
-      max-height: 430px;
-    }
-
-    .popup-imagem-area img,
-    #popup-imagem,
-    .popup-video {
-      width: auto !important;
-      height: auto !important;
-      max-width: 100% !important;
-      max-height: 100% !important;
-      object-fit: contain !important;
-      object-position: center center !important;
-      padding: 0 !important;
-      margin: 0 auto !important;
-      background: #ffffff !important;
-    }
-
-    .popup-thumbs {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      overflow-x: auto;
-      overflow-y: hidden;
-      scrollbar-width: none;
-    }
-
-    .popup-thumbs::-webkit-scrollbar {
-      display: none;
-    }
-
-    .thumb-midia {
-      position: relative;
-      display: grid !important;
-      place-items: center !important;
-      overflow: hidden !important;
-      border: 1px solid #e8e2d7;
-      background: #ffffff;
-      cursor: pointer;
-    }
-
-    .thumb-midia img {
-      width: 100% !important;
-      height: 100% !important;
-      max-width: 100% !important;
-      max-height: 100% !important;
-      object-fit: cover !important;
-      object-position: center center !important;
-      padding: 0 !important;
-      margin: 0 !important;
-      display: block !important;
-    }
-
-    .zq-popup-recomendados {
+    .zq-popup-voltar-produto {
       width: 100%;
-      margin-top: 2px;
-      padding: 12px;
-      border-radius: 16px;
-      border: 1px solid #e8e2d7;
-      background: #ffffff;
-    }
-
-    .zq-popup-recomendados-top {
-      display: flex;
+      min-height: 38px;
+      display: inline-flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
       gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    .zq-popup-recomendados-top strong {
-      color: #111;
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 18px;
-      line-height: 1;
-      letter-spacing: -0.035em;
-    }
-
-    .zq-popup-recomendados-top span {
+      margin: 0 0 10px;
+      padding: 8px 10px;
+      border-radius: 13px;
+      border: 1px solid #e8e2d7;
+      background: #fff8ed;
       color: #8a601f;
-      font-size: 11px;
-      font-weight: 700;
+      text-align: left;
+      cursor: pointer;
+      transition: 0.18s ease;
     }
 
-    .zq-popup-recomendados-grid {
-      display: grid;
-      gap: 8px;
+    .zq-popup-voltar-produto:hover {
+      background: #fff3df;
+      border-color: #d9c6a6;
+    }
+
+    .zq-popup-voltar-produto span {
+      width: 24px;
+      height: 24px;
+      min-width: 24px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 1px solid #e8e2d7;
+      color: #8a601f;
+      font-size: 16px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .zq-popup-voltar-produto strong {
+      min-width: 0;
+      display: block;
+      overflow: hidden;
+      color: #8a601f;
+      font-size: 12px;
+      font-weight: 850;
+      line-height: 1.2;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
 
     .zq-popup-recomendado-item {
-      width: 100%;
-      min-height: 74px;
-      display: grid;
-      grid-template-columns: 64px 1fr;
-      align-items: center;
-      gap: 10px;
-      padding: 7px;
-      border-radius: 13px;
-      border: 1px solid #e8e2d7;
-      background: #fffdfa;
-      text-align: left;
-      color: #111;
+      cursor: pointer;
     }
 
-    .zq-popup-recomendado-item img {
-      width: 64px;
-      height: 58px;
-      object-fit: contain;
-      border-radius: 10px;
-      background: #f7f7f6;
-    }
-
-    .zq-popup-recomendado-item strong {
-      display: -webkit-box;
-      color: #1d1d1d;
-      font-size: 12px;
-      line-height: 1.25;
-      font-weight: 600;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .zq-popup-recomendado-item small {
-      display: block;
-      margin-top: 4px;
-      color: #111;
-      font-size: 13px;
-      font-weight: 800;
-    }
-
-    .zq-popup-recomendados-vazio {
-      margin: 0;
-      color: #5f5c57;
-      font-size: 12px;
-      line-height: 1.45;
+    .zq-popup-recomendado-item:active {
+      transform: scale(0.99);
     }
 
     .estrelas-mini,
@@ -2390,275 +2429,6 @@ function injetarEstilosMinimosDoScript() {
       width: 14px;
       height: 14px;
     }
-
-    .zq-empty-products {
-      padding: 28px;
-      border: 1px dashed rgba(185, 138, 55, .32);
-      border-radius: 22px;
-      background: rgba(255,255,255,.72);
-      text-align: center;
-    }
-
-    .zq-empty-products span {
-      color: #b98a37;
-      font-weight: 900;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: .1em;
-    }
-
-    .zq-empty-products h2 {
-      margin: 8px 0;
-      font-family: Georgia, "Times New Roman", serif;
-    }
-
-    .zq-empty-products p {
-      color: #77716a;
-    }
-
-    .zq-empty-products button {
-      min-height: 42px;
-      padding: 0 18px;
-      border: 0;
-      border-radius: 14px;
-      background: #b98a37;
-      color: white;
-      font-weight: 900;
-    }
-
-    @media (max-width: 980px) {
-      .popup-produto.ativo {
-        display: block !important;
-      }
-
-      .popup-produto {
-        padding: 0 !important;
-        align-items: stretch !important;
-        justify-content: stretch !important;
-        background: #ffffff !important;
-        backdrop-filter: none !important;
-        overflow: hidden !important;
-      }
-
-      .popup-produto-backdrop {
-        display: none !important;
-      }
-
-      .popup-produto-card {
-        width: 100vw !important;
-        height: 100dvh !important;
-        max-height: 100dvh !important;
-        display: block !important;
-        overflow-x: hidden !important;
-        overflow-y: auto !important;
-        -webkit-overflow-scrolling: touch !important;
-        border-radius: 0 !important;
-        border: 0 !important;
-        background: #ffffff !important;
-        box-shadow: none !important;
-        padding-bottom: 84px !important;
-      }
-
-      .popup-fechar {
-        position: fixed !important;
-        top: max(10px, env(safe-area-inset-top)) !important;
-        right: 12px !important;
-        z-index: 9999 !important;
-        width: 42px !important;
-        height: 42px !important;
-        min-width: 42px !important;
-        min-height: 42px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        border-radius: 999px !important;
-        border: 1px solid rgba(0, 0, 0, .08) !important;
-        background: rgba(255, 255, 255, .96) !important;
-        color: #111 !important;
-        font-size: 28px !important;
-        line-height: 1 !important;
-        padding: 0 0 3px !important;
-        box-shadow: 0 10px 28px rgba(20, 18, 15, .14) !important;
-      }
-
-      .popup-galeria {
-        width: 100% !important;
-        height: auto !important;
-        max-height: none !important;
-        min-height: 0 !important;
-        display: block !important;
-        padding: 10px 12px 8px !important;
-        background: linear-gradient(180deg, #fff8ed 0%, #ffffff 100%) !important;
-        border: 0 !important;
-        overflow: visible !important;
-      }
-
-      .popup-imagem-area {
-        width: 100% !important;
-        position: relative !important;
-        display: grid !important;
-        place-items: center !important;
-        border-radius: 20px !important;
-        border: 1px solid #e8e2d7 !important;
-        background: #ffffff !important;
-        overflow: hidden !important;
-        box-shadow: 0 10px 26px rgba(37, 31, 22, .075) !important;
-      }
-
-      .popup-imagem-area[data-aspecto="panoramica"] {
-        border-radius: 18px !important;
-      }
-
-      .popup-imagem-area[data-aspecto="horizontal"] {
-        border-radius: 19px !important;
-      }
-
-      .popup-imagem-area[data-aspecto="quadrada"] {
-        border-radius: 20px !important;
-      }
-
-      .popup-imagem-area[data-aspecto="vertical"] {
-        border-radius: 20px !important;
-      }
-
-      .popup-imagem-area img,
-      #popup-imagem,
-      #popup-img,
-      #imagem-popup,
-      #imagem-principal-popup,
-      .popup-foto-principal,
-      .popup-main-img,
-      .popup-video {
-        width: auto !important;
-        height: auto !important;
-        max-width: 100% !important;
-        max-height: 100% !important;
-        object-fit: contain !important;
-        object-position: center center !important;
-        padding: 0 !important;
-        margin: 0 auto !important;
-        background: #ffffff !important;
-      }
-
-      .popup-seta {
-        width: 38px !important;
-        height: 38px !important;
-        min-width: 38px !important;
-        min-height: 38px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        border-radius: 999px !important;
-        border: 1px solid rgba(0,0,0,.08) !important;
-        background: rgba(255,255,255,.94) !important;
-        color: #111 !important;
-        font-size: 27px !important;
-        font-weight: 800 !important;
-        line-height: 1 !important;
-        padding: 0 0 4px !important;
-        box-shadow: 0 8px 22px rgba(20,18,15,.12) !important;
-      }
-
-      .popup-seta-esq {
-        left: 9px !important;
-      }
-
-      .popup-seta-dir {
-        right: 9px !important;
-      }
-
-      .popup-contador-imagem {
-        right: 10px !important;
-        bottom: 10px !important;
-        min-height: 25px !important;
-        padding: 5px 9px !important;
-        font-size: 10px !important;
-        background: rgba(17,17,17,.68) !important;
-      }
-
-      .popup-thumbs {
-        width: 100% !important;
-        min-height: 70px !important;
-        height: 70px !important;
-        display: flex !important;
-        align-items: center !important;
-        gap: 9px !important;
-        overflow-x: auto !important;
-        overflow-y: hidden !important;
-        padding: 9px 2px 4px !important;
-        scrollbar-width: none !important;
-        scroll-snap-type: x proximity !important;
-      }
-
-      .thumb-midia {
-        flex: 0 0 68px !important;
-        width: 68px !important;
-        height: 58px !important;
-        min-width: 68px !important;
-        min-height: 58px !important;
-        display: grid !important;
-        place-items: center !important;
-        border-radius: 14px !important;
-        border: 1px solid #e8e2d7 !important;
-        background: #ffffff !important;
-        overflow: hidden !important;
-        box-shadow: 0 6px 16px rgba(37,31,22,.05) !important;
-        scroll-snap-align: start !important;
-      }
-
-      .thumb-midia.ativo {
-        border-color: #b98732 !important;
-        box-shadow: 0 0 0 3px rgba(185,135,50,.14) !important;
-      }
-
-      .thumb-midia img {
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: cover !important;
-        object-position: center center !important;
-        padding: 0 !important;
-        margin: 0 !important;
-      }
-
-      .popup-conteudo {
-        width: 100% !important;
-        height: auto !important;
-        min-height: 0 !important;
-        max-height: none !important;
-        display: block !important;
-        overflow: visible !important;
-        padding: 8px 14px 24px !important;
-        background: #ffffff !important;
-      }
-
-      .popup-topline {
-        margin-top: 8px !important;
-      }
-
-      .zq-popup-recomendados {
-        display: none !important;
-      }
-    }
-
-    @media (max-width: 430px) {
-      .thumb-midia {
-        flex-basis: 66px !important;
-        width: 66px !important;
-        height: 56px !important;
-        min-width: 66px !important;
-        min-height: 56px !important;
-      }
-    }
-
-    @media (max-width: 360px) {
-      .thumb-midia {
-        flex-basis: 62px !important;
-        width: 62px !important;
-        height: 54px !important;
-        min-width: 62px !important;
-        min-height: 54px !important;
-      }
-    }
   `;
 
   document.head.appendChild(style);
@@ -2669,6 +2439,8 @@ function injetarEstilosMinimosDoScript() {
 ========================================================= */
 
 window.abrirPopupProduto = abrirPopupProduto;
+window.abrirProdutoRecomendado = abrirProdutoRecomendado;
+window.voltarProdutoAnterior = voltarProdutoAnterior;
 window.fecharPopup = fecharPopup;
 window.atualizarImagem = atualizarImagem;
 window.proximaImagemPopup = proximaImagemPopup;
