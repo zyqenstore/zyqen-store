@@ -1083,6 +1083,117 @@
       background: rgba(255,255,255,.55);
     }
 
+    /* =========================================================
+       FAIXAS / BARRINHAS DOS PARCEIROS
+    ========================================================= */
+
+    .faixa-preview-box {
+      min-height: 58px;
+      display: grid;
+      align-items: center;
+      gap: 8px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
+    }
+
+    .faixa-preview-label {
+      width: max-content;
+      max-width: 100%;
+      min-height: 28px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(185, 138, 55, .22);
+      color: #1f1d1a;
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .faixa-preview-label::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: .92;
+    }
+
+    .range-line {
+      display: grid;
+      grid-template-columns: 1fr 58px;
+      align-items: center;
+      gap: 10px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      min-height: 45px;
+      padding: 0;
+      accent-color: var(--gold);
+      cursor: pointer;
+    }
+
+    .range-value {
+      min-height: 34px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--gold3);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .faixa-lista {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 14px;
+    }
+
+    .faixa-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .faixa-card-top h3 {
+      font-size: 16px;
+      line-height: 1.15;
+    }
+
+    .faixa-card-top small {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .faixa-color-dot {
+      width: 34px;
+      height: 34px;
+      min-width: 34px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.5);
+    }
+
+    .faixa-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin: 10px 0 0;
+    }
+
     @media (max-width: 1180px) {
       .app {
         grid-template-columns: 88px minmax(0, 1fr);
@@ -1288,6 +1399,11 @@
           <img class="nav-icon" src="imagens/icones/shield-check.svg" onerror="this.style.display='none'" alt="">
           <span>Selos</span>
         </button>
+
+        <button class="nav-btn" type="button" data-page="faixasParceiros">
+          <img class="nav-icon" src="imagens/icones/badge.svg" onerror="this.style.display='none'" alt="">
+          <span>Barrinhas</span>
+        </button>
       </nav>
 
       <div class="sidebar-help">
@@ -1457,6 +1573,15 @@
                 </span>
                 <em>›</em>
               </button>
+
+              <button class="quick-item" type="button" data-go="faixasParceiros">
+                <i><img src="imagens/icones/badge.svg" onerror="this.style.display='none'" alt=""></i>
+                <span>
+                  <strong>Barrinhas dos parceiros</strong>
+                  <span>Cor, opacidade e plataformas</span>
+                </span>
+                <em>›</em>
+              </button>
             </div>
           </aside>
         </div>
@@ -1581,6 +1706,14 @@
                 <div class="field">
                   <label>Texto extra do parcelamento</label>
                   <input id="pTextoParcelamento" placeholder="Ex: sem juros">
+                </div>
+
+                <div class="field span-2">
+                  <label>Barrinha abaixo do parcelamento</label>
+                  <select id="pFaixaParceiroId">
+                    <option value="">Nenhuma barrinha</option>
+                  </select>
+                  <p class="hint">Escolha Mercado Livre, Shopee ou uma opção criada em “Barrinhas”. A cor e opacidade vêm da configuração.</p>
                 </div>
 
                 <div class="field span-2">
@@ -2050,6 +2183,93 @@
           <div id="selosGrid" class="selo-grid"></div>
         </div>
       </section>
+
+
+      <section id="faixasParceiros" class="page">
+        <div class="page-head">
+          <div>
+            <span class="eyebrow">Barrinhas</span>
+            <h1>Barrinhas dos parceiros</h1>
+            <p>Crie e edite a faixa que aparece abaixo do parcelamento no produto. Você pode usar Mercado Livre, Shopee ou criar novas opções.</p>
+          </div>
+
+          <button id="btnCriarFaixasPadrao" class="gold-btn" type="button">Criar barrinhas padrão</button>
+        </div>
+
+        <div class="layout-2">
+          <div class="card">
+            <div class="card-title">
+              <div>
+                <h2 id="faixaTitulo">Nova barrinha</h2>
+                <p>Escolha nome, slug, cor e opacidade. Depois selecione essa barrinha no cadastro do produto.</p>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="field">
+                <label>Nome da barrinha</label>
+                <input id="faixaNome" placeholder="Ex: Mercado Livre">
+              </div>
+
+              <div class="field">
+                <label>Slug interno</label>
+                <input id="faixaSlug" placeholder="Ex: mercado-livre">
+              </div>
+
+              <div class="field">
+                <label>Cor</label>
+                <input id="faixaCor" type="color" value="#ffe600">
+              </div>
+
+              <div class="field">
+                <label>Opacidade</label>
+                <div class="range-line">
+                  <input id="faixaOpacidade" type="range" min="0.05" max="1" step="0.01" value="0.18">
+                  <span id="faixaOpacidadeValor" class="range-value">18%</span>
+                </div>
+              </div>
+
+              <div class="field">
+                <label>Ordem</label>
+                <input id="faixaOrdem" type="number" placeholder="1">
+              </div>
+
+              <div class="check-line">
+                <input id="faixaAtiva" type="checkbox" checked>
+                <label for="faixaAtiva">Barrinha ativa</label>
+              </div>
+
+              <div class="field span-2">
+                <label>Prévia</label>
+                <div class="faixa-preview-box">
+                  <span id="faixaPreview" class="faixa-preview-label">Mercado Livre</span>
+                  <p class="hint">Essa prévia mostra como a barrinha vai parecer abaixo do parcelamento no produto.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-actions" style="position:static">
+              <button id="btnCancelarFaixa" class="secondary-btn oculto" type="button">Cancelar edição</button>
+              <button id="btnLimparFaixa" class="secondary-btn" type="button">Limpar</button>
+              <button id="btnSalvarFaixa" class="primary-btn" type="button">Salvar barrinha</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="card">
+              <div class="card-title">
+                <div>
+                  <h2>Barrinhas criadas</h2>
+                  <p>Edite cor, opacidade, nome, ordem ou desative quando quiser.</p>
+                </div>
+              </div>
+
+              <div id="faixasParceirosGrid" class="faixa-lista"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </main>
   </div>
 
@@ -2087,16 +2307,19 @@
     let produtos = [];
     let categorias = [];
     let selos = [];
+    let faixasParceiros = [];
 
     let produtoEditId = null;
     let produtoEditOriginal = null;
     let categoriaEditId = null;
     let seloEditId = null;
+    let faixaParceiroEditId = null;
     let confirmarCallback = null;
 
     let unsubProdutos = null;
     let unsubCategorias = null;
     let unsubSelos = null;
+    let unsubFaixasParceiros = null;
 
     const CATEGORIAS_PADRAO = [
       {
@@ -2205,6 +2428,27 @@
         descricao: "Produto organizado para facilitar sua escolha.",
         icone: "imagens/icones/badge-check.svg",
         ordem: 3,
+        ativo: true
+      }
+    ];
+
+    const FAIXAS_PARCEIROS_PADRAO = [
+      {
+        id: "mercado-livre",
+        nome: "Mercado Livre",
+        slug: "mercado-livre",
+        cor: "#ffe600",
+        opacidade: 0.22,
+        ordem: 1,
+        ativo: true
+      },
+      {
+        id: "shopee",
+        nome: "Shopee",
+        slug: "shopee",
+        cor: "#ee4d2d",
+        opacidade: 0.18,
+        ordem: 2,
         ativo: true
       }
     ];
@@ -2333,6 +2577,37 @@
       return Number(p.id) || 0;
     }
 
+
+    function hexParaRgb(hex) {
+      const valor = String(hex || "#b98a37").replace("#", "").trim();
+      const normal = valor.length === 3
+        ? valor.split("").map(c => c + c).join("")
+        : valor.padEnd(6, "0").slice(0, 6);
+
+      const num = parseInt(normal, 16);
+
+      return {
+        r: (num >> 16) & 255,
+        g: (num >> 8) & 255,
+        b: num & 255
+      };
+    }
+
+    function corComOpacidade(hex, opacidade = 0.18) {
+      const rgb = hexParaRgb(hex);
+      const op = Math.max(0.05, Math.min(1, Number(opacidade) || 0.18));
+
+      return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${op})`;
+    }
+
+    function nomeFaixaParceiro(id) {
+      if (!id) return "";
+      const faixa = faixasParceiros.find(f => f.slug === id || f.docId === id)
+        || FAIXAS_PARCEIROS_PADRAO.find(f => f.slug === id || f.id === id);
+
+      return faixa?.nome || id;
+    }
+
     function normalizarProduto(id, p) {
       const plataforma = p.plataforma || p.categoria || "Parceiro A";
       const plataformaSlug = p.plataformaSlug || p.categoriaSlug || slugify(plataforma);
@@ -2348,6 +2623,7 @@
         parcelamento: p.parcelamento || "",
         textoParcelamento: p.textoParcelamento || "",
         textoDestaque: p.textoDestaque || "",
+        faixaParceiroId: p.faixaParceiroId || p.faixaId || "",
         imagens: Array.isArray(p.imagens) ? p.imagens : [],
         videos: Array.isArray(p.videos) ? p.videos : [],
         link: p.link || "",
@@ -2417,6 +2693,24 @@
       };
     }
 
+
+    function normalizarFaixaParceiro(id, f) {
+      const slug = f.slug || id || slugify(f.nome);
+      const op = Number(f.opacidade);
+
+      return {
+        docId: id,
+        ...f,
+        nome: f.nome || "Barrinha",
+        slug,
+        cor: f.cor || "#b98a37",
+        opacidade: Number.isFinite(op) ? Math.max(0.05, Math.min(1, op)) : 0.18,
+        ordem: n(f.ordem) || 999,
+        ativo: f.ativo !== false
+      };
+    }
+
+
     function aplicarStatus(msg, tipo = "ok") {
       $("status").innerHTML = `<div class="notice ${tipo === "erro" ? "erro" : ""}">${esc(msg)}</div>`;
 
@@ -2425,10 +2719,6 @@
       aplicarStatus.timer = setTimeout(() => {
         $("status").innerHTML = "";
       }, 5200);
-    }
-
-    function loginMensagem(msg) {
-      $("loginStatus").textContent = msg;
     }
 
     function protegido() {
@@ -2443,26 +2733,48 @@
     }
 
     async function entrar() {
+      $("loginStatus").textContent = "Abrindo login Google...";
+
       try {
-        loginMensagem("Abrindo login do Google...");
         await signInWithPopup(auth, provider);
       } catch (erro) {
         console.warn(erro);
 
-        if (
-          ["auth/popup-blocked", "auth/popup-closed-by-user", "auth/cancelled-popup-request"].includes(erro.code)
-        ) {
-          loginMensagem("Popup bloqueado. Redirecionando para o Google...");
+        try {
           await signInWithRedirect(auth, provider);
-        } else {
-          loginMensagem("Erro ao entrar com Google. Verifique se o provedor Google está ativado no Firebase.");
+        } catch (e) {
+          console.warn(e);
+          $("loginStatus").textContent = "Erro ao entrar com Google. Verifique se o login Google está ativado no Firebase.";
         }
       }
     }
 
     async function sair() {
       await signOut(auth);
+      location.reload();
     }
+
+    onAuthStateChanged(auth, user => {
+      if (!user) {
+        $("loginTela").classList.remove("oculto");
+        return;
+      }
+
+      if (user.email !== EMAIL_ADMIN) {
+        $("loginStatus").textContent = `Acesso negado para ${user.email}. Use o e-mail admin.`;
+        signOut(auth);
+        return;
+      }
+
+      $("loginTela").classList.add("oculto");
+      $("usuarioLogado").textContent = user.email;
+
+      if (user.photoURL) {
+        $("userAvatar").innerHTML = `<img src="${esc(user.photoURL)}" alt="Admin">`;
+      }
+
+      iniciarListeners();
+    });
 
     function iniciarListeners() {
       if (!unsubProdutos) {
@@ -2507,49 +2819,24 @@
           erro => aplicarStatus("Erro ao carregar selos: " + erro.message, "erro")
         );
       }
-    }
 
-    function pararListeners() {
-      [unsubProdutos, unsubCategorias, unsubSelos].forEach(fn => {
-        if (typeof fn === "function") fn();
-      });
 
-      unsubProdutos = null;
-      unsubCategorias = null;
-      unsubSelos = null;
+      if (!unsubFaixasParceiros) {
+        unsubFaixasParceiros = onSnapshot(
+          query(collection(db, "faixasParceiros")),
+          snapshot => {
+            faixasParceiros = snapshot.docs
+              .map(d => normalizarFaixaParceiro(d.id, d.data()))
+              .sort((a, b) => n(a.ordem) - n(b.ordem));
 
-      produtos = [];
-      categorias = [];
-      selos = [];
-
-      renderTudo();
-    }
-
-    onAuthStateChanged(auth, async user => {
-      if (user && user.email === EMAIL_ADMIN) {
-        $("loginTela").classList.add("oculto");
-        $("app").classList.remove("oculto");
-
-        $("usuarioLogado").textContent = user.email || "Administrador";
-
-        if (user.photoURL) {
-          $("userAvatar").innerHTML = `<img src="${esc(user.photoURL)}" alt="Admin">`;
-        } else {
-          $("userAvatar").textContent = (user.email || "A")[0].toUpperCase();
-        }
-
-        iniciarListeners();
-      } else {
-        $("loginTela").classList.remove("oculto");
-        $("app").classList.add("oculto");
-        pararListeners();
-
-        if (user && user.email !== EMAIL_ADMIN) {
-          loginMensagem("Este e-mail não tem permissão para acessar o painel.");
-          await signOut(auth);
-        }
+            preencherSelects();
+            renderFaixasParceiros();
+          },
+          erro => aplicarStatus("Erro ao carregar barrinhas: " + erro.message, "erro")
+        );
       }
-    });
+
+    }
 
     function abrirPage(id) {
       $$(".page").forEach(p => p.classList.remove("ativa"));
@@ -2571,6 +2858,7 @@
       renderBanners();
       renderComentarios();
       renderSelos();
+      renderFaixasParceiros();
       preencherSelects();
     }
 
@@ -2658,6 +2946,7 @@
               ${p.ativo ? `<span class="badge green">Ativo</span>` : `<span class="badge red">Inativo</span>`}
               ${p.destaque ? `<span class="badge">Destaque</span>` : ""}
               ${p.bannerHome ? `<span class="badge blue">Banner</span>` : ""}
+              ${p.faixaParceiroId ? `<span class="badge">${esc(nomeFaixaParceiro(p.faixaParceiroId))}</span>` : ""}
             </td>
             <td>
               <div class="actions">
@@ -2694,26 +2983,47 @@
 
       $("departamentosLista").innerHTML = deps.map(d => `<option value="${esc(d)}"></option>`).join("");
       $("subcategoriasLista").innerHTML = subs.map(s => `<option value="${esc(s)}"></option>`).join("");
+
+      const selectFaixa = $("pFaixaParceiroId");
+      if (selectFaixa) {
+        const listaFaixas = faixasParceiros.length ? faixasParceiros : FAIXAS_PARCEIROS_PADRAO.map(f => normalizarFaixaParceiro(f.id, f));
+        const opcoesFaixas = listaFaixas
+          .filter(f => f.ativo)
+          .map(f => `<option value="${esc(f.slug)}">${esc(f.nome)} (${esc(f.slug)})</option>`)
+          .join("");
+
+        const valorAtual = selectFaixa.value;
+        selectFaixa.innerHTML = `<option value="">Nenhuma barrinha</option>` + opcoesFaixas;
+
+        if (valorAtual) selectFaixa.value = valorAtual;
+      }
     }
 
-    function comentariosForm(valor = $("pComentarios")?.value || "") {
-      return linhas(valor).map(linha => {
-        const partes = linha.split("|").map(p => p.trim());
+    function previewImagens() {
+      const imgs = linhas($("pImagens").value)
+        .map(x => completarArquivo(x, $("pPastaImagens").value, $("pExtImagem").value))
+        .filter(Boolean)
+        .slice(0, 8);
+
+      $("previewImagens").innerHTML = imgs.map(src => `<img src="${esc(src)}" onerror="this.src='${IMAGEM_FALLBACK}'" alt="">`).join("");
+    }
+
+    function comentariosForm() {
+      return linhas($("pComentarios").value).map(l => {
+        const partes = l.split("|").map(x => x.trim());
 
         return {
           nome: partes[0] || "Cliente",
-          texto: partes[1] || "",
-          nota: Number(partes[2] || 5),
+          texto: partes[1] || "Gostei do produto.",
+          nota: Number(partes[2]) || 5,
           tipo: "manual",
           data: new Date().toISOString()
         };
-      }).filter(c => c.texto);
+      });
     }
 
-    function comentariosTexto(comentarios) {
-      return (comentarios || [])
-        .map(c => `${c.nome || "Cliente"} | ${c.texto || c.comentario || ""} | ${c.nota || c.avaliacao || 5}`)
-        .join("\n");
+    function comentariosTexto(lista) {
+      return (lista || []).map(c => `${c.nome || c.autor || "Cliente"} | ${c.texto || c.comentario || ""} | ${c.nota || c.avaliacao || 5}`).join("\n");
     }
 
     function montarProduto() {
@@ -2744,6 +3054,7 @@
         parcelamento: $("pParcelamento").value.trim(),
         textoParcelamento: $("pTextoParcelamento").value.trim(),
         textoDestaque: $("pTextoDestaque").value.trim(),
+        faixaParceiroId: $("pFaixaParceiroId")?.value || "",
         link: $("pLink").value.trim(),
 
         categoria: fonte.nome,
@@ -2854,6 +3165,7 @@
       $("pParcelamento").value = p.parcelamento || "";
       $("pTextoParcelamento").value = p.textoParcelamento || "";
       $("pTextoDestaque").value = p.textoDestaque || "";
+      if ($("pFaixaParceiroId")) $("pFaixaParceiroId").value = p.faixaParceiroId || "";
       $("pLink").value = p.link || "";
 
       $("pPlataforma").value = p.plataformaSlug || p.categoriaSlug || "shopee";
@@ -2945,6 +3257,8 @@
       $("pBannerBotao").value = "Ver oferta";
       $("pBannerOrdem").value = 1;
 
+      if ($("pFaixaParceiroId")) $("pFaixaParceiroId").value = "";
+
       if ($("pPlataforma").options.length) {
         $("pPlataforma").selectedIndex = 0;
       }
@@ -2980,19 +3294,6 @@
       }
     }
 
-    function excluirProduto(id) {
-      confirmar("Tem certeza que deseja excluir este produto?", async () => {
-        if (!protegido()) return;
-
-        try {
-          await deleteDoc(doc(db, "produtos", id));
-          aplicarStatus("Produto excluído.");
-        } catch (erro) {
-          aplicarStatus("Erro ao excluir: " + erro.message, "erro");
-        }
-      });
-    }
-
     async function alternarAtivoProduto(id) {
       if (!protegido()) return;
 
@@ -3011,6 +3312,21 @@
       }
     }
 
+    function excluirProduto(id) {
+      const p = produtos.find(item => item.docId === id);
+
+      confirmar(`Excluir o produto "${p?.nome || "selecionado"}"?`, async () => {
+        if (!protegido()) return;
+
+        try {
+          await deleteDoc(doc(db, "produtos", id));
+          aplicarStatus("Produto excluído.");
+        } catch (erro) {
+          aplicarStatus("Erro ao excluir: " + erro.message, "erro");
+        }
+      });
+    }
+
     async function zerarCliquesProduto(id) {
       if (!protegido()) return;
 
@@ -3024,14 +3340,14 @@
           atualizadoEm: serverTimestamp()
         });
 
-        aplicarStatus("Cliques zerados.");
+        aplicarStatus("Cliques do produto zerados.");
       } catch (erro) {
         aplicarStatus("Erro ao zerar cliques: " + erro.message, "erro");
       }
     }
 
     function zerarTodosCliques() {
-      confirmar("Tem certeza que deseja zerar os cliques de TODOS os produtos?", async () => {
+      confirmar("Zerar os cliques de todos os produtos?", async () => {
         if (!protegido()) return;
 
         try {
@@ -3046,45 +3362,9 @@
 
           aplicarStatus("Todos os cliques foram zerados.");
         } catch (erro) {
-          aplicarStatus("Erro ao zerar todos: " + erro.message, "erro");
+          aplicarStatus("Erro ao zerar todos os cliques: " + erro.message, "erro");
         }
       });
-    }
-
-    function previewImagens() {
-      const pasta = $("pPastaImagens").value.trim();
-      const ext = $("pExtImagem").value;
-
-      const imagens = linhas($("pImagens").value)
-        .map(x => completarArquivo(x, pasta, ext))
-        .slice(0, 8);
-
-      $("previewImagens").innerHTML = imagens.map(src => `
-        <img src="${esc(src)}" onerror="this.src='${IMAGEM_FALLBACK}'" alt="">
-      `).join("");
-    }
-
-    function renderCategorias() {
-      $("catContador").textContent = `${categorias.length} categorias`;
-
-      $("catTbody").innerHTML = categorias.length
-        ? categorias.map(c => `
-          <tr>
-            <td>
-              <strong>${esc(c.nome)}</strong>
-            </td>
-            <td><span class="badge">${esc(c.tipo)}</span></td>
-            <td>${esc(c.slug)}</td>
-            <td>${c.ativa ? `<span class="badge green">Ativa</span>` : `<span class="badge red">Inativa</span>`}</td>
-            <td>
-              <div class="actions">
-                <button class="action-btn" type="button" onclick="editarCategoria('${c.docId}')">Editar</button>
-                <button class="action-btn red" type="button" onclick="excluirCategoria('${c.docId}')">Excluir</button>
-              </div>
-            </td>
-          </tr>
-        `).join("")
-        : `<tr><td colspan="5"><div class="empty">Nenhuma categoria criada.</div></td></tr>`;
     }
 
     function montarCategoria() {
@@ -3200,6 +3480,29 @@
       }
     }
 
+    function renderCategorias() {
+      $("catContador").textContent = `${categorias.length} categorias`;
+
+      $("catTbody").innerHTML = categorias.length
+        ? categorias.map(c => `
+          <tr>
+            <td>
+              <strong>${esc(c.nome)}</strong>
+            </td>
+            <td><span class="badge">${esc(c.tipo)}</span></td>
+            <td>${esc(c.slug)}</td>
+            <td>${c.ativa ? `<span class="badge green">Ativa</span>` : `<span class="badge red">Inativa</span>`}</td>
+            <td>
+              <div class="actions">
+                <button class="action-btn" type="button" onclick="editarCategoria('${c.docId}')">Editar</button>
+                <button class="action-btn red" type="button" onclick="excluirCategoria('${c.docId}')">Excluir</button>
+              </div>
+            </td>
+          </tr>
+        `).join("")
+        : `<tr><td colspan="5"><div class="empty">Nenhuma categoria criada.</div></td></tr>`;
+    }
+
     function renderBanners() {
       const banners = produtos
         .filter(p => p.bannerHome)
@@ -3270,27 +3573,25 @@
         : `<div class="empty">Nenhum comentário encontrado.</div>`;
     }
 
-    function excluirComentario(produtoId, index) {
-      confirmar("Excluir este comentário?", async () => {
-        if (!protegido()) return;
+    async function excluirComentario(produtoId, index) {
+      if (!protegido()) return;
 
-        const p = produtos.find(item => item.docId === produtoId);
-        if (!p) return;
+      const p = produtos.find(item => item.docId === produtoId);
+      if (!p) return;
 
-        const comentarios = [...(p.comentarios || [])];
-        comentarios.splice(index, 1);
+      const lista = [...(p.comentarios || [])];
+      lista.splice(index, 1);
 
-        try {
-          await updateDoc(doc(db, "produtos", produtoId), {
-            comentarios,
-            atualizadoEm: serverTimestamp()
-          });
+      try {
+        await updateDoc(doc(db, "produtos", produtoId), {
+          comentarios: lista,
+          atualizadoEm: serverTimestamp()
+        });
 
-          aplicarStatus("Comentário excluído.");
-        } catch (erro) {
-          aplicarStatus("Erro ao excluir comentário: " + erro.message, "erro");
-        }
-      });
+        aplicarStatus("Comentário excluído.");
+      } catch (erro) {
+        aplicarStatus("Erro ao excluir comentário: " + erro.message, "erro");
+      }
     }
 
     function renderSelos() {
@@ -3408,6 +3709,175 @@
       }
     }
 
+    function montarFaixaParceiro() {
+      const nome = $("faixaNome").value.trim();
+      const slug = $("faixaSlug").value.trim() || slugify(nome);
+
+      return {
+        nome,
+        slug,
+        cor: $("faixaCor").value || "#b98a37",
+        opacidade: Math.max(0.05, Math.min(1, Number($("faixaOpacidade").value) || 0.18)),
+        ordem: n($("faixaOrdem").value) || 999,
+        ativo: $("faixaAtiva").checked,
+        atualizadoEm: serverTimestamp()
+      };
+    }
+
+    async function salvarFaixaParceiro() {
+      if (!protegido()) return;
+
+      const faixa = montarFaixaParceiro();
+
+      if (!faixa.nome || !faixa.slug) {
+        aplicarStatus("Preencha o nome e o slug da barrinha.", "erro");
+        return;
+      }
+
+      try {
+        if (faixaParceiroEditId) {
+          await updateDoc(doc(db, "faixasParceiros", faixaParceiroEditId), faixa);
+          aplicarStatus("Barrinha atualizada.");
+        } else {
+          await setDoc(doc(db, "faixasParceiros", faixa.slug), {
+            ...faixa,
+            criadoEm: serverTimestamp()
+          }, { merge: true });
+
+          aplicarStatus("Barrinha criada.");
+        }
+
+        limparFaixaParceiro();
+      } catch (erro) {
+        aplicarStatus("Erro ao salvar barrinha: " + erro.message, "erro");
+      }
+    }
+
+    function editarFaixaParceiro(id) {
+      const faixa = faixasParceiros.find(item => item.docId === id || item.slug === id);
+      if (!faixa) return;
+
+      faixaParceiroEditId = faixa.docId;
+
+      $("faixaTitulo").textContent = "Editar barrinha";
+      $("btnCancelarFaixa").classList.remove("oculto");
+
+      $("faixaNome").value = faixa.nome || "";
+      $("faixaSlug").value = faixa.slug || "";
+      $("faixaCor").value = faixa.cor || "#b98a37";
+      $("faixaOpacidade").value = faixa.opacidade ?? 0.18;
+      $("faixaOrdem").value = faixa.ordem || "";
+      $("faixaAtiva").checked = faixa.ativo !== false;
+
+      atualizarPreviewFaixaParceiro();
+      abrirPage("faixasParceiros");
+    }
+
+    function limparFaixaParceiro() {
+      faixaParceiroEditId = null;
+
+      $("faixaTitulo").textContent = "Nova barrinha";
+      $("btnCancelarFaixa").classList.add("oculto");
+
+      $("faixaNome").value = "";
+      $("faixaSlug").value = "";
+      $("faixaCor").value = "#ffe600";
+      $("faixaOpacidade").value = 0.18;
+      $("faixaOrdem").value = "";
+      $("faixaAtiva").checked = true;
+
+      atualizarPreviewFaixaParceiro();
+    }
+
+    function excluirFaixaParceiro(id) {
+      confirmar("Excluir esta barrinha? Os produtos que usam ela vão ficar sem barrinha até você escolher outra.", async () => {
+        if (!protegido()) return;
+
+        try {
+          await deleteDoc(doc(db, "faixasParceiros", id));
+          aplicarStatus("Barrinha excluída.");
+        } catch (erro) {
+          aplicarStatus("Erro ao excluir barrinha: " + erro.message, "erro");
+        }
+      });
+    }
+
+    async function criarFaixasParceirosPadrao() {
+      if (!protegido()) return;
+
+      try {
+        await Promise.all(FAIXAS_PARCEIROS_PADRAO.map(f => setDoc(doc(db, "faixasParceiros", f.slug), {
+          nome: f.nome,
+          slug: f.slug,
+          cor: f.cor,
+          opacidade: f.opacidade,
+          ordem: f.ordem,
+          ativo: f.ativo,
+          criadoEm: serverTimestamp(),
+          atualizadoEm: serverTimestamp()
+        }, { merge: true })));
+
+        aplicarStatus("Barrinhas padrão criadas/atualizadas.");
+      } catch (erro) {
+        aplicarStatus("Erro ao criar barrinhas: " + erro.message, "erro");
+      }
+    }
+
+    function atualizarPreviewFaixaParceiro() {
+      const preview = $("faixaPreview");
+      const valor = $("faixaOpacidadeValor");
+
+      if (!preview || !valor) return;
+
+      const nome = $("faixaNome")?.value.trim() || "Mercado Livre";
+      const cor = $("faixaCor")?.value || "#ffe600";
+      const opacidade = Number($("faixaOpacidade")?.value || 0.18);
+
+      preview.textContent = nome;
+      preview.style.background = corComOpacidade(cor, opacidade);
+      preview.style.color = cor;
+      preview.style.borderColor = corComOpacidade(cor, Math.min(0.8, opacidade + 0.22));
+
+      valor.textContent = `${Math.round(opacidade * 100)}%`;
+    }
+
+    function renderFaixasParceiros() {
+      const grid = $("faixasParceirosGrid");
+      if (!grid) return;
+
+      const lista = faixasParceiros.length ? faixasParceiros : FAIXAS_PARCEIROS_PADRAO.map(f => normalizarFaixaParceiro(f.id, f));
+
+      grid.innerHTML = lista.length
+        ? lista.map(f => `
+          <article class="mini-card">
+            <div class="faixa-card-top">
+              <div>
+                <h3>${esc(f.nome)}</h3>
+                <small>${esc(f.slug)}</small>
+              </div>
+              <span class="faixa-color-dot" style="background:${esc(f.cor)}"></span>
+            </div>
+
+            <div class="faixa-preview-box">
+              <span class="faixa-preview-label" style="background:${esc(corComOpacidade(f.cor, f.opacidade))}; color:${esc(f.cor)}; border-color:${esc(corComOpacidade(f.cor, Math.min(0.8, Number(f.opacidade) + 0.22)))}">${esc(f.nome)}</span>
+            </div>
+
+            <div class="faixa-meta">
+              <span class="badge">${Math.round(Number(f.opacidade || 0) * 100)}% opacidade</span>
+              <span class="badge">Ordem ${n(f.ordem)}</span>
+              ${f.ativo ? `<span class="badge green">Ativa</span>` : `<span class="badge red">Inativa</span>`}
+            </div>
+
+            <div class="actions" style="margin-top:12px">
+              <button class="action-btn" type="button" onclick="editarFaixaParceiro('${esc(f.docId || f.slug)}')">Editar</button>
+              <button class="action-btn red" type="button" onclick="excluirFaixaParceiro('${esc(f.docId || f.slug)}')">Excluir</button>
+            </div>
+          </article>
+        `).join("")
+        : `<div class="empty">Nenhuma barrinha criada.</div>`;
+    }
+
+
     async function importarJson() {
       if (!protegido()) return;
 
@@ -3453,10 +3923,10 @@
       $("modalConfirmar").setAttribute("aria-hidden", "true");
     }
 
-    function executarConfirmacao() {
-      const fn = confirmarCallback;
+    async function executarConfirmacao() {
+      const cb = confirmarCallback;
       fecharConfirmacao();
-      if (typeof fn === "function") fn();
+      if (typeof cb === "function") await cb();
     }
 
     function configurarEventos() {
@@ -3486,6 +3956,11 @@
       $("btnCancelarSelo").addEventListener("click", limparSelo);
       $("btnCriarSelosPadrao").addEventListener("click", criarSelosPadrao);
 
+      $("btnSalvarFaixa").addEventListener("click", salvarFaixaParceiro);
+      $("btnLimparFaixa").addEventListener("click", limparFaixaParceiro);
+      $("btnCancelarFaixa").addEventListener("click", limparFaixaParceiro);
+      $("btnCriarFaixasPadrao").addEventListener("click", criarFaixasParceirosPadrao);
+
       $("btnImportarJson").addEventListener("click", importarJson);
       $("btnZerarTodosCliques").addEventListener("click", zerarTodosCliques);
 
@@ -3510,6 +3985,16 @@
       $("catNome").addEventListener("input", () => {
         if (!categoriaEditId) $("catSlug").value = slugify($("catNome").value);
       });
+
+      $("faixaNome").addEventListener("input", () => {
+        if (!faixaParceiroEditId) $("faixaSlug").value = slugify($("faixaNome").value);
+        atualizarPreviewFaixaParceiro();
+      });
+
+      ["faixaCor", "faixaOpacidade", "faixaSlug", "faixaOrdem"].forEach(id => {
+        if ($(id)) $(id).addEventListener("input", atualizarPreviewFaixaParceiro);
+        if ($(id)) $(id).addEventListener("change", atualizarPreviewFaixaParceiro);
+      });
     }
 
     window.editarProduto = editarProduto;
@@ -3524,11 +4009,15 @@
     window.editarSelo = editarSelo;
     window.excluirSelo = excluirSelo;
 
+    window.editarFaixaParceiro = editarFaixaParceiro;
+    window.excluirFaixaParceiro = excluirFaixaParceiro;
+
     window.excluirComentario = excluirComentario;
 
     configurarEventos();
     preencherSelects();
     limparProduto();
+    limparFaixaParceiro();
   </script>
 </body>
 </html>

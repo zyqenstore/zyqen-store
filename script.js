@@ -20,9 +20,11 @@ import {
    - WhatsApp apenas dentro do robô de dúvida
    - Nomes públicos neutros para parceiros
    - Produtos recomendados clicáveis com botão de voltar
+   - Barrinha abaixo do parcelamento por parceiro/fonte
 ========================================================= */
 
 let listaProdutos = [];
+let listaFaixasParceiros = [];
 let produtoAtualPopup = null;
 let historicoProdutosPopup = [];
 let midiasProdutoAtual = [];
@@ -90,6 +92,27 @@ const NOMES_PUBLICOS_PLATAFORMA = {
   digital: "Digital"
 };
 
+const FAIXAS_PARCEIROS_PADRAO = [
+  {
+    docId: "mercado-livre",
+    nome: "Mercado Livre",
+    slug: "mercado-livre",
+    cor: "#ffe600",
+    opacidade: 0.22,
+    ordem: 1,
+    ativo: true
+  },
+  {
+    docId: "shopee",
+    nome: "Shopee",
+    slug: "shopee",
+    cor: "#ee4d2d",
+    opacidade: 0.18,
+    ordem: 2,
+    ativo: true
+  }
+];
+
 /* =========================================================
    INICIAR SITE
 ========================================================= */
@@ -109,6 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ativarSwipeImagem();
   registrarPWA();
 
+  carregarFaixasParceirosFirebase();
   carregarProdutosFirebase();
 
   window.addEventListener("resize", () => {
@@ -321,6 +345,29 @@ function carregarProdutosFirebase() {
   );
 }
 
+function carregarFaixasParceirosFirebase() {
+  const faixasRef = collection(db, "faixasParceiros");
+  const q = query(faixasRef);
+
+  onSnapshot(
+    q,
+    snapshot => {
+      listaFaixasParceiros = snapshot.docs
+        .map(d => normalizarFaixaParceiro({ docId: d.id, ...d.data() }))
+        .filter(faixa => faixa.ativo !== false)
+        .sort((a, b) => (Number(a.ordem) || 999) - (Number(b.ordem) || 999));
+
+      if (produtoAtualPopup) {
+        renderizarFaixaParceiroPopup(produtoAtualPopup);
+      }
+    },
+    erro => {
+      console.warn("Erro ao carregar barrinhas dos parceiros.", erro);
+      listaFaixasParceiros = [];
+    }
+  );
+}
+
 function produtoEstaAtivo(produto) {
   return produto.ativo !== false;
 }
@@ -328,6 +375,25 @@ function produtoEstaAtivo(produto) {
 /* =========================================================
    NORMALIZAÇÃO
 ========================================================= */
+
+function normalizarFaixaParceiro(f) {
+  const nome = String(f.nome || f.titulo || "Barrinha").trim();
+  const slug = String(f.slug || f.id || f.docId || slugify(nome)).trim();
+  const opacidadeNumero = Number(f.opacidade);
+
+  return {
+    ...f,
+    docId: f.docId || slug,
+    nome,
+    slug,
+    cor: String(f.cor || f.color || "#b98a37").trim(),
+    opacidade: Number.isFinite(opacidadeNumero)
+      ? Math.max(0.05, Math.min(1, opacidadeNumero))
+      : 0.18,
+    ordem: Number(f.ordem) || 999,
+    ativo: f.ativo !== false
+  };
+}
 
 function normalizarProduto(p) {
   const categoriaBase = String(
@@ -402,6 +468,7 @@ function normalizarProduto(p) {
     parcelamento: String(p.parcelamento || "").trim(),
     textoParcelamento: String(p.textoParcelamento || "").trim(),
     textoDestaque: String(p.textoDestaque || p.destaqueParcelamento || "").trim(),
+    faixaParceiroId: String(p.faixaParceiroId || p.faixaId || p.barrinhaParceiroId || "").trim(),
 
     link: String(p.link || "").trim(),
     botao: String(p.botao || "Comprar agora").trim(),
@@ -509,6 +576,7 @@ function criarHTMLPopupProduto() {
             <span id="popup-preco-antigo" class="popup-preco-antigo"></span>
             <strong id="popup-preco">Ver preço</strong>
             <span id="popup-parcelamento" class="popup-parcelamento"></span>
+            <span id="popup-faixa-parceiro" class="popup-faixa-parceiro"></span>
             <small id="popup-destaque-parcelamento" class="popup-destaque-parcelamento"></small>
           </div>
 
@@ -1199,6 +1267,8 @@ function preencherPopup(produto, resetarMidia = true) {
     }
   }
 
+  renderizarFaixaParceiroPopup(produto);
+
   const destaque = document.getElementById("popup-destaque-parcelamento");
   if (destaque) {
     const texto = produto.textoDestaque || produto.urgencia || "";
@@ -1618,6 +1688,46 @@ function ativarSwipeImagem() {
     },
     { passive: true }
   );
+}
+
+function faixaParceiroDoProduto(produto) {
+  const id = String(produto?.faixaParceiroId || "").trim();
+
+  if (!id) return null;
+
+  const todasFaixas = listaFaixasParceiros.length
+    ? listaFaixasParceiros
+    : FAIXAS_PARCEIROS_PADRAO.map(normalizarFaixaParceiro);
+
+  return todasFaixas.find(faixa =>
+    String(faixa.slug) === id ||
+    String(faixa.docId) === id ||
+    String(faixa.nome) === id
+  ) || null;
+}
+
+function renderizarFaixaParceiroPopup(produto) {
+  const faixaEl = document.getElementById("popup-faixa-parceiro");
+
+  if (!faixaEl) return;
+
+  const faixa = faixaParceiroDoProduto(produto);
+
+  if (!faixa) {
+    faixaEl.textContent = "";
+    faixaEl.removeAttribute("style");
+    faixaEl.style.display = "none";
+    return;
+  }
+
+  const cor = faixa.cor || "#b98a37";
+  const opacidade = Number(faixa.opacidade) || 0.18;
+
+  faixaEl.textContent = faixa.nome;
+  faixaEl.style.display = "inline-flex";
+  faixaEl.style.background = corComOpacidade(cor, opacidade);
+  faixaEl.style.borderColor = corComOpacidade(cor, Math.min(0.85, opacidade + 0.26));
+  faixaEl.style.color = cor;
 }
 
 function renderizarDetalhesProduto(produto) {
@@ -2163,6 +2273,28 @@ function manterChatDentroDaTela() {
    UTILITÁRIOS
 ========================================================= */
 
+function hexParaRgb(hex) {
+  const valor = String(hex || "#b98a37").replace("#", "").trim();
+  const normalizado = valor.length === 3
+    ? valor.split("").map(c => c + c).join("")
+    : valor.padEnd(6, "0").slice(0, 6);
+
+  const numeroHex = parseInt(normalizado, 16);
+
+  return {
+    r: (numeroHex >> 16) & 255,
+    g: (numeroHex >> 8) & 255,
+    b: numeroHex & 255
+  };
+}
+
+function corComOpacidade(hex, opacidade = 0.18) {
+  const rgb = hexParaRgb(hex);
+  const op = Math.max(0.05, Math.min(1, Number(opacidade) || 0.18));
+
+  return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${op})`;
+}
+
 function imagemPrincipal(produto) {
   return Array.isArray(produto?.imagens) && produto.imagens[0] ? produto.imagens[0] : IMAGEM_FALLBACK;
 }
@@ -2353,6 +2485,35 @@ function injetarEstilosMinimosDoScript() {
       display: flex;
     }
 
+    .popup-faixa-parceiro {
+      width: max-content;
+      max-width: 100%;
+      min-height: 22px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 6px;
+      padding: 4px 10px;
+      border: 1px solid rgba(185, 138, 55, .22);
+      border-radius: 999px;
+      background: rgba(47, 143, 85, .12);
+      color: #2f8f55;
+      font-size: 11px;
+      font-weight: 900;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .popup-faixa-parceiro::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: .9;
+    }
+
     .btn-whatsapp-popup {
       display: none !important;
     }
@@ -2413,6 +2574,15 @@ function injetarEstilosMinimosDoScript() {
 
     .zq-popup-recomendado-item:active {
       transform: scale(0.99);
+    }
+
+    @media (max-width: 980px) {
+      .popup-faixa-parceiro {
+        min-height: 24px;
+        padding: 5px 10px;
+        font-size: 11px;
+        margin-top: 6px;
+      }
     }
 
     .estrelas-mini,
