@@ -1716,18 +1716,47 @@ function renderizarFaixaParceiroPopup(produto) {
   if (!faixa) {
     faixaEl.textContent = "";
     faixaEl.removeAttribute("style");
-    faixaEl.style.display = "none";
+    faixaEl.style.setProperty("display", "none", "important");
     return;
   }
 
   const cor = faixa.cor || "#b98a37";
   const opacidade = Number(faixa.opacidade) || 0.18;
+  const ehMobile = window.innerWidth <= 680;
 
   faixaEl.textContent = faixa.nome;
-  faixaEl.style.display = "inline-flex";
-  faixaEl.style.background = corComOpacidade(cor, opacidade);
-  faixaEl.style.borderColor = corComOpacidade(cor, Math.min(0.85, opacidade + 0.26));
-  faixaEl.style.color = cor;
+
+  faixaEl.style.setProperty("display", "inline-flex", "important");
+
+  faixaEl.style.setProperty(
+    "background",
+    corComOpacidade(cor, opacidade),
+    "important"
+  );
+
+  faixaEl.style.setProperty(
+    "border-color",
+    corComOpacidade(cor, Math.min(0.95, opacidade + 0.32)),
+    "important"
+  );
+
+  // Texto preto para ficar visível
+  faixaEl.style.setProperty("color", "#111111", "important");
+
+  // Fonte maior
+  faixaEl.style.setProperty("font-size", ehMobile ? "12px" : "13px", "important");
+  faixaEl.style.setProperty("font-weight", "950", "important");
+  faixaEl.style.setProperty("letter-spacing", "0.01em", "important");
+
+  // Aumenta um pouco a altura da barrinha também
+  faixaEl.style.setProperty("min-height", ehMobile ? "28px" : "31px", "important");
+  faixaEl.style.setProperty("padding", ehMobile ? "6px 12px" : "7px 14px", "important");
+
+  faixaEl.style.setProperty(
+    "box-shadow",
+    `0 8px 22px ${corComOpacidade(cor, 0.12)}`,
+    "important"
+  );
 }
 
 function renderizarDetalhesProduto(produto) {
