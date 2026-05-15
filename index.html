@@ -145,9 +145,6 @@
       margin-right: auto;
     }
 
-    /* =========================================================
-       TOPO - PC
-    ========================================================= */
 
     .zq-header {
       height: 96px;
@@ -277,9 +274,6 @@
       stroke-width: 1.7;
     }
 
-    /* =========================================================
-       HERO - PC
-    ========================================================= */
 
     .zq-hero-area {
       margin-top: 0;
@@ -548,9 +542,6 @@
       opacity: 0.55;
     }
 
-    /* =========================================================
-       CATEGORIAS
-    ========================================================= */
 
     .zq-category-bar {
       margin-top: 18px;
@@ -617,9 +608,6 @@
       font-weight: 500;
     }
 
-    /* =========================================================
-       PRODUTOS
-    ========================================================= */
 
     main#produtos {
       overflow: visible !important;
@@ -958,9 +946,6 @@
       font-weight: 600 !important;
     }
 
-    /* =========================================================
-       POPUP DO PRODUTO - PC PRESERVADO
-    ========================================================= */
 
     .popup-produto {
       position: fixed !important;
@@ -1536,9 +1521,6 @@
       display: block !important;
     }
 
-    /* =========================================================
-       CHAT DO PRODUTO
-    ========================================================= */
 
     .chat-produto-widget {
       position: fixed !important;
@@ -1725,10 +1707,6 @@
       display: none !important;
     }
 
-    /* =========================================================
-       ESCONDER ESTRUTURAS ANTIGAS
-    ========================================================= */
-
     .zq-top-categories,
     .zq-category-section,
     .zq-trust-row,
@@ -1745,9 +1723,6 @@
       display: none !important;
     }
 
-    /* =========================================================
-       TABLET
-    ========================================================= */
 
     @media (max-width: 1300px) {
       :root {
@@ -1845,9 +1820,6 @@
       }
     }
 
-    /* =========================================================
-       MOBILE - LOJA
-    ========================================================= */
 
     @media (max-width: 680px) {
       :root {
@@ -2197,10 +2169,6 @@
       }
     }
 
-    /* =========================================================
-       MOBILE - TELA DO PRODUTO CORRIGIDA
-       Agora a imagem rola junto com a página inteira
-    ========================================================= */
 
     @media (max-width: 680px) {
       .popup-produto {
@@ -2630,9 +2598,6 @@
 <body>
   <div class="site-wrapper-fixo">
 
-    <!-- =======================================================
-      TOPO
-    ======================================================== -->
     <header class="zq-header">
       <a href="index.html" class="zq-logo-text" aria-label="Zyqen Store">
         <span class="zq-logo-crown">♛</span>
@@ -2671,9 +2636,6 @@
       </nav>
     </header>
 
-    <!-- =======================================================
-      HERO
-    ======================================================== -->
     <section class="zq-hero-area">
       <div class="zq-hero-card">
         <div class="zq-hero-copy">
@@ -2721,10 +2683,6 @@
       </div>
     </section>
 
-    <!-- =======================================================
-      CATEGORIAS PÚBLICAS SEM EXIBIR MARCAS
-      internamente ainda filtram suas fontes
-    ======================================================== -->
     <section id="categorias" class="zq-category-bar" aria-label="Categorias principais">
 
       <button type="button" class="zq-category-item-ref" data-filtrar-plataforma="shopee">
@@ -2815,9 +2773,7 @@
 
     </section>
 
-    <!-- =======================================================
-      PRODUTOS
-    ======================================================== -->
+
     <main id="produtos">
       <div id="categorias-container" class="categorias-container" data-produtos-grid>
         <div class="categoria-loading">
@@ -2842,17 +2798,6 @@
   </script>
 
   <script id="zyqen-galeria-sem-corte-final">
-  /*
-    CORREÇÃO DEFINITIVA DA GALERIA MOBILE
-    Esta parte fica por último para vencer:
-    - CSS do index.html
-    - CSS do style.css
-    - CSS injetado pelo script.js
-
-    O segredo aqui:
-    A imagem não fica mais dentro de uma caixa com altura fixa.
-    A própria imagem define a altura da área, então ela não corta.
-  */
   (() => {
     const STYLE_ID = "zyqen-galeria-sem-corte-final-style";
     const OLD_STYLE_ID = "zyqen-mobile-produto-imagem-final";
@@ -3107,7 +3052,6 @@
       grid-column: 3 !important;
       justify-self: end !important;
       margin-left: auto !important;
-      /* Compartilhar ainda mais para a esquerda: aumente esse valor */
       margin-right: 48px !important;
       min-height: 32px !important;
       padding: 0 14px !important;
