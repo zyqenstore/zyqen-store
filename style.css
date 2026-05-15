@@ -51,9 +51,6 @@
   --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
 }
 
-/* =========================================================
-   BASE GERAL
-========================================================= */
 
 html,
 body {
@@ -167,9 +164,6 @@ main#produtos,
   z-index: 1;
 }
 
-/* =========================================================
-   HEADER NOVO DO INDEX
-========================================================= */
 
 .zq-header {
   min-height: 96px;
@@ -307,9 +301,6 @@ main#produtos,
   stroke-width: 1.7;
 }
 
-/* =========================================================
-   HEADER ANTIGO - COMPATIBILIDADE
-========================================================= */
 
 .zq-header-shell {
   min-height: 82px;
@@ -393,9 +384,6 @@ main#produtos,
   font-weight: 950;
 }
 
-/* =========================================================
-   HERO NOVO
-========================================================= */
 
 .zq-hero-area {
   margin-top: 0;
@@ -660,9 +648,6 @@ main#produtos,
   opacity: 0.55;
 }
 
-/* =========================================================
-   HERO ANTIGO - COMPATIBILIDADE
-========================================================= */
 
 .zq-hero-section {
   margin-top: 16px;
@@ -838,9 +823,6 @@ main#produtos,
   background: var(--gold);
 }
 
-/* =========================================================
-   CATEGORIAS NOVAS
-========================================================= */
 
 .zq-category-bar {
   margin-top: 18px;
@@ -907,9 +889,6 @@ main#produtos,
   font-weight: 500;
 }
 
-/* =========================================================
-   CATEGORIAS / FILTROS ANTIGOS - COMPATIBILIDADE
-========================================================= */
 
 .zq-top-categories {
   margin-top: 12px;
@@ -1071,9 +1050,6 @@ main#produtos,
   font-weight: 800;
 }
 
-/* =========================================================
-   FAIXA DE CONFIANÇA
-========================================================= */
 
 .zq-trust-row {
   margin-top: 18px;
@@ -1133,9 +1109,6 @@ main#produtos,
   font-weight: 750;
 }
 
-/* =========================================================
-   LAYOUT PRINCIPAL ANTIGO
-========================================================= */
 
 .zq-main-layout {
   margin-top: 18px;
@@ -1287,9 +1260,6 @@ main#produtos,
   gap: 14px;
 }
 
-/* =========================================================
-   TOOLBAR / FILTROS DINÂMICOS
-========================================================= */
 
 .filtros {
   width: 100%;
@@ -1487,9 +1457,6 @@ main#produtos,
   font-weight: 850;
 }
 
-/* =========================================================
-   PRODUTOS
-========================================================= */
 
 main,
 main#produtos {
@@ -1768,9 +1735,7 @@ main#produtos {
     0 0 0 4px rgba(185, 138, 55, 0.07);
 }
 
-/* =========================================================
-   PAGINAÇÃO / EMPTY
-========================================================= */
+
 
 .paginacao {
   margin-top: 18px;
@@ -1851,9 +1816,6 @@ main#produtos {
   font-weight: 950;
 }
 
-/* =========================================================
-   POPUP DO PRODUTO
-========================================================= */
 
 .popup-produto {
   position: fixed;
@@ -2297,10 +2259,7 @@ main#produtos {
   margin-left: 3px;
 }
 
-/* =========================================================
-   NOVO: BARRINHA ABAIXO DO PARCELAMENTO
-   Cor e opacidade vêm do admin pelo script.js.
-========================================================= */
+
 
 .popup-faixa-parceiro,
 #popup-faixa-parceiro {
@@ -2405,9 +2364,6 @@ main#produtos {
   transform: translateY(-1px);
 }
 
-/* =========================================================
-   DETALHES / CONFIANÇA / COMENTÁRIOS
-========================================================= */
 
 .produto-detalhes-card,
 .produto-observacoes-card,
@@ -2577,9 +2533,6 @@ main#produtos {
   font-weight: 950;
 }
 
-/* =========================================================
-   POPUP SUCESSO COMENTÁRIO
-========================================================= */
 
 .popup-sucesso-comentario {
   position: fixed;
@@ -2636,9 +2589,6 @@ main#produtos {
   font-weight: 950;
 }
 
-/* =========================================================
-   CHAT DO PRODUTO
-========================================================= */
 
 .chat-produto-widget {
   position: fixed;
@@ -2830,9 +2780,6 @@ main#produtos {
   display: none;
 }
 
-/* =========================================================
-   BLOCO INFERIOR / FOOTER
-========================================================= */
 
 .zq-bottom-strip {
   margin-top: 18px;
@@ -3016,9 +2963,6 @@ main#produtos {
   filter: brightness(0) invert(1);
 }
 
-/* =========================================================
-   PÁGINAS SOBRE / POLÍTICA
-========================================================= */
 
 body > header:not(.zq-header) {
   width: min(var(--site-max), calc(100% - var(--site-padding) * 2));
@@ -3094,9 +3038,7 @@ body > header:not(.zq-header) {
   font-size: 13px;
 }
 
-/* =========================================================
-   RESPONSIVO - TABLET
-========================================================= */
+
 
 @media (max-width: 1300px) {
   :root {
@@ -3274,9 +3216,6 @@ body > header:not(.zq-header) {
   }
 }
 
-/* =========================================================
-   MOBILE
-========================================================= */
 
 @media (max-width: 900px) {
   :root {
@@ -3718,7 +3657,6 @@ body > header:not(.zq-header) {
     font-size: 12px;
   }
 
-  /* Tela do produto no mobile */
 
   .popup-produto {
     padding: 0 !important;
@@ -4180,9 +4118,7 @@ body > header:not(.zq-header) {
   }
 }
 
-/* =========================================================
-   PC GRANDE
-========================================================= */
+
 
 @media (min-width: 1500px) {
   :root {
@@ -4195,5 +4131,38 @@ body > header:not(.zq-header) {
 
   .zq-main-layout {
     grid-template-columns: 278px minmax(0, 1fr);
+  }
+}
+
+.btn-chat-popup,
+.btn-chat,
+.chat-produto-widget,
+#chat-produto-widget {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+
+.barra-compra {
+  display: flex !important;
+}
+
+.btn-comprar-popup {
+  width: 100% !important;
+  flex: 1 1 auto !important;
+}
+
+
+@media (max-width: 680px) {
+  .barra-compra {
+    display: flex !important;
+    grid-template-columns: none !important;
+    gap: 0 !important;
+  }
+
+  .btn-comprar-popup {
+    width: 100% !important;
+    min-width: 0 !important;
   }
 }
