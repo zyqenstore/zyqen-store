@@ -5578,3 +5578,88 @@ body > header:not(.zq-header) {
     margin: 0 !important;
   }
 }
+
+/* =========================================================
+   VER MAIS / VER MENOS - PRODUTO PAGE
+   Funciona no mobile sem alterar o PC
+========================================================= */
+
+.produto-page-detalhes-conteudo,
+.produto-page-comentarios-lista {
+  position: relative;
+}
+
+.produto-page-ver-mais-detalhes,
+.produto-page-ver-mais-comentarios {
+  display: none;
+  width: max-content;
+  min-height: 36px;
+  margin-top: 12px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  border: 1px solid rgba(185, 138, 55, 0.26);
+  border-radius: 999px;
+  background: #fffdfa;
+  color: var(--gold3);
+  font-size: 12px;
+  font-weight: 950;
+  box-shadow: 0 8px 20px rgba(82, 61, 32, 0.06);
+}
+
+.produto-page-ver-mais-detalhes:hover,
+.produto-page-ver-mais-comentarios:hover {
+  background: #fff8ed;
+  border-color: var(--gold);
+}
+
+@media (max-width: 680px) {
+  .produto-page-detalhes-conteudo.reduzido {
+    max-height: 138px;
+    overflow: hidden;
+  }
+
+  .produto-page-comentarios-lista.reduzido {
+    max-height: 238px;
+    overflow: hidden;
+  }
+
+  .produto-page-detalhes-conteudo.reduzido::after,
+  .produto-page-comentarios-lista.reduzido::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 54px;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.96)
+    );
+  }
+
+  .produto-page-ver-mais-detalhes,
+  .produto-page-ver-mais-comentarios {
+    display: inline-flex;
+  }
+}
+
+@media (min-width: 681px) {
+  .produto-page-detalhes-conteudo,
+  .produto-page-comentarios-lista {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .produto-page-detalhes-conteudo::after,
+  .produto-page-comentarios-lista::after {
+    display: none !important;
+  }
+
+  .produto-page-ver-mais-detalhes,
+  .produto-page-ver-mais-comentarios {
+    display: none !important;
+  }
+}

@@ -96,7 +96,9 @@ document.addEventListener("DOMContentLoaded", () => {
   prepararSwipeImagem();
   prepararFormularioComentarioProdutoPage();
   prepararVerMaisDetalhes();
+  prepararVerMaisComentarios();
   carregarPaginaProduto();
+
 
   window.addEventListener("resize", agendarResizeProdutoPage, { passive: true });
   window.addEventListener("orientationchange", () => {
@@ -145,6 +147,7 @@ async function carregarPaginaProduto() {
     setTimeout(() => {
       agendarAjusteGaleria();
       iniciarModoMobileDetalhes();
+      iniciarModoMobileComentarios();
     }, 80);
   } catch (erro) {
     console.warn("Erro ao carregar página do produto:", erro);
@@ -860,6 +863,7 @@ function renderizarComentarios(produto) {
   if (!box) return;
 
   const comentarios = Array.isArray(produto.comentarios) ? produto.comentarios : [];
+  const precisaBotaoVerMais = comentarios.length > 2;
 
   box.innerHTML = `
     <div class="produto-page-card-bloco produto-page-comentarios-card">
@@ -868,7 +872,10 @@ function renderizarComentarios(produto) {
         <span>${comentarios.length || 0}</span>
       </div>
 
-      <div class="produto-page-comentarios-lista">
+      <div
+        id="produto-page-comentarios-lista"
+        class="produto-page-comentarios-lista ${precisaBotaoVerMais ? "reduzido" : ""}"
+      >
         ${
           comentarios.length
             ? comentarios
@@ -879,6 +886,19 @@ function renderizarComentarios(produto) {
             : `<p class="produto-page-vazio">Ainda não há comentários para este produto.</p>`
         }
       </div>
+
+      ${
+        precisaBotaoVerMais
+          ? `<button
+              type="button"
+              id="produto-page-ver-mais-comentarios"
+              class="produto-page-ver-mais-comentarios"
+              data-aberto="false"
+            >
+              Ver mais
+            </button>`
+          : ""
+      }
 
       <form id="produto-page-form-comentario" class="produto-page-form-comentario">
         <h3>Enviar comentário</h3>
@@ -914,6 +934,58 @@ function renderizarComentarios(produto) {
       </form>
     </div>
   `;
+
+  setTimeout(iniciarModoMobileComentarios, 50);
+}
+
+function prepararVerMaisComentarios() {
+  document.addEventListener("click", event => {
+    const botao = event.target.closest?.("#produto-page-ver-mais-comentarios");
+    if (!botao) return;
+
+    event.preventDefault();
+
+    const lista = document.getElementById("produto-page-comentarios-lista");
+    if (!lista) return;
+
+    const aberto = botao.dataset.aberto === "true";
+
+    if (aberto) {
+      lista.classList.add("reduzido");
+      botao.dataset.aberto = "false";
+      botao.textContent = "Ver mais";
+    } else {
+      lista.classList.remove("reduzido");
+      botao.dataset.aberto = "true";
+      botao.textContent = "Ver menos";
+    }
+  });
+}
+
+function iniciarModoMobileComentarios() {
+  const lista = document.getElementById("produto-page-comentarios-lista");
+  const botao = document.getElementById("produto-page-ver-mais-comentarios");
+
+  if (!lista) return;
+
+  const ehMobile = window.innerWidth <= 680;
+
+  if (!botao) {
+    lista.classList.remove("reduzido");
+    return;
+  }
+
+  if (ehMobile) {
+    lista.classList.add("reduzido");
+    botao.dataset.aberto = "false";
+    botao.textContent = "Ver mais";
+    botao.style.display = "inline-flex";
+  } else {
+    lista.classList.remove("reduzido");
+    botao.dataset.aberto = "true";
+    botao.textContent = "Ver menos";
+    botao.style.display = "none";
+  }
 }
 
 function prepararFormularioComentarioProdutoPage() {
@@ -1173,6 +1245,7 @@ function agendarResizeProdutoPage() {
     if (produtoAtual) {
       renderizarFaixaParceiro(produtoAtual);
       iniciarModoMobileDetalhes();
+      iniciarModoMobileComentarios();
     }
   });
 }
