@@ -620,14 +620,18 @@ function imagemAnterior() {
 }
 
 function agendarAjusteGaleria() {
-  if (rafGaleria) {
-    cancelAnimationFrame(rafGaleria);
-  }
+  const imagem = document.getElementById("produto-imagem-principal");
 
-  rafGaleria = requestAnimationFrame(() => {
-    rafGaleria = null;
-    ajustarGaleriaPeloTamanhoDaImagem();
-  });
+  if (!imagem) return;
+
+  imagem.style.setProperty("width", "100%", "important");
+  imagem.style.setProperty("height", "100%", "important");
+  imagem.style.setProperty("max-width", "100%", "important");
+  imagem.style.setProperty("max-height", "100%", "important");
+  imagem.style.setProperty("object-fit", "contain", "important");
+  imagem.style.setProperty("object-position", "center center", "important");
+  imagem.style.setProperty("padding", "0", "important");
+  imagem.style.setProperty("margin", "0 auto", "important");
 }
 
 
