@@ -630,6 +630,29 @@ function agendarAjusteGaleria() {
   });
 }
 
+function ajustarGaleriaPeloTamanhoDaImagem() {
+  const area = document.querySelector(".produto-page-imagem-area");
+  const imagem = document.getElementById("produto-imagem-principal");
+
+  if (!area || !imagem) return;
+
+  const ehMobile = window.innerWidth <= 680;
+
+  imagem.style.setProperty("width", "100%", "important");
+  imagem.style.setProperty("height", "100%", "important");
+  imagem.style.setProperty("max-width", "100%", "important");
+  imagem.style.setProperty("max-height", "100%", "important");
+  imagem.style.setProperty("object-fit", "contain", "important");
+  imagem.style.setProperty("object-position", "center center", "important");
+  imagem.style.setProperty("padding", "0", "important");
+  imagem.style.setProperty("margin", "0 auto", "important");
+
+  if (!ehMobile) return;
+
+  area.style.setProperty("height", "235px", "important");
+  area.style.setProperty("min-height", "235px", "important");
+  area.style.setProperty("max-height", "235px", "important");
+}
 
 function prepararSwipeImagem() {
   let inicioX = 0;

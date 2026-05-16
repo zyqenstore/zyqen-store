@@ -5961,10 +5961,6 @@ body > header:not(.zq-header) {
   }
 }
 
-/* =========================================================
-   CORREÇÃO MOBILE PRODUTO.HTML
-   Deixa imagem, setas e miniaturas menores e sem corte
-========================================================= */
 
 @media (max-width: 680px) {
   body.produto-page-mobile .produto-page-main {
