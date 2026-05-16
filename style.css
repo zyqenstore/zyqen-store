@@ -5664,10 +5664,6 @@ body > header:not(.zq-header) {
   }
 }
 
-.produto-page-compra-box {
-  position: sticky;
-  bottom: 0;
-}
 /* =========================================================
    BOTÃO COMPRAR FIXO - SOMENTE CELULAR
    Não altera o PC
@@ -5718,4 +5714,9 @@ body > header:not(.zq-header) {
     font-weight: 950 !important;
     box-shadow: 0 12px 28px rgba(185, 138, 55, 0.22) !important;
   }
+}
+
+.produto-page-compra-box {
+  position: sticky;
+  bottom: 0;
 }

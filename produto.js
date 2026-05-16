@@ -20,6 +20,7 @@ import {
    - carrega imagens, miniaturas, preço, parcelamento,
      barrinha do parceiro, detalhes, comentários e recomendados
    - melhora a versão mobile da página do produto
+   - mantém Ver Mais aberto até clicar em Ver Menos
 ========================================================= */
 
 let listaProdutos = [];
@@ -31,7 +32,6 @@ let cliquesEmAndamento = new Set();
 let comentarioEnviando = false;
 
 let bloqueioTrocaImagem = false;
-let rafGaleria = null;
 let rafResize = null;
 
 let detalhesAbertoManual = false;
@@ -102,12 +102,14 @@ document.addEventListener("DOMContentLoaded", () => {
   prepararVerMaisComentarios();
   carregarPaginaProduto();
 
-
   window.addEventListener("resize", agendarResizeProdutoPage, { passive: true });
+
   window.addEventListener("orientationchange", () => {
     setTimeout(() => {
       detectarProdutoPageDispositivo();
       agendarAjusteGaleria();
+      aplicarEstadoVerMaisDetalhes();
+      aplicarEstadoVerMaisComentarios();
     }, 220);
   });
 });
@@ -143,16 +145,17 @@ async function carregarPaginaProduto() {
     midiasProdutoAtual = montarMidiasProduto(produtoAtual);
     indiceMidiaAtual = 0;
 
+    detalhesAbertoManual = false;
+    comentariosAbertoManual = false;
+
     renderizarProduto(produtoAtual);
     esconderLoadingProduto();
     mostrarProduto();
 
     setTimeout(() => {
       agendarAjusteGaleria();
-      iniciarModoMobileDetalhes();
-      iniciarModoMobileComentarios();
       aplicarEstadoVerMaisDetalhes();
-      
+      aplicarEstadoVerMaisComentarios();
     }, 80);
   } catch (erro) {
     console.warn("Erro ao carregar página do produto:", erro);
@@ -333,6 +336,7 @@ function renderizarProduto(produto) {
   definirTexto("produto-categoria", categoriaPublicaDoProduto(produto));
   definirTexto("produto-nome", produto.nome);
   definirTexto("produto-preco", produto.preco || "Ver preço na loja");
+
   definirTexto(
     "produto-descricao",
     produto.descricao || "Produto selecionado pela Zyqen Store. Confira todos os detalhes na plataforma oficial."
@@ -668,7 +672,6 @@ function agendarAjusteGaleria() {
   imagem.style.setProperty("max-height", "100%", "important");
 }
 
-
 function prepararSwipeImagem() {
   let inicioX = 0;
   let inicioY = 0;
@@ -756,6 +759,7 @@ function renderizarDetalhes(produto) {
   if (!box) return;
 
   const detalhes = Array.isArray(produto.detalhes) ? produto.detalhes.filter(Boolean) : [];
+  const precisaBotaoVerMais = detalhes.length > 4;
 
   box.innerHTML = `
     <div class="produto-page-card-bloco produto-page-detalhes-card">
@@ -763,7 +767,10 @@ function renderizarDetalhes(produto) {
         <h2>Características do Produto</h2>
       </div>
 
-      <div id="produto-page-detalhes-conteudo" class="produto-page-detalhes-conteudo reduzido">
+      <div
+        id="produto-page-detalhes-conteudo"
+        class="produto-page-detalhes-conteudo ${precisaBotaoVerMais ? "reduzido" : ""}"
+      >
         ${
           detalhes.length
             ? `<ul>${detalhes.map(item => `<li>${formatarDetalhe(item)}</li>`).join("")}</ul>`
@@ -772,14 +779,21 @@ function renderizarDetalhes(produto) {
       </div>
 
       ${
-        detalhes.length > 4
-          ? `<button type="button" id="produto-page-ver-mais-detalhes" class="produto-page-ver-mais-detalhes" data-aberto="false">Ver mais</button>`
+        precisaBotaoVerMais
+          ? `<button
+              type="button"
+              id="produto-page-ver-mais-detalhes"
+              class="produto-page-ver-mais-detalhes"
+              data-aberto="false"
+            >
+              Ver mais
+            </button>`
           : ""
       }
     </div>
   `;
 
-  setTimeout(iniciarModoMobileDetalhes, 50);
+  setTimeout(aplicarEstadoVerMaisDetalhes, 50);
 }
 
 function prepararVerMaisDetalhes() {
@@ -791,23 +805,6 @@ function prepararVerMaisDetalhes() {
 
     detalhesAbertoManual = !detalhesAbertoManual;
     aplicarEstadoVerMaisDetalhes();
-
-    event.preventDefault();
-
-    const conteudo = document.getElementById("produto-page-detalhes-conteudo");
-    if (!conteudo) return;
-
-    const aberto = botao.dataset.aberto === "true";
-
-    if (aberto) {
-      conteudo.classList.add("reduzido");
-      botao.dataset.aberto = "false";
-      botao.textContent = "Ver mais";
-    } else {
-      conteudo.classList.remove("reduzido");
-      botao.dataset.aberto = "true";
-      botao.textContent = "Ver menos";
-    }
   });
 }
 
@@ -815,9 +812,14 @@ function aplicarEstadoVerMaisDetalhes() {
   const conteudo = document.getElementById("produto-page-detalhes-conteudo");
   const botao = document.getElementById("produto-page-ver-mais-detalhes");
 
-  if (!conteudo || !botao) return;
+  if (!conteudo) return;
 
   const ehMobile = window.innerWidth <= 680;
+
+  if (!botao) {
+    conteudo.classList.remove("reduzido");
+    return;
+  }
 
   if (!ehMobile) {
     conteudo.classList.remove("reduzido");
@@ -841,24 +843,7 @@ function aplicarEstadoVerMaisDetalhes() {
 }
 
 function iniciarModoMobileDetalhes() {
-  const conteudo = document.getElementById("produto-page-detalhes-conteudo");
-  const botao = document.getElementById("produto-page-ver-mais-detalhes");
-
-  if (!conteudo || !botao) return;
-
-  const ehMobile = window.innerWidth <= 680;
-
-  if (ehMobile) {
-    conteudo.classList.add("reduzido");
-    botao.dataset.aberto = "false";
-    botao.textContent = "Ver mais";
-    botao.style.display = "inline-flex";
-  } else {
-    conteudo.classList.remove("reduzido");
-    botao.dataset.aberto = "true";
-    botao.textContent = "Ver menos";
-    botao.style.display = "none";
-  }
+  aplicarEstadoVerMaisDetalhes();
 }
 
 function renderizarObservacoes(produto) {
@@ -974,7 +959,7 @@ function renderizarComentarios(produto) {
     </div>
   `;
 
-  setTimeout(iniciarModoMobileComentarios, 50);
+  setTimeout(aplicarEstadoVerMaisComentarios, 50);
 }
 
 function prepararVerMaisComentarios() {
@@ -986,21 +971,6 @@ function prepararVerMaisComentarios() {
 
     comentariosAbertoManual = !comentariosAbertoManual;
     aplicarEstadoVerMaisComentarios();
-
-    const lista = document.getElementById("produto-page-comentarios-lista");
-    if (!lista) return;
-
-    const aberto = botao.dataset.aberto === "true";
-
-    if (aberto) {
-      lista.classList.add("reduzido");
-      botao.dataset.aberto = "false";
-      botao.textContent = "Ver mais";
-    } else {
-      lista.classList.remove("reduzido");
-      botao.dataset.aberto = "true";
-      botao.textContent = "Ver menos";
-    }
   });
 }
 
@@ -1039,29 +1009,7 @@ function aplicarEstadoVerMaisComentarios() {
 }
 
 function iniciarModoMobileComentarios() {
-  const lista = document.getElementById("produto-page-comentarios-lista");
-  const botao = document.getElementById("produto-page-ver-mais-comentarios");
-
-  if (!lista) return;
-
-  const ehMobile = window.innerWidth <= 680;
-
-  if (!botao) {
-    lista.classList.remove("reduzido");
-    return;
-  }
-
-  if (ehMobile) {
-    lista.classList.add("reduzido");
-    botao.dataset.aberto = "false";
-    botao.textContent = "Ver mais";
-    botao.style.display = "inline-flex";
-  } else {
-    lista.classList.remove("reduzido");
-    botao.dataset.aberto = "true";
-    botao.textContent = "Ver menos";
-    botao.style.display = "none";
-  }
+  aplicarEstadoVerMaisComentarios();
 }
 
 function prepararFormularioComentarioProdutoPage() {
@@ -1320,8 +1268,7 @@ function agendarResizeProdutoPage() {
 
     if (produtoAtual) {
       renderizarFaixaParceiro(produtoAtual);
-      iniciarModoMobileDetalhes();
-      iniciarModoMobileComentarios();
+      aplicarEstadoVerMaisDetalhes();
       aplicarEstadoVerMaisComentarios();
     }
   });
