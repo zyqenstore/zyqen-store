@@ -34,6 +34,9 @@ let bloqueioTrocaImagem = false;
 let rafGaleria = null;
 let rafResize = null;
 
+let detalhesAbertoManual = false;
+let comentariosAbertoManual = false;
+
 const TELEFONE_WHATSAPP = "5575981768068";
 
 const IMAGEM_FALLBACK =
@@ -148,6 +151,8 @@ async function carregarPaginaProduto() {
       agendarAjusteGaleria();
       iniciarModoMobileDetalhes();
       iniciarModoMobileComentarios();
+      aplicarEstadoVerMaisDetalhes();
+      
     }, 80);
   } catch (erro) {
     console.warn("Erro ao carregar página do produto:", erro);
@@ -784,6 +789,11 @@ function prepararVerMaisDetalhes() {
 
     event.preventDefault();
 
+    detalhesAbertoManual = !detalhesAbertoManual;
+    aplicarEstadoVerMaisDetalhes();
+
+    event.preventDefault();
+
     const conteudo = document.getElementById("produto-page-detalhes-conteudo");
     if (!conteudo) return;
 
@@ -799,6 +809,35 @@ function prepararVerMaisDetalhes() {
       botao.textContent = "Ver menos";
     }
   });
+}
+
+function aplicarEstadoVerMaisDetalhes() {
+  const conteudo = document.getElementById("produto-page-detalhes-conteudo");
+  const botao = document.getElementById("produto-page-ver-mais-detalhes");
+
+  if (!conteudo || !botao) return;
+
+  const ehMobile = window.innerWidth <= 680;
+
+  if (!ehMobile) {
+    conteudo.classList.remove("reduzido");
+    botao.dataset.aberto = "true";
+    botao.textContent = "Ver menos";
+    botao.style.display = "none";
+    return;
+  }
+
+  botao.style.display = "inline-flex";
+
+  if (detalhesAbertoManual) {
+    conteudo.classList.remove("reduzido");
+    botao.dataset.aberto = "true";
+    botao.textContent = "Ver menos";
+  } else {
+    conteudo.classList.add("reduzido");
+    botao.dataset.aberto = "false";
+    botao.textContent = "Ver mais";
+  }
 }
 
 function iniciarModoMobileDetalhes() {
@@ -945,6 +984,9 @@ function prepararVerMaisComentarios() {
 
     event.preventDefault();
 
+    comentariosAbertoManual = !comentariosAbertoManual;
+    aplicarEstadoVerMaisComentarios();
+
     const lista = document.getElementById("produto-page-comentarios-lista");
     if (!lista) return;
 
@@ -960,6 +1002,40 @@ function prepararVerMaisComentarios() {
       botao.textContent = "Ver menos";
     }
   });
+}
+
+function aplicarEstadoVerMaisComentarios() {
+  const lista = document.getElementById("produto-page-comentarios-lista");
+  const botao = document.getElementById("produto-page-ver-mais-comentarios");
+
+  if (!lista) return;
+
+  const ehMobile = window.innerWidth <= 680;
+
+  if (!botao) {
+    lista.classList.remove("reduzido");
+    return;
+  }
+
+  if (!ehMobile) {
+    lista.classList.remove("reduzido");
+    botao.dataset.aberto = "true";
+    botao.textContent = "Ver menos";
+    botao.style.display = "none";
+    return;
+  }
+
+  botao.style.display = "inline-flex";
+
+  if (comentariosAbertoManual) {
+    lista.classList.remove("reduzido");
+    botao.dataset.aberto = "true";
+    botao.textContent = "Ver menos";
+  } else {
+    lista.classList.add("reduzido");
+    botao.dataset.aberto = "false";
+    botao.textContent = "Ver mais";
+  }
 }
 
 function iniciarModoMobileComentarios() {
@@ -1246,6 +1322,7 @@ function agendarResizeProdutoPage() {
       renderizarFaixaParceiro(produtoAtual);
       iniciarModoMobileDetalhes();
       iniciarModoMobileComentarios();
+      aplicarEstadoVerMaisComentarios();
     }
   });
 }

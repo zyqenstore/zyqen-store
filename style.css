@@ -5663,3 +5663,59 @@ body > header:not(.zq-header) {
     display: none !important;
   }
 }
+
+.produto-page-compra-box {
+  position: sticky;
+  bottom: 0;
+}
+/* =========================================================
+   BOTÃO COMPRAR FIXO - SOMENTE CELULAR
+   Não altera o PC
+========================================================= */
+
+@media (max-width: 680px) {
+  body.produto-page-mobile .produto-page-wrapper {
+    padding-bottom: 96px !important;
+  }
+
+  body.produto-page-mobile .produto-page-compra-box {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 9998 !important;
+
+    width: 100% !important;
+    margin: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom)) !important;
+
+    border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
+    background: rgba(255, 255, 255, 0.96) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+
+    box-shadow: 0 -12px 34px rgba(37, 31, 22, 0.12) !important;
+  }
+
+  body.produto-page-mobile .produto-page-comprar {
+    width: min(100%, 520px) !important;
+    min-height: 52px !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border-radius: 17px !important;
+    background: var(--gold) !important;
+    color: #ffffff !important;
+
+    font-size: 15px !important;
+    font-weight: 950 !important;
+    box-shadow: 0 12px 28px rgba(185, 138, 55, 0.22) !important;
+  }
+}
