@@ -5300,15 +5300,13 @@ body > header:not(.zq-header) {
   display: block !important;
   opacity: 1 !important;
 
-  /* transforma o SVG preto/cinza em dourado */
+
   filter: brightness(0) saturate(100%)
           invert(39%) sepia(44%) saturate(656%)
           hue-rotate(5deg) brightness(92%) contrast(88%) !important;
 }
 
-/* =========================================================
-   FORMULÁRIO DE COMENTÁRIO - PÁGINA DO PRODUTO
-========================================================= */
+
 
 .produto-page-form-comentario {
   margin-top: 18px;
@@ -5430,10 +5428,7 @@ body > header:not(.zq-header) {
     min-height: 44px;
   }
 }
-/* =========================================================
-   CORREÇÃO FINAL - IMAGEM DO PRODUTO SEM CORTE NO CELULAR
-   A caixa da imagem passa a seguir o tamanho real da imagem
-========================================================= */
+
 
 @media (max-width: 680px) {
   body.produto-page-mobile .produto-page-galeria {
@@ -5579,10 +5574,6 @@ body > header:not(.zq-header) {
   }
 }
 
-/* =========================================================
-   VER MAIS / VER MENOS - PRODUTO PAGE
-   Funciona no mobile sem alterar o PC
-========================================================= */
 
 .produto-page-detalhes-conteudo,
 .produto-page-comentarios-lista {
@@ -5664,10 +5655,6 @@ body > header:not(.zq-header) {
   }
 }
 
-/* =========================================================
-   BOTÃO COMPRAR FIXO - SOMENTE CELULAR
-   Não altera o PC
-========================================================= */
 
 @media (max-width: 680px) {
   body.produto-page-mobile .produto-page-wrapper {
@@ -5732,4 +5719,43 @@ body > header:not(.zq-header) {
 .zq-search-box input::-webkit-search-results-decoration {
   display: none;
   -webkit-appearance: none;
+}
+
+
+@media (max-width: 680px) {
+  body.produto-page-mobile .produto-page-header,
+  body.produto-page-mobile header.produto-page-header,
+  .produto-page-wrapper > .produto-page-header {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body.produto-page-mobile .produto-page-wrapper {
+    padding-top: 0 !important;
+    background: #ffffff !important;
+  }
+
+  body.produto-page-mobile .produto-page-main {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 12px 0 !important;
+  }
+
+  body.produto-page-mobile .produto-page-topbar {
+    width: 100% !important;
+    min-height: 68px !important;
+    margin: 0 !important;
+    padding: max(12px, env(safe-area-inset-top)) 0 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    background: #ffffff !important;
+  }
 }

@@ -9,19 +9,6 @@ import {
   arrayUnion
 } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
 
-/* =========================================================
-   ZYQEN STORE - PÁGINA DO PRODUTO
-   produto.html?id=ID_DO_PRODUTO
-
-   Esse arquivo:
-   - pega o ID do produto pela URL
-   - busca o produto no Firebase
-   - mantém o produto aberto mesmo atualizando a página
-   - carrega imagens, miniaturas, preço, parcelamento,
-     barrinha do parceiro, detalhes, comentários e recomendados
-   - melhora a versão mobile da página do produto
-   - mantém Ver Mais aberto até clicar em Ver Menos
-========================================================= */
 
 let listaProdutos = [];
 let listaFaixasParceiros = [];
@@ -88,9 +75,7 @@ const NOMES_PUBLICOS_PLATAFORMA = {
   digital: "Digital"
 };
 
-/* =========================================================
-   INICIAR
-========================================================= */
+
 
 document.addEventListener("DOMContentLoaded", () => {
   detectarProdutoPageDispositivo();
@@ -114,9 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-/* =========================================================
-   CARREGAR DADOS
-========================================================= */
+
 
 async function carregarPaginaProduto() {
   const idProduto = pegarIdDaURL();
@@ -208,9 +191,7 @@ function pegarIdDaURL() {
   return params.get("id") || params.get("produto") || "";
 }
 
-/* =========================================================
-   NORMALIZAÇÃO
-========================================================= */
+
 
 function normalizarProduto(p) {
   const categoriaBase = String(
@@ -325,9 +306,7 @@ function normalizarFaixaParceiro(faixa) {
   };
 }
 
-/* =========================================================
-   RENDERIZAR PRODUTO
-========================================================= */
+
 
 function renderizarProduto(produto) {
   document.title = `${produto.nome} - Zyqen Store`;
@@ -440,9 +419,7 @@ function configurarBotaoComprar(produto) {
   };
 }
 
-/* =========================================================
-   BARRINHA DO PARCEIRO
-========================================================= */
+
 
 function renderizarFaixaParceiro(produto) {
   const el = document.getElementById("produto-faixa-parceiro");
@@ -497,9 +474,7 @@ function faixaParceiroDoProduto(produto) {
   );
 }
 
-/* =========================================================
-   GALERIA
-========================================================= */
+
 
 function montarMidiasProduto(produto) {
   const imagens = Array.isArray(produto.imagens)
@@ -715,9 +690,7 @@ function prepararSwipeImagem() {
   );
 }
 
-/* =========================================================
-   CONFIANÇA / DETALHES / COMENTÁRIOS
-========================================================= */
+
 
 function renderizarConfianca() {
   const box = document.getElementById("produto-confianca");
@@ -1130,9 +1103,7 @@ function formatarDetalhe(item) {
   return `<strong>${escaparHTML(nome)}:</strong> ${escaparHTML(valor)}`;
 }
 
-/* =========================================================
-   RECOMENDADOS
-========================================================= */
+
 
 function renderizarRecomendados(produto) {
   const grid = document.getElementById("produto-recomendados-grid");
@@ -1194,9 +1165,7 @@ function criarCardRecomendado(produto) {
   `;
 }
 
-/* =========================================================
-   BOTÕES
-========================================================= */
+
 
 function prepararBotoesFixos() {
   const voltar = document.getElementById("produto-voltar");
@@ -1318,9 +1287,7 @@ function abrirWhatsappProduto() {
   );
 }
 
-/* =========================================================
-   CLIQUES FIREBASE
-========================================================= */
+
 
 async function registrarCliqueProduto(tipo, produto = produtoAtual) {
   if (!produto?.docId) return;
@@ -1355,9 +1322,7 @@ async function registrarCliqueProduto(tipo, produto = produtoAtual) {
   }
 }
 
-/* =========================================================
-   LOADING / ERRO
-========================================================= */
+
 
 function mostrarLoadingProduto() {
   const loading = document.getElementById("produto-loading");
@@ -1392,9 +1357,6 @@ function mostrarErroProduto() {
   if (detalhe) detalhe.hidden = true;
 }
 
-/* =========================================================
-   DISPOSITIVO / PERFORMANCE
-========================================================= */
 
 function detectarProdutoPageDispositivo() {
   const largura = window.innerWidth || document.documentElement.clientWidth || 0;
@@ -1406,9 +1368,6 @@ function detectarProdutoPageDispositivo() {
   document.body.classList.toggle("produto-page-desktop", !ehMobile);
 }
 
-/* =========================================================
-   UTILITÁRIOS
-========================================================= */
 
 function imagemPrincipal(produto) {
   return Array.isArray(produto?.imagens) && produto.imagens[0]
@@ -1587,9 +1546,7 @@ function bloquearZoomBasico() {
   );
 }
 
-/* =========================================================
-   FUNÇÕES GLOBAIS OPCIONAIS
-========================================================= */
+
 
 window.proximaImagemProdutoPage = proximaImagem;
 window.imagemAnteriorProdutoPage = imagemAnterior;
