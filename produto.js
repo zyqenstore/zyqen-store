@@ -630,52 +630,6 @@ function agendarAjusteGaleria() {
   });
 }
 
-function ajustarGaleriaPeloTamanhoDaImagem() {
-  const area = document.querySelector(".produto-page-imagem-area");
-  const imagem = document.getElementById("produto-imagem-principal");
-
-  if (!area || !imagem) return;
-
-  const ehMobile = window.innerWidth <= 680;
-
-  imagem.style.setProperty("width", "auto", "important");
-  imagem.style.setProperty("height", "auto", "important");
-  imagem.style.setProperty("max-width", "100%", "important");
-  imagem.style.setProperty("max-height", "100%", "important");
-  imagem.style.setProperty("object-fit", "contain", "important");
-  imagem.style.setProperty("object-position", "center center", "important");
-
-  if (!ehMobile) return;
-
-  const larguraNatural = imagem.naturalWidth || 1;
-  const alturaNatural = imagem.naturalHeight || 1;
-
-  let ratio = larguraNatural / alturaNatural;
-
-  if (!Number.isFinite(ratio) || ratio <= 0) {
-    ratio = 1;
-  }
-
-  const larguraTela = window.innerWidth || document.documentElement.clientWidth || 390;
-  const alturaTela = window.innerHeight || document.documentElement.clientHeight || 720;
-  const larguraArea = Math.max(280, Math.min(larguraTela - 24, 760));
-
-  let alturaIdeal = Math.round(larguraArea / ratio);
-
-  const limiteMinimo = larguraTela <= 360 ? 265 : 292;
-  const limiteMaximo = Math.min(Math.round(alturaTela * 0.54), 440);
-
-  if (ratio >= 1.75) alturaIdeal = Math.max(235, alturaIdeal);
-  if (ratio >= 1.25 && ratio < 1.75) alturaIdeal = Math.max(285, alturaIdeal);
-  if (ratio >= 0.82 && ratio < 1.25) alturaIdeal = Math.max(325, alturaIdeal);
-  if (ratio < 0.82) alturaIdeal = Math.max(350, alturaIdeal);
-
-  const alturaFinal = limitarNumero(alturaIdeal, limiteMinimo, limiteMaximo);
-
-  area.style.setProperty("height", `${alturaFinal}px`, "important");
-  area.style.setProperty("min-height", `${alturaFinal}px`, "important");
-  area.style.setProperty("max-height", `${alturaFinal}px`, "important");
-}
 
 function prepararSwipeImagem() {
   let inicioX = 0;
