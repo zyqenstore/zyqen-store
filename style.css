@@ -5720,3 +5720,16 @@ body > header:not(.zq-header) {
   position: sticky;
   bottom: 0;
 }
+
+.zq-search-box input {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.zq-search-box input::-webkit-search-decoration,
+.zq-search-box input::-webkit-search-cancel-button,
+.zq-search-box input::-webkit-search-results-button,
+.zq-search-box input::-webkit-search-results-decoration {
+  display: none;
+  -webkit-appearance: none;
+}
