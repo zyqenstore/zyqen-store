@@ -5430,3 +5430,151 @@ body > header:not(.zq-header) {
     min-height: 44px;
   }
 }
+/* =========================================================
+   CORREÇÃO FINAL - IMAGEM DO PRODUTO SEM CORTE NO CELULAR
+   A caixa da imagem passa a seguir o tamanho real da imagem
+========================================================= */
+
+@media (max-width: 680px) {
+  body.produto-page-mobile .produto-page-galeria {
+    display: block !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    overflow: visible !important;
+  }
+
+  body.produto-page-mobile .produto-page-imagem-area {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+
+    display: block !important;
+    position: relative !important;
+    overflow: hidden !important;
+
+    border-radius: 18px !important;
+    border: 1px solid rgba(126, 103, 68, 0.15) !important;
+    background: #ffffff !important;
+    box-shadow: 0 10px 26px rgba(37, 31, 22, 0.075) !important;
+  }
+
+  body.produto-page-mobile .produto-page-imagem-area img,
+  body.produto-page-mobile #produto-imagem-principal {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-width: 100% !important;
+    max-height: none !important;
+
+    display: block !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+
+    padding: 0 !important;
+    margin: 0 auto !important;
+    border-radius: 18px !important;
+    background: #ffffff !important;
+    transform: none !important;
+  }
+
+  body.produto-page-mobile .produto-page-seta {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    min-height: 42px !important;
+
+    top: 50% !important;
+    z-index: 20 !important;
+
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+    color: #111111 !important;
+
+    font-size: 30px !important;
+    font-weight: 950 !important;
+    line-height: 1 !important;
+
+    box-shadow: 0 8px 20px rgba(20, 18, 15, 0.14) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  body.produto-page-mobile .produto-page-seta-esq {
+    left: 12px !important;
+  }
+
+  body.produto-page-mobile .produto-page-seta-dir {
+    right: 12px !important;
+  }
+
+  body.produto-page-mobile .produto-page-contador {
+    right: 12px !important;
+    bottom: 12px !important;
+    z-index: 22 !important;
+
+    min-height: 28px !important;
+    padding: 5px 10px !important;
+
+    border-radius: 999px !important;
+    background: rgba(0, 0, 0, 0.68) !important;
+    color: #ffffff !important;
+
+    font-size: 12px !important;
+    font-weight: 950 !important;
+  }
+
+  body.produto-page-mobile .produto-page-miniaturas {
+    width: 100% !important;
+    min-height: 58px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+
+    padding: 9px 2px 2px !important;
+    margin: 0 !important;
+
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-x !important;
+  }
+
+  body.produto-page-mobile .produto-page-miniaturas::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  body.produto-page-mobile .produto-page-thumb {
+    flex: 0 0 54px !important;
+    width: 54px !important;
+    height: 54px !important;
+    min-width: 54px !important;
+    min-height: 54px !important;
+
+    padding: 0 !important;
+    overflow: hidden !important;
+
+    border-radius: 12px !important;
+    border: 1px solid rgba(126, 103, 68, 0.18) !important;
+    background: #ffffff !important;
+  }
+
+  body.produto-page-mobile .produto-page-thumb.ativo {
+    border-color: var(--gold) !important;
+    box-shadow: 0 0 0 2px rgba(185, 138, 55, 0.20) !important;
+  }
+
+  body.produto-page-mobile .produto-page-thumb img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+}

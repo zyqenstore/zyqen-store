@@ -620,18 +620,44 @@ function imagemAnterior() {
 }
 
 function agendarAjusteGaleria() {
+  const area = document.querySelector(".produto-page-imagem-area");
   const imagem = document.getElementById("produto-imagem-principal");
 
-  if (!imagem) return;
+  if (!area || !imagem) return;
+
+  const ehMobile = window.innerWidth <= 680;
+
+  imagem.style.setProperty("object-fit", "contain", "important");
+  imagem.style.setProperty("object-position", "center center", "important");
+  imagem.style.setProperty("padding", "0", "important");
+  imagem.style.setProperty("margin", "0 auto", "important");
+  imagem.style.setProperty("background", "#ffffff", "important");
+  imagem.style.setProperty("transform", "none", "important");
+
+  if (ehMobile) {
+    area.style.setProperty("height", "auto", "important");
+    area.style.setProperty("min-height", "0", "important");
+    area.style.setProperty("max-height", "none", "important");
+    area.style.setProperty("aspect-ratio", "auto", "important");
+    area.style.setProperty("overflow", "hidden", "important");
+    area.style.setProperty("display", "block", "important");
+
+    imagem.style.setProperty("width", "100%", "important");
+    imagem.style.setProperty("height", "auto", "important");
+    imagem.style.setProperty("max-width", "100%", "important");
+    imagem.style.setProperty("max-height", "none", "important");
+    imagem.style.setProperty("display", "block", "important");
+    return;
+  }
+
+  area.style.removeProperty("height");
+  area.style.removeProperty("min-height");
+  area.style.removeProperty("max-height");
 
   imagem.style.setProperty("width", "100%", "important");
   imagem.style.setProperty("height", "100%", "important");
   imagem.style.setProperty("max-width", "100%", "important");
   imagem.style.setProperty("max-height", "100%", "important");
-  imagem.style.setProperty("object-fit", "contain", "important");
-  imagem.style.setProperty("object-position", "center center", "important");
-  imagem.style.setProperty("padding", "0", "important");
-  imagem.style.setProperty("margin", "0 auto", "important");
 }
 
 
