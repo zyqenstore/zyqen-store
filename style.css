@@ -5430,3 +5430,533 @@ body > header:not(.zq-header) {
     min-height: 44px;
   }
 }
+
+/* =========================================================
+   PRODUTO.HTML - MOBILE MAIS LIMPO, LEVE E ESTILO APP
+   Cole este bloco no FINAL do style.css
+========================================================= */
+
+/* Ajuda geral contra corte, lag e bugs visuais */
+.produto-page-wrapper,
+.produto-page-main,
+.produto-page-detalhe,
+.produto-page-card,
+.produto-page-galeria,
+.produto-page-info {
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+
+.produto-page-imagem-area,
+.produto-page-imagem-area img,
+#produto-imagem-principal,
+.produto-page-thumb,
+.produto-page-thumb img {
+  -webkit-user-drag: none !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+/* =========================================================
+   VER MAIS / VER MENOS - CARACTERÍSTICAS DO PRODUTO
+========================================================= */
+
+.produto-page-detalhes-card {
+  position: relative;
+}
+
+.produto-page-detalhes-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.produto-page-detalhes-conteudo {
+  position: relative;
+  overflow: hidden;
+  transition: max-height 0.22s ease;
+}
+
+.produto-page-ver-mais-detalhes {
+  min-height: 40px;
+  width: max-content;
+  min-width: 132px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 14px;
+  padding: 0 18px;
+  border: 1px solid rgba(185, 138, 55, 0.22);
+  border-radius: 999px;
+  background: #fffaf2;
+  color: var(--gold3);
+  font-size: 13px;
+  font-weight: 950;
+}
+
+/* =========================================================
+   MOBILE - PRODUTO.HTML
+========================================================= */
+
+@media (max-width: 680px) {
+  html,
+  body {
+    overflow-x: hidden !important;
+    background: #ffffff !important;
+    overscroll-behavior-x: none !important;
+  }
+
+  body.produto-page-mobile {
+    padding-bottom: 98px !important;
+  }
+
+  body.produto-page-mobile .site-wrapper-fixo::before {
+    display: none !important;
+  }
+
+  /* Remove a parte de cima marcada em azul: logo, busca e menu */
+  body.produto-page-mobile .produto-page-header,
+  body.produto-page-mobile header.produto-page-header {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body.produto-page-mobile .produto-page-wrapper {
+    min-height: 100dvh !important;
+    padding: 0 0 110px !important;
+    background: #ffffff !important;
+  }
+
+  body.produto-page-mobile .produto-page-main {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 12px 0 !important;
+  }
+
+  /* Topo simples: Voltar + Compartilhar */
+  body.produto-page-mobile .produto-page-topbar {
+    width: 100% !important;
+    min-height: 72px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    margin: 0 !important;
+    padding: max(12px, env(safe-area-inset-top)) 0 10px !important;
+    background: #ffffff !important;
+  }
+
+  body.produto-page-mobile .produto-page-voltar,
+  body.produto-page-mobile .produto-page-compartilhar {
+    min-height: 46px !important;
+    height: 46px !important;
+    padding: 0 18px !important;
+    border-radius: 999px !important;
+    border: 1px solid rgba(126, 103, 68, 0.14) !important;
+    background: #ffffff !important;
+    color: #111111 !important;
+    font-size: 15px !important;
+    font-weight: 950 !important;
+    box-shadow: 0 8px 20px rgba(20, 18, 15, 0.07) !important;
+  }
+
+  /* Card vira página normal */
+  body.produto-page-mobile .produto-page-card {
+    display: block !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+
+  body.produto-page-mobile .produto-page-galeria {
+    display: block !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    overflow: visible !important;
+  }
+
+  /* Imagem principal mais estável e sem cortes */
+  body.produto-page-mobile .produto-page-imagem-area {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 300px !important;
+    max-height: 460px !important;
+    aspect-ratio: auto !important;
+    display: grid !important;
+    place-items: center !important;
+    overflow: hidden !important;
+    border-radius: 20px !important;
+    border: 1px solid rgba(126, 103, 68, 0.12) !important;
+    background: #ffffff !important;
+    box-shadow: 0 8px 22px rgba(20, 18, 15, 0.07) !important;
+    contain: layout paint !important;
+  }
+
+  body.produto-page-mobile .produto-page-imagem-area img,
+  body.produto-page-mobile #produto-imagem-principal {
+    width: auto !important;
+    height: auto !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    background: #ffffff !important;
+    transform: translateZ(0) !important;
+  }
+
+  /* Botões anterior/próximo melhores */
+  body.produto-page-mobile .produto-page-seta {
+    width: 56px !important;
+    height: 56px !important;
+    min-width: 56px !important;
+    min-height: 56px !important;
+    z-index: 12 !important;
+    display: grid !important;
+    place-items: center !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: rgba(255, 255, 255, 0.94) !important;
+    color: #111111 !important;
+    font-size: 42px !important;
+    font-weight: 850 !important;
+    line-height: 1 !important;
+    box-shadow: 0 10px 24px rgba(20, 18, 15, 0.16) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    touch-action: manipulation !important;
+  }
+
+  body.produto-page-mobile .produto-page-seta-esq {
+    left: 12px !important;
+  }
+
+  body.produto-page-mobile .produto-page-seta-dir {
+    right: 12px !important;
+  }
+
+  body.produto-page-mobile .produto-page-contador {
+    right: 14px !important;
+    bottom: 14px !important;
+    min-height: 32px !important;
+    padding: 6px 11px !important;
+    border-radius: 999px !important;
+    background: rgba(0, 0, 0, 0.68) !important;
+    color: #ffffff !important;
+    font-size: 13px !important;
+    font-weight: 950 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Mini imagens maiores e mais clicáveis */
+  body.produto-page-mobile .produto-page-miniaturas {
+    width: 100% !important;
+    min-height: 76px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    padding: 12px 0 4px !important;
+    margin: 0 !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-x !important;
+  }
+
+  body.produto-page-mobile .produto-page-miniaturas::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  body.produto-page-mobile .produto-page-thumb {
+    flex: 0 0 66px !important;
+    width: 66px !important;
+    height: 66px !important;
+    min-width: 66px !important;
+    min-height: 66px !important;
+    display: grid !important;
+    place-items: center !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    border-radius: 15px !important;
+    border: 1px solid rgba(126, 103, 68, 0.16) !important;
+    background: #ffffff !important;
+    box-shadow: 0 6px 16px rgba(20, 18, 15, 0.055) !important;
+  }
+
+  body.produto-page-mobile .produto-page-thumb.ativo {
+    border-color: var(--gold) !important;
+    box-shadow: 0 0 0 2px rgba(185, 138, 55, 0.22) !important;
+  }
+
+  body.produto-page-mobile .produto-page-thumb img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    padding: 0 !important;
+  }
+
+  /* Informações mais leves */
+  body.produto-page-mobile .produto-page-info {
+    padding: 18px 2px 0 !important;
+    background: #ffffff !important;
+  }
+
+  body.produto-page-mobile .produto-page-categoria {
+    min-height: 34px !important;
+    padding: 8px 15px !important;
+    border-radius: 999px !important;
+    font-size: 10px !important;
+    letter-spacing: 0.13em !important;
+  }
+
+  body.produto-page-mobile #produto-nome,
+  body.produto-page-mobile .produto-page-info h1 {
+    margin-top: 14px !important;
+    font-size: 31px !important;
+    line-height: 1.03 !important;
+    letter-spacing: -0.052em !important;
+  }
+
+  body.produto-page-mobile .produto-page-rating {
+    margin-top: 10px !important;
+    font-size: 12px !important;
+    gap: 6px !important;
+  }
+
+  body.produto-page-mobile #produto-preco {
+    font-size: 34px !important;
+    line-height: 1 !important;
+  }
+
+  body.produto-page-mobile .produto-page-precos {
+    margin-top: 12px !important;
+    gap: 6px !important;
+  }
+
+  body.produto-page-mobile #produto-descricao {
+    margin-top: 12px !important;
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Comprar fixo embaixo igual app */
+  body.produto-page-mobile .produto-page-compra-box {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 9999 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom)) !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
+    background: rgba(255, 255, 255, 0.98) !important;
+    box-shadow: 0 -10px 28px rgba(20, 18, 15, 0.10) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  body.produto-page-mobile .produto-page-comprar {
+    width: 100% !important;
+    min-height: 56px !important;
+    height: 56px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 18px !important;
+    background: linear-gradient(135deg, var(--gold2), var(--gold)) !important;
+    color: #ffffff !important;
+    font-size: 16px !important;
+    font-weight: 950 !important;
+    box-shadow: 0 12px 26px rgba(185, 138, 55, 0.23) !important;
+  }
+
+  /* Selos de confiança mais compactos */
+  body.produto-page-mobile .produto-page-confianca {
+    margin-top: 14px !important;
+  }
+
+  body.produto-page-mobile .produto-page-confianca-grid {
+    gap: 8px !important;
+  }
+
+  body.produto-page-mobile .produto-page-confianca-item {
+    grid-template-columns: 38px 1fr !important;
+    gap: 10px !important;
+    padding: 10px !important;
+    border-radius: 16px !important;
+  }
+
+  body.produto-page-mobile .produto-page-confianca-item > span {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 13px !important;
+  }
+
+  body.produto-page-mobile .produto-page-confianca-item strong {
+    font-size: 12px !important;
+  }
+
+  body.produto-page-mobile .produto-page-confianca-item p {
+    font-size: 10px !important;
+    line-height: 1.35 !important;
+  }
+
+  /* Características com Ver Mais / Ver Menos */
+  body.produto-page-mobile .produto-page-detalhe {
+    gap: 12px !important;
+    padding-bottom: 0 !important;
+  }
+
+  body.produto-page-mobile .produto-page-card-bloco,
+  body.produto-page-mobile .produto-page-recomendados {
+    padding: 15px !important;
+    border-radius: 20px !important;
+    background: #ffffff !important;
+    box-shadow: 0 8px 22px rgba(37, 31, 22, 0.05) !important;
+  }
+
+  body.produto-page-mobile .produto-page-card-bloco h2,
+  body.produto-page-mobile .produto-page-section-head h2 {
+    font-size: 22px !important;
+    line-height: 1.05 !important;
+  }
+
+  body.produto-page-mobile .produto-page-detalhes-conteudo.reduzido {
+    max-height: 128px !important;
+  }
+
+  body.produto-page-mobile .produto-page-detalhes-conteudo.reduzido::after {
+    content: "" !important;
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    height: 48px !important;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0), #ffffff 82%) !important;
+    pointer-events: none !important;
+  }
+
+  body.produto-page-mobile .produto-page-ver-mais-detalhes {
+    display: inline-flex !important;
+    min-height: 42px !important;
+    min-width: 136px !important;
+    margin-top: 12px !important;
+    border-radius: 999px !important;
+    background: #fff8ed !important;
+    color: var(--gold3) !important;
+    font-size: 13px !important;
+    font-weight: 950 !important;
+  }
+
+  body.produto-page-mobile .produto-page-card-bloco p,
+  body.produto-page-mobile .produto-page-card-bloco li {
+    font-size: 12px !important;
+    line-height: 1.55 !important;
+  }
+
+  /* Comentários e recomendados mais leves */
+  body.produto-page-mobile .produto-page-comentario {
+    border-radius: 15px !important;
+    padding: 12px !important;
+  }
+
+  body.produto-page-mobile .produto-page-form-comentario {
+    margin-top: 14px !important;
+    padding-top: 14px !important;
+  }
+
+  body.produto-page-mobile .produto-page-form-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  body.produto-page-mobile .produto-page-form-comentario button {
+    width: 100% !important;
+  }
+
+  body.produto-page-mobile .produto-page-recomendados-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  body.produto-page-mobile .produto-page-recomendado-card {
+    grid-template-columns: 78px 1fr !important;
+    border-radius: 16px !important;
+  }
+
+  /* Reduz lag no mobile */
+  body.produto-page-mobile * {
+    scroll-behavior: auto !important;
+  }
+
+  body.produto-page-mobile .produto-page-card,
+  body.produto-page-mobile .produto-page-galeria,
+  body.produto-page-mobile .produto-page-info,
+  body.produto-page-mobile .produto-page-card-bloco,
+  body.produto-page-mobile .produto-page-recomendados,
+  body.produto-page-mobile .produto-page-confianca-item {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  body.produto-page-mobile .produto-page-comprar:hover,
+  body.produto-page-mobile .produto-page-seta:hover,
+  body.produto-page-mobile .produto-page-thumb:hover,
+  body.produto-page-mobile .produto-page-recomendado-card:hover {
+    transform: none !important;
+  }
+}
+
+/* Telas muito pequenas */
+@media (max-width: 390px) {
+  body.produto-page-mobile .produto-page-main {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  body.produto-page-mobile #produto-nome,
+  body.produto-page-mobile .produto-page-info h1 {
+    font-size: 28px !important;
+  }
+
+  body.produto-page-mobile #produto-preco {
+    font-size: 31px !important;
+  }
+
+  body.produto-page-mobile .produto-page-seta {
+    width: 50px !important;
+    height: 50px !important;
+    min-width: 50px !important;
+    min-height: 50px !important;
+    font-size: 36px !important;
+  }
+
+  body.produto-page-mobile .produto-page-thumb {
+    flex-basis: 60px !important;
+    width: 60px !important;
+    height: 60px !important;
+    min-width: 60px !important;
+    min-height: 60px !important;
+  }
+}
+
+/* PC continua normal, mas remove transições pesadas desnecessárias */
+@media (min-width: 681px) {
+  .produto-page-detalhes-conteudo {
+    max-height: none !important;
+  }
+
+  .produto-page-ver-mais-detalhes {
+    display: none !important;
+  }
+}

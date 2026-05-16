@@ -19,6 +19,7 @@ import {
    - mantém o produto aberto mesmo atualizando a página
    - carrega imagens, miniaturas, preço, parcelamento,
      barrinha do parceiro, detalhes, comentários e recomendados
+   - melhora a versão mobile da página do produto
 ========================================================= */
 
 let listaProdutos = [];
@@ -28,6 +29,10 @@ let midiasProdutoAtual = [];
 let indiceMidiaAtual = 0;
 let cliquesEmAndamento = new Set();
 let comentarioEnviando = false;
+
+let bloqueioTrocaImagem = false;
+let rafGaleria = null;
+let rafResize = null;
 
 const TELEFONE_WHATSAPP = "5575981768068";
 
@@ -85,11 +90,21 @@ const NOMES_PUBLICOS_PLATAFORMA = {
 ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
+  detectarProdutoPageDispositivo();
   bloquearZoomBasico();
   prepararBotoesFixos();
   prepararSwipeImagem();
   prepararFormularioComentarioProdutoPage();
+  prepararVerMaisDetalhes();
   carregarPaginaProduto();
+
+  window.addEventListener("resize", agendarResizeProdutoPage, { passive: true });
+  window.addEventListener("orientationchange", () => {
+    setTimeout(() => {
+      detectarProdutoPageDispositivo();
+      agendarAjusteGaleria();
+    }, 220);
+  });
 });
 
 /* =========================================================
@@ -128,7 +143,8 @@ async function carregarPaginaProduto() {
     mostrarProduto();
 
     setTimeout(() => {
-      ajustarGaleriaPeloTamanhoDaImagem();
+      agendarAjusteGaleria();
+      iniciarModoMobileDetalhes();
     }, 80);
   } catch (erro) {
     console.warn("Erro ao carregar página do produto:", erro);
@@ -309,7 +325,10 @@ function renderizarProduto(produto) {
   definirTexto("produto-categoria", categoriaPublicaDoProduto(produto));
   definirTexto("produto-nome", produto.nome);
   definirTexto("produto-preco", produto.preco || "Ver preço na loja");
-  definirTexto("produto-descricao", produto.descricao || "Produto selecionado pela Zyqen Store. Confira todos os detalhes na plataforma oficial.");
+  definirTexto(
+    "produto-descricao",
+    produto.descricao || "Produto selecionado pela Zyqen Store. Confira todos os detalhes na plataforma oficial."
+  );
 
   renderizarPrecoAntigo(produto);
   renderizarAvaliacao(produto);
@@ -404,9 +423,9 @@ function configurarBotaoComprar(produto) {
   botao.href = produto.link || "#";
   botao.textContent = produto.botao || "Comprar agora";
 
-  botao.addEventListener("click", () => {
+  botao.onclick = () => {
     registrarCliqueProduto("comprar", produto);
-  });
+  };
 }
 
 /* =========================================================
@@ -505,18 +524,22 @@ function renderizarMidiaAtual(indice = 0) {
 
   const midia = midiasProdutoAtual[indiceMidiaAtual];
 
+  imagem.decoding = "async";
+  imagem.loading = "eager";
+
   if (midia.tipo === "imagem") {
     imagem.src = midia.src || IMAGEM_FALLBACK;
     imagem.alt = produtoAtual?.nome || "Produto";
     imagem.style.display = "block";
 
     imagem.onload = () => {
-      ajustarGaleriaPeloTamanhoDaImagem();
+      agendarAjusteGaleria();
     };
 
     imagem.onerror = () => {
       imagem.onerror = null;
       imagem.src = IMAGEM_FALLBACK;
+      agendarAjusteGaleria();
     };
   }
 
@@ -528,7 +551,7 @@ function renderizarMidiaAtual(indice = 0) {
     thumb.classList.toggle("ativo", index === indiceMidiaAtual);
   });
 
-  ajustarGaleriaPeloTamanhoDaImagem();
+  agendarAjusteGaleria();
 }
 
 function renderizarMiniaturas() {
@@ -549,6 +572,8 @@ function renderizarMiniaturas() {
           <img
             src="${escaparHTML(preview)}"
             alt="Miniatura ${index + 1}"
+            loading="lazy"
+            decoding="async"
             onerror="this.onerror=null;this.src='${IMAGEM_FALLBACK}'"
           >
         </button>
@@ -557,23 +582,52 @@ function renderizarMiniaturas() {
     .join("");
 
   box.querySelectorAll("[data-thumb-index]").forEach(botao => {
-    botao.addEventListener("click", () => {
-      renderizarMidiaAtual(Number(botao.dataset.thumbIndex) || 0);
-    });
+    botao.addEventListener(
+      "click",
+      event => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const index = Number(botao.dataset.thumbIndex) || 0;
+        trocarImagemPara(index);
+      },
+      { passive: false }
+    );
   });
 }
 
+function trocarImagemPara(index) {
+  if (bloqueioTrocaImagem) return;
+
+  bloqueioTrocaImagem = true;
+  renderizarMidiaAtual(index);
+
+  setTimeout(() => {
+    bloqueioTrocaImagem = false;
+  }, 180);
+}
+
 function proximaImagem() {
-  const proxima = (indiceMidiaAtual + 1) % Math.max(1, midiasProdutoAtual.length);
-  renderizarMidiaAtual(proxima);
+  const total = Math.max(1, midiasProdutoAtual.length);
+  const proxima = (indiceMidiaAtual + 1) % total;
+  trocarImagemPara(proxima);
 }
 
 function imagemAnterior() {
-  const anterior =
-    (indiceMidiaAtual - 1 + Math.max(1, midiasProdutoAtual.length)) %
-    Math.max(1, midiasProdutoAtual.length);
+  const total = Math.max(1, midiasProdutoAtual.length);
+  const anterior = (indiceMidiaAtual - 1 + total) % total;
+  trocarImagemPara(anterior);
+}
 
-  renderizarMidiaAtual(anterior);
+function agendarAjusteGaleria() {
+  if (rafGaleria) {
+    cancelAnimationFrame(rafGaleria);
+  }
+
+  rafGaleria = requestAnimationFrame(() => {
+    rafGaleria = null;
+    ajustarGaleriaPeloTamanhoDaImagem();
+  });
 }
 
 function ajustarGaleriaPeloTamanhoDaImagem() {
@@ -603,17 +657,18 @@ function ajustarGaleriaPeloTamanhoDaImagem() {
   }
 
   const larguraTela = window.innerWidth || document.documentElement.clientWidth || 390;
+  const alturaTela = window.innerHeight || document.documentElement.clientHeight || 720;
   const larguraArea = Math.max(280, Math.min(larguraTela - 24, 760));
 
   let alturaIdeal = Math.round(larguraArea / ratio);
 
-  const limiteMinimo = larguraTela <= 360 ? 270 : 292;
-  const limiteMaximo = Math.min(Math.round(window.innerHeight * 0.56), 440);
+  const limiteMinimo = larguraTela <= 360 ? 265 : 292;
+  const limiteMaximo = Math.min(Math.round(alturaTela * 0.54), 440);
 
-  if (ratio >= 1.75) alturaIdeal = Math.max(240, alturaIdeal);
+  if (ratio >= 1.75) alturaIdeal = Math.max(235, alturaIdeal);
   if (ratio >= 1.25 && ratio < 1.75) alturaIdeal = Math.max(285, alturaIdeal);
-  if (ratio >= 0.82 && ratio < 1.25) alturaIdeal = Math.max(330, alturaIdeal);
-  if (ratio < 0.82) alturaIdeal = Math.max(360, alturaIdeal);
+  if (ratio >= 0.82 && ratio < 1.25) alturaIdeal = Math.max(325, alturaIdeal);
+  if (ratio < 0.82) alturaIdeal = Math.max(350, alturaIdeal);
 
   const alturaFinal = limitarNumero(alturaIdeal, limiteMinimo, limiteMaximo);
 
@@ -625,6 +680,7 @@ function ajustarGaleriaPeloTamanhoDaImagem() {
 function prepararSwipeImagem() {
   let inicioX = 0;
   let inicioY = 0;
+  let tocouImagem = false;
 
   document.addEventListener(
     "touchstart",
@@ -632,6 +688,7 @@ function prepararSwipeImagem() {
       const area = event.target.closest?.(".produto-page-imagem-area");
       if (!area) return;
 
+      tocouImagem = true;
       inicioX = event.touches[0].clientX;
       inicioY = event.touches[0].clientY;
     },
@@ -641,7 +698,11 @@ function prepararSwipeImagem() {
   document.addEventListener(
     "touchend",
     event => {
+      if (!tocouImagem) return;
+
       const area = event.target.closest?.(".produto-page-imagem-area");
+      tocouImagem = false;
+
       if (!area) return;
 
       const fimX = event.changedTouches[0].clientX;
@@ -650,7 +711,7 @@ function prepararSwipeImagem() {
       const dx = fimX - inicioX;
       const dy = fimY - inicioY;
 
-      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) {
+      if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.25) {
         if (dx < 0) proximaImagem();
         else imagemAnterior();
       }
@@ -662,6 +723,7 @@ function prepararSwipeImagem() {
 /* =========================================================
    CONFIANÇA / DETALHES / COMENTÁRIOS
 ========================================================= */
+
 function renderizarConfianca() {
   const box = document.getElementById("produto-confianca");
   if (!box) return;
@@ -704,16 +766,73 @@ function renderizarDetalhes(produto) {
   const detalhes = Array.isArray(produto.detalhes) ? produto.detalhes.filter(Boolean) : [];
 
   box.innerHTML = `
-    <div class="produto-page-card-bloco">
-      <h2>Características do Produto</h2>
+    <div class="produto-page-card-bloco produto-page-detalhes-card">
+      <div class="produto-page-detalhes-head">
+        <h2>Características do Produto</h2>
+      </div>
+
+      <div id="produto-page-detalhes-conteudo" class="produto-page-detalhes-conteudo reduzido">
+        ${
+          detalhes.length
+            ? `<ul>${detalhes.map(item => `<li>${formatarDetalhe(item)}</li>`).join("")}</ul>`
+            : `<p>As principais informações estão na descrição e na página oficial da oferta.</p>`
+        }
+      </div>
 
       ${
-        detalhes.length
-          ? `<ul>${detalhes.map(item => `<li>${formatarDetalhe(item)}</li>`).join("")}</ul>`
-          : `<p>As principais informações estão na descrição e na página oficial da oferta.</p>`
+        detalhes.length > 4
+          ? `<button type="button" id="produto-page-ver-mais-detalhes" class="produto-page-ver-mais-detalhes" data-aberto="false">Ver mais</button>`
+          : ""
       }
     </div>
   `;
+
+  setTimeout(iniciarModoMobileDetalhes, 50);
+}
+
+function prepararVerMaisDetalhes() {
+  document.addEventListener("click", event => {
+    const botao = event.target.closest?.("#produto-page-ver-mais-detalhes");
+    if (!botao) return;
+
+    event.preventDefault();
+
+    const conteudo = document.getElementById("produto-page-detalhes-conteudo");
+    if (!conteudo) return;
+
+    const aberto = botao.dataset.aberto === "true";
+
+    if (aberto) {
+      conteudo.classList.add("reduzido");
+      botao.dataset.aberto = "false";
+      botao.textContent = "Ver mais";
+    } else {
+      conteudo.classList.remove("reduzido");
+      botao.dataset.aberto = "true";
+      botao.textContent = "Ver menos";
+    }
+  });
+}
+
+function iniciarModoMobileDetalhes() {
+  const conteudo = document.getElementById("produto-page-detalhes-conteudo");
+  const botao = document.getElementById("produto-page-ver-mais-detalhes");
+
+  if (!conteudo || !botao) return;
+
+  const ehMobile = window.innerWidth <= 680;
+
+  if (ehMobile) {
+    conteudo.classList.add("reduzido");
+    botao.dataset.aberto = "false";
+    botao.textContent = "Ver mais";
+    botao.style.display = "inline-flex";
+  } else {
+    conteudo.classList.remove("reduzido");
+    botao.dataset.aberto = "true";
+    botao.textContent = "Ver menos";
+    botao.style.display = "none";
+  }
 }
 
 function renderizarObservacoes(produto) {
@@ -981,6 +1100,7 @@ function criarCardRecomendado(produto) {
           src="${escaparHTML(imagemPrincipal(produto))}"
           alt="${escaparHTML(produto.nome)}"
           loading="lazy"
+          decoding="async"
           onerror="this.onerror=null;this.src='${IMAGEM_FALLBACK}'"
         >
       </div>
@@ -1006,7 +1126,9 @@ function prepararBotoesFixos() {
   const busca = document.getElementById("produto-page-busca");
 
   if (voltar) {
-    voltar.addEventListener("click", () => {
+    voltar.addEventListener("click", event => {
+      event.preventDefault();
+
       if (window.history.length > 1) {
         window.history.back();
       } else {
@@ -1016,15 +1138,26 @@ function prepararBotoesFixos() {
   }
 
   if (compartilhar) {
-    compartilhar.addEventListener("click", compartilharProduto);
+    compartilhar.addEventListener("click", event => {
+      event.preventDefault();
+      compartilharProduto();
+    });
   }
 
   if (anterior) {
-    anterior.addEventListener("click", imagemAnterior);
+    anterior.addEventListener("click", event => {
+      event.preventDefault();
+      event.stopPropagation();
+      imagemAnterior();
+    });
   }
 
   if (proxima) {
-    proxima.addEventListener("click", proximaImagem);
+    proxima.addEventListener("click", event => {
+      event.preventDefault();
+      event.stopPropagation();
+      proximaImagem();
+    });
   }
 
   if (busca) {
@@ -1040,10 +1173,23 @@ function prepararBotoesFixos() {
       }
     });
   }
+}
 
-  window.addEventListener("resize", () => {
-    ajustarGaleriaPeloTamanhoDaImagem();
-    if (produtoAtual) renderizarFaixaParceiro(produtoAtual);
+function agendarResizeProdutoPage() {
+  if (rafResize) {
+    cancelAnimationFrame(rafResize);
+  }
+
+  rafResize = requestAnimationFrame(() => {
+    rafResize = null;
+
+    detectarProdutoPageDispositivo();
+    agendarAjusteGaleria();
+
+    if (produtoAtual) {
+      renderizarFaixaParceiro(produtoAtual);
+      iniciarModoMobileDetalhes();
+    }
   });
 }
 
@@ -1163,6 +1309,20 @@ function mostrarErroProduto() {
   if (loading) loading.hidden = true;
   if (erro) erro.hidden = false;
   if (detalhe) detalhe.hidden = true;
+}
+
+/* =========================================================
+   DISPOSITIVO / PERFORMANCE
+========================================================= */
+
+function detectarProdutoPageDispositivo() {
+  const largura = window.innerWidth || document.documentElement.clientWidth || 0;
+  const ehMobile = largura <= 680;
+
+  document.documentElement.classList.toggle("produto-page-mobile", ehMobile);
+  document.body.classList.toggle("produto-page-mobile", ehMobile);
+  document.documentElement.classList.toggle("produto-page-desktop", !ehMobile);
+  document.body.classList.toggle("produto-page-desktop", !ehMobile);
 }
 
 /* =========================================================
