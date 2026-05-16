@@ -110,6 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
   injetarEstilosMinimosDoScript();
 
   prepararBusca();
+  aplicarBuscaDaURL();
   prepararOrdenacao();
   prepararCliquesGerais();
   prepararFormularioComentario();
@@ -675,7 +676,7 @@ function prepararCliquesGerais() {
     const open = event.target.closest("[data-open-product]");
 
     if (open) {
-      abrirPopupProduto(open.dataset.openProduct, { limparHistorico: true });
+      abrirPaginaProduto(open.dataset.openProduct);
       return;
     }
 
@@ -715,11 +716,35 @@ function prepararCliquesGerais() {
 
     if (event.key === "Enter") {
       const card = event.target.closest?.(".produto-card[data-open-product]");
-      if (card) abrirPopupProduto(card.dataset.openProduct, { limparHistorico: true });
+      if (card) abrirPaginaProduto(card.dataset.openProduct);
     }
   });
 }
 
+
+function aplicarBuscaDaURL() {
+  const params = new URLSearchParams(window.location.search);
+  const buscaURL = params.get("busca") || params.get("pesquisa") || "";
+
+  if (!buscaURL) return;
+
+  const campo =
+    document.getElementById("pesquisa") ||
+    document.getElementById("buscaProdutos") ||
+    document.getElementById("searchProdutos") ||
+    document.querySelector("[data-busca-produtos]") ||
+    document.querySelector(".zq-search-input");
+
+  if (campo) campo.value = buscaURL;
+}
+
+function abrirPaginaProduto(id) {
+  const produtoId = String(id || "").trim();
+
+  if (!produtoId) return;
+
+  window.location.href = `produto.html?id=${encodeURIComponent(produtoId)}`;
+}
 
 function aplicarFiltros() {
   const termo = normalizarTexto(pegarTextoBusca());
@@ -1701,7 +1726,7 @@ function renderizarFaixaParceiroPopup(produto) {
     "important"
   );
 
-  
+
   faixaEl.style.setProperty("color", "#111111", "important");
 
 
@@ -1936,6 +1961,7 @@ function fecharPopupSucessoComentario() {
   popup.classList.remove("ativo");
   popup.style.display = "none";
 }
+
 
 
 async function registrarCliqueProduto(tipo, produto = produtoAtualPopup) {
@@ -2188,7 +2214,8 @@ function atualizarSugestoesChatProduto(produto) {
 
 function iniciarArrastoChat(event) {
   const card = document.getElementById("chat-produto-card");
-  if (!card || event.target.closest("button")) return;
+  if (!card || card.classList.contains("minimizado")) return;
+  if (event.target.closest("button")) return;
 
   chatArrastando = true;
 
@@ -2197,7 +2224,7 @@ function iniciarArrastoChat(event) {
   chatOffsetX = event.clientX - rect.left;
   chatOffsetY = event.clientY - rect.top;
 
-  card.setPointerCapture?.(event.pointerId);
+  card.classList.add("arrastando");
 }
 
 function arrastarChat(event) {
@@ -2226,7 +2253,9 @@ function pararArrastoChat() {
   if (!chatArrastando) return;
 
   chatArrastando = false;
-  manterChatDentroDaTela();
+
+  const card = document.getElementById("chat-produto-card");
+  if (card) card.classList.remove("arrastando");
 }
 
 function manterChatDentroDaTela() {
@@ -2581,7 +2610,8 @@ function injetarEstilosMinimosDoScript() {
 }
 
 
-window.abrirPopupProduto = abrirPopupProduto;
+window.abrirPaginaProduto = abrirPaginaProduto;
+window.abrirPopupProduto = abrirPaginaProduto;
 window.abrirProdutoRecomendado = abrirProdutoRecomendado;
 window.voltarProdutoAnterior = voltarProdutoAnterior;
 window.fecharPopup = fecharPopup;
