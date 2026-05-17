@@ -7627,3 +7627,93 @@ body.produto-page-mobile .barra-compra .btn-chat-popup {
     height: 21px !important;
   }
 }
+
+@media (max-width: 680px) {
+  .zq-bag-btn img {
+    width: 23px !important;
+    height: 23px !important;
+    object-fit: contain !important;
+  }
+}
+
+
+@media (max-width: 680px) {
+
+  
+  .site-wrapper-fixo::before {
+    display: none !important;
+    content: none !important;
+  }
+
+  .produto-card,
+  .produto-card.zq-product-card,
+  .produto-card-open,
+  .produto-card-btn {
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+    will-change: auto !important;
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
+    contain: paint !important;
+  }
+
+
+  .produto-card:hover,
+  .produto-card.zq-product-card:hover,
+  .produto-card-open:hover,
+  .produto-card-btn:hover {
+    transform: none !important;
+    box-shadow: 0 8px 22px rgba(37, 31, 22, 0.045) !important;
+  }
+
+
+  .produto-img-wrap,
+  .produto-card .produto-img-wrap {
+    background: #f8f8f6 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+    overflow: hidden !important;
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
+    contain: paint !important;
+  }
+
+
+  .produto-img-wrap img,
+  .produto-card .produto-img-wrap img {
+    opacity: 1 !important;
+    visibility: visible !important;
+
+    transform: translateZ(0) !important;
+    -webkit-transform: translateZ(0) !important;
+
+    transition: none !important;
+    animation: none !important;
+
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
+
+    will-change: auto !important;
+  }
+
+
+  .produto-card:hover .produto-img-wrap img,
+  .produto-card.zq-product-card:hover .produto-img-wrap img,
+  .produto-card-open:hover .produto-img-wrap img,
+  .produto-card-btn:hover .produto-img-wrap img {
+    transform: translateZ(0) !important;
+    -webkit-transform: translateZ(0) !important;
+  }
+
+
+  .estrelas-mini img,
+  .produto-rating img {
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
+  }
+}

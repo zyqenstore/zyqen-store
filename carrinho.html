@@ -139,7 +139,101 @@
 
     </main>
   </div>
+  
+<script id="zyqen-bloquear-zoom-carrinho">
+  (() => {
+    let ultimoToque = 0;
 
-  <script src="carrinho.js?v=1"></script>
+    function bloquearZoomTeclado(event) {
+      const tecla = String(event.key || "").toLowerCase();
+
+      const atalhoZoom =
+        (event.ctrlKey || event.metaKey) &&
+        (
+          tecla === "+" ||
+          tecla === "-" ||
+          tecla === "=" ||
+          tecla === "0" ||
+          tecla === "_" ||
+          tecla === "add" ||
+          tecla === "subtract"
+        );
+
+      if (atalhoZoom) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    }
+
+    function bloquearZoomMouse(event) {
+      if (event.ctrlKey || event.metaKey) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    }
+
+    function bloquearPinchMobile(event) {
+      if (event.touches && event.touches.length > 1) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    }
+
+    function bloquearDoubleTap(event) {
+      const agora = Date.now();
+
+      if (agora - ultimoToque <= 320) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      ultimoToque = agora;
+    }
+
+    function bloquearGestureIOS(event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    document.addEventListener("keydown", bloquearZoomTeclado, {
+      capture: true
+    });
+
+    window.addEventListener("wheel", bloquearZoomMouse, {
+      passive: false,
+      capture: true
+    });
+
+    document.addEventListener("touchmove", bloquearPinchMobile, {
+      passive: false,
+      capture: true
+    });
+
+    document.addEventListener("touchend", bloquearDoubleTap, {
+      passive: false,
+      capture: true
+    });
+
+    document.addEventListener("dblclick", bloquearGestureIOS, {
+      passive: false,
+      capture: true
+    });
+
+    document.addEventListener("gesturestart", bloquearGestureIOS, {
+      passive: false
+    });
+
+    document.addEventListener("gesturechange", bloquearGestureIOS, {
+      passive: false
+    });
+
+    document.addEventListener("gestureend", bloquearGestureIOS, {
+      passive: false
+    });
+  })();
+</script>
+
+<script src="carrinho.js?v=1"></script>
+
 </body>
 </html>
