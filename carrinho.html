@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover"
+  >
+
+  <meta name="HandheldFriendly" content="true">
+  <meta name="MobileOptimized" content="width">
+  <meta name="format-detection" content="telephone=no">
+
+  <title>Carrinho - Zyqen Store</title>
+
+  <meta name="description" content="Veja os produtos adicionados ao carrinho na Zyqen Store.">
+  <meta name="application-name" content="Zyqen Store">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="background-color" content="#ffffff">
+
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Zyqen Store">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <link rel="manifest" href="/zyqen-store/manifest.json?v=20">
+  <link rel="apple-touch-icon" sizes="180x180" href="/zyqen-store/imagens/icons/icon12.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/zyqen-store/imagens/icons/icon11.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/zyqen-store/imagens/icons/icon12.png">
+  <link rel="icon" href="imagens/logo/favicon.png">
+
+  <link rel="stylesheet" href="style.css?v=78">
+</head>
+
+<body>
+  <div class="site-wrapper-fixo carrinho-page-wrapper">
+
+    <header class="zq-header carrinho-page-header">
+      <a href="index.html" class="zq-logo-text" aria-label="Voltar para início">
+        <span class="zq-logo-crown">♕</span>
+        <span class="zq-logo-main">Zyqen</span>
+        <span class="zq-logo-store">Store</span>
+      </a>
+
+      <div class="zq-search-box carrinho-page-search">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35m1.35-5.15a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z"/>
+        </svg>
+
+        <input id="carrinho-busca" type="text" placeholder="Pesquisar produtos...">
+      </div>
+
+      <nav class="zq-nav carrinho-page-nav">
+        <a href="index.html">Início</a>
+        <a href="carrinho.html" class="active">Carrinho</a>
+        <a href="sobre.html">Sobre</a>
+      </nav>
+    </header>
+
+    <main class="carrinho-page-main">
+
+      <section class="carrinho-page-topo">
+        <button type="button" id="carrinho-voltar" class="carrinho-page-voltar">
+          ← Voltar
+        </button>
+
+        <div>
+          <span>Seu carrinho</span>
+          <h1>Produtos adicionados</h1>
+          <p>
+            Escolha apenas um produto por vez para finalizar a compra na loja parceira correta.
+          </p>
+        </div>
+      </section>
+
+      <section class="carrinho-aviso-afiliado">
+        <strong>Atenção sobre a compra</strong>
+        <p>
+          A Zyqen Store é uma vitrine afiliada. Cada produto pode pertencer a uma plataforma diferente,
+          por isso não dá para finalizar todos juntos em um único pagamento. Marque um produto e toque em
+          “Comprar produto selecionado” para ser direcionado à loja parceira.
+        </p>
+      </section>
+
+      <section id="carrinho-vazio" class="carrinho-vazio" hidden>
+        <span>Seu carrinho está vazio</span>
+        <h2>Nenhum produto adicionado ainda</h2>
+        <p>Volte para a loja, escolha um produto e toque no botão do carrinho.</p>
+        <a href="index.html">Ver produtos</a>
+      </section>
+
+      <section id="carrinho-conteudo" class="carrinho-conteudo" hidden>
+
+        <div class="carrinho-lista-box">
+          <div class="carrinho-lista-head">
+            <div>
+              <span>Lista</span>
+              <h2>Itens do carrinho</h2>
+            </div>
+
+            <button type="button" id="carrinho-limpar">
+              Limpar carrinho
+            </button>
+          </div>
+
+          <div id="carrinho-lista" class="carrinho-lista"></div>
+        </div>
+
+        <aside class="carrinho-resumo">
+          <span>Resumo</span>
+
+          <h2 id="carrinho-total-itens">0 itens</h2>
+
+          <div class="carrinho-resumo-linha">
+            <small>Total calculável do carrinho</small>
+            <strong id="carrinho-total-geral">R$ 0,00</strong>
+          </div>
+
+          <div class="carrinho-resumo-linha carrinho-resumo-destaque">
+            <small>Produto selecionado</small>
+            <strong id="carrinho-total-selecionado">Selecione um produto</strong>
+          </div>
+
+          <p>
+            O valor final, frete, cupom e pagamento são confirmados diretamente na plataforma parceira.
+          </p>
+
+          <button type="button" id="carrinho-comprar-selecionado">
+            Comprar produto selecionado
+          </button>
+
+          <a href="index.html" class="carrinho-continuar">
+            Continuar comprando
+          </a>
+        </aside>
+
+      </section>
+
+    </main>
+  </div>
+
+  <script src="carrinho.js?v=1"></script>
+</body>
+</html>

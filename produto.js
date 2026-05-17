@@ -25,6 +25,7 @@ let detalhesAbertoManual = false;
 let comentariosAbertoManual = false;
 
 const TELEFONE_WHATSAPP = "5575981768068";
+const CHAVE_CARRINHO_ZYQEN = "zyqenCarrinho";
 
 const IMAGEM_FALLBACK =
   "data:image/svg+xml;charset=UTF-8," +
@@ -81,6 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
   detectarProdutoPageDispositivo();
   bloquearZoomBasico();
   prepararBotoesFixos();
+  prepararCarrinhoProdutoPage();
   prepararSwipeImagem();
   prepararFormularioComentarioProdutoPage();
   prepararVerMaisDetalhes();
@@ -332,7 +334,7 @@ function renderizarProduto(produto) {
   renderizarObservacoes(produto);
   renderizarComentarios(produto);
   renderizarRecomendados(produto);
-  configurarBotaoComprar(produto);
+  configurarBotaoCarrinhoProdutoPage(produto);
 }
 
 function atualizarMetaDescription(produto) {
@@ -419,7 +421,119 @@ function configurarBotaoComprar(produto) {
   };
 }
 
+function prepararCarrinhoProdutoPage() {
+  document.addEventListener("click", event => {
+    const botao = event.target.closest?.("#produto-carrinho-btn");
+    if (!botao) return;
 
+    event.preventDefault();
+
+    if (!produtoAtual) {
+      alert("Produto ainda não carregou. Aguarde um instante.");
+      return;
+    }
+
+    adicionarProdutoAoCarrinho(produtoAtual);
+  });
+
+  atualizarContadorCarrinhoPage();
+}
+
+function adicionarProdutoAoCarrinho(produto) {
+  const carrinho = lerCarrinhoZyqen();
+  const idProduto = String(produto.id || produto.docId || "").trim();
+
+  if (!idProduto) {
+    alert("Não foi possível adicionar esse produto ao carrinho.");
+    return;
+  }
+
+  const produtoExistente = carrinho.find(item => String(item.id) === idProduto);
+
+  if (produtoExistente) {
+    produtoExistente.quantidade = Number(produtoExistente.quantidade || 1) + 1;
+    produtoExistente.atualizadoEm = new Date().toISOString();
+  } else {
+    carrinho.push({
+      id: idProduto,
+      docId: produto.docId || idProduto,
+      nome: produto.nome || "Produto",
+      preco: produto.preco || "Ver preço",
+      imagem: imagemPrincipal(produto),
+      link: produto.link || "#",
+      categoria: categoriaPublicaDoProduto(produto),
+      quantidade: 1,
+      adicionadoEm: new Date().toISOString()
+    });
+  }
+
+  salvarCarrinhoZyqen(carrinho);
+  atualizarContadorCarrinhoPage();
+  mostrarAvisoCarrinho("Produto adicionado ao carrinho");
+}
+
+function lerCarrinhoZyqen() {
+  try {
+    const dados = localStorage.getItem(CHAVE_CARRINHO_ZYQEN);
+    const carrinho = JSON.parse(dados);
+
+    return Array.isArray(carrinho) ? carrinho : [];
+  } catch (_) {
+    return [];
+  }
+}
+
+function salvarCarrinhoZyqen(carrinho) {
+  localStorage.setItem(CHAVE_CARRINHO_ZYQEN, JSON.stringify(carrinho));
+}
+
+function atualizarContadorCarrinhoPage() {
+  const botao = document.getElementById("produto-carrinho-btn");
+  if (!botao) return;
+
+  const carrinho = lerCarrinhoZyqen();
+  const total = carrinho.reduce((soma, item) => {
+    return soma + Number(item.quantidade || 1);
+  }, 0);
+
+  let contador = botao.querySelector(".produto-page-carrinho-qtd");
+
+  if (!contador) {
+    contador = document.createElement("span");
+    contador.className = "produto-page-carrinho-qtd";
+    botao.appendChild(contador);
+  }
+
+  if (total > 0) {
+    contador.textContent = total > 99 ? "99+" : String(total);
+    contador.hidden = false;
+    botao.classList.add("tem-produto");
+  } else {
+    contador.textContent = "";
+    contador.hidden = true;
+    botao.classList.remove("tem-produto");
+  }
+}
+
+function mostrarAvisoCarrinho(texto) {
+  let aviso = document.getElementById("produto-page-aviso-carrinho");
+
+  if (!aviso) {
+    aviso = document.createElement("div");
+    aviso.id = "produto-page-aviso-carrinho";
+    aviso.className = "produto-page-aviso-carrinho";
+    document.body.appendChild(aviso);
+  }
+
+  aviso.textContent = texto;
+  aviso.classList.add("ativo");
+
+  clearTimeout(aviso._timer);
+
+  aviso._timer = setTimeout(() => {
+    aviso.classList.remove("ativo");
+  }, 1800);
+}
 
 function renderizarFaixaParceiro(produto) {
   const el = document.getElementById("produto-faixa-parceiro");
@@ -1552,3 +1666,71 @@ window.proximaImagemProdutoPage = proximaImagem;
 window.imagemAnteriorProdutoPage = imagemAnterior;
 window.abrirWhatsappProdutoPage = abrirWhatsappProduto;
 window.compartilharProdutoPage = compartilharProduto;
+
+
+
+const CHAVE_CARRINHO_PRODUTO_PAGE = "zyqenCarrinho";
+
+function configurarBotaoCarrinhoProdutoPage(produto) {
+  const botao = document.getElementById("produto-adicionar-carrinho");
+  if (!botao || !produto) return;
+
+  botao.onclick = event => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    adicionarProdutoAoCarrinhoProdutoPage(produto);
+
+    botao.classList.add("adicionado");
+    botao.innerHTML = "✓";
+
+    setTimeout(() => {
+      botao.classList.remove("adicionado");
+      botao.innerHTML = `<img src="imagens/icones/shopping-cart.svg" alt="">`;
+    }, 1200);
+  };
+}
+
+function adicionarProdutoAoCarrinhoProdutoPage(produto) {
+  const id = String(produto.id || produto.docId || "").trim();
+
+  if (!id) {
+    alert("Não foi possível adicionar este produto ao carrinho.");
+    return;
+  }
+
+  const carrinho = lerCarrinhoProdutoPage();
+  const itemExistente = carrinho.find(item => String(item.id) === id);
+
+  if (itemExistente) {
+    itemExistente.quantidade = Number(itemExistente.quantidade || 1) + 1;
+  } else {
+    carrinho.push({
+      id,
+      nome: produto.nome || "Produto",
+      preco: produto.preco || "Ver preço",
+      imagem: imagemPrincipal(produto),
+      link: produto.link || "#",
+      categoria: categoriaPublicaDoProduto(produto),
+      plataforma: produto.plataforma || produto.categoria || produto.plataformaSlug || produto.categoriaSlug || "",
+      quantidade: 1
+    });
+  }
+
+  salvarCarrinhoProdutoPage(carrinho);
+}
+
+function lerCarrinhoProdutoPage() {
+  try {
+    const dados = localStorage.getItem(CHAVE_CARRINHO_PRODUTO_PAGE);
+    const carrinho = JSON.parse(dados);
+
+    return Array.isArray(carrinho) ? carrinho : [];
+  } catch (_) {
+    return [];
+  }
+}
+
+function salvarCarrinhoProdutoPage(carrinho) {
+  localStorage.setItem(CHAVE_CARRINHO_PRODUTO_PAGE, JSON.stringify(carrinho));
+}

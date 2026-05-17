@@ -561,14 +561,18 @@ function criarHTMLPopupProduto() {
           <div id="popup-observacoes" class="popup-observacoes"></div>
 
           <div class="barra-compra">
-            <a id="popup-comprar-link" class="btn-comprar-popup" href="#" target="_blank" rel="noopener">
-              Comprar agora
-            </a>
+  <button type="button" class="btn-carrinho-popup" onclick="adicionarProdutoAoCarrinhoPopup()">
+    <img src="imagens/icones/shopping-cart.svg" alt="">
+  </button>
 
-            <button type="button" class="btn-chat-popup" onclick="abrirChatProduto()">
-              Dúvida?
-            </button>
-          </div>
+  <a id="popup-comprar-link" class="btn-comprar-popup" href="#" target="_blank" rel="noopener">
+    Comprar agora
+  </a>
+
+  <button type="button" class="btn-chat-popup" onclick="abrirChatProduto()">
+    Dúvida?
+  </button>
+</div>
         </div>
       </article>
     </div>
@@ -1305,6 +1309,12 @@ function configurarBotaoCompraPopup(produto) {
   botao.onclick = () => {
     registrarCliqueProduto("comprar", produto);
   };
+}
+
+function adicionarProdutoAoCarrinhoPopup() {
+  if (!produtoAtualPopup) return;
+
+  console.log("Produto adicionado ao carrinho:", produtoAtualPopup);
 }
 
 function montarMidiasProduto(produto) {

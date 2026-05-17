@@ -30,7 +30,7 @@
   <link rel="icon" type="image/png" sizes="512x512" href="/zyqen-store/imagens/icons/icon12.png">
   <link rel="icon" href="imagens/logo/favicon.png">
 
-  <link rel="stylesheet" href="style.css?v=80">
+  <link rel="stylesheet" href="style.css?v=78">
 </head>
 
 <body>
@@ -48,11 +48,13 @@
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35m1.35-5.15a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z"/>
         </svg>
+
         <input id="produto-page-busca" type="text" placeholder="Pesquisar outro produto...">
       </div>
 
       <nav class="zq-nav produto-page-nav">
         <a href="index.html" class="active">Início</a>
+        <a href="carrinho.html">Carrinho</a>
         <a href="sobre.html">Sobre</a>
         <a href="politica.html">Política</a>
       </nav>
@@ -79,14 +81,27 @@
       
       <section id="produto-detalhe" class="produto-page-detalhe" hidden>
 
+        
         <div class="produto-page-topbar">
           <button type="button" id="produto-voltar" class="produto-page-voltar">
             ← Voltar
           </button>
 
-          <button type="button" id="produto-compartilhar" class="produto-page-compartilhar">
-            Compartilhar
-          </button>
+          <div class="produto-page-topbar-acoes">
+            <a
+              href="carrinho.html"
+              class="produto-page-topbar-carrinho"
+              aria-label="Abrir carrinho"
+              title="Abrir carrinho"
+            >
+              <img src="imagens/icones/shopping-cart.svg" alt="">
+              <span>Carrinho</span>
+            </a>
+
+            <button type="button" id="produto-compartilhar" class="produto-page-compartilhar">
+              Compartilhar
+            </button>
+          </div>
         </div>
 
         <article class="produto-page-card">
@@ -94,7 +109,12 @@
           
           <section class="produto-page-galeria">
             <div class="produto-page-imagem-area">
-              <button type="button" id="produto-img-anterior" class="produto-page-seta produto-page-seta-esq" aria-label="Imagem anterior">
+              <button
+                type="button"
+                id="produto-img-anterior"
+                class="produto-page-seta produto-page-seta-esq"
+                aria-label="Imagem anterior"
+              >
                 ‹
               </button>
 
@@ -108,7 +128,12 @@
                 1/1
               </span>
 
-              <button type="button" id="produto-img-proxima" class="produto-page-seta produto-page-seta-dir" aria-label="Próxima imagem">
+              <button
+                type="button"
+                id="produto-img-proxima"
+                class="produto-page-seta produto-page-seta-dir"
+                aria-label="Próxima imagem"
+              >
                 ›
               </button>
             </div>
@@ -148,7 +173,9 @@
 
             <p id="produto-descricao" class="produto-page-descricao"></p>
 
+            
             <div class="produto-page-compra-box">
+
               <a
                 id="produto-comprar-link"
                 class="produto-page-comprar"
@@ -158,6 +185,17 @@
               >
                 Comprar agora
               </a>
+
+              <button
+                type="button"
+                id="produto-adicionar-carrinho"
+                class="produto-page-add-carrinho"
+                aria-label="Adicionar ao carrinho"
+                title="Adicionar ao carrinho"
+              >
+                <img src="imagens/icones/shopping-cart.svg" alt="">
+              </button>
+
             </div>
 
             <div id="produto-confianca" class="produto-page-confianca"></div>
@@ -192,6 +230,6 @@
 
   </div>
 
-  <script type="module" src="produto.js?v=13"></script>
+  <script type="module" src="produto.js?v=16"></script>
 </body>
 </html>
