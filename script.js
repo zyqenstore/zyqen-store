@@ -34,7 +34,31 @@ let chatArrastando = false;
 let chatOffsetX = 0;
 let chatOffsetY = 0;
 
-const PRODUTOS_POR_PAGINA = 15;
+let timerProdutosPorPagina = null;
+
+function produtosPorPaginaAtual() {
+  const largura = window.innerWidth || document.documentElement.clientWidth || 0;
+
+  if (largura <= 380) return 8;      // celulares pequenos
+  if (largura <= 430) return 10;     // iPhone comum
+  if (largura <= 680) return 10;     // celular geral
+  if (largura <= 900) return 12;     // tablet pequeno
+  if (largura <= 1180) return 12;    // tablet / notebook pequeno
+  if (largura <= 1500) return 15;    // PC normal
+  if (largura <= 1800) return 18;    // monitor grande
+
+  return 20;                         // tela muito grande
+}
+
+function atualizarProdutosPorPaginaAoRedimensionar() {
+  clearTimeout(timerProdutosPorPagina);
+
+  timerProdutosPorPagina = setTimeout(() => {
+    paginaAtual = 1;
+    aplicarFiltros();
+  }, 180);
+}
+
 const TELEFONE_WHATSAPP = "5575981768068";
 
 const IMAGEM_FALLBACK =
@@ -125,6 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
     agendarDeteccaoDispositivo();
     manterChatDentroDaTela();
     aplicarCorrecaoGaleriaProduto();
+    atualizarProdutosPorPaginaAoRedimensionar();
   });
 
   window.addEventListener("orientationchange", () => {
@@ -133,6 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
       manterChatDentroDaTela();
       aplicarCorrecaoGaleriaProduto();
+      atualizarProdutosPorPaginaAoRedimensionar();
     }, 250);
   });
 });
@@ -813,12 +839,14 @@ function renderizarProdutos(produtos) {
     return;
   }
 
-  const totalPaginas = Math.max(1, Math.ceil(produtos.length / PRODUTOS_POR_PAGINA));
+  const produtosPorPagina = produtosPorPaginaAtual();
 
-  if (paginaAtual > totalPaginas) paginaAtual = totalPaginas;
+const totalPaginas = Math.max(1, Math.ceil(produtos.length / produtosPorPagina));
 
-  const inicio = (paginaAtual - 1) * PRODUTOS_POR_PAGINA;
-  const produtosPagina = produtos.slice(inicio, inicio + PRODUTOS_POR_PAGINA);
+if (paginaAtual > totalPaginas) paginaAtual = totalPaginas;
+
+const inicio = (paginaAtual - 1) * produtosPorPagina;
+const produtosPagina = produtos.slice(inicio, inicio + produtosPorPagina);
 
   alvo.innerHTML = `
     <section class="zq-products-section">
