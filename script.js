@@ -874,14 +874,6 @@ function criarCardProduto(produto) {
       <div class="produto-img-wrap">
         ${selo ? `<span class="produto-selo">${escaparHTML(selo)}</span>` : ""}
 
-        <button
-          type="button"
-          class="produto-fav"
-          aria-label="Favoritar"
-          onclick="event.stopPropagation();"
-        >
-          ♡
-        </button>
 
         <img
           src="${escaparHTML(imagem)}"
