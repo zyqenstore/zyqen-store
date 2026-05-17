@@ -295,10 +295,14 @@ main#produtos,
   color: var(--gold3);
 }
 
-.zq-bag-btn svg {
-  width: 27px;
-  height: 27px;
-  stroke-width: 1.7;
+.zq-bag-btn img {
+  width: 25px;
+  height: 25px;
+  display: block;
+  object-fit: contain;
+  filter: brightness(0) saturate(100%)
+          invert(39%) sepia(44%) saturate(656%)
+          hue-rotate(5deg) brightness(92%) contrast(88%);
 }
 
 
@@ -3423,10 +3427,12 @@ body > header:not(.zq-header) {
     background: #fffdfa;
   }
 
-  .zq-bag-btn svg {
-    width: 21px;
-    height: 21px;
-  }
+.zq-bag-btn img {
+  width: 21px !important;
+  height: 21px !important;
+  display: block !important;
+  object-fit: contain !important;
+}
 
   .zq-hero-area {
     margin-top: 4px;
@@ -7521,5 +7527,103 @@ body.produto-page-mobile .barra-compra .btn-chat-popup {
 
   html body.produto-page-mobile .produto-page-comprar {
     font-size: 14px !important;
+  }
+}
+
+
+.zq-bag-btn {
+  position: relative !important;
+  width: 42px !important;
+  min-width: 42px !important;
+  height: 42px !important;
+  min-height: 42px !important;
+
+  display: inline-grid !important;
+  place-items: center !important;
+
+  border-radius: 999px !important;
+  color: var(--gold3) !important;
+  pointer-events: auto !important;
+}
+
+.zq-bag-btn svg,
+.zq-bag-btn img {
+  width: 24px !important;
+  height: 24px !important;
+  display: block !important;
+  object-fit: contain !important;
+  color: currentColor !important;
+  opacity: 1 !important;
+}
+
+
+.produto-page-topbar-carrinho {
+  position: relative !important;
+  z-index: 10000 !important;
+  pointer-events: auto !important;
+}
+
+.produto-page-topbar-carrinho img,
+.produto-page-topbar-carrinho svg {
+  width: 18px !important;
+  height: 18px !important;
+  display: block !important;
+  object-fit: contain !important;
+}
+
+
+@media (max-width: 680px) {
+  html body.produto-page-mobile .produto-page-topbar {
+    pointer-events: none !important;
+  }
+
+  html body.produto-page-mobile .produto-page-topbar-acoes,
+  html body.produto-page-mobile .produto-page-voltar,
+  html body.produto-page-mobile .produto-page-compartilhar,
+  html body.produto-page-mobile .produto-page-topbar-carrinho {
+    pointer-events: auto !important;
+  }
+
+  html body.produto-page-mobile .produto-page-topbar-carrinho {
+    width: 42px !important;
+    min-width: 42px !important;
+    height: 42px !important;
+    min-height: 42px !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 0 !important;
+    border-radius: 999px !important;
+    border: 1px solid rgba(126, 103, 68, 0.16) !important;
+    background: rgba(255, 255, 255, 0.94) !important;
+    box-shadow: 0 8px 22px rgba(20, 18, 15, 0.10) !important;
+  }
+
+  html body.produto-page-mobile .produto-page-topbar-carrinho span {
+    display: none !important;
+  }
+
+  html body.produto-page-mobile .produto-page-topbar-carrinho img,
+  html body.produto-page-mobile .produto-page-topbar-carrinho svg {
+    width: 19px !important;
+    height: 19px !important;
+  }
+
+  html body .zq-bag-btn {
+    width: 38px !important;
+    min-width: 38px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+
+    border: 1px solid var(--line) !important;
+    background: #fffdfa !important;
+  }
+
+  html body .zq-bag-btn svg,
+  html body .zq-bag-btn img {
+    width: 21px !important;
+    height: 21px !important;
   }
 }
