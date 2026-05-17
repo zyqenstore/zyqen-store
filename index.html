@@ -2591,9 +2591,311 @@
       }
     }
   </style>
+
+  <style id="zyqen-aviso-inicial-css">
+    /* =========================================================
+       AVISO INICIAL - ZYQEN STORE
+       Aparece apenas 1 vez por navegador/celular
+    ========================================================= */
+
+    body.zq-aviso-aberto {
+      overflow: hidden !important;
+      height: 100dvh !important;
+    }
+
+    .zyqen-aviso-inicial {
+      position: fixed;
+      inset: 0;
+      z-index: 12000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(22, 18, 12, 0.46);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .zyqen-aviso-inicial[hidden] {
+      display: none !important;
+    }
+
+    .zyqen-aviso-card {
+      width: min(460px, 100%);
+      position: relative;
+      overflow: hidden;
+      border-radius: 28px;
+      border: 1px solid rgba(217, 198, 166, 0.92);
+      background:
+        radial-gradient(circle at top left, rgba(211, 166, 92, 0.20), transparent 34%),
+        linear-gradient(180deg, #ffffff 0%, #fffaf2 100%);
+      box-shadow: 0 30px 90px rgba(22, 18, 12, 0.28);
+      padding: 24px;
+      color: #161616;
+      animation: zyqenAvisoEntrar 0.28s ease both;
+    }
+
+    @keyframes zyqenAvisoEntrar {
+      from {
+        opacity: 0;
+        transform: translateY(14px) scale(0.98);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .zyqen-aviso-fechar {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 42px;
+      height: 42px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 999px;
+      border: 1px solid #e8e2d7;
+      background: #ffffff;
+      color: #111111;
+      font-size: 22px;
+      font-weight: 900;
+      line-height: 1;
+      box-shadow: 0 10px 24px rgba(37, 31, 22, 0.08);
+      transition: 0.18s ease;
+    }
+
+    .zyqen-aviso-fechar:disabled {
+      cursor: not-allowed;
+      color: #8a806f;
+      background: #f7efe2;
+      opacity: 1;
+    }
+
+    .zyqen-aviso-fechar:not(:disabled):hover {
+      transform: translateY(-1px);
+      border-color: #d9c6a6;
+      color: #8a601f;
+      background: #fff8ed;
+    }
+
+    .zyqen-aviso-selo {
+      width: max-content;
+      max-width: calc(100% - 54px);
+      min-height: 31px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(185, 135, 50, 0.24);
+      background: rgba(185, 135, 50, 0.10);
+      color: #8a601f;
+      font-size: 11px;
+      font-weight: 950;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .zyqen-aviso-card h2 {
+      margin: 18px 52px 10px 0;
+      color: #111111;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(28px, 7vw, 38px);
+      line-height: 0.98;
+      letter-spacing: -0.052em;
+      font-weight: 700;
+    }
+
+    .zyqen-aviso-card p {
+      margin: 0;
+      color: #5f5c57;
+      font-size: 14px;
+      line-height: 1.58;
+      font-weight: 600;
+    }
+
+    .zyqen-aviso-lista {
+      display: grid;
+      gap: 9px;
+      margin: 18px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .zyqen-aviso-lista li {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 9px;
+      align-items: start;
+      color: #3d372f;
+      font-size: 13px;
+      line-height: 1.4;
+      font-weight: 750;
+    }
+
+    .zyqen-aviso-lista span {
+      width: 28px;
+      height: 28px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 10px;
+      background: rgba(185, 135, 50, 0.12);
+      color: #8a601f;
+      font-size: 13px;
+      font-weight: 950;
+    }
+
+    .zyqen-aviso-rodape {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid #e8e2d7;
+    }
+
+    .zyqen-aviso-contador {
+      min-height: 34px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: #fff8ed;
+      border: 1px solid #e8e2d7;
+      color: #8a601f;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .zyqen-aviso-contador strong {
+      min-width: 22px;
+      height: 22px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 999px;
+      background: #b98732;
+      color: #ffffff;
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    .zyqen-aviso-ok {
+      color: #2e9156;
+      font-size: 12px;
+      line-height: 1.35;
+      font-weight: 850;
+      text-align: right;
+    }
+
+    @media (max-width: 680px) {
+      .zyqen-aviso-inicial {
+        align-items: flex-end;
+        padding: 12px;
+      }
+
+      .zyqen-aviso-card {
+        border-radius: 24px;
+        padding: 22px 18px 18px;
+      }
+
+      .zyqen-aviso-fechar {
+        top: 12px;
+        right: 12px;
+        width: 40px;
+        height: 40px;
+      }
+
+      .zyqen-aviso-card h2 {
+        margin-right: 48px;
+        font-size: 30px;
+      }
+
+      .zyqen-aviso-card p {
+        font-size: 13px;
+      }
+
+      .zyqen-aviso-rodape {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .zyqen-aviso-ok {
+        text-align: left;
+      }
+    }
+  </style>
+
 </head>
 
 <body>
+
+    <!-- =======================================================
+      AVISO INICIAL - APARECE UMA VEZ POR NAVEGADOR/CELULAR
+    ======================================================== -->
+    <section
+      id="zyqen-aviso-inicial"
+      class="zyqen-aviso-inicial"
+      aria-modal="true"
+      role="dialog"
+      aria-labelledby="zyqen-aviso-titulo"
+      hidden
+    >
+      <div class="zyqen-aviso-card">
+        <button
+          type="button"
+          id="zyqen-aviso-fechar"
+          class="zyqen-aviso-fechar"
+          aria-label="Aguarde a contagem para fechar"
+          disabled
+        >
+          12
+        </button>
+
+        <span class="zyqen-aviso-selo">Aviso importante</span>
+
+        <h2 id="zyqen-aviso-titulo">
+          Antes de continuar
+        </h2>
+
+        <p>
+          A Zyqen Store é uma vitrine independente de produtos selecionados.
+          A compra não acontece dentro do nosso site.
+        </p>
+
+        <ul class="zyqen-aviso-lista">
+          <li>
+            <span>1</span>
+            <strong>Ao clicar em comprar, você será direcionado para a plataforma parceira responsável pela venda.</strong>
+          </li>
+
+          <li>
+            <span>2</span>
+            <strong>Não coletamos dados de pagamento, cartão, senha ou dados bancários.</strong>
+          </li>
+
+          <li>
+            <span>3</span>
+            <strong>Preço, estoque, frete, entrega e garantia são definidos pela loja parceira.</strong>
+          </li>
+        </ul>
+
+        <div class="zyqen-aviso-rodape">
+          <div class="zyqen-aviso-contador">
+            Fechar em <strong id="zyqen-aviso-contador">12</strong>s
+          </div>
+
+          <div class="zyqen-aviso-ok">
+            Depois de fechar, este aviso não aparece novamente.
+          </div>
+        </div>
+      </div>
+    </section>
+
   <div class="site-wrapper-fixo">
 
     <header class="zq-header">
@@ -3074,6 +3376,119 @@
     }
   }
 </style>
+
+
+  <script id="zyqen-aviso-inicial-script">
+    (() => {
+      const CHAVE_AVISO = "zyqen_aviso_inicial_v1";
+      const TEMPO_INICIAL = 12;
+
+      let intervaloAviso = null;
+      let tempoAtual = TEMPO_INICIAL;
+
+      function navegadorJaViuAviso() {
+        try {
+          return localStorage.getItem(CHAVE_AVISO) === "sim";
+        } catch (_) {
+          return false;
+        }
+      }
+
+      function salvarAvisoComoVisto() {
+        try {
+          localStorage.setItem(CHAVE_AVISO, "sim");
+        } catch (_) {}
+      }
+
+      function atualizarVisualDoContador() {
+        const contador = document.getElementById("zyqen-aviso-contador");
+        const botaoFechar = document.getElementById("zyqen-aviso-fechar");
+
+        if (contador) {
+          contador.textContent = String(Math.max(0, tempoAtual));
+        }
+
+        if (!botaoFechar) return;
+
+        if (tempoAtual > 0) {
+          botaoFechar.disabled = true;
+          botaoFechar.textContent = String(tempoAtual);
+          botaoFechar.setAttribute("aria-label", `Aguarde ${tempoAtual} segundos para fechar`);
+          return;
+        }
+
+        botaoFechar.disabled = false;
+        botaoFechar.textContent = "×";
+        botaoFechar.setAttribute("aria-label", "Fechar aviso");
+      }
+
+      function fecharAvisoInicial() {
+        const aviso = document.getElementById("zyqen-aviso-inicial");
+
+        if (!aviso) return;
+
+        salvarAvisoComoVisto();
+
+        aviso.hidden = true;
+        aviso.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("zq-aviso-aberto");
+
+        if (intervaloAviso) {
+          clearInterval(intervaloAviso);
+          intervaloAviso = null;
+        }
+      }
+
+      function iniciarContagemAviso() {
+        atualizarVisualDoContador();
+
+        if (intervaloAviso) {
+          clearInterval(intervaloAviso);
+        }
+
+        intervaloAviso = setInterval(() => {
+          tempoAtual -= 1;
+          atualizarVisualDoContador();
+
+          if (tempoAtual <= 0) {
+            clearInterval(intervaloAviso);
+            intervaloAviso = null;
+          }
+        }, 1000);
+      }
+
+      function abrirAvisoInicial() {
+        const aviso = document.getElementById("zyqen-aviso-inicial");
+        const botaoFechar = document.getElementById("zyqen-aviso-fechar");
+
+        if (!aviso || !botaoFechar) return;
+        if (navegadorJaViuAviso()) return;
+
+        tempoAtual = TEMPO_INICIAL;
+
+        aviso.hidden = false;
+        aviso.setAttribute("aria-hidden", "false");
+        document.body.classList.add("zq-aviso-aberto");
+
+        botaoFechar.addEventListener("click", () => {
+          if (botaoFechar.disabled) return;
+          fecharAvisoInicial();
+        });
+
+        iniciarContagemAviso();
+      }
+
+      document.addEventListener("DOMContentLoaded", abrirAvisoInicial);
+
+      window.zyqenResetarAvisoInicial = () => {
+        try {
+          localStorage.removeItem(CHAVE_AVISO);
+        } catch (_) {}
+
+        location.reload();
+      };
+    })();
+  </script>
 
 </body>
 </html>
