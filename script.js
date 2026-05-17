@@ -50,10 +50,13 @@ function produtosPorPaginaAtual() {
   return 20;                         // tela muito grande
 }
 
+let larguraUltimaPaginacao = window.innerWidth || document.documentElement.clientWidth || 0;
+let quantidadeUltimaPaginacao = produtosPorPaginaAtual();
+let chaveUltimaRenderizacaoProdutos = "";
+
 function atualizarProdutosPorPaginaAoRedimensionar() {
   const larguraAgora = window.innerWidth || document.documentElement.clientWidth || 0;
   const diferencaLargura = Math.abs(larguraAgora - larguraUltimaPaginacao);
-
 
   if (diferencaLargura < 24) return;
 
@@ -64,7 +67,6 @@ function atualizarProdutosPorPaginaAoRedimensionar() {
     const novaQuantidade = produtosPorPaginaAtual();
 
     larguraUltimaPaginacao = larguraFinal;
-
 
     if (novaQuantidade === quantidadeUltimaPaginacao) return;
 
@@ -605,18 +607,18 @@ function criarHTMLPopupProduto() {
           <div id="popup-observacoes" class="popup-observacoes"></div>
 
           <div class="barra-compra">
-  <button type="button" class="btn-carrinho-popup" onclick="adicionarProdutoAoCarrinhoPopup()">
-    <img src="imagens/icones/shopping-cart.svg" alt="">
-  </button>
+            <button type="button" class="btn-carrinho-popup" onclick="adicionarProdutoAoCarrinhoPopup()">
+              <img src="imagens/icones/shopping-cart.svg" alt="">
+            </button>
 
-  <a id="popup-comprar-link" class="btn-comprar-popup" href="#" target="_blank" rel="noopener">
-    Comprar agora
-  </a>
+            <a id="popup-comprar-link" class="btn-comprar-popup" href="#" target="_blank" rel="noopener">
+              Comprar agora
+            </a>
 
-  <button type="button" class="btn-chat-popup" onclick="abrirChatProduto()">
-    Dúvida?
-  </button>
-</div>
+            <button type="button" class="btn-chat-popup" onclick="abrirChatProduto()">
+              Dúvida?
+            </button>
+          </div>
         </div>
       </article>
     </div>
@@ -676,6 +678,7 @@ function prepararBusca() {
   campos.forEach(campo => {
     campo.addEventListener("input", () => {
       paginaAtual = 1;
+      chaveUltimaRenderizacaoProdutos = "";
       aplicarFiltros();
     });
   });
@@ -693,6 +696,7 @@ function prepararOrdenacao() {
     select.addEventListener("change", () => {
       ordenarAtual = normalizarOrdenacao(select.value || select.options?.[select.selectedIndex]?.text || "");
       paginaAtual = 1;
+      chaveUltimaRenderizacaoProdutos = "";
       aplicarFiltros();
     });
   });
@@ -900,7 +904,6 @@ function renderizarProdutos(produtos) {
     idsPagina
   ].join("::");
 
-
   if (chaveRenderizacao === chaveUltimaRenderizacaoProdutos) return;
 
   chaveUltimaRenderizacaoProdutos = chaveRenderizacao;
@@ -959,11 +962,11 @@ function criarCardProduto(produto) {
       <div class="produto-img-wrap">
         ${selo ? `<span class="produto-selo">${escaparHTML(selo)}</span>` : ""}
 
-
         <img
           src="${escaparHTML(imagem)}"
           alt="${escaparHTML(produto.nome)}"
           loading="lazy"
+          decoding="async"
           onerror="this.onerror=null;this.src='${IMAGEM_FALLBACK}'"
         >
       </div>
@@ -1050,6 +1053,7 @@ function gerarListaPaginas(total, atual) {
 
 function trocarPaginaProdutos(pagina) {
   paginaAtual = Number(pagina) || 1;
+  chaveUltimaRenderizacaoProdutos = "";
   aplicarFiltros();
 
   const secao = document.querySelector(".zq-products-section") || document.getElementById("categorias-container");
@@ -1066,6 +1070,7 @@ function trocarPaginaProdutos(pagina) {
 function filtrarRapido(tipo) {
   filtroRapidoAtual = tipo || "todos";
   paginaAtual = 1;
+  chaveUltimaRenderizacaoProdutos = "";
   aplicarFiltros();
 }
 
@@ -1085,6 +1090,7 @@ function limparFiltrosHierarquia() {
 
   if (campo) campo.value = "";
 
+  chaveUltimaRenderizacaoProdutos = "";
   aplicarFiltros();
 }
 
@@ -1097,6 +1103,7 @@ function filtrarPlataforma(slug) {
   departamentoAtual = "Todos";
   subcategoriaAtual = "Todos";
   paginaAtual = 1;
+  chaveUltimaRenderizacaoProdutos = "";
   aplicarFiltros();
 }
 
@@ -1104,12 +1111,14 @@ function filtrarDepartamento(slug) {
   departamentoAtual = slug || "Todos";
   subcategoriaAtual = "Todos";
   paginaAtual = 1;
+  chaveUltimaRenderizacaoProdutos = "";
   aplicarFiltros();
 }
 
 function filtrarSubcategoria(slug) {
   subcategoriaAtual = slug || "Todos";
   paginaAtual = 1;
+  chaveUltimaRenderizacaoProdutos = "";
   aplicarFiltros();
 }
 
@@ -1813,15 +1822,10 @@ function renderizarFaixaParceiroPopup(produto) {
     "important"
   );
 
-
   faixaEl.style.setProperty("color", "#111111", "important");
-
-
   faixaEl.style.setProperty("font-size", ehMobile ? "12px" : "13px", "important");
   faixaEl.style.setProperty("font-weight", "950", "important");
   faixaEl.style.setProperty("letter-spacing", "0.01em", "important");
-
-
   faixaEl.style.setProperty("min-height", ehMobile ? "28px" : "31px", "important");
   faixaEl.style.setProperty("padding", ehMobile ? "6px 12px" : "7px 14px", "important");
 
@@ -1858,7 +1862,6 @@ function formatarDetalhe(item) {
 
   return `<strong>${escaparHTML(nome)}:</strong> ${escaparHTML(valor)}`;
 }
-
 
 
 function selosPadrao() {
@@ -2048,7 +2051,6 @@ function fecharPopupSucessoComentario() {
   popup.classList.remove("ativo");
   popup.style.display = "none";
 }
-
 
 
 async function registrarCliqueProduto(tipo, produto = produtoAtualPopup) {
