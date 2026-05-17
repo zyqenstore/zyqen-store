@@ -7406,3 +7406,120 @@ body.produto-page-mobile .barra-compra .btn-chat-popup {
     padding-bottom: 84px;
   }
 }
+
+
+
+@media (max-width: 680px) {
+  html body.produto-page-mobile .produto-page-wrapper {
+    padding-bottom: 110px !important;
+  }
+
+  html body.produto-page-mobile .produto-page-compra-box {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 9998 !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 54px !important;
+    align-items: center !important;
+    gap: 10px !important;
+
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom)) !important;
+
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+
+    pointer-events: none !important;
+    box-sizing: border-box !important;
+  }
+
+  html body.produto-page-mobile .produto-page-comprar {
+    grid-column: 1 !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+
+    height: 52px !important;
+    min-height: 52px !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 0 18px !important;
+    border-radius: 17px !important;
+    border: 0 !important;
+
+    background: var(--gold) !important;
+    color: #ffffff !important;
+
+    font-size: 15px !important;
+    font-weight: 950 !important;
+    line-height: 1 !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+
+    box-shadow: 0 12px 28px rgba(185, 138, 55, 0.28) !important;
+    pointer-events: auto !important;
+  }
+
+  html body.produto-page-mobile .produto-page-add-carrinho {
+    grid-column: 2 !important;
+
+    width: 54px !important;
+    min-width: 54px !important;
+    max-width: 54px !important;
+
+    height: 52px !important;
+    min-height: 52px !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 0 !important;
+    border-radius: 17px !important;
+    border: 1px solid rgba(126, 103, 68, 0.18) !important;
+
+    background: rgba(255, 255, 255, 0.96) !important;
+    color: var(--gold3) !important;
+
+    box-shadow: 0 10px 24px rgba(37, 31, 22, 0.10) !important;
+    pointer-events: auto !important;
+  }
+
+  html body.produto-page-mobile .produto-page-add-carrinho img {
+    width: 21px !important;
+    height: 21px !important;
+    object-fit: contain !important;
+  }
+}
+
+@media (max-width: 390px) {
+  html body.produto-page-mobile .produto-page-compra-box {
+    grid-template-columns: minmax(0, 1fr) 50px !important;
+    gap: 8px !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  html body.produto-page-mobile .produto-page-add-carrinho {
+    width: 50px !important;
+    min-width: 50px !important;
+    max-width: 50px !important;
+  }
+
+  html body.produto-page-mobile .produto-page-comprar {
+    font-size: 14px !important;
+  }
+}
