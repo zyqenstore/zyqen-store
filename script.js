@@ -34,7 +34,7 @@ let chatArrastando = false;
 let chatOffsetX = 0;
 let chatOffsetY = 0;
 
-const PRODUTOS_POR_PAGINA = 12;
+const PRODUTOS_POR_PAGINA = 15;
 const TELEFONE_WHATSAPP = "5575981768068";
 
 const IMAGEM_FALLBACK =
