@@ -2,47 +2,252 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Sobre - Zyqen Store</title>
+
+  <meta
+    name="description"
+    content="Conheça a Zyqen Store, uma vitrine independente de produtos selecionados com redirecionamento para plataformas parceiras."
+  >
 
   <link rel="icon" href="imagens/logo/favicon.png">
   <link rel="stylesheet" href="style.css">
+
+  <style>
+    .sobre-subtitulo {
+      max-width: 780px;
+      margin: -4px 0 28px;
+      color: var(--muted, #7d7365);
+      font-size: 16px;
+      line-height: 1.7;
+      font-weight: 500;
+    }
+
+    .sobre-aviso {
+      margin: 26px 0 32px;
+      padding: 20px;
+      border-radius: 22px;
+      border: 1px solid rgba(185, 138, 55, 0.22);
+      background: rgba(185, 138, 55, 0.08);
+    }
+
+    .sobre-aviso strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--gold3, #8b6424);
+      font-size: 13px;
+      font-weight: 950;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .sobre-aviso p {
+      margin: 0;
+      color: var(--muted, #7d7365);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .sobre-lista {
+      margin: 18px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .sobre-lista li {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 10px;
+      align-items: center;
+      margin: 0;
+      padding: 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(126, 103, 68, 0.15);
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--muted, #7d7365);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .sobre-lista span {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(185, 138, 55, 0.12);
+      color: var(--gold3, #8b6424);
+      font-weight: 950;
+    }
+
+    .sobre-contato-grid {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .sobre-contato-card {
+      min-height: 74px;
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      align-items: center;
+      gap: 12px;
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(126, 103, 68, 0.15);
+      background: rgba(255, 255, 255, 0.76);
+      color: var(--text, #211d17);
+      text-decoration: none;
+      transition: 0.18s ease;
+    }
+
+    .sobre-contato-card:hover {
+      transform: translateY(-1px);
+      border-color: rgba(185, 138, 55, 0.32);
+      background: #ffffff;
+    }
+
+    .sobre-contato-icone {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      background: rgba(185, 138, 55, 0.12);
+      border: 1px solid rgba(185, 138, 55, 0.18);
+      color: var(--gold3, #8b6424);
+      font-size: 18px;
+      font-weight: 950;
+    }
+
+    .sobre-contato-icone img {
+      width: 22px;
+      height: 22px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .sobre-contato-card strong {
+      display: block;
+      color: var(--text, #211d17);
+      font-size: 13px;
+      font-weight: 950;
+    }
+
+    .sobre-contato-card small {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted, #7d7365);
+      font-size: 12px;
+      line-height: 1.35;
+      font-weight: 750;
+    }
+
+    @media (max-width: 680px) {
+      .sobre-subtitulo {
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .sobre-aviso {
+        padding: 16px;
+        border-radius: 18px;
+      }
+
+      .sobre-aviso p {
+        font-size: 13px;
+      }
+
+      .sobre-contato-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sobre-lista li {
+        font-size: 13px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
 <header>
   <div class="logo-area">
-    <img src="imagens/logo/logo.png" alt="Zyqen Store">
+    <a href="index.html" aria-label="Voltar para a Zyqen Store">
+      <img src="imagens/logo/logo.png" alt="Zyqen Store">
+    </a>
   </div>
 </header>
 
 <section class="pagina-texto">
-  <h1>Sobre a Zyqen Store 🚀</h1>
+  <h1>Sobre a Zyqen Store</h1>
 
-  <p>
-    A Zyqen Store é um site criado para facilitar a descoberta de produtos online com boas ofertas e praticidade.
+  <p class="sobre-subtitulo">
+    A Zyqen Store é uma vitrine independente criada para ajudar você a encontrar produtos interessantes, organizados e com acesso direto às plataformas parceiras.
   </p>
 
+  <div class="sobre-aviso">
+    <strong>Como funciona</strong>
+    <p>
+      Nós selecionamos e organizamos produtos para facilitar sua escolha. Ao clicar para comprar, você é direcionado para a loja ou plataforma responsável pela venda.
+    </p>
+  </div>
+
+  <h2>Nossa proposta</h2>
   <p>
-    Nosso objetivo é reunir produtos interessantes e direcionar você diretamente para a loja oficial, com segurança e transparência.
+    A ideia da Zyqen Store é tornar a busca por produtos mais simples, com uma navegação limpa, prática e direta. O site não realiza vendas próprias e não recebe pagamentos.
   </p>
 
-  <p>
-    Trabalhamos como afiliados de plataformas.
-  </p>
+  <h2>Por que usar a Zyqen Store?</h2>
 
-  <h2>Por que confiar?</h2>
-  <ul>
-    <li>✔ Redirecionamento para lojas oficiais</li>
-    <li>✔ Nenhum dado de pagamento coletado</li>
-    <li>✔ Produtos selecionados</li>
+  <ul class="sobre-lista">
+    <li>
+      <span>✓</span>
+      <p>Produtos organizados em uma vitrine simples e fácil de navegar.</p>
+    </li>
+
+    <li>
+      <span>✓</span>
+      <p>Redirecionamento para plataformas externas responsáveis pela compra.</p>
+    </li>
+
+    <li>
+      <span>✓</span>
+      <p>Nenhum dado de pagamento é solicitado dentro da Zyqen Store.</p>
+    </li>
   </ul>
 
   <h2>Contato</h2>
   <p>
-    📧 zyqenstore@gmail.com  
-    📸 Instagram: @zyqen_oficial  
+    Para dúvidas, sugestões ou informações sobre o site, você pode entrar em contato pelos canais abaixo.
   </p>
+
+  <div class="sobre-contato-grid">
+    <a class="sobre-contato-card" href="mailto:zyqenstore@gmail.com">
+      <span class="sobre-contato-icone">@</span>
+
+      <span>
+        <strong>E-mail</strong>
+        <small>zyqenstore@gmail.com</small>
+      </span>
+    </a>
+
+    <a class="sobre-contato-card" href="https://www.instagram.com/zyqen_oficial/" target="_blank" rel="noopener">
+      <span class="sobre-contato-icone">
+        <img src="imagens/redes/instagram.jpg" alt="Instagram">
+      </span>
+
+      <span>
+        <strong>Instagram</strong>
+        <small>@zyqen_oficial</small>
+      </span>
+    </a>
+  </div>
 </section>
 
 <footer class="footer-melhorado">

@@ -5,8 +5,7 @@ import {
   getDocs,
   doc,
   updateDoc,
-  increment,
-  arrayUnion
+  increment
 } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
 
 
@@ -83,10 +82,8 @@ document.addEventListener("DOMContentLoaded", () => {
   bloquearZoomBasico();
   prepararBotoesFixos();
   prepararCarrinhoProdutoPage();
-  prepararSwipeImagem();
-  prepararFormularioComentarioProdutoPage();
+  prepararSwipeImagem();  
   prepararVerMaisDetalhes();
-  prepararVerMaisComentarios();
   carregarPaginaProduto();
 
   window.addEventListener("resize", agendarResizeProdutoPage, { passive: true });
@@ -96,7 +93,6 @@ document.addEventListener("DOMContentLoaded", () => {
       detectarProdutoPageDispositivo();
       agendarAjusteGaleria();
       aplicarEstadoVerMaisDetalhes();
-      aplicarEstadoVerMaisComentarios();
     }, 220);
   });
 });
@@ -332,7 +328,6 @@ function renderizarProduto(produto) {
   renderizarConfianca();
   renderizarDetalhes(produto);
   renderizarObservacoes(produto);
-  renderizarComentarios(produto);
   renderizarRecomendados(produto);
   configurarBotaoCarrinhoProdutoPage(produto);
 }
@@ -973,80 +968,8 @@ function renderizarComentarios(produto) {
   const box = document.getElementById("produto-comentarios-box");
   if (!box) return;
 
-  const comentarios = Array.isArray(produto.comentarios) ? produto.comentarios : [];
-  const precisaBotaoVerMais = comentarios.length > 2;
-
-  box.innerHTML = `
-    <div class="produto-page-card-bloco produto-page-comentarios-card">
-      <div class="produto-page-comentarios-topo">
-        <h2>Comentários</h2>
-        <span>${comentarios.length || 0}</span>
-      </div>
-
-      <div
-        id="produto-page-comentarios-lista"
-        class="produto-page-comentarios-lista ${precisaBotaoVerMais ? "reduzido" : ""}"
-      >
-        ${
-          comentarios.length
-            ? comentarios
-                .slice()
-                .reverse()
-                .map(comentario => criarComentarioHTML(comentario))
-                .join("")
-            : `<p class="produto-page-vazio">Ainda não há comentários para este produto.</p>`
-        }
-      </div>
-
-      ${
-        precisaBotaoVerMais
-          ? `<button
-              type="button"
-              id="produto-page-ver-mais-comentarios"
-              class="produto-page-ver-mais-comentarios"
-              data-aberto="false"
-            >
-              Ver mais
-            </button>`
-          : ""
-      }
-
-      <form id="produto-page-form-comentario" class="produto-page-form-comentario">
-        <h3>Enviar comentário</h3>
-
-        <div class="produto-page-form-grid">
-          <input
-            type="text"
-            id="produto-page-comentario-nome"
-            placeholder="Seu nome"
-            maxlength="40"
-            required
-          >
-
-          <select id="produto-page-comentario-nota" required>
-            <option value="5">5 estrelas</option>
-            <option value="4">4 estrelas</option>
-            <option value="3">3 estrelas</option>
-            <option value="2">2 estrelas</option>
-            <option value="1">1 estrela</option>
-          </select>
-        </div>
-
-        <textarea
-          id="produto-page-comentario-texto"
-          placeholder="Escreva seu comentário sobre o produto..."
-          maxlength="240"
-          required
-        ></textarea>
-
-        <button type="submit">Enviar comentário</button>
-
-        <p id="produto-page-comentario-status" class="produto-page-comentario-status"></p>
-      </form>
-    </div>
-  `;
-
-  setTimeout(aplicarEstadoVerMaisComentarios, 50);
+  box.innerHTML = "";
+  box.hidden = true;
 }
 
 function prepararVerMaisComentarios() {
