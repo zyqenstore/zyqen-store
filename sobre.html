@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover"
+  >
 
   <title>Sobre - Zyqen Store</title>
 
@@ -16,6 +19,31 @@
   <link rel="stylesheet" href="style.css">
 
   <style>
+    html,
+    body {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      overflow-x: hidden;
+      touch-action: manipulation;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      overscroll-behavior-x: none;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    img,
+    video,
+    iframe {
+      max-width: 100%;
+    }
+
     .sobre-subtitulo {
       max-width: 780px;
       margin: -4px 0 28px;
@@ -84,6 +112,10 @@
       font-weight: 950;
     }
 
+    .sobre-lista p {
+      margin: 0;
+    }
+
     .sobre-contato-grid {
       margin-top: 16px;
       display: grid;
@@ -146,6 +178,7 @@
       font-size: 12px;
       line-height: 1.35;
       font-weight: 750;
+      word-break: break-word;
     }
 
     @media (max-width: 680px) {
@@ -255,6 +288,101 @@
     <p>© Zyqen Store - Todos os direitos reservados</p>
   </div>
 </footer>
+
+<script>
+  function bloquearZoomPagina() {
+    const html = document.documentElement;
+    const body = document.body;
+
+    html.style.width = "100%";
+    html.style.maxWidth = "100%";
+    html.style.overflowX = "hidden";
+    html.style.touchAction = "manipulation";
+
+    body.style.width = "100%";
+    body.style.maxWidth = "100%";
+    body.style.overflowX = "hidden";
+    body.style.touchAction = "manipulation";
+
+    const impedir = event => {
+      event.preventDefault();
+    };
+
+    document.addEventListener("gesturestart", impedir, { passive: false });
+    document.addEventListener("gesturechange", impedir, { passive: false });
+    document.addEventListener("gestureend", impedir, { passive: false });
+
+    document.addEventListener(
+      "touchmove",
+      event => {
+        if (event.touches && event.touches.length > 1) {
+          event.preventDefault();
+        }
+      },
+      { passive: false }
+    );
+
+    let ultimoToque = 0;
+
+    document.addEventListener(
+      "touchend",
+      event => {
+        const agora = Date.now();
+
+        if (agora - ultimoToque <= 320) {
+          event.preventDefault();
+        }
+
+        ultimoToque = agora;
+      },
+      { passive: false }
+    );
+
+    document.addEventListener(
+      "wheel",
+      event => {
+        if (event.ctrlKey || event.metaKey) {
+          event.preventDefault();
+        }
+      },
+      { passive: false }
+    );
+
+    document.addEventListener(
+      "keydown",
+      event => {
+        const tecla = String(event.key || "").toLowerCase();
+
+        const tentandoZoom =
+          (event.ctrlKey || event.metaKey) &&
+          (
+            tecla === "+" ||
+            tecla === "-" ||
+            tecla === "=" ||
+            tecla === "0" ||
+            tecla === "add" ||
+            tecla === "subtract"
+          );
+
+        if (tentandoZoom) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      },
+      { passive: false }
+    );
+
+    document.addEventListener(
+      "dblclick",
+      event => {
+        event.preventDefault();
+      },
+      { passive: false }
+    );
+  }
+
+  bloquearZoomPagina();
+</script>
 
 </body>
 </html>
