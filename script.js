@@ -51,12 +51,29 @@ function produtosPorPaginaAtual() {
 }
 
 function atualizarProdutosPorPaginaAoRedimensionar() {
+  const larguraAgora = window.innerWidth || document.documentElement.clientWidth || 0;
+  const diferencaLargura = Math.abs(larguraAgora - larguraUltimaPaginacao);
+
+
+  if (diferencaLargura < 24) return;
+
   clearTimeout(timerProdutosPorPagina);
 
   timerProdutosPorPagina = setTimeout(() => {
+    const larguraFinal = window.innerWidth || document.documentElement.clientWidth || 0;
+    const novaQuantidade = produtosPorPaginaAtual();
+
+    larguraUltimaPaginacao = larguraFinal;
+
+
+    if (novaQuantidade === quantidadeUltimaPaginacao) return;
+
+    quantidadeUltimaPaginacao = novaQuantidade;
     paginaAtual = 1;
+
+    chaveUltimaRenderizacaoProdutos = "";
     aplicarFiltros();
-  }, 180);
+  }, 220);
 }
 
 const TELEFONE_WHATSAPP = "5575981768068";
@@ -326,6 +343,7 @@ function carregarProdutosFirebase() {
         });
 
       paginaAtual = 1;
+      chaveUltimaRenderizacaoProdutos = "";
       aplicarFiltros();
 
       if (produtoAtualPopup) {
@@ -826,7 +844,23 @@ function renderizarProdutos(produtos) {
 
   if (!alvo) return;
 
+  const termoAtual = normalizarTexto(pegarTextoBusca());
+
   if (!produtos.length) {
+    const chaveVazio = [
+      "vazio",
+      plataformaAtual,
+      departamentoAtual,
+      subcategoriaAtual,
+      filtroRapidoAtual,
+      ordenarAtual,
+      termoAtual
+    ].join("::");
+
+    if (chaveVazio === chaveUltimaRenderizacaoProdutos) return;
+
+    chaveUltimaRenderizacaoProdutos = chaveVazio;
+
     alvo.innerHTML = `
       <section class="zq-empty-products">
         <span>Busca sem resultado</span>
@@ -840,13 +874,36 @@ function renderizarProdutos(produtos) {
   }
 
   const produtosPorPagina = produtosPorPaginaAtual();
+  const totalPaginas = Math.max(1, Math.ceil(produtos.length / produtosPorPagina));
 
-const totalPaginas = Math.max(1, Math.ceil(produtos.length / produtosPorPagina));
+  if (paginaAtual > totalPaginas) paginaAtual = totalPaginas;
 
-if (paginaAtual > totalPaginas) paginaAtual = totalPaginas;
+  const inicio = (paginaAtual - 1) * produtosPorPagina;
+  const produtosPagina = produtos.slice(inicio, inicio + produtosPorPagina);
 
-const inicio = (paginaAtual - 1) * produtosPorPagina;
-const produtosPagina = produtos.slice(inicio, inicio + produtosPorPagina);
+  const idsPagina = produtosPagina
+    .map(produto => String(produto.id || produto.docId || ""))
+    .join("|");
+
+  const chaveRenderizacao = [
+    "produtos",
+    paginaAtual,
+    produtosPorPagina,
+    totalPaginas,
+    produtos.length,
+    plataformaAtual,
+    departamentoAtual,
+    subcategoriaAtual,
+    filtroRapidoAtual,
+    ordenarAtual,
+    termoAtual,
+    idsPagina
+  ].join("::");
+
+
+  if (chaveRenderizacao === chaveUltimaRenderizacaoProdutos) return;
+
+  chaveUltimaRenderizacaoProdutos = chaveRenderizacao;
 
   alvo.innerHTML = `
     <section class="zq-products-section">
