@@ -1781,14 +1781,15 @@
               <div class="card-title">
                 <div>
                   <h2>Mídias</h2>
-                  <p>Cole URL completa ou só o nome do arquivo. O painel completa pasta e extensão.</p>
+                  <p>Cole URL completa ou só o nome do arquivo. Você pode usar qualquer pasta criada no GitHub; o nome precisa bater exatamente com o arquivo.</p>
                 </div>
               </div>
 
               <div class="form-grid">
                 <div class="field">
                   <label>Pasta das imagens</label>
-                  <input id="pPastaImagens" placeholder="imagens/mercado/">
+                  <input id="pPastaImagens" placeholder="imagens/produtos/tenis/nike/">
+                  <p class="hint">Exemplos: imagens/produtos/tenis/nike/ ou imagens/produtos/celulares/iphone/</p>
                 </div>
 
                 <div class="field">
@@ -1803,13 +1804,15 @@
 
                 <div class="field span-2">
                   <label>Imagens - uma por linha</label>
-                  <textarea id="pImagens" placeholder="produto1&#10;produto2&#10;https://site.com/imagem.webp"></textarea>
+                  <textarea id="pImagens" placeholder="air-max-01&#10;air-max-02&#10;https://site.com/imagem.webp"></textarea>
+                  <p class="hint">Escreva o nome certinho do arquivo, sem extensão se quiser usar a extensão escolhida acima. Se colocar caminho completo ou URL, o painel mantém como está.</p>
                   <div id="previewImagens" class="preview-images"></div>
                 </div>
 
                 <div class="field">
                   <label>Pasta dos vídeos</label>
-                  <input id="pPastaVideos" placeholder="videos/mercado/">
+                  <input id="pPastaVideos" placeholder="videos/produtos/tenis/nike/">
+                  <p class="hint">Exemplos: videos/produtos/tenis/nike/ ou videos/produtos/celulares/iphone/</p>
                 </div>
 
                 <div class="field">
@@ -1822,7 +1825,8 @@
 
                 <div class="field span-2">
                   <label>Vídeos - um por linha</label>
-                  <textarea id="pVideos" placeholder="video1&#10;https://site.com/video.mp4"></textarea>
+                  <textarea id="pVideos" placeholder="video-air-max-01&#10;https://site.com/video.mp4"></textarea>
+                  <p class="hint">O nome também precisa bater com o arquivo de vídeo que você subiu no GitHub.</p>
                 </div>
               </div>
             </div>
@@ -2547,17 +2551,72 @@
       return Date.now() + Math.floor(Math.random() * 999);
     }
 
+    function limparBarrasCaminho(valor) {
+      return String(valor || "")
+        .trim()
+        .replace(/\\/g, "/")
+        .replace(/^\.\/+/, "")
+        .replace(/^\/+/, "");
+    }
+
+    function normalizarPastaMidia(pasta, fallback) {
+      const base = limparBarrasCaminho(pasta || fallback || "");
+      if (!base) return "";
+      return base.endsWith("/") ? base : base + "/";
+    }
+
+    function normalizarExtensao(extensao, fallback = "") {
+      const ext = String(extensao || fallback || "").trim().toLowerCase();
+      if (!ext) return "";
+      return ext.startsWith(".") ? ext : "." + ext;
+    }
+
+    function arquivoTemExtensao(valor) {
+      return /\.(jpg|jpeg|png|webp|gif|mp4|webm)(\?.*)?$/i.test(String(valor || "").trim());
+    }
+
+    function ehUrlMidia(valor) {
+      return /^(https?:|data:|blob:)/i.test(String(valor || "").trim());
+    }
+
     function completarArquivo(nome, pasta, extensao) {
-      let item = String(nome || "").trim();
-      const base = String(pasta || "").trim();
-      const ext = String(extensao || "").trim();
+      let item = limparBarrasCaminho(nome);
+      const base = normalizarPastaMidia(pasta, "");
+      const ext = normalizarExtensao(extensao, "");
 
       if (!item) return "";
-      if (/^(https?:|data:|blob:)/i.test(item)) return item;
-      if (item.startsWith("/")) return item.slice(1);
-      if (/\.(jpg|jpeg|png|webp|gif|mp4|webm)$/i.test(item)) return base + item;
+      if (ehUrlMidia(item)) return item;
+
+      const temPastaNoNome = item.includes("/");
+      const temExtensao = arquivoTemExtensao(item);
+
+      if (temPastaNoNome) {
+        return temExtensao || !ext ? item : item + ext;
+      }
+
+      if (temExtensao || !ext) {
+        return base + item;
+      }
 
       return base + item + ext;
+    }
+
+    function extrairPastaMidia(lista, fallback) {
+      const primeiro = Array.isArray(lista) ? lista.find(Boolean) : "";
+      const item = limparBarrasCaminho(primeiro);
+
+      if (!item || ehUrlMidia(item) || !item.includes("/")) {
+        return fallback;
+      }
+
+      return item.slice(0, item.lastIndexOf("/") + 1);
+    }
+
+    function extrairExtensaoMidia(lista, fallback) {
+      const primeiro = Array.isArray(lista) ? lista.find(Boolean) : "";
+      const item = String(primeiro || "").split("?")[0];
+      const match = item.match(/\.(jpg|jpeg|png|webp|gif|mp4|webm)$/i);
+      return match ? "." + match[1].toLowerCase() : fallback;
     }
 
     function imagemProduto(p) {
@@ -3069,6 +3128,10 @@
 
         imagens: linhas($("pImagens").value).map(x => completarArquivo(x, pastaImg, extImg)).filter(Boolean),
         videos: linhas($("pVideos").value).map(x => completarArquivo(x, pastaVid, extVid)).filter(Boolean),
+        pastaImagens: normalizarPastaMidia(pastaImg, "imagens/produtos/"),
+        pastaVideos: normalizarPastaMidia(pastaVid, "videos/produtos/"),
+        extImagem: normalizarExtensao(extImg, ".webp"),
+        extVideo: normalizarExtensao(extVid, ".mp4"),
 
         detalhes: linhas($("pDetalhes").value),
         observacoes: linhas($("pObservacoes").value),
@@ -3240,9 +3303,9 @@
         if ($(id)) $(id).value = "";
       });
 
-      $("pPastaImagens").value = "imagens/mercado/";
-      $("pPastaVideos").value = "videos/mercado/";
-      $("pExtImagem").value = ".jpg";
+      $("pPastaImagens").value = "imagens/produtos/";
+      $("pPastaVideos").value = "videos/produtos/";
+      $("pExtImagem").value = ".webp";
       $("pExtVideo").value = ".mp4";
       $("pTipo").value = "produto";
       $("pNivelPreco").value = "baixo";

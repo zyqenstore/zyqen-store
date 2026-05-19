@@ -145,6 +145,97 @@ const FAIXAS_PARCEIROS_PADRAO = [
 ];
 
 
+const PASTA_PADRAO_IMAGENS = "imagens/produtos/";
+const PASTA_PADRAO_VIDEOS = "videos/produtos/";
+const EXTENSAO_PADRAO_IMAGEM = ".webp";
+const EXTENSAO_PADRAO_VIDEO = ".mp4";
+
+function normalizarPastaMidia(pasta, pastaPadrao = "") {
+  const base = String(pasta || pastaPadrao || "")
+    .trim()
+    .replace(/\\/g, "/")
+    .replace(/^\.\/+/, "")
+    .replace(/^\/+/, "");
+
+  if (!base) return "";
+
+  return base.endsWith("/") ? base : `${base}/`;
+}
+
+function normalizarExtensaoMidia(extensao, extensaoPadrao = "") {
+  const ext = String(extensao || extensaoPadrao || "")
+    .trim()
+    .toLowerCase();
+
+  if (!ext) return "";
+
+  return ext.startsWith(".") ? ext : `.${ext}`;
+}
+
+function itemMidiaParaTexto(item) {
+  if (typeof item === "string") return item;
+
+  if (item && typeof item === "object") {
+    return item.src || item.url || item.caminho || item.path || item.nome || "";
+  }
+
+  return "";
+}
+
+function midiaEhUrlCompleta(valor) {
+  return /^(https?:)?\/\//i.test(valor) ||
+    /^data:/i.test(valor) ||
+    /^blob:/i.test(valor);
+}
+
+function midiaTemExtensao(valor) {
+  return /\.[a-z0-9]{2,5}(\?.*)?(#.*)?$/i.test(valor);
+}
+
+function resolverMidiaProduto(entrada, opcoes = {}) {
+  let valor = itemMidiaParaTexto(entrada)
+    .trim()
+    .replace(/\\/g, "/")
+    .replace(/^\.\/+/, "");
+
+  if (!valor) return "";
+
+  if (midiaEhUrlCompleta(valor)) {
+    return valor;
+  }
+
+  const pastaPadrao = normalizarPastaMidia(opcoes.pastaPadrao || PASTA_PADRAO_IMAGENS);
+  const extensaoPadrao = normalizarExtensaoMidia(opcoes.extensao || EXTENSAO_PADRAO_IMAGEM);
+  const temExtensao = midiaTemExtensao(valor);
+  const temCaminho = valor.includes("/") || valor.startsWith("../");
+
+  if (valor.startsWith("/")) {
+    return temExtensao ? valor : `${valor}${extensaoPadrao}`;
+  }
+
+  if (temCaminho) {
+    return temExtensao ? valor : `${valor}${extensaoPadrao}`;
+  }
+
+  return temExtensao ? `${pastaPadrao}${valor}` : `${pastaPadrao}${valor}${extensaoPadrao}`;
+}
+
+function normalizarListaMidiasProduto(lista, opcoes = {}) {
+  if (!Array.isArray(lista)) return [];
+
+  const vistos = new Set();
+
+  return lista
+    .map(item => resolverMidiaProduto(item, opcoes))
+    .filter(Boolean)
+    .filter(src => {
+      if (vistos.has(src)) return false;
+      vistos.add(src);
+      return true;
+    });
+}
+
+
 document.addEventListener("DOMContentLoaded", () => {
   detectarDispositivo();
   bloquearZoomMobile();
@@ -473,8 +564,14 @@ function normalizarProduto(p) {
     subcategoria: subcategoriaNome,
     subcategoriaSlug,
 
-    imagens: Array.isArray(p.imagens) ? p.imagens.filter(Boolean) : [],
-    videos: Array.isArray(p.videos) ? p.videos.filter(Boolean) : [],
+    imagens: normalizarListaMidiasProduto(p.imagens, {
+      pastaPadrao: p.pastaImagens || p.pastaImagem || p.caminhoImagens || PASTA_PADRAO_IMAGENS,
+      extensao: p.extImagem || p.extensaoImagem || EXTENSAO_PADRAO_IMAGEM
+    }),
+    videos: normalizarListaMidiasProduto(p.videos, {
+      pastaPadrao: p.pastaVideos || p.pastaVideo || p.caminhoVideos || PASTA_PADRAO_VIDEOS,
+      extensao: p.extVideo || p.extensaoVideo || EXTENSAO_PADRAO_VIDEO
+    }),
 
     detalhes: Array.isArray(p.detalhes) ? p.detalhes.filter(Boolean) : [],
     observacoes: Array.isArray(p.observacoes) ? p.observacoes.filter(Boolean) : [],
@@ -1404,13 +1501,15 @@ function adicionarProdutoAoCarrinhoPopup() {
 }
 
 function montarMidiasProduto(produto) {
-  const imagens = Array.isArray(produto.imagens)
-    ? produto.imagens.filter(Boolean).map(src => ({ tipo: "imagem", src }))
-    : [];
+  const imagens = normalizarListaMidiasProduto(produto?.imagens, {
+    pastaPadrao: produto?.pastaImagens || produto?.pastaImagem || produto?.caminhoImagens || PASTA_PADRAO_IMAGENS,
+    extensao: produto?.extImagem || produto?.extensaoImagem || EXTENSAO_PADRAO_IMAGEM
+  }).map(src => ({ tipo: "imagem", src }));
 
-  const videos = Array.isArray(produto.videos)
-    ? produto.videos.filter(Boolean).map(src => ({ tipo: "video", src }))
-    : [];
+  const videos = normalizarListaMidiasProduto(produto?.videos, {
+    pastaPadrao: produto?.pastaVideos || produto?.pastaVideo || produto?.caminhoVideos || PASTA_PADRAO_VIDEOS,
+    extensao: produto?.extVideo || produto?.extensaoVideo || EXTENSAO_PADRAO_VIDEO
+  }).map(src => ({ tipo: "video", src }));
 
   const midias = [...imagens, ...videos];
 
@@ -2129,239 +2228,128 @@ function abrirWhatsappProduto() {
   window.open(`https://wa.me/${TELEFONE_WHATSAPP}?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
 }
 
-function abrirInstagramZyqen(url = "https://www.instagram.com/zyqen_oficial") {
-  if (produtoAtualPopup) registrarCliqueProduto("instagram", produtoAtualPopup);
-  window.open(url, "_blank", "noopener");
-}
-
 
 function prepararChatProduto() {
-  if (chatProdutoInicializado) return;
-  chatProdutoInicializado = true;
+  document.addEventListener("submit", event => {
+    const form = event.target.closest?.("#chat-produto-form");
+    if (!form) return;
 
-  const form = document.getElementById("chat-produto-form");
-  const input = document.getElementById("chat-produto-input");
-  const sugestoes = document.getElementById("chat-produto-sugestoes");
-  const topo = document.getElementById("chat-produto-topo");
+    event.preventDefault();
+    enviarPerguntaChatProduto();
+  });
+
+  document.addEventListener("click", event => {
+    const sugestao = event.target.closest?.("[data-chat-sugestao]");
+    if (sugestao) {
+      responderPerguntaChatProduto(sugestao.dataset.chatSugestao || "");
+    }
+  });
+
   const whatsapp = document.getElementById("chat-produto-whatsapp");
-
-  if (form) {
-    form.addEventListener("submit", event => {
-      event.preventDefault();
-
-      const pergunta = input?.value.trim();
-      if (!pergunta) return;
-
-      enviarPerguntaChatProduto(pergunta);
-      input.value = "";
-    });
+  if (whatsapp) {
+    whatsapp.addEventListener("click", abrirWhatsappProduto);
   }
 
-  if (sugestoes) {
-    sugestoes.addEventListener("click", event => {
-      const btn = event.target.closest("button[data-pergunta]");
-      if (!btn) return;
+  prepararArrasteChatProduto();
+}
 
-      enviarPerguntaChatProduto(btn.dataset.pergunta || btn.textContent.trim());
-    });
-  }
+function prepararArrasteChatProduto() {
+  const topo = document.getElementById("chat-produto-topo");
+  const card = document.getElementById("chat-produto-card");
 
-  if (whatsapp) whatsapp.addEventListener("click", abrirWhatsappProduto);
+  if (!topo || !card) return;
 
-  if (topo) {
-    topo.addEventListener("pointerdown", iniciarArrastoChat);
-    document.addEventListener("pointermove", arrastarChat);
-    document.addEventListener("pointerup", pararArrastoChat);
-  }
+  topo.addEventListener("pointerdown", event => {
+    if (event.target.closest("button")) return;
+
+    chatArrastando = true;
+    chatOffsetX = event.clientX - card.offsetLeft;
+    chatOffsetY = event.clientY - card.offsetTop;
+
+    card.setPointerCapture?.(event.pointerId);
+    card.classList.add("arrastando");
+  });
+
+  topo.addEventListener("pointermove", event => {
+    if (!chatArrastando) return;
+
+    const x = event.clientX - chatOffsetX;
+    const y = event.clientY - chatOffsetY;
+
+    card.style.left = `${x}px`;
+    card.style.top = `${y}px`;
+    card.style.right = "auto";
+    card.style.bottom = "auto";
+
+    manterChatDentroDaTela();
+  });
+
+  topo.addEventListener("pointerup", event => {
+    chatArrastando = false;
+    card.classList.remove("arrastando");
+    card.releasePointerCapture?.(event.pointerId);
+    manterChatDentroDaTela();
+  });
+
+  topo.addEventListener("pointercancel", event => {
+    chatArrastando = false;
+    card.classList.remove("arrastando");
+    card.releasePointerCapture?.(event.pointerId);
+    manterChatDentroDaTela();
+  });
 }
 
 function abrirChatProduto() {
-  const chat = document.getElementById("chat-produto-widget");
-  if (!chat) return;
+  const widget = document.getElementById("chat-produto-widget");
+  const card = document.getElementById("chat-produto-card");
 
-  chat.hidden = false;
-  chat.setAttribute("aria-hidden", "false");
-  chat.classList.add("ativo");
+  if (!widget || !card) return;
 
   atualizarContextoChatProduto(produtoAtualPopup);
-  atualizarSugestoesChatProduto(produtoAtualPopup);
-  manterChatDentroDaTela();
+
+  widget.hidden = false;
+  widget.setAttribute("aria-hidden", "false");
+  widget.classList.add("ativo");
+
+  if (!chatProdutoInicializado) {
+    card.style.right = "18px";
+    card.style.bottom = "18px";
+    card.style.left = "auto";
+    card.style.top = "auto";
+    chatProdutoInicializado = true;
+  }
+
+  setTimeout(manterChatDentroDaTela, 50);
 }
 
 function fecharChatProduto() {
-  const chat = document.getElementById("chat-produto-widget");
-  if (!chat) return;
+  const widget = document.getElementById("chat-produto-widget");
+  if (!widget) return;
 
-  chat.classList.remove("ativo", "minimizado");
-  chat.setAttribute("aria-hidden", "true");
-  chat.hidden = true;
+  widget.hidden = true;
+  widget.setAttribute("aria-hidden", "true");
+  widget.classList.remove("ativo");
 }
 
 function minimizarChatProduto() {
-  const card = document.getElementById("chat-produto-card");
-  if (card) card.classList.toggle("minimizado");
-}
-
-function enviarPerguntaChatProduto(pergunta) {
-  const mensagens = document.getElementById("chat-produto-mensagens");
-  if (!mensagens) return;
-
-  mensagens.insertAdjacentHTML(
-    "beforeend",
-    `<div class="chat-msg chat-msg-user"><p>${escaparHTML(pergunta)}</p></div>`
-  );
-
-  const resposta = responderPerguntaProduto(pergunta, produtoAtualPopup);
-
-  setTimeout(() => {
-    mensagens.insertAdjacentHTML(
-      "beforeend",
-      `<div class="chat-msg chat-msg-bot"><p>${escaparHTML(resposta)}</p></div>`
-    );
-
-    mensagens.scrollTop = mensagens.scrollHeight;
-  }, 180);
-
-  mensagens.scrollTop = mensagens.scrollHeight;
-}
-
-function responderPerguntaProduto(pergunta, produto) {
-  if (!produto) return "Abra um produto primeiro para eu conseguir te ajudar melhor.";
-
-  const t = normalizarTexto(pergunta);
-
-  if (t.includes("preco") || t.includes("valor") || t.includes("quanto")) {
-    return `O preço mostrado é ${produto.preco || "ver preço na loja"}. Confira o valor final na plataforma oficial antes de comprar.`;
-  }
-
-  if (t.includes("parcel") || t.includes("juros")) {
-    return produto.parcelamento
-      ? `Esse produto aparece com parcelamento: ${produto.parcelamento}${produto.textoParcelamento ? ` ${produto.textoParcelamento}` : ""}.`
-      : "Não encontrei parcelamento cadastrado nesse produto. Confira as condições direto na loja oficial.";
-  }
-
-  if (t.includes("seguro") || t.includes("confiavel") || t.includes("confiança")) {
-    return "A Zyqen Store é uma vitrine. O pagamento não acontece aqui no site; você é redirecionado para a plataforma parceira.";
-  }
-
-  if (t.includes("caracteristica") || t.includes("detalhe") || t.includes("informacao")) {
-    const detalhes = Array.isArray(produto.detalhes) ? produto.detalhes : [];
-
-    if (detalhes.length) {
-      return `Principais características: ${detalhes
-        .slice(0, 4)
-        .map(d => (typeof d === "string" ? d : `${d.nome || d.titulo || "Detalhe"}: ${d.valor || d.texto || d.descricao || ""}`))
-        .join("; ")}.`;
-    }
-
-    return "Não encontrei características extras cadastradas. Veja a descrição e confirme tudo na página oficial do produto.";
-  }
-
-  if (t.includes("entrega") || t.includes("frete") || t.includes("prazo")) {
-    return "Frete e prazo são definidos pela plataforma parceira no momento da compra.";
-  }
-
-  if (t.includes("whatsapp") || t.includes("atendente") || t.includes("humano")) {
-    return "Você pode clicar em 'Chamar no WhatsApp' aqui no robô para falar direto com a Zyqen Store.";
-  }
-
-  return "Esse produto foi organizado na Zyqen Store para facilitar sua escolha. Confira preço, descrição e características; a compra final é feita na plataforma parceira.";
-}
-
-function atualizarContextoChatProduto(produto) {
-  if (!produto) return;
-
-  const img = document.getElementById("chat-produto-img");
-  const nome = document.getElementById("chat-produto-nome");
-  const preco = document.getElementById("chat-produto-preco");
-
-  if (img) {
-    img.src = imagemPrincipal(produto);
-    img.onerror = () => {
-      img.onerror = null;
-      img.src = IMAGEM_FALLBACK;
-    };
-  }
-
-  if (nome) nome.textContent = produto.nome;
-  if (preco) preco.textContent = produto.preco || "Tire suas dúvidas";
-}
-
-function atualizarSugestoesChatProduto(produto) {
-  const sugestoes = document.getElementById("chat-produto-sugestoes");
-  if (!sugestoes) return;
-
-  const perguntas = ["Qual o preço?", "É seguro comprar?", "Tem parcelamento?", "Quais características?"];
-
-  if (produto?.parcelamento) perguntas.unshift("Como funciona o parcelamento?");
-
-  sugestoes.innerHTML = perguntas
-    .slice(0, 5)
-    .map(pergunta => `<button type="button" data-pergunta="${escaparHTML(pergunta)}">${escaparHTML(pergunta)}</button>`)
-    .join("");
-}
-
-function iniciarArrastoChat(event) {
-  const card = document.getElementById("chat-produto-card");
-  if (!card || card.classList.contains("minimizado")) return;
-  if (event.target.closest("button")) return;
-
-  chatArrastando = true;
-
-  const rect = card.getBoundingClientRect();
-
-  chatOffsetX = event.clientX - rect.left;
-  chatOffsetY = event.clientY - rect.top;
-
-  card.classList.add("arrastando");
-}
-
-function arrastarChat(event) {
-  if (!chatArrastando) return;
-
-  const card = document.getElementById("chat-produto-card");
-  if (!card) return;
-
-  const margem = 10;
-  const largura = card.offsetWidth;
-  const altura = card.offsetHeight;
-
-  let left = event.clientX - chatOffsetX;
-  let top = event.clientY - chatOffsetY;
-
-  left = Math.max(margem, Math.min(left, window.innerWidth - largura - margem));
-  top = Math.max(margem, Math.min(top, window.innerHeight - altura - margem));
-
-  card.style.left = `${left}px`;
-  card.style.top = `${top}px`;
-  card.style.right = "auto";
-  card.style.bottom = "auto";
-}
-
-function pararArrastoChat() {
-  if (!chatArrastando) return;
-
-  chatArrastando = false;
-
-  const card = document.getElementById("chat-produto-card");
-  if (card) card.classList.remove("arrastando");
+  fecharChatProduto();
 }
 
 function manterChatDentroDaTela() {
   const card = document.getElementById("chat-produto-card");
-  if (!card || card.closest("#chat-produto-widget")?.hidden) return;
+  if (!card || card.offsetParent === null) return;
 
+  const largura = window.innerWidth;
+  const altura = window.innerHeight;
   const rect = card.getBoundingClientRect();
-  const margem = 10;
 
   let left = rect.left;
   let top = rect.top;
 
-  if (rect.right > window.innerWidth - margem) left -= rect.right - (window.innerWidth - margem);
-  if (rect.bottom > window.innerHeight - margem) top -= rect.bottom - (window.innerHeight - margem);
-
-  if (left < margem) left = margem;
-  if (top < margem) top = margem;
+  if (left < 8) left = 8;
+  if (top < 8) top = 8;
+  if (left + rect.width > largura - 8) left = Math.max(8, largura - rect.width - 8);
+  if (top + rect.height > altura - 8) top = Math.max(8, altura - rect.height - 8);
 
   card.style.left = `${left}px`;
   card.style.top = `${top}px`;
@@ -2369,31 +2357,177 @@ function manterChatDentroDaTela() {
   card.style.bottom = "auto";
 }
 
+function atualizarContextoChatProduto(produto) {
+  const img = document.getElementById("chat-produto-img");
+  const nome = document.getElementById("chat-produto-nome");
+  const preco = document.getElementById("chat-produto-preco");
 
-function hexParaRgb(hex) {
-  const valor = String(hex || "#b98a37").replace("#", "").trim();
-  const normalizado = valor.length === 3
-    ? valor.split("").map(c => c + c).join("")
-    : valor.padEnd(6, "0").slice(0, 6);
+  if (!produto) return;
 
-  const numeroHex = parseInt(normalizado, 16);
-
-  return {
-    r: (numeroHex >> 16) & 255,
-    g: (numeroHex >> 8) & 255,
-    b: numeroHex & 255
-  };
+  if (img) img.src = imagemPrincipal(produto);
+  if (nome) nome.textContent = produto.nome || "Produto selecionado";
+  if (preco) preco.textContent = produto.preco || "Tire suas dúvidas";
 }
 
-function corComOpacidade(hex, opacidade = 0.18) {
-  const rgb = hexParaRgb(hex);
-  const op = Math.max(0.05, Math.min(1, Number(opacidade) || 0.18));
+function atualizarSugestoesChatProduto(produto) {
+  const box = document.getElementById("chat-produto-sugestoes");
+  if (!box || !produto) return;
 
-  return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${op})`;
+  const sugestoes = [
+    "Esse produto é seguro?",
+    "Como funciona a compra?",
+    "Tem parcelamento?",
+    "Quais são as características?"
+  ];
+
+  box.innerHTML = sugestoes
+    .map(s => `<button type="button" data-chat-sugestao="${escaparHTML(s)}">${escaparHTML(s)}</button>`)
+    .join("");
+}
+
+function enviarPerguntaChatProduto() {
+  const input = document.getElementById("chat-produto-input");
+  if (!input) return;
+
+  const texto = input.value.trim();
+  if (!texto) return;
+
+  adicionarMensagemChat("user", texto);
+  input.value = "";
+
+  responderPerguntaChatProduto(texto);
+}
+
+function responderPerguntaChatProduto(pergunta) {
+  const texto = normalizarTexto(pergunta);
+  const produto = produtoAtualPopup;
+
+  let resposta = "Esse produto foi selecionado pela Zyqen Store. Para confirmar detalhes finais como preço, estoque, frete e garantia, toque em comprar e veja tudo na plataforma parceira.";
+
+  if (texto.includes("segur") || texto.includes("confi")) {
+    resposta = "A Zyqen Store não recebe pagamento nem dados bancários. Ao tocar em comprar, você é enviado para a plataforma parceira responsável pela venda.";
+  } else if (texto.includes("compra") || texto.includes("comprar")) {
+    resposta = "A compra acontece fora da Zyqen Store, diretamente na plataforma parceira. Nós apenas organizamos e indicamos o produto.";
+  } else if (texto.includes("parcela") || texto.includes("juros")) {
+    resposta = produto?.parcelamento
+      ? `Esse produto aparece com parcelamento: ${produto.parcelamento}${produto.textoParcelamento ? ` ${produto.textoParcelamento}` : ""}. Confirme as condições finais na plataforma parceira.`
+      : "As condições de parcelamento podem aparecer na plataforma parceira ao abrir a oferta.";
+  } else if (texto.includes("caracter") || texto.includes("detalhe") || texto.includes("inform")) {
+    const detalhes = Array.isArray(produto?.detalhes) ? produto.detalhes.slice(0, 3).join(", ") : "";
+    resposta = detalhes
+      ? `Alguns destaques: ${detalhes}. Para ver informações finais, abra a oferta oficial.`
+      : "As principais características aparecem na descrição do produto e também na plataforma parceira.";
+  } else if (texto.includes("preco") || texto.includes("valor")) {
+    resposta = produto?.preco
+      ? `O preço exibido aqui é ${produto.preco}. Ele pode mudar na plataforma parceira, então confirme antes de finalizar.`
+      : "O preço final deve ser confirmado na plataforma parceira.";
+  }
+
+  setTimeout(() => adicionarMensagemChat("bot", resposta), 260);
+}
+
+function adicionarMensagemChat(tipo, texto) {
+  const box = document.getElementById("chat-produto-mensagens");
+  if (!box) return;
+
+  const item = document.createElement("div");
+  item.className = `chat-msg chat-msg-${tipo}`;
+  item.innerHTML = `<p>${escaparHTML(texto)}</p>`;
+
+  box.appendChild(item);
+  box.scrollTop = box.scrollHeight;
+}
+
+
+function prepararFormularioNewsletter() {
+  const form = document.getElementById("newsletterForm") || document.querySelector("[data-newsletter-form]");
+  if (!form) return;
+
+  form.addEventListener("submit", event => {
+    event.preventDefault();
+
+    const input = form.querySelector("input[type='email'], input");
+    if (input) input.value = "";
+
+    alert("Cadastro recebido!");
+  });
+}
+
+
+function nomePublicoPlataforma(slug) {
+  const chave = slugify(slug);
+
+  return NOMES_PUBLICOS_PLATAFORMA[chave] || nomeCategoriaPorSlug(slug, "plataforma") || "Parceiro";
+}
+
+function categoriaPublicaDoProduto(produto) {
+  if (produto.tipo === "digital" || produto.tipo === "cakto") return "Digital";
+
+  if (produto.departamento && produto.departamento !== "Geral") {
+    return produto.departamento;
+  }
+
+  return nomePublicoPlataforma(produto.plataformaSlug || produto.categoriaSlug);
+}
+
+function nomeCategoriaPorSlug(slug, tipo = "") {
+  const alvo = slugify(slug);
+
+  const encontrada = listaProdutos
+    .flatMap(p => [
+      { tipo: "plataforma", slug: p.plataformaSlug, nome: p.plataforma },
+      { tipo: "departamento", slug: p.departamentoSlug, nome: p.departamento },
+      { tipo: "subcategoria", slug: p.subcategoriaSlug, nome: p.subcategoria }
+    ])
+    .find(item => {
+      if (tipo && item.tipo !== tipo) return false;
+      return item.slug === alvo;
+    });
+
+  if (encontrada?.nome) return encontrada.nome;
+
+  return alvo
+    .split("-")
+    .filter(Boolean)
+    .map(parte => parte.charAt(0).toUpperCase() + parte.slice(1))
+    .join(" ");
+}
+
+function renderizarIcone(src) {
+  const caminho = src || ICONES_PADRAO.estrela;
+
+  return `<img src="${escaparHTML(caminho)}" alt="" onerror="this.style.display='none'">`;
+}
+
+function corComOpacidade(hex, opacidade = 1) {
+  const valor = String(hex || "#b98a37").replace("#", "").trim();
+  const valido = valor.length === 3 || valor.length === 6 ? valor : "b98a37";
+
+  let r;
+  let g;
+  let b;
+
+  if (valido.length === 3) {
+    r = parseInt(valido[0] + valido[0], 16);
+    g = parseInt(valido[1] + valido[1], 16);
+    b = parseInt(valido[2] + valido[2], 16);
+  } else {
+    r = parseInt(valido.slice(0, 2), 16);
+    g = parseInt(valido.slice(2, 4), 16);
+    b = parseInt(valido.slice(4, 6), 16);
+  }
+
+  const op = Math.max(0, Math.min(1, Number(opacidade) || 1));
+  return `rgba(${r}, ${g}, ${b}, ${op})`;
 }
 
 function imagemPrincipal(produto) {
-  return Array.isArray(produto?.imagens) && produto.imagens[0] ? produto.imagens[0] : IMAGEM_FALLBACK;
+  const imagens = normalizarListaMidiasProduto(produto?.imagens, {
+    pastaPadrao: produto?.pastaImagens || produto?.pastaImagem || produto?.caminhoImagens || PASTA_PADRAO_IMAGENS,
+    extensao: produto?.extImagem || produto?.extensaoImagem || EXTENSAO_PADRAO_IMAGEM
+  });
+
+  return imagens[0] || IMAGEM_FALLBACK;
 }
 
 function gerarEstrelas(nota = 5) {
@@ -2453,16 +2587,21 @@ function numeroPreco(valor) {
 }
 
 function dataProduto(produto) {
-  const valor = produto?.criadoEm || produto?.createdAt || produto?.atualizadoEm;
+  const data =
+    produto?.atualizadoEm?.toDate?.() ||
+    produto?.criadoEm?.toDate?.() ||
+    produto?.createdAt?.toDate?.() ||
+    produto?.data ||
+    produto?.criadoEm ||
+    0;
 
-  if (valor?.toMillis) return valor.toMillis();
-  if (valor?.seconds) return valor.seconds * 1000;
+  const tempo = new Date(data).getTime();
 
-  return Number(produto?.id) || 0;
+  return Number.isFinite(tempo) ? tempo : 0;
 }
 
-function escaparHTML(texto) {
-  return String(texto ?? "")
+function escaparHTML(valor) {
+  return String(valor || "")
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
@@ -2470,65 +2609,15 @@ function escaparHTML(texto) {
     .replaceAll("'", "&#039;");
 }
 
-function cortarTexto(texto, limite = 42) {
+function cortarTexto(texto, limite = 80) {
   const valor = String(texto || "").trim();
 
   if (valor.length <= limite) return valor;
 
-  return `${valor.slice(0, limite).trim()}...`;
+  return `${valor.slice(0, limite - 1).trim()}…`;
 }
 
-function renderizarIcone(icone) {
-  const valor = String(icone || "").trim();
-
-  if (!valor) return "✦";
-
-  if (
-    valor.includes("/") ||
-    valor.endsWith(".svg") ||
-    valor.endsWith(".png") ||
-    valor.endsWith(".webp") ||
-    valor.endsWith(".jpg")
-  ) {
-    return `<img src="${escaparHTML(valor)}" alt="" onerror="this.style.display='none'">`;
-  }
-
-  return escaparHTML(valor);
-}
-
-function nomePublicoPlataforma(slugOuNome) {
-  const slug = slugify(slugOuNome);
-  return NOMES_PUBLICOS_PLATAFORMA[slug] || "Produtos selecionados";
-}
-
-function categoriaPublicaDoProduto(produto) {
-  const sub = String(produto.subcategoria || "").trim();
-  const dep = String(produto.departamento || "").trim();
-
-  if (sub && slugify(sub) !== "geral") return sub;
-  if (dep && slugify(dep) !== "geral") return dep;
-
-  return nomePublicoPlataforma(produto.plataformaSlug || produto.categoriaSlug || produto.plataforma || produto.categoria);
-}
-
-function nomeCategoriaPorSlug(slug, tipo) {
-  const produtos = listaProdutos.filter(produto => {
-    if (tipo === "departamento") return produto.departamentoSlug === slug;
-    if (tipo === "subcategoria") return produto.subcategoriaSlug === slug;
-
-    return produto.plataformaSlug === slug || produto.categoriaSlug === slug;
-  });
-
-  const produto = produtos[0];
-
-  if (!produto) return "Produtos selecionados";
-  if (tipo === "departamento") return produto.departamento || "Produtos selecionados";
-  if (tipo === "subcategoria") return produto.subcategoria || "Produtos selecionados";
-
-  return nomePublicoPlataforma(slug);
-}
-
-function mostrarErroProdutos(texto) {
+function mostrarErroProdutos(mensagem) {
   const alvo =
     document.getElementById("produtos-grid") ||
     document.getElementById("listaProdutos") ||
@@ -2540,158 +2629,990 @@ function mostrarErroProdutos(texto) {
   alvo.innerHTML = `
     <section class="zq-empty-products">
       <span>Erro</span>
-      <h2>Produtos não carregaram</h2>
-      <p>${escaparHTML(texto)}</p>
+      <h2>Não foi possível carregar</h2>
+      <p>${escaparHTML(mensagem)}</p>
     </section>
   `;
 }
 
-function definirTexto(id, texto) {
-  const el = document.getElementById(id);
-  if (el) el.textContent = texto || "";
-}
-
-function registrarPWA() {
-  if (!("serviceWorker" in navigator)) return;
-
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("/zyqen-store/sw.js").catch(() => {
-      console.warn("Service Worker não registrado. Verifique se o arquivo sw.js existe.");
-    });
-  });
-}
-
 
 function injetarEstilosMinimosDoScript() {
-  if (document.getElementById("zyqen-script-min-style")) return;
+  if (document.getElementById("zyqen-script-css")) return;
 
   const style = document.createElement("style");
-  style.id = "zyqen-script-min-style";
-
+  style.id = "zyqen-script-css";
   style.textContent = `
-    .popup-produto,
-    .popup-sucesso-comentario {
-      display: none;
+    .zq-empty-products {
+      width: min(720px, 100%);
+      margin: 28px auto;
+      padding: 32px 22px;
+      border: 1px solid rgba(126,103,68,.16);
+      border-radius: 28px;
+      background: #fffdfa;
+      text-align: center;
+      box-shadow: 0 18px 42px rgba(33,25,12,.07);
     }
 
-    .popup-produto.ativo,
-    .popup-sucesso-comentario.ativo {
+    .zq-empty-products span {
+      color: #b98a37;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+    }
+
+    .zq-empty-products h2 {
+      margin: 8px 0 8px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 34px;
+      letter-spacing: -.05em;
+    }
+
+    .zq-empty-products p {
+      margin: 0 auto 18px;
+      color: #756f66;
+      max-width: 460px;
+      line-height: 1.55;
+    }
+
+    .zq-empty-products button,
+    .paginacao button {
+      border: 0;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #d8af5e, #b98a37);
+      color: #fff;
+      font-weight: 900;
+      min-height: 40px;
+      padding: 0 16px;
+      box-shadow: 0 12px 28px rgba(185,138,55,.18);
+    }
+
+    .zq-products-section {
+      width: 100%;
+    }
+
+    .zq-products-head {
       display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 14px;
+      margin: 0 0 18px;
+    }
+
+    .zq-products-head span {
+      display: block;
+      color: #b98a37;
+      font-size: 11px;
+      font-weight: 950;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .zq-products-head h2 {
+      margin: 6px 0 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(28px, 4vw, 45px);
+      letter-spacing: -.055em;
+      color: #171511;
+    }
+
+    .zq-products-head button {
+      min-height: 40px;
+      padding: 0 15px;
+      border-radius: 999px;
+      border: 1px solid rgba(126,103,68,.16);
+      background: #fffdfa;
+      color: #8b6424;
+      font-weight: 900;
+      box-shadow: 0 10px 24px rgba(33,25,12,.06);
+    }
+
+    .paginacao {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      margin: 24px 0 0;
+      flex-wrap: wrap;
+    }
+
+    .paginacao button {
+      min-width: 40px;
+      padding: 0 12px;
+      background: #fffdfa;
+      color: #8b6424;
+      border: 1px solid rgba(126,103,68,.16);
+      box-shadow: 0 8px 20px rgba(33,25,12,.05);
+    }
+
+    .paginacao button.ativo {
+      background: linear-gradient(135deg, #d8af5e, #b98a37);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .paginacao button:disabled {
+      opacity: .42;
+      cursor: not-allowed;
+    }
+
+    .paginacao-reticencias {
+      color: #9a9389;
+      font-weight: 900;
+      padding: 0 3px;
+    }
+
+    .popup-produto {
+      position: fixed;
+      inset: 0;
+      z-index: 15000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+
+    .popup-produto.ativo {
+      display: flex;
+    }
+
+    .popup-produto-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(22,18,12,.48);
+      backdrop-filter: blur(14px);
+    }
+
+    body.popup-aberto {
+      overflow: hidden;
+    }
+
+    .popup-produto-card {
+      position: relative;
+      width: min(1060px, 100%);
+      max-height: min(900px, calc(100dvh - 36px));
+      display: grid;
+      grid-template-columns: minmax(0, .95fr) minmax(360px, 1fr);
+      gap: 20px;
+      padding: 18px;
+      border-radius: 30px;
+      border: 1px solid rgba(217,198,166,.9);
+      background: linear-gradient(180deg, #fffdf8, #fff8ed);
+      box-shadow: 0 36px 100px rgba(22,18,12,.28);
+      overflow: auto;
+    }
+
+    .popup-fechar {
+      position: sticky;
+      top: 0;
+      margin-left: auto;
+      grid-column: 1 / -1;
+      justify-self: end;
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      border: 1px solid #e6d8c2;
+      background: #fff;
+      color: #171511;
+      font-size: 24px;
+      font-weight: 900;
+      z-index: 3;
+    }
+
+    .popup-galeria {
+      min-width: 0;
+    }
+
+    .popup-imagem-area {
+      position: relative;
+      width: 100%;
+      min-height: 420px;
+      border-radius: 26px;
+      border: 1px solid #eadfcd;
+      background: #fff;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+    }
+
+    #popup-imagem,
+    #popup-video {
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      background: #fff;
+    }
+
+    .popup-seta {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      width: 38px;
+      height: 38px;
+      border: 1px solid rgba(126,103,68,.14);
+      border-radius: 999px;
+      background: rgba(255,255,255,.86);
+      color: #8b6424;
+      font-size: 28px;
+      line-height: 1;
+      font-weight: 900;
+      box-shadow: 0 10px 20px rgba(33,25,12,.08);
+    }
+
+    .popup-seta-esq { left: 10px; }
+    .popup-seta-dir { right: 10px; }
+
+    .popup-contador-imagem {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      z-index: 2;
+      min-height: 28px;
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(22,18,12,.68);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .popup-thumbs {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      overflow-x: auto;
+      padding-bottom: 3px;
+    }
+
+    .thumb-midia {
+      position: relative;
+      width: 64px;
+      height: 64px;
+      min-width: 64px;
+      border-radius: 16px;
+      border: 2px solid transparent;
+      background: #fff;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .thumb-midia.ativo {
+      border-color: #b98a37;
+    }
+
+    .thumb-midia img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .thumb-play {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: rgba(0,0,0,.28);
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .popup-conteudo {
+      min-width: 0;
+      padding: 4px 4px 8px;
+    }
+
+    .popup-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .popup-categoria,
+    .produto-categoria {
+      color: #8b6424;
+      font-size: 12px;
+      font-weight: 950;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .popup-share {
+      min-height: 36px;
+      padding: 0 13px;
+      border-radius: 999px;
+      border: 1px solid rgba(126,103,68,.16);
+      background: #fffdfa;
+      color: #8b6424;
+      font-weight: 900;
+    }
+
+    .popup-conteudo h2 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(28px, 3.6vw, 44px);
+      line-height: .98;
+      letter-spacing: -.055em;
+      color: #15130f;
+    }
+
+    .popup-rating,
+    .produto-rating {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .popup-rating img,
+    .estrelas-mini img,
+    .comentario-topo img {
+      width: 14px;
+      height: 14px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .popup-rating span,
+    .popup-rating small,
+    .produto-rating small {
+      color: #756f66;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .popup-precos,
+    .produto-precos {
+      display: grid;
+      gap: 5px;
+      margin-top: 15px;
+    }
+
+    .popup-preco-antigo,
+    .preco-antigo {
+      color: #9c958b;
+      text-decoration: line-through;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .popup-precos strong,
+    .produto-precos strong {
+      color: #171511;
+      font-size: 30px;
+      letter-spacing: -.04em;
+      line-height: 1;
+    }
+
+    .popup-parcelamento,
+    .produto-parcelamento {
+      color: #514b43;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .popup-parcelamento b,
+    .produto-parcelamento b {
+      color: #111;
+      font-weight: 950;
     }
 
     .popup-faixa-parceiro {
       width: max-content;
       max-width: 100%;
-      min-height: 22px;
+      align-items: center;
+      border-radius: 999px;
+      border: 1px solid rgba(185,138,55,.22);
+      margin-top: 2px;
+    }
+
+    .popup-destaque-parcelamento,
+    .produto-destaque-texto {
+      color: #2f8f55;
+      font-weight: 900;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .popup-descricao {
+      color: #5f5c57;
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 16px 0;
+      font-weight: 600;
+    }
+
+    .popup-confianca-grid,
+    .produto-detalhes-card,
+    .produto-observacoes-card,
+    .comentarios-produto {
+      border: 1px solid #eadfcd;
+      border-radius: 22px;
+      background: #fffdfa;
+      padding: 14px;
+      margin-top: 12px;
+      box-shadow: 0 12px 28px rgba(33,25,12,.05);
+    }
+
+    .popup-confianca-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .popup-confianca-item {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .popup-confianca-item span {
+      width: 36px;
+      height: 36px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: rgba(185,138,55,.10);
+      border: 1px solid rgba(185,138,55,.16);
+    }
+
+    .popup-confianca-item img {
+      width: 19px;
+      height: 19px;
+      opacity: .74;
+    }
+
+    .popup-confianca-item strong,
+    .produto-detalhes-card h3,
+    .produto-observacoes-card h3,
+    .comentarios-produto h3 {
+      display: block;
+      color: #171511;
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .popup-confianca-item p {
+      margin: 3px 0 0;
+      color: #756f66;
+      font-size: 12px;
+      line-height: 1.45;
+      font-weight: 650;
+    }
+
+    .produto-detalhes-card ul,
+    .produto-observacoes-card ul {
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: #514b43;
+      line-height: 1.55;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .produto-detalhes-card p {
+      color: #756f66;
+      margin: 8px 0 0;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .barra-compra {
+      position: sticky;
+      bottom: 0;
+      display: grid;
+      grid-template-columns: 46px 1fr auto;
+      gap: 9px;
+      margin-top: 16px;
+      padding: 12px;
+      border: 1px solid #eadfcd;
+      border-radius: 22px;
+      background: rgba(255,253,248,.92);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 -8px 28px rgba(33,25,12,.06);
+    }
+
+    .btn-carrinho-popup,
+    .btn-chat-popup,
+    .btn-comprar-popup {
+      min-height: 46px;
+      border-radius: 15px;
+      border: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 950;
+    }
+
+    .btn-carrinho-popup,
+    .btn-chat-popup {
+      background: #fff;
+      color: #8b6424;
+      border: 1px solid rgba(126,103,68,.16);
+      padding: 0 13px;
+    }
+
+    .btn-carrinho-popup img {
+      width: 20px;
+      height: 20px;
+    }
+
+    .btn-comprar-popup {
+      background: linear-gradient(135deg, #d8af5e, #b98a37);
+      color: #fff;
+      box-shadow: 0 14px 30px rgba(185,138,55,.22);
+    }
+
+    .comentarios-topo {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .comentarios-topo button {
+      border: 0;
+      background: transparent;
+      color: #8b6424;
+      font-weight: 900;
+    }
+
+    .lista-comentarios-produto {
+      display: none;
+      gap: 10px;
+    }
+
+    .lista-comentarios-produto.aberto {
+      display: grid;
+    }
+
+    .comentario-item {
+      padding: 10px;
+      border-radius: 16px;
+      background: #fff;
+      border: 1px solid #eadfcd;
+    }
+
+    .comentario-topo {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .comentario-item p,
+    .comentario-vazio {
+      margin: 6px 0 0;
+      color: #5f5c57;
+      line-height: 1.45;
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .form-comentario-produto {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .form-comentario-produto input,
+    .form-comentario-produto select,
+    .form-comentario-produto textarea {
+      min-height: 42px;
+      border: 1px solid #eadfcd;
+      border-radius: 14px;
+      background: #fff;
+      padding: 0 12px;
+      color: #171511;
+      font: inherit;
+      font-weight: 700;
+    }
+
+    .form-comentario-produto textarea {
+      min-height: 84px;
+      resize: vertical;
+      padding-top: 10px;
+    }
+
+    .form-comentario-produto button {
+      min-height: 44px;
+      border: 0;
+      border-radius: 14px;
+      background: #171511;
+      color: #fff;
+      font-weight: 950;
+    }
+
+    .popup-sucesso-comentario {
+      position: fixed;
+      inset: 0;
+      z-index: 18000;
       display: none;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      margin-top: 6px;
-      padding: 4px 10px;
-      border: 1px solid rgba(185, 138, 55, .22);
+      padding: 18px;
+      background: rgba(22,18,12,.42);
+      backdrop-filter: blur(10px);
+    }
+
+    .popup-sucesso-card {
+      width: min(380px, 100%);
+      border-radius: 24px;
+      background: #fffdfa;
+      border: 1px solid #eadfcd;
+      padding: 22px;
+      text-align: center;
+      box-shadow: 0 30px 80px rgba(22,18,12,.24);
+    }
+
+    .popup-sucesso-card strong {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 26px;
+      letter-spacing: -.04em;
+    }
+
+    .popup-sucesso-card p {
+      color: #756f66;
+      line-height: 1.5;
+    }
+
+    .popup-sucesso-card button {
+      min-height: 42px;
+      border: 0;
       border-radius: 999px;
-      background: rgba(47, 143, 85, .12);
-      color: #2f8f55;
-      font-size: 11px;
+      padding: 0 18px;
+      background: linear-gradient(135deg, #d8af5e, #b98a37);
+      color: #fff;
+      font-weight: 950;
+    }
+
+    .zq-popup-recomendados {
+      margin-top: 12px;
+      border: 1px solid #eadfcd;
+      background: #fffdfa;
+      border-radius: 22px;
+      padding: 12px;
+    }
+
+    .zq-popup-recomendados-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .zq-popup-recomendados-top strong {
+      color: #171511;
+      font-size: 14px;
+    }
+
+    .zq-popup-recomendados-top span {
+      color: #8b6424;
+      font-size: 12px;
       font-weight: 900;
-      line-height: 1;
-      white-space: nowrap;
     }
 
-    .popup-faixa-parceiro::before {
-      content: "";
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: currentColor;
-      opacity: .9;
+    .zq-popup-recomendados-grid {
+      display: grid;
+      gap: 8px;
     }
 
-    .btn-whatsapp-popup {
-      display: none !important;
+    .zq-popup-recomendado-item {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: 10px;
+      align-items: center;
+      border: 1px solid #eadfcd;
+      border-radius: 16px;
+      background: #fff;
+      padding: 8px;
+      text-align: left;
+    }
+
+    .zq-popup-recomendado-item img {
+      width: 52px;
+      height: 52px;
+      border-radius: 13px;
+      object-fit: contain;
+      background: #f7f2e9;
+    }
+
+    .zq-popup-recomendado-item strong {
+      display: block;
+      color: #171511;
+      font-size: 12px;
+      line-height: 1.25;
+    }
+
+    .zq-popup-recomendado-item small {
+      display: block;
+      margin-top: 4px;
+      color: #8b6424;
+      font-weight: 950;
     }
 
     .zq-popup-voltar-produto {
       width: 100%;
-      min-height: 38px;
-      display: inline-flex;
+      min-height: 42px;
+      display: flex;
       align-items: center;
-      justify-content: flex-start;
       gap: 8px;
-      margin: 0 0 10px;
-      padding: 8px 10px;
-      border-radius: 13px;
-      border: 1px solid #e8e2d7;
-      background: #fff8ed;
-      color: #8a601f;
+      border: 1px solid rgba(185,138,55,.18);
+      border-radius: 16px;
+      background: rgba(185,138,55,.08);
+      color: #8b6424;
+      padding: 0 12px;
+      margin-bottom: 10px;
+      font-weight: 950;
       text-align: left;
-      cursor: pointer;
-      transition: 0.18s ease;
-    }
-
-    .zq-popup-voltar-produto:hover {
-      background: #fff3df;
-      border-color: #d9c6a6;
     }
 
     .zq-popup-voltar-produto span {
-      width: 24px;
-      height: 24px;
-      min-width: 24px;
-      display: inline-grid;
-      place-items: center;
-      border-radius: 999px;
-      background: #ffffff;
-      border: 1px solid #e8e2d7;
-      color: #8a601f;
-      font-size: 16px;
-      font-weight: 900;
-      line-height: 1;
+      font-size: 18px;
     }
 
-    .zq-popup-voltar-produto strong {
-      min-width: 0;
-      display: block;
+    .chat-produto-widget {
+      position: fixed;
+      inset: 0;
+      z-index: 17000;
+      pointer-events: none;
+    }
+
+    .chat-produto-card {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      width: min(370px, calc(100vw - 24px));
+      max-height: min(620px, calc(100dvh - 24px));
+      display: grid;
+      grid-template-rows: auto 1fr auto auto auto;
+      border-radius: 24px;
+      border: 1px solid #eadfcd;
+      background: #fffdfa;
+      box-shadow: 0 24px 80px rgba(22,18,12,.22);
+      pointer-events: auto;
       overflow: hidden;
-      color: #8a601f;
-      font-size: 12px;
-      font-weight: 850;
-      line-height: 1.2;
-      white-space: nowrap;
-      text-overflow: ellipsis;
     }
 
-    .zq-popup-recomendado-item {
-      cursor: pointer;
+    .chat-produto-card.arrastando {
+      user-select: none;
     }
 
-    .zq-popup-recomendado-item:active {
-      transform: scale(0.99);
+    .chat-produto-topo {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px;
+      background: linear-gradient(135deg, #fff8ed, #fffdfa);
+      border-bottom: 1px solid #eadfcd;
+      cursor: grab;
     }
 
-    @media (max-width: 980px) {
-      .popup-faixa-parceiro {
-        min-height: 24px;
-        padding: 5px 10px;
-        font-size: 11px;
-        margin-top: 6px;
-      }
-    }
-
-    .estrelas-mini,
-    #popup-estrelas,
-    .comentario-topo span {
-      display: inline-flex;
-      gap: 2px;
+    .chat-produto-info {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 9px;
       align-items: center;
     }
 
-    .estrelas-mini img,
-    #popup-estrelas img,
-    .comentario-topo span img {
-      width: 14px;
-      height: 14px;
+    .chat-produto-info img {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      object-fit: contain;
+      background: #fff;
+      border: 1px solid #eadfcd;
+    }
+
+    .chat-produto-info strong {
+      display: block;
+      color: #171511;
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .chat-produto-info span {
+      color: #8b6424;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .chat-produto-acoes {
+      display: flex;
+      gap: 6px;
+    }
+
+    .chat-produto-acoes button {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      border: 1px solid #eadfcd;
+      background: #fff;
+      color: #171511;
+      font-weight: 950;
+    }
+
+    .chat-produto-mensagens {
+      padding: 12px;
+      overflow-y: auto;
+      display: grid;
+      gap: 8px;
+      align-content: start;
+    }
+
+    .chat-msg {
+      max-width: 86%;
+      padding: 9px 11px;
+      border-radius: 16px;
+      line-height: 1.4;
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .chat-msg p {
+      margin: 0;
+    }
+
+    .chat-msg-bot {
+      justify-self: start;
+      background: #fff;
+      border: 1px solid #eadfcd;
+      color: #514b43;
+    }
+
+    .chat-msg-user {
+      justify-self: end;
+      background: #171511;
+      color: #fff;
+    }
+
+    .chat-produto-sugestoes {
+      display: flex;
+      gap: 7px;
+      padding: 0 12px 10px;
+      overflow-x: auto;
+    }
+
+    .chat-produto-sugestoes button {
+      min-height: 32px;
+      white-space: nowrap;
+      border: 1px solid rgba(185,138,55,.18);
+      border-radius: 999px;
+      background: rgba(185,138,55,.08);
+      color: #8b6424;
+      font-size: 12px;
+      font-weight: 900;
+      padding: 0 10px;
+    }
+
+    .chat-produto-form {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      padding: 10px 12px;
+      border-top: 1px solid #eadfcd;
+    }
+
+    .chat-produto-form input {
+      min-height: 40px;
+      border: 1px solid #eadfcd;
+      border-radius: 999px;
+      background: #fff;
+      padding: 0 12px;
+      color: #171511;
+      font: inherit;
+      font-weight: 700;
+    }
+
+    .chat-produto-form button,
+    .chat-produto-whatsapp {
+      border: 0;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #d8af5e, #b98a37);
+      color: #fff;
+      font-weight: 950;
+      padding: 0 14px;
+    }
+
+    .chat-produto-whatsapp {
+      min-height: 42px;
+      margin: 0 12px 12px;
+      background: #25d366;
+    }
+
+    @media (max-width: 980px) {
+      .popup-produto {
+        align-items: flex-end;
+        padding: 9px;
+      }
+
+      .popup-produto-card {
+        width: 100%;
+        max-height: calc(100dvh - 18px);
+        grid-template-columns: 1fr;
+        gap: 14px;
+        padding: 12px;
+        border-radius: 26px;
+      }
+
+      .popup-fechar {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+      }
+
+      .popup-imagem-area {
+        min-height: 292px;
+      }
+
+      .barra-compra {
+        grid-template-columns: 44px 1fr auto;
+      }
+
+      .btn-chat-popup {
+        padding: 0 11px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .zq-products-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .popup-produto-card {
+        padding: 10px;
+      }
+
+      .popup-conteudo h2 {
+        font-size: 29px;
+      }
+
+      .popup-precos strong {
+        font-size: 27px;
+      }
+
+      .chat-produto-card {
+        left: 12px !important;
+        right: 12px !important;
+        bottom: 12px !important;
+        top: auto !important;
+        width: auto;
+      }
     }
   `;
 
@@ -2699,26 +3620,37 @@ function injetarEstilosMinimosDoScript() {
 }
 
 
-window.abrirPaginaProduto = abrirPaginaProduto;
-window.abrirPopupProduto = abrirPaginaProduto;
-window.abrirProdutoRecomendado = abrirProdutoRecomendado;
-window.voltarProdutoAnterior = voltarProdutoAnterior;
-window.fecharPopup = fecharPopup;
-window.atualizarImagem = atualizarImagem;
-window.proximaImagemPopup = proximaImagemPopup;
-window.imagemAnteriorPopup = imagemAnteriorPopup;
+function registrarPWA() {
+  if (!("serviceWorker" in navigator)) return;
 
-window.filtrarRapido = filtrarRapido;
-window.limparFiltrosHierarquia = limparFiltrosHierarquia;
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("service-worker.js")
+      .catch(erro => console.warn("Service worker não registrado.", erro));
+  });
+}
+
+
 window.filtrarCategoria = filtrarCategoria;
 window.filtrarPlataforma = filtrarPlataforma;
 window.filtrarDepartamento = filtrarDepartamento;
 window.filtrarSubcategoria = filtrarSubcategoria;
+window.filtrarRapido = filtrarRapido;
+window.limparFiltrosHierarquia = limparFiltrosHierarquia;
 window.trocarPaginaProdutos = trocarPaginaProdutos;
 
+window.abrirPopupProduto = abrirPopupProduto;
+window.fecharPopup = fecharPopup;
+window.atualizarImagem = atualizarImagem;
+window.proximaImagemPopup = proximaImagemPopup;
+window.imagemAnteriorPopup = imagemAnteriorPopup;
+window.voltarProdutoAnterior = voltarProdutoAnterior;
+window.abrirProdutoRecomendado = abrirProdutoRecomendado;
+window.abrirPaginaProduto = abrirPaginaProduto;
+
+window.adicionarProdutoAoCarrinhoPopup = adicionarProdutoAoCarrinhoPopup;
 window.compartilharProduto = compartilharProduto;
 window.abrirWhatsappProduto = abrirWhatsappProduto;
-window.abrirInstagramZyqen = abrirInstagramZyqen;
 window.registrarCliqueProduto = registrarCliqueProduto;
 
 window.toggleComentarios = toggleComentarios;
